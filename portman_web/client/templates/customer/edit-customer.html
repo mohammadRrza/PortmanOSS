@@ -1,0 +1,138 @@
+ 
+ <div class="row" ng-show='user_access_admin'>
+
+ <div class="col-md-12">
+     <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a>Subscriber Management</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href='#/dslams'>Edit Subscriber</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                   
+                </ul>
+            </div>
+   
+
+
+      <div class="portlet box" >
+                                          
+                                            <div class="portlet-body ">
+                                            <div class="panel " style="border:1px solid #E9EDEF;">
+                    <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                        <strong> <i class="icon-equalizer font-torange"></i>
+                                                    <span class="caption-subject  bold uppercase">Edit Subscriber Form</span></strong>
+                    </div>
+                    <div class="panel-body form">
+
+
+   <form ng-submit='UpdateCustomer()' > 
+ <div class="form-body" >
+                  
+                        <div class="row margin-top-20">
+                        <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                
+                                    <label class="control-label">Username</label>
+                                    <input type="text" class="form-control" placeholder="Enter User Name" data-ng-model="customer_detaile.username" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                            <div class="form-group">
+                                
+                                    <label class="control-label">Family</label>
+                                    <input type="text" class="form-control" placeholder="family" data-ng-model="customer_detaile.lastname" required>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                        <div class="col-md-12">
+
+                            <div class="col-md-6 ">
+                            <div class="form-group">
+                                
+                                    <label class="control-label">Name</label>
+                                    <input type="text" class="form-control" placeholder="name" data-ng-model="customer_detaile.firstname" required>
+                                </div>
+                            </div>
+                              <div class="col-md-6">
+                            <div class="form-group">
+                              
+                                    <label class="control-label">Tel</label>
+                                    <input type="text" class="form-control" placeholder="tel" data-ng-model="customer_detaile.tel" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)' required>
+                                </div>
+                            </div>
+                            </div>
+
+                        </div>
+                        <div class="row ">
+                        <div class="col-md-12">
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                
+                                    <label class="control-label">Email</label>
+                                    <input type="email" class="form-control" placeholder="email" data-ng-model="customer_detaile.email" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 ">
+                            <div class="form-group  ">
+                                
+                                    <label class="control-label">National Code</label>
+                                    <input type="text" class="form-control" placeholder="national code" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)' data-ng-model="customer_detaile.national_code" required>
+                                </div>
+                            </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                        <div class="col-md-12">
+                        <div class="col-md-6 ">
+                            <div class="form-group">
+                                
+                                    <label class="control-label">Mobile</label>
+                                    <input type="text" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)' class="form-control" placeholder="mobile" data-ng-model="customer_detaile.mobile" required>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-6 " style="margin-top: 24px;">
+                            <div class="form-group" >
+                                <button type="submit" class="btn btn-default"><i class="fa fa-pencil"></i>Edit</button>
+                                   
+                                </div>
+                                
+                            </div>
+                            </div>
+                        </div>
+
+                       
+                        </div>
+                        <div class="form-action ">
+                        <div class="col-md-4 col-md-offset-8 margin-top-20 margin-bottom-20" >
+                            
+                            </div>
+                        </div>
+                         </form> 
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+
+
+
+
+

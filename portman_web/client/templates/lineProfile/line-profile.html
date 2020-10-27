@@ -1,0 +1,123 @@
+ <div class="row margin-bottom-20">
+ 	<div class='col-md-12'>
+ 		<div class="page-bar">
+ 			<ul class="page-breadcrumb">
+ 				<li>
+ 					<a href="index.html">Home</a>
+ 					<i class="fa fa-caret-right font-torange"></i>
+ 				</li>
+ 				<li>
+ 					<a href="#/lineprofile">LineProfile  Management</a>
+ 					
+ 				</li>
+ 				
+ 			</ul>
+ 		</div>
+ 	</div>
+ </div>
+ <div class="row">    
+ 	<div class="col-md-12" >
+ 		<div class="portlet light" style="border:1px solid #BFCAD1;padding: 0!important;">
+ 			<div class="portlet-body" style="padding-top: 0;">
+ 				<uib-tabset  active="active" >
+ 					<uib-tab  index="0" heading="Search LineProfile">
+ 						<div class="portlet box " >
+ 							<div class="portlet-body" >
+ 								<div class="row">
+ 									<div class="form">
+ 										<form >
+ 											<div class="form-body">
+ 												<div class="col-md-3">
+ 													<div class="form-group">
+
+ 														<label>LineProfile</label>
+ 														<input class="form-control" type="text" ng-model='search.name' placeholder="Search LineProfile" ng-enter='getPage()'/>
+ 													</div>
+ 												</div>
+ 												<div class="col-md-3">
+ 													<button style="margin-top: 24px;" class="btn btn-default" ng-click='getPage()'>
+ 														<i class="fa fa-search font-torange"></i>
+ 														Search</button>
+ 													</div>
+
+
+
+ 												</div>
+ 											</form>
+ 										</div>
+ 									</div>
+ 								</div>
+ 							</div>                
+ 						</uib-tab>
+ 						
+ 						<uib-tab  index="2" heading="Set on Port">
+ 							<div class="portlet box " >
+ 								<div class="portlet-body" >
+
+ 									<div class="row">
+ 										<div class="form">
+ 											<form ng-submit='setLineProfileToPort()'>
+ 												<div class="form-body">
+ 													<div class="col-md-2">
+ 														<div class="form-group">
+ 															<label>Dslam</label>
+ 															<input class="form-control input-inline" style="width:100%!important;" 
+ 															placeholder="DSLAM Name" data-ng-model="new_line_profile.dslam"
+ 															uib-typeahead="t as t.text for t in searchName($viewValue)"
+ 															typeahead-min-length='0' required />
+
+ 														</div>
+ 													</div>
+ 													<div class="col-md-2">
+ 														<div class="form-group">
+ 															<label>Line Profile</label>
+ 															<input class="form-control input-inline" style="width:100%!important;" 
+ 															placeholder="Line Profile" data-ng-model="new_line_profile.line_profile"
+ 															uib-typeahead="t as t.name for t in getLineProfile($viewValue)"
+ 															typeahead-min-length='0' required />
+
+ 														</div>
+ 													</div>
+
+ 													<div class="form-group   col-md-2">
+ 														<label >Slot</label>
+ 														<input type="text" class="form-control"  placeholder="Enter Port Index"  
+ 														data-ng-model="new_line_profile.slot_number" ng-keydown='checkNumber($event)'
+ 														ng-keyup = 'chekKeyUp($event)'>
+
+ 													</div>
+ 													<div class="form-group    col-md-2">
+ 														<label class="m-l" >Port</label>
+ 														<input type="text" class="form-control"  placeholder="Enter Port Index" 
+ 														data-ng-model="new_line_profile.port_number" ng-keydown='checkNumber($event)'
+ 														ng-keyup = 'chekKeyUp($event)'>
+ 													</div>
+
+ 													<div class="col-md-2">
+ 														<button style="margin-top: 24px;" type="submit" class="btn btn-default">
+ 															<i class="fa fa-plus font-torange"></i> Create
+ 														</button>
+ 													</div>
+ 												</div>
+ 											</form>
+ 										</div>
+ 									</div></div></div>
+
+
+
+ 								</uib-tab>
+ 							</uib-tabset>
+ 						</div>
+ 					</div>
+ 				</div>
+ 			</div>
+
+
+ 			<div class="row">
+ 				<div class="col-md-12">
+ 					
+ 					<div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%;border:1px solid #BFCAD1;"></div>
+ 					
+ 				</div>
+ 			</div>
+ 			

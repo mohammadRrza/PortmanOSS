@@ -1,0 +1,162 @@
+
+<div >
+<div class="row margin-bottom-20">
+    <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/userpermission">Permissions</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                     <li>
+                        <a href="#/userpermission">User Permission </a>
+                     
+                    </li>
+                </ul>
+            </div>
+    </div>
+    
+</div>
+  
+    <div class="portlet light" style="border:1px solid #BFCAD1;">
+        <div class="portlet-title">
+            <span class="caption-subject font-red-sunglo bold uppercase"> User Permission list </span>
+              <div class="actions">
+            <button class="btn btn-outline green pull-right" ng-click="AddUserPermissionModal('md', 'templates/userpermission/user-permission.add.html', {})">
+                <i class="fa fa-plus"></i> Add Permission
+            </button>
+    </div>
+        </div>
+        <div class="portlet-body flip-scroll">
+            <div >
+                <table class="table table-bordered table-striped table-condensed flip-content">
+                    <thead class="flip-content">
+                    <th  style="text-align: center;">Username</th>
+                    <th  style="text-align: center;">Permission Profile</th>
+                    <th  style="text-align: center;">Dslam</th>
+                    <th  style="text-align: center;">Command</th>
+                    <th  style="text-align: center;">Action</th>
+                    <th  style="text-align: center;">Is Active</th>
+                    <th class="hidden-xs  hidden-sm" style="text-align: center;" width="100"> Actions</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="permission in user_permission_list track by $index">
+                            <td  style="text-align: center;">{$permission.user_info.username$}</td>
+                            <td  style="text-align: center;">{$permission.permission_profile_name$}</td>
+                          <td  style="text-align: center;">
+                                
+                               
+                                <a class="btn blue btn-outline sbold" 
+                                   data-toggle="modal" data-target="#network-{$permission.id$}"
+                                   ng-click='singleUserPermissionData(permission.id)'> 
+                                    <i class="fa fa-eye"></i>
+                                </a>
+
+                                <div class="modal fade" id="network-{$permission.id$}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                <h4 class="modal-title">Dslam List</h4>
+                                            </div>
+                                            <div class="modal-body"> 
+                                                <div class="row">
+                                                    <div class="col-md-4" ng-repeat="per in permission_detailes track by $index" ng-if='per.model_type == "dslam"'>
+                                                        <button class="btn btn-primary btn-block"
+                                                         >
+                                                        {$ per.object_name $}
+                                                        </button>
+                                                    </div>
+                                                </div>                                                 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                                  <td  style="text-align: center;">
+                             
+                                
+                                <a class="btn blue btn-outline sbold" data-toggle="modal" data-target="#device-{$permission.id$}"  ng-click='singleUserPermissionData(permission.id)'> 
+                                    <i class="fa fa-eye"></i>
+                                </a>
+
+                                <div class="modal fade" id="device-{$permission.id$}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                <h4 class="modal-title">Command List</h4>
+                                            </div>
+                                            <div class="modal-body"> 
+
+                                                <div class="row">
+                                                    <div class="col-md-4" ng-repeat="per in permission_detailes track by $index" ng-if='per.model_type == "command"'>
+                                                        <button class="btn btn-primary btn-block"
+                                                         >
+                                                        {$ per.object_name $}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td  style="text-align: center;">
+                               
+                                 <span ng-if="permission.action == 'allow'"  style="background-color: #53af7c;color: white;padding:3px;border-radius: 3px!important;"> {$permission.action$} </span>
+                                <span ng-if="permission.action == 'deny'"  style="background-color: #c66f77;color: white;padding:3px;border-radius: 3px!important;"> {$permission.action$} </span>
+                            </td>
+                            <td  style="text-align: center;">
+                               <span ng-if="permission.is_active"  style="background-color: #53af7c;color: white;padding:3px;border-radius: 3px!important;"> {$permission.is_active$} </span>
+                                <span ng-if="!permission.is_active"  style="background-color: #c66f77;color: white;padding:3px;border-radius: 3px!important;"> {$permission.is_active$} </span>
+                            </td>
+                            <td class="hidden-xs  hidden-sm"  style="height: 45px;">
+                                <div class="btn-group btn-xs ">
+                                    <button  data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle btn-xs " aria-expanded="false">
+                                        Actions
+                                        <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <ul role="menu" class="dropdown-menu">
+                                        
+                                        <li><a ng-click="UpdatePermission('md', 'templates/userpermission/user-permission.edit.html', {'record': permission} , permission.id);" ><i class="glyphicon glyphicon-pencil"></i>Edit</a></li>
+                                        <li><a ng-confirm-click="DeletePermissionProfile(permission.id)" ng-confirm-message="Are You Sure To Delete Permission?"><i class="glyphicon glyphicon-remove"></i>Delete</a></li>
+                                    </ul>
+
+                                </div>
+
+
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination 
+                    total-items="permission_list_pagination.TotalItems" 
+                    ng-model='permission_list_pagination.currentPage' 
+                    items-per-page='permission_list_pagination.itemsPerPage' 
+                    ng-change="getUserPermissionList()"
+                    max-size="10"
+                    force-ellipses="true"                                    
+                    previous-text="&lsaquo;" 
+                    next-text="&rsaquo;">
+                </ul>
+            
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+

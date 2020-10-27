@@ -1,0 +1,322 @@
+<style type="text/css">
+	.hr-style { 
+		border-top: 1px dashed #8c8b8b;
+		border-bottom: 1px dashed #fff;
+}
+</style>
+ <div class="row margin-bottom-20">
+ 	<div class='col-md-12'>
+ 		<div class="page-bar">
+ 			<ul class="page-breadcrumb">
+ 				<li>
+ 					<a href="index.html">Home</a>
+ 					<i class="fa fa-caret-right font-torange"></i>
+ 				</li>
+ 				<li>
+ 					<a href="#/addlineprofile">Create LineProfile </a>
+ 					
+ 				</li>
+ 				
+ 			</ul>
+ 		</div>
+ 	</div>
+ </div>
+<div class="portlet box " style="border:1px solid #BFCAD1;">
+	<div class="portlet-body" >
+		<div class="row">
+			<div class="form">
+				<form ng-submit='createLineProfile()'>
+					<div class="form-body">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Name</label>
+								
+								<input class="form-control input-inline" style="width:100%!important;" 
+								placeholder="Name" ng-model='new_line_profile.name'
+								required/>
+							</div>
+						</div>
+						
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Template Type</label>
+								<select class="form-control" data-ng-model="new_line_profile.template_type" ng-change='logkon()' required>
+									<option value='adsl 1'>adsl 1</option>
+									<option ng-selected="true" value='adsl 2+'>adsl 2+</option>
+								</select>
+								
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Chanel Mode</label>
+								<select class="form-control" data-ng-model="new_line_profile.channel_mode" ng-change='logkon()'  required>
+									<option value='fast'>fast</option>
+									<option ng-selected="true" value='interleaved'> interleaved </option>
+								</select>
+
+							</div>
+						</div>
+						
+						
+						<div class="col-md-3" ng-if='new_line_profile.channel_mode =="interleaved"'>
+							<div class="form-group">
+								<label> Max Us Interleaved</label>
+								<input class="form-control input-inline" style="width:100%!important;"  ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)'
+								data-ng-model="new_line_profile.max_us_interleaved" ng-required = 'new_line_profile.channel_mode =="interleaved" '
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" ng-if='new_line_profile.channel_mode =="interleaved"'>
+							<div class="form-group">
+								<label> Max Ds Interleaved</label>
+								<input class="form-control input-inline" style="width:100%!important;"  ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)'
+								data-ng-model="new_line_profile.max_ds_interleaved" ng-required = 'new_line_profile.channel_mode =="interleaved" '
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Us Snr Margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.us_snr_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' required
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" >
+							<div class="form-group">
+								<label>Ds Snr Margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.ds_snr_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' required
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" >
+							<div class="form-group">
+								<label>Max Us Transmit Rate</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.max_us_transmit_rate"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' required
+								/>
+
+							</div>
+						</div>
+						
+						<div class="col-md-3" >
+							<div class="form-group">
+								<label>Max Ds Transmit Rate</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.max_ds_transmit_rate"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' required
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" >
+							<div class="form-group">
+								<label>Min Us Transmit Rate</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.min_us_transmit_rate"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' required
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" >
+							<div class="form-group">
+								<label>Min Ds Transmit Rate</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.min_ds_transmit_rate"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' required
+								/>
+
+							</div>
+						</div>
+						
+
+						<div class="clearfix"></div>
+						
+
+						<hr class="hr-style">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Type</label>
+								<select class="form-control " ng-model='new_line_profile.type' required>
+									<option ng-repeat = 'v in vendor_list track by $index'>{$ v.name $}</option>
+								</select>
+								
+							</div>
+						</div>
+
+
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel" || new_line_profile.type == "huawei"'>
+							<div class="form-group">
+								<label>Max Us Snr Margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.max_us_snr_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' ng-required='new_line_profile.type == "zyxel" || new_line_profile.type == "huawei"'
+								/>
+							</div>
+						</div>
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel" || new_line_profile.type == "huawei" || new_line_profile.type == "fiberhomeAN3300"'> 
+							<div class="form-group">
+								<label>Min Us Snr Margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.min_us_snr_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' ng-required='new_line_profile.type == "zyxel" || new_line_profile.type == "huawei" ||new_line_profile.type == "fiberhomeAN3300"'
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel" || new_line_profile.type == "huawei" ||new_line_profile.type == "fiberhomeAN3300"'>
+							<div class="form-group">
+								<label>Max Ds Snr Margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.max_ds_snr_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' ng-required='new_line_profile.type == "zyxel" || new_line_profile.type == "huawei" || new_line_profile.type == "fiberhomeAN3300"'
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel" || new_line_profile.type == "huawei"'> 
+							<div class="form-group">
+								<label>Min Ds Snr Margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.min_ds_snr_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' ng-required='new_line_profile.type == "zyxel" || new_line_profile.type == "huawei"'
+								/>
+
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel"'> 
+							<div class="form-group">
+								<label>USRA</label>
+								<select class="form-control" ng-model='new_line_profile.usra'> 
+									<option>Fixed</option>
+									<option>Startup</option>
+									<option>Run Time</option>
+								</select>
+								
+
+							</div>
+						</div>
+
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel"'> 
+							<div class="form-group">
+								<label>usra us margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.usra_us_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' ng-required='new_line_profile.type == "zyxel"'
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel" || new_line_profile.type == "fiberhomeAN3300"'> 
+							<div class="form-group">
+								<label>usra ds margin</label>
+								<input  class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.usra_ds_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' ng-required='new_line_profile.type == "zyxel"'
+								/>
+
+							</div>
+						</div>
+
+
+
+						<div class="clearfix"></div>
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel"'> 
+							<div class="form-group">
+								<label>DSRA</label>
+								<select class="form-control" ng-model='new_line_profile.dsra'> 
+									<option>Fixed</option>
+									<option>Startup</option>
+									<option>Run Time</option>
+								</select>
+								
+
+							</div>
+						</div>
+
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel"'> 
+							<div class="form-group">
+								<label>dsra us margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.dsra_us_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' ng-required='new_line_profile.type == "zyxel"'
+								/>
+
+							</div>
+						</div>
+						<div class="col-md-3" ng-if='new_line_profile.type == "zyxel" || new_line_profile.type == "fiberhomeAN3300"'> 
+							<div class="form-group">
+								<label>dsra ds margin</label>
+								<input class="form-control input-inline" style="width:100%!important;" 
+								data-ng-model="new_line_profile.dsra_ds_margin"
+								ng-keydown='checkNumber($event)'
+								ng-keyup = 'chekKeyUp($event)' ng-required='new_line_profile.type == "zyxel"'
+								/>
+
+							</div>
+						</div>
+
+
+						
+						<div class="col-md-3" ng-if='new_line_profile.type == "huawei"'>
+							<div class="form-group">
+								<label>Ds transmit rate adaptation </label>
+								<select class="form-control " ng-model='new_line_profile.ds_transmit_rate_adaptation' >
+									<option value="fixed">Fixed</option>
+									<option value="adapt At Startup">Adapt at startup</option>
+									<option value="adapt At Runtime">Adapt at runtime</option>
+
+								</select>
+
+							</div>
+						</div>
+
+
+						<div class="col-md-3" ng-if='new_line_profile.type == "fiberhomeAN3300"'>
+							<div class="form-group">
+								<label>Adapt mode</label>
+								<select class="form-control" ng-model='new_line_profile.adapt_mode'>
+								<option value="adaptatruntime">adapt at runtime</option>
+									<option value="adaptatstart">adapt at start</option>
+									<option value="fixed">fixed</option>
+								</select>
+
+							</div>
+						</div>
+						<div class="col-md-2">
+							<button style="margin-top: 24px;" class="btn btn-default" type="submit">
+								<i class="fa fa-plus font-torange"></i>
+								Create</button>
+							</div>
+						</div>
+
+					</form>
+				</div></div></div></div>
+
+				

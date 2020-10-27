@@ -1,0 +1,851 @@
+<style>
+#port-tx #port-snr #port-attainable-rate #port-attenuation {
+  height:100%;
+  width:100%;
+  position:absolute;
+}
+</style>
+<div class="row">
+<div class='col-md-12'>
+<div class="page-bar">
+          <ul  class="page-breadcrumb">
+              <li>
+                  <a href="index.html">Home</a>
+                  <i class="fa fa-caret-right font-torange"></i>
+              </li>
+              <li>
+                  <a href='#/dslamport/'>Port Management</a>
+                  <i  class="fa fa-caret-right font-torange"></i>
+              </li>
+              <li>
+                  <a href='#/dslamport/'>Ports</a>
+                  <i  class="fa fa-caret-right font-torange"></i>
+              </li>
+              <li>
+                  <a>Status Report</a>
+
+              </li>
+          </ul>
+      </div>
+</div>
+</div>
+
+<div class="row margin-top-20" >
+<div class="showAboutBox col-md-6">
+      <div class="overlay-loader center">
+          <img src='global/img/loading.gif' width="90px;"/>
+      </div>
+  </div>
+<div class="col-xs-12 col-md-3">
+  <div class="portlet light" style="border:1px solid #BFCAD1; ">
+      <div class="portlet-title" style="min-height: 28px;">
+          <div class="pull-left">
+              <h3 class="panel-title" style="font-weight: bold;font-size:15px">
+                  Current Port : {$ dslamport.slot_number $} - {$ dslamport.port_number $}
+              </h3>
+          </div>
+
+
+      </div>
+      <div class="portlet-body">
+          <div class='row '>
+              <div class="col-md-12" ng-show="user_access_admin || user_access_view_dslam"><i class="fa fa-gg"></i> DSLAM:
+              <a  href="#/dslam/{$dslam_id$}/report" >
+              {$ dslamport.dslam_info.name $} </a>
+
+                      </div>
+                     <!--  <div class="col-md-12" ng-hide="user_access_admin || user_access_view_dslam"><i class="fa fa-gg"></i> DSLAM:
+
+  <a>
+   {$ dslamport.name $} </a>
+                      </div> -->
+              <div ></div>
+          </div>
+          <hr ng-show="user_access_admin || user_access_view_dslam">
+           <div class='row'>
+              <div class="col-md-12">
+              <i class="fa fa-th-large"></i> Port Name: {$ dslamport.port_name $}
+              <br>
+              <i class="fa fa-cube"></i> Type: {$ dslamport.dslam_info.dslam_type_info.text $}
+              </div>
+
+           </div>
+
+          <hr>
+           <div class='row '>
+              <div class="col-md-12" ng-show='port_vlan != null && port_vlan !="" '><i class="fa fa-mail-forward"></i> Vlan: {$ port_vlan $}</div>
+              <div class="col-md-12 margin-top-10" ng-show='dslamport.selt_value != null'><i class="fa fa-genderless"></i> Selt: {$ dslamport.selt_value $}</div>
+               <div class="col-md-12 " ><i class="fa fa-square"></i> MAC:
+               <span ng-repeat = 'mac in mac_addres'>
+                   {$ mac $}
+               </span>
+
+               </div>
+          </div>
+          <hr>
+           <div class='row '>
+              <div class="col-md-12"><i class="fa fa-gg"></i> Status:
+
+                          <span data-ng-show="dslamport.admin_status == 'UNLOCK'"
+                           style="width:17px;height:17px;border-radius:100%!important;"
+                            class="badge badge-info" title = "UNLOCK"> </span>
+                            <span data-ng-show="dslamport.admin_status == 'UNLOCK'" style="font-size:12px">UNLOCK</span>
+                          <span data-ng-show="dslamport.admin_status == 'LOCK'"
+                          style="width:17px;height:17px;border-radius:100%!important;"
+                          class="badge badge-danger"  title = "LOCK">  </span>
+                         <span data-ng-show="dslamport.admin_status == 'LOCK'" style="font-size:12px">LOCK</span> |
+                          <span data-ng-show="dslamport.oper_status == 'SYNC'" style="width:17px;height:17px;border-radius:100%!important;"
+               class="badge badge-success" title="Sync"> </span><span
+               style="font-size:12px;"
+               data-ng-show="dslamport.oper_status == 'SYNC'"> SYNC</span>
+                      <span data-ng-show="dslamport.oper_status == 'NO-SYNC'" style="width:17px;height:17px;border-radius:100%!important;"
+                       class="badge badge-danger" title="No Sync">
+
+                       </span>
+                       <span style="font-size:12px;" data-ng-show="dslamport.oper_status == 'NO-SYNC'"> No Sync</span>
+
+                      <!--</span>-->
+              </div>
+
+              <div ></div>
+          </div>
+
+
+          <hr>
+          <div class='row '>
+              <div class="col-md-12"><i class="fa fa-life-ring"></i>
+                  Line Profile: <label id="line_profile_label">{$ dslamport.line_profile $}</label>
+                  <span ng-click='getPortswithSameLineProfile()'><i class="fa fa-external-link"  data-toggle="modal" data-target="#line-profile"></i></span>
+
+                      <div class="form-group form-md-line-input has-success col-md-offset-4 col-md-2"
+                           style="display:none;width:100%;padding:0px;margin:0px;" id="line_profile_select_div">
+                          <select class="select-line-profile-data-array form-control" id="select_line_profile"
+                                  data-ng-model="selected_line_profile"
+                                  ng-change="change_port_line_profile_or_admin_status(selected_line_profile,'line_profile')"
+                                  style="width:100% !important">
+                          </select>
+                      </div></div>
+              <div > </div>
+          </div>
+
+         <div class='row margin-top-10'>
+              <div class="col-md-12"><i class="fa fa-user-secret"></i> Reseller: <a data-ng-show="reseller_detaile != null" href="javascript:;" class="btn blue-ebonyclay popovers"
+                         data-container="body" data-trigger="hover" data-placement="right"
+                         data-content="Tel: {$ reseller_detaile.reseller_info.tel $} <br/> Fax: {$ reseller_detaile.reseller_info.fax $}<br/>Address: {$ reseller_detaile.reseller_info.address $}"
+                         data-original-title="Reseller Info">{$ reseller_detaile.reseller_info.name $}</a>
+                      <span data-ng-show="reseller_detaile == null">-</span>
+
+              </div>
+              <div ></div>
+          </div>
+          <hr>
+            <div class='row margin-top-10'>
+              <div class="col-md-12"><i class="fa fa-users"></i>
+                  Subscriber: <a data-ng-show="subscriber_detaile != null" href="javascript:;" class="btn blue-ebonyclay popovers"
+                         data-container="body" data-trigger="hover" data-placement="right"
+                         data-content="Email: {$ subscriber_detaile.email $} <br/> Tel: {$ subscriber_detaile.tel $} <br/> Mob: {$ subscriber_detaile.mobile $}"
+                         data-original-title="Customer Info">{$ subscriber_detaile.username $}</a>
+                      <span data-ng-show="subscriber_detaile == null">-</span></div>
+              <div ></div>
+          </div>
+          <hr>
+        <div class='row margin-top-10'>
+              <div class="col-md-12"><i class="fa fa-hourglass-o"></i>
+                  Uptime: {$ dslamport.dslam_info.uptime $}</div>
+              <div ></div>
+          </div>
+          <div class="row">
+              <div class="col-md-12 table-scrollable">
+              <table class="table table-striped">
+                <thead>
+                  <th>Item</th>
+                  <th>Up</th>
+                  <th>Down</th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>tx rate</td>
+                    <td> {$ dslamport.upstream_tx_rate $}</td>
+                    <td>{$ dslamport.downstream_tx_rate $}</td>
+                  </tr>
+                  <tr>
+                    <td>SNR</td>
+                    <td>{$ dslamport.upstream_snr $} dB</td>
+                    <td>{$ dslamport.downstream_snr
+                      $} dB</td>
+                  </tr>
+
+                  <tr>
+                    <td>Attenuation</td>
+                    <td>{$ dslamport.upstream_attenuation $}</td>
+                    <td>{$
+                      dslamport.downstream_attenuation $}</td>
+                  </tr>
+                  <tr>
+                    <td>Attainable Rate</td>
+                    <td>{$ dslamport.upstream_attainable_rate $}</td>
+                    <td>{$
+                      dslamport.downstream_attainable_rate $}</td>
+
+                  </tr>
+                </tbody>
+              </table>
+
+
+                    </div>
+                    </div>
+
+
+
+
+      </div>
+  </div>
+
+</div>
+<div class="col-md-9 "  >
+
+<div class="portlet light" style="border:1px solid #BFCAD1; ">
+
+  <uib-tabset active="active">
+<uib-tab index="3" heading="Command"  >
+   <div class="portlet light" >
+      <div class="portlet-title" style="min-height: 28px;">
+          <div class="pull-left">
+              <h3  style="font-weight: bold;font-size:15px;margin-top: 0!important;">Recent Command Result </h3>
+          </div>
+      </div>
+      <div class="portlet-body">
+
+          <div  class="clearfix">
+              <div class="form-group  pull-left">
+                  <label style="margin-top:26px;">Command Type</label>
+                  <br/>
+
+                   <input type="text" ng-model="selected_command_type.command"
+                                     uib-typeahead="c as c.name for c in commands | filter:$viewValue "
+                                     class="form-control"  typeahead-on-select="getCommandResult();" typeahead-min-length = '0'
+                                     required/>
+
+              </div>
+              <div class="pull-left" style="margin:50px 0px 0px 30px;">
+                  <a href="javascript:;" class="btn dark btn-outline" data-ng-click="run_command()">RunCommand</a>
+              </div>
+          </div>
+          <div ng-show='run_command_loader' class='loader' style="font-size:18px;"> </div>
+          <div ng-show="show_uplink_pvc_set" class="clearfix">
+
+
+              <div class="row"  ng-show="show_uplink_pvc_set">
+                            <div class="col-xs-6 col-md-2" >
+                              Port Vpi<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' ng-model="selected_command_type.port_vpi"/>
+                            </div>
+                            <div class="col-xs-6 col-md-2"  >
+                               Port Vci<input class="form-control" ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' type="text" ng-model="selected_command_type.port_vci"/>
+                            </div>
+
+
+                            <div class="col-xs-6 col-md-2" >
+                              Wan Slot Num<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' ng-model="selected_command_type.wan_slot_number" />
+                            </div>
+                            <div class="col-xs-6 col-md-2" >
+                              Wan Port Num<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' ng-model="selected_command_type.wan_port_number" />
+                            </div>
+                            <div class="col-xs-6 col-md-2" >
+                              Wan Vpi<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' ng-model="selected_command_type.wan_vpi" />
+                            </div>
+                            <div class="col-xs-6 col-md-2" >
+                              Wan Vci<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' ng-model="selected_command_type.wan_vci" />
+                            </div>
+
+                          </div>
+          </div>
+          <div ng-show="show_profile_adsl_set" class="clearfix">
+
+              <div class="form-group  col-md-3" style="padding-right:0;padding-left:0;">
+                  <label >Profile</label>
+                  <br/>
+                   <input type="text" class="form-control" ng-model="selected_command_type.profile_name"
+                                     required/>
+
+
+              </div>
+              <div class="form-group  col-md-3" style="padding-right:0;">
+                  <label >Us max rate</label>
+                  <br/>
+                   <input class="form-control" type="text" ng-model="selected_command_type.us_mx_rate" ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)''
+                                     required/>
+
+
+              </div>
+              <div class="form-group  col-md-3" style="padding-right:0;">
+                  <label >Ds max rate</label>
+                  <br/>
+                   <input class="form-control" type="text" ng-model="selected_command_type.ds_mx_rate" ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)'
+                                     required/>
+
+
+              </div>
+          </div>
+           <div ng-show="show_profile_adsl_delete" class="clearfix">
+              <div class="form-group  col-md-3" style="padding-right:0;padding-left:0;">
+                  <label >Profile</label>
+                  <br/>
+                   <input type="text" class="form-control" ng-model="selected_command_type.profile_name_delete"
+                                     required/>
+
+
+              </div>
+
+
+          </div>
+           <div ng-show="show_performance" class="clearfix">
+              <div class="form-group  col-md-3" style="padding-right:0;padding-left:0;">
+                  <label >Time elapsed</label>
+                  <br/>
+                  <select class="form-control" ng-model="selected_command_type.performance_option" required>
+                    <option>curr</option>
+                    <option>15min</option>
+                    <option>1day</option>
+                  </select>
+
+
+              </div>
+          </div>
+
+
+          <div ng-show="show_vlan_box" class="clearfix">
+              <div class="form-group  col-md-3" style="padding-right:0;padding-left:0;">
+                  <label >Vlan</label>
+                  <br/>
+                  <input type="text" ng-model="selected_vlan"
+                                     uib-typeahead="c as c.text for c in vlans | filter:$viewValue | limitTo:8"
+                                     class="form-control"   typeahead-min-length = '0'
+                                     required/>
+
+              </div>
+          </div>
+          <div class="row">
+          <div class="col-xs-6 col-md-3" style="padding-right:0;" ng-show="show_lineprofile_box">
+                              Line Profile
+                              <input type="text" ng-model="selected_command_type.line_profile"
+
+                                     uib-typeahead="lpl as lpl.name for lpl in getLineProfileList($viewValue)"
+                                     class="form-control" typeahead-min-length = '0' /></div>
+          </div>
+          <div class="row" ng-show='show_acl_maccount'>
+              <div class="col-md-3" style="padding-right:0;">
+                  <label>vpi</label><input class="form-control" type="text" ng-model='acl.vpi' ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' '/>
+              </div>
+              <div class="col-md-3" style="padding-right:0;">
+                  <label>vci</label><input class="form-control" type="text" ng-model='acl.vci' ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' '/>
+              </div>
+              <div class="col-md-3">
+                  <label>count</label><input class="form-control" type="text" ng-model='acl.count' ng-keydown='checkNumber($event)'
+                              ng-keyup = 'chekKeyUp($event)' '/>
+              </div>
+
+          </div>
+
+          <div class="row" ng-show='port_pvc_set_show'>
+              <div class="col-md-4">
+                  <span style="cursor:pointer !important" class='pointer' ng-click="showDetailes()"><i class='fa fa-plus'></i> Detailes </span>
+              </div>
+
+          </div>
+
+          <div class="row" ng-show="port_pvc_set_show && show_detail">
+              <div class="form-group form-md-line-input has-info col-md-2">
+                  <label>VPI</label>
+                  <input ng-model="port_pvc.vpi"   type="text" class="form-control"/>
+              </div>
+               <div class="form-group form-md-line-input has-info col-md-2">
+                   <label>VCI</label>
+                  <input ng-model="port_pvc.vci"  type="text" class="form-control"/>
+              </div>
+               <div class="form-group form-md-line-input has-info col-md-2">
+                    <label>Profile</label>
+                  <input ng-model="port_pvc.profile"  type="text" class="form-control"/>
+              </div>
+               <div class="form-group form-md-line-input has-info col-md-2">
+                   <label>MUX</label>
+                  <input ng-model="port_pvc.mux"  type="text" class="form-control"/>
+              </div>
+              <div class="form-group form-md-line-input has-info col-md-2">
+                   <label>vlan_id</label>
+                  <input ng-model="port_pvc.vlan_id"  type="text" class="form-control"/>
+              </div>
+               <div class="form-group form-md-line-input has-info col-md-2">
+                   <label>Priority</label>
+                  <input ng-model="port_pvc.priority"  type="text" class="form-control"/>
+              </div>
+          </div>
+          <hr/>
+          <div style="max-height:600px;overflow-y: auto;height:480px;">
+              <table class="table">
+                  <thead>
+                  <tr>
+                      <th style="min-width: 150px;"> Command</th>
+                      <th style="min-width: 150px;"> Create At</th>
+                      <th style="min-width: 150px;"> Result Value</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr data-ng-repeat="item in result_commands track by $index">
+                      <td>
+                          <h5><b> {$ item.command.text $}</b></h5>
+                      </td>
+                      <td>
+                          <h6>{$ item.created_at $}</h6>
+                      </td>
+                      <td>
+                          <table
+                           class="pull-left table table-bordered table-hover text-center" ng-show="item.command.text==='selt'"
+                                 >
+                              <tr class="text-center">
+                                  <th>Cable Type</th>
+                                  <th>InProgress</th>
+                                  <th>LoopEstimateLength</th>
+
+                              </tr>
+                              <tr>
+                                  <td>{$ item.value[0].cableType $}</td>
+                                  <td>{$ item.value[0].inprogress $}</td>
+                                  <td>{$ item.value[0].loopEstimateLength $}</td>
+                              </tr>
+
+                          </table>
+
+
+                          <table  class="pull-left" ng-show="item.command.text==='lcman show'"
+                                 class="result_comand">
+                              <tr>
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value $}</pre>
+                                  </td>
+                              </tr>
+                          </table>
+                           <table  class="pull-left" ng-show="item.command.text==='show performance' || item.command.text==='enable annexm' || item.command.text==='disable annexm'"
+                                 class="result_comand">
+                              <tr>
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value.result $}</pre>
+                                  </td>
+                              </tr>
+                          </table>
+
+                          <table  class="pull-left" ng-show="item.command.text==='show port'"
+                               >
+                              <tr>
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value.result $}</pre>
+                                  </td>
+                              </tr>
+                          </table>
+
+                          <table  class="pull-left" ng-show="item.command.text==='uplink pvc set'"
+                                 class="result_comand">
+
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value.result $}</pre>
+                                  </td>
+
+                          </table>
+                          <table  class="pull-left" ng-show="item.command.text==='uplink pvc delete'"
+                                 class="result_comand">
+
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value.result $}</pre>
+                                  </td>
+
+                          </table>
+                           <table  class="pull-left" ng-show="item.command.text==='uplink pvc show'"
+                                 class="result_comand">
+
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value.result[0] $}</pre>
+                                  </td>
+
+                          </table>
+                           <table  class="pull-left" ng-show="item.command.text==='show lineinfo'"
+                                 class="result_comand">
+                              <tr>
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value.result $}</pre>
+                                  </td>
+                              </tr>
+                          </table>
+
+                           <table  class="pull-left" ng-show="item.command.text==='acl maccount set'"
+                                 class="result_comand">
+
+                                  <td style="max-width: 400px;">
+                                      {$ item.value.result $}
+                                  </td>
+
+                          </table>
+
+                           <table  class="pull-left" ng-show="item.command.text==='show linestat port'"
+                                 class="result_comand">
+                              <tr>
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value.result $}</pre>
+                                  </td>
+                              </tr>
+                          </table>
+                          <table  class="pull-left" ng-show="item.command.text==='show linerate'"
+                                 class="result_comand">
+                              <tr>
+
+                                  <td style="max-width: 400px;">
+                                      <pre>{$ item.value.result $}</pre>
+                                  </td>
+                              </tr>
+                          </table>
+
+                          <table  class="pull-left"
+                                 ng-show="item.command.text==='show mac slot port' && item.value.result != 'No results was returned.'" class="result_comamnd">
+                              <tr>
+
+
+                                  <td ng-repeat="i in  item.value.result track by $index">
+                                      <strong>vlan_id:</strong> {$i.vlan_id $} - <strong>Mac:</strong> {$ i.mac $}
+                                  </td>
+                              </tr>
+                          </table>
+                          <table  class="pull-left"
+                                 ng-show="item.command.text =='show mac slot port' && item.value.result == 'No results was returned.'" class="result_comamnd">
+                              <tr>
+
+
+                                  <td >
+                                     No results was returned
+                                  </td>
+                              </tr>
+                          </table>
+                          <table  class="pull-left"
+                                 ng-show="item.command.text==='change admin status' || item.command.text=='profile adsl set' || item.command.text=='profile adsl delete'" class="result_comamnd">
+                              <tr>
+
+                                  <td >
+                                      {$ item.value.result $}
+                                  </td>
+                              </tr>
+                          </table>
+                          <table  class="pull-left"
+                                 ng-show="item.command.text==='reset admin status'" class="result_comamnd">
+                              <tr>
+
+                                  <td >
+                                      {$ item.value.result $}
+                                  </td>
+                              </tr>
+                          </table>
+                           <table  class="pull-left"
+                                 ng-show="item.command.text==='add to vlan'" class="result_comamnd">
+                              <tr>
+
+                                  <td >
+                                      {$ item.value.result $}
+                                  </td>
+                              </tr>
+                          </table>
+                          <table  class="pull-left"
+                                 ng-show="item.command.text==='port enable'" class="result_comamnd">
+                              <tr>
+
+                                  <td >
+                                      {$ item.value.result $}
+                                  </td>
+                              </tr>
+                          </table>
+                          <table  class="pull-left"
+                                 ng-show="item.command.text==='port disable'" class="result_comamnd">
+                              <tr>
+
+                                  <td >
+                                      {$ item.value.result $}
+                                  </td>
+                              </tr>
+                          </table>
+                           <table class="pull-left"
+                                 ng-show="item.command.text==='port pvc set'" class="result_comamnd">
+                              <tr>
+
+                                  <td >
+                                      {$ item.value.result $}
+                                  </td>
+                              </tr>
+                          </table>
+                           <table  class="pull-left"
+                                 ng-show="item.command.text==='port pvc delete'" class="result_comamnd">
+                              <tr>
+
+                                  <td >
+                                      {$ item.value.result $}
+                                  </td>
+                              </tr>
+                          </table>
+                          <table  class="pull-left"
+                                 ng-show="item.command.text==='change lineprofile port'" class="result_comamnd">
+                              <tr>
+
+                                  <td >
+                                      {$ item.value.result $}
+                                  </td>
+                              </tr>
+                          </table>
+
+                      </td>
+                  </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</uib-tab>
+
+<uib-tab index="0" heading="History">
+  <div class="row">
+  <div class="col-md-6">
+          <div class="portlet light" style="border : 1px solid #E9EDEF">
+      <div class="portlet-title" >
+          <h3 style="font-weight: bold;font-size:15px">
+              Filter DSLAMPort Status Report
+          </h3>
+      </div>
+      <div class="portlet-body" style="height:320px;">
+          <div class="row">
+          <div class="col-md-4">
+              <span>Start </span><input type="text" id="pcal1" class="pdate form-control col-md-5"/>
+              <input class="col-md-1" type="hidden"
+                     id="pcal1_en"
+                     name="pcal1_en"/> &nbsp;
+              &nbsp;&nbsp;
+          </div>
+          <div class="col-md-4">
+          <span>
+          End </span>
+              <input type="text" id="pcal2" class="pdate form-control col-md-5"/>
+          <input class="col-md-1" type="hidden" id="pcal2_en" name="pcal2_en"/>&nbsp;&nbsp;&nbsp;
+              </div>
+
+          <div class="col-md-4" style="margin-top:25px;">
+          <a href="javascript:;" class="btn blue-ebonyclay" data-ng-click="filter_report()"
+             id="btn_edit">Filter</a>
+              </div>
+              </div>
+          <br/>
+          <br/>
+          <div class="row">
+              <div class="col-md-12">
+          <div class="alert alert-warning">
+              <strong>Info!</strong> Default reporting from last 30 days.
+          </div>
+                  </div>
+          </div>
+          <br/>
+          <button class="btn btn-success" id="create_pdf" ng-click="create_pdf()">Create PDF From All Chart
+          </button>
+      </div>
+  </div></div>
+   <div class="col-md-6">
+      <div class="portlet light" style="border : 1px solid #E9EDEF">
+          <div class="portlet-body text-center">
+              <div  id="oper-status"></div>
+          </div>
+      </div>
+  </div>
+
+
+
+  <div class="col-xs-12 col-md-6" >
+      <div class="portlet light" style="border : 1px solid #E9EDEF">
+          <div class="portlet-body">
+              <div id="port-attenuation"></div>
+          </div>
+      </div>
+  </div>
+  <div class="col-xs-12 col-md-6">
+      <div class="portlet light" style="border : 1px solid #E9EDEF">
+          <div class="portlet-body">
+              <div id="port-attainable-rate"></div>
+          </div>
+      </div>
+  </div>
+
+
+
+  <div class="col-xs-12 col-md-6">
+      <div class="portlet light" style="border : 1px solid #E9EDEF">
+          <div class="portlet-body">
+              <div  id="port-snr"></div>
+          </div>
+      </div>
+  </div>
+  <div class="col-xs-12 col-md-6">
+      <div class="portlet light" style="border : 1px solid #E9EDEF">
+          <div class="portlet-body">
+              <div id="port-tx"></div>
+          </div>
+      </div>
+  </div>
+
+   </div>
+
+</uib-tab>
+<uib-tab index="1" heading="Live ">
+      <div class="col-md-12">
+        <!-- <div class="col-md-2" style="padding-left: 30px;">
+
+          </div> -->
+  <div class="col-md-12" >
+      <div class="mt-element-step" >
+        <div class="row step-thin">
+           <div class="col-lg-4 bg-grey mt-step-col  text-center" ng-show='show_chart' style="padding: 12px;">
+                <button class="btn btn-default red"   ng-click="changeShowState()">End Live Data</button>
+                       </div>
+                 <div class="col-lg-4 bg-grey mt-step-col  text-center" ng-show='!show_chart' style="padding: 12px;">
+
+         <button class="btn btn-default green" ng-show='!show_chart' ng-click="changeShowState()">Get live Data</button>
+                                      </div>
+                                   <div class="col-lg-4 mt-step-col bg-grey text-center active" style="padding: 12px;">
+
+                                          <div style="padding: 7px;" >
+                                         <span class="text-center" style="background-color: white;border-radius: 100%!important;margin-right: 9px; padding: 7px 10px 7px 10px;"> {$ socket_count $} </span> Received
+
+                                           </div>
+                                      </div>
+                                       <div class="col-lg-4 bg-grey mt-step-col  " >
+                                         Admin Status:
+                                             <span data-ng-show="dslamport.admin_status == 'UNLOCK'"
+                           style="width:12px;height:12px;border-radius:100%!important;"
+                            class="badge badge-info" title = "UNLOCK"> </span>
+                            <span data-ng-show="dslamport.admin_status == 'UNLOCK'" style="font-size:12px">UNLOCK</span>
+                          <span data-ng-show="dslamport.admin_status == 'LOCK'"
+                          style="width:12px;height:12px;border-radius:100%!important;"
+                          class="badge badge-danger"  title = "LOCK">  </span>
+                         <span data-ng-show="dslamport.admin_status == 'LOCK'" style="font-size:12px">LOCK</span> <br>
+                         Oper Status:
+                           <span data-ng-show="dslamport.oper_status == 'SYNC'" style="width:12px;height:12px;border-radius:100%!important;margin-left: 12px!important;"
+               class="badge badge-success" title="Sync"> </span><span
+               style="font-size:12px;"
+               data-ng-show="dslamport.oper_status == 'SYNC'"> SYNC</span>
+                      <span data-ng-show="dslamport.oper_status != 'SYNC'" style="width:12px;height:12px;border-radius:100%!important;margin-left: 12px!important;"
+                       class="badge badge-danger" title="No Sync">
+
+                       </span> <span style="font-size:12px;" data-ng-show="dslamport.oper_status != 'SYNC'"> No Sync</span>
+
+
+
+                                      </div>
+                                  </div>
+                              </div>
+  </div>
+
+  </div>
+  <div class="row">
+
+  <div class="portlet light">
+      <div class="portlet-body">
+
+      <div class="col-md-12">
+      <div id='ave-traffic'></div>
+  </div>
+
+
+  <div class="col-md-6">
+      <div id='atten-change'></div>
+  </div>
+  <div class="col-md-6">
+      <div id='rate-change'></div>
+  </div>
+    <div class="col-md-6">
+      <div id='snr-change'></div>
+  </div>
+  <div class="col-md-6">
+      <div id='tx-rate'></div>
+  </div>
+
+
+</div></div>
+</div>
+</uib-tab>
+</uib-tabset>
+</div>
+
+
+  <br/>
+
+
+<!--</uib-tab>-->
+
+<!--</uib-tabset>-->
+  <br/>
+
+</div>
+
+
+</div>
+</div>
+<hr>
+
+<!-- <div class="portlet light" style="border:1px solid #BFCAD1; ">
+<div class="porlet-body" >
+
+
+</div></div>
+<script>
+</script> -->
+
+<div id="line-profile" class="modal fade" role="dialog" ng-init='getPortswithSameLineProfile()'>
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Ports with same lineprofile</h4>
+      </div>
+      <div class="modal-body" style="overflow-y: auto;height: 400px;">
+        <table class="table table-hover table-bordered">
+          <thead>
+            <th>Dslam</th>
+            <th>Port</th>
+            <th>Slot</th>
+            <th>Port Name</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat='port in same_line_profile track by $index'>
+              <td><a  href="#/dslam/{$ port.dslam $}/report"> {$ port.dslam_info.name $} </a></td>
+              <td>{$ port.port_number $}</td>
+              <td>{$ port.slot_number $}</td>
+              <td><a href="#/dslamport/{$ port.dslam $}/{$ port.id $}/status-report"> {$ port.port_name $} </a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

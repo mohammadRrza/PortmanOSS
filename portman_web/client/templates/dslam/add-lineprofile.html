@@ -1,0 +1,141 @@
+<div class="row">
+    <div class="delete_box">
+        <div class="alert alert-block alert-danger fade in center">
+            <button type="button" class="close" data-dismiss="alert"></button>
+            <h4 class="alert-heading">Warning!</h4>
+
+            <p>
+                Do you want delete profile?
+            </p>
+
+            <p>
+                <br/>
+                <a class="btn red" href="javascript:;" data-ng-click="delete_profile()"> Do this </a>
+                <button class="btn blue" onclick="$('.delete_box').hide('slow');"> Cancel</button>
+            </p>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-red-sunglo">
+                    <i class="icon-settings font-red-sunglo"></i>
+                    <span class="dslam-name caption-subject bold uppercase"> Add Line Profile for {$ dslam_info.name
+                        $}</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form role="form">
+                    <div class="form-body col-md-4 col-md-offset-4">
+                        <div class="form-group form-md-line-input has-info">
+                            <input type="text" class="form-control" placeholder="Enter Name"
+                                   data-ng-model="profile_name"
+                                   id="txtprofilename">
+                            <label for="txtprofilename">Profile Name</label>
+                        </div>
+                        <div class="form-group form-md-line-input has-info">
+                            <input type="number" class="form-control" placeholder="Enter us-max-rate"
+                                   data-ng-model="us_max_rate"
+                                   id="us-max-rate">
+                            <label for="us-max-rate">us-max-rate</label>
+                        </div>
+                        <div class="form-group form-md-line-input has-info">
+                            <input type="number" class="form-control" placeholder="Enter ds-max-rate"
+                                   data-ng-model="ds_max_rate"
+                                   id="ds-max-rate">
+                            <label for="ds-max-rate">ds-max-rate</label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-5">
+                                <button type="button" class="btn green btn-lg" data-ng-click="add_profile()">Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="alert alert-success" id="secess_alert">
+                <strong>Success!</strong> The Line Profile been Added.
+            </div>
+            <div class="alert alert-danger" id="error_alert">
+                <strong>Error!</strong> The Line Profile existed.
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-bell-o"></i>Line Profile Table
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="table-scrollable">
+
+                <table style="margin:auto;">
+                    <tr>
+
+                        <td>Name: &nbsp;</td>
+                        <td>
+                            <input ng-model="search_profile_name" placeholder="Search...">
+                            <a href="javascript:;" class="btn btn-lg green" ng-click="searchData()"> Search
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+
+
+                <table class="table table-striped table-bordered table-advance table-hover">
+                    <thead>
+                    <tr>
+                        <th style="width: 268px;">
+                            Profile Name
+                        </th>
+
+                        <th>
+                            DSLAM Name
+                        </th>
+                        <th>
+                            us-max-rate
+                        </th>
+                        <th>
+                            ds-max-rate
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in dslamProfiles">
+                        <td class="highlight">
+                            <div class="success" style="margin-right:3px;"></div>
+                            <label style="margin-left: 5px;">{$ item.name $}</label>
+                        </td>
+                        <td>
+                            {$ dslam_info.name $}
+                        </td>
+
+                        <td>
+                            {$ item.us_max_rate $}
+                        </td>
+                        <td>
+                            {$ item.ds_max_rate $}
+
+                        </td>
+                        <td>
+
+                            <a href="javascript:;" id="btn_delete"
+                               class="btn btn-outline btn-circle dark btn-sm black"
+                               data-ng-click="deleting_profile(item)"><i class="fa fa-trash-o"></i> Delete </a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

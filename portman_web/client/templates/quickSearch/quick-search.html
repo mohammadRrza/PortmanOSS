@@ -1,0 +1,540 @@
+<style type="text/css">
+  .padding-left-0 {
+   padding-left: 0px;
+  }
+
+  .shell {
+    background-color: black ;
+    color: white;
+    font-family: Segoe ;
+  }
+
+  .shell-date {
+    color:  white;
+    font-weight: 900;
+    font-family: Segoe ;
+  }
+  .mt-element-ribbon {
+    margin-bottom: 0!important;
+  }
+</style>
+<div class="row" ng-show='user_access_admin || user_access_edit_dslam'>
+  <div class='col-md-12'>
+    <div class="page-bar">
+      <ul class="page-breadcrumb">
+        <li>
+          <a href="index.html">Home</a>
+          <i class="fa fa-caret-right font-torange"></i>
+        </li>
+        <li>
+          <a>Port Quick Access</a>
+
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="form margin-top-10">
+    <form ng-submit='run_command();'>
+
+      <div class="col-md-12" >
+        <div class="portlet mt-element-ribbon light portlet-fit " style="height: 240px; border:1px solid #BFCAD1;">
+          <div class="ribbon ribbon-color-info uppercase">Port Quick Access </div>
+          <div class="portlet-title"></div>
+          <div class="form-body portlet-body" >
+            <div class="col-md-3 padding-left-0" >
+
+             <label>
+               Search By
+             </label>
+             <select class="form-control"  ng-model='quick_access.search_by' ng-change='searchChanged()'>
+                <option>Mac Address</option>
+                <option>Province</option>
+
+             </select>
+           </div>
+           <div class="col-md-3 padding-left-0" ng-show='quick_access.search_by === "Mac Address"' >
+
+            <label>
+              Mac Address
+            </label>
+            <input class="form-control" ng-model='quick_access.mac_address' ng-change='searchMac(quick_access.mac_address)' ng-required='quick_access.search_by === "Mac Address"'/>
+
+          </div>
+            <div class="col-md-3 padding-left-0"  ng-show='quick_access.search_by === "Province"'>
+
+             <label>
+               Province
+             </label>
+             <input type="text" ng-model="quick_access.prove"
+             uib-typeahead="c as c.text for c in getProveList($viewValue)"
+             class="form-control" placeholder="Enter Name"
+             typeahead-min-length = '0' ng-model-options="{ debounce: 1000 }"
+             ng-change='provinceChanged()'
+             ng-required='quick_access.search_by === "Province"' />
+           </div>
+           <div class="col-md-3 padding-left-0"  ng-show='quick_access.search_by === "Province"'><label>City</label>
+
+             <input type="text" ng-model="quick_access.city"
+             uib-typeahead="c as c.name for c in fetchChildParent($viewValue)"
+             class="form-control" placeholder="Enter Name"
+             typeahead-min-length = '0' ng-change='cityChanged()'  ng-required='quick_access.search_by === "Province"'
+             />
+
+           </div>
+           <div class="col-md-3 padding-left-0"  ng-show='quick_access.search_by === "Province"'>  <label >Telecom Center</label>
+             <input type="text" ng-model="quick_access.telecom_center"
+             uib-typeahead="c as c.text for c in selectCity($viewValue)"
+             class="form-control" placeholder="Enter "
+             typeahead-min-length = '0' typeahead-on-select ='selectTele(quick_access.telecom_center_id)' ng-change='teleChanged()'  ng-required='quick_access.search_by === "Province"'
+
+             />
+           </div>
+           <div class="col-md-3 padding-left-0"  ng-show='quick_access.search_by === "Province"'>
+             <label>DSLAM Name</label>
+
+             <input  type="text" ng-model="quick_access.dslam_name" ng-model-options="{ debounce: 1000 }" ng-change='dslamChanged()'
+             uib-typeahead="d as d.name for d in searchDslamName($viewValue) "
+             class="form-control" placeholder="Enter DSLAM Name"
+             typeahead-min-length = '0' typeahead-on-select='seletedDslam();get_command_list();getCommandResult();load_dslam_report();' ng-required='quick_access.search_by === "Province"'/>
+
+             <span style="float: right;">{$ quick_access.dslam_name.dslam_type_info.name $}</span>
+           </div>
+            <div class="col-md-3 padding-left-0">
+      <label> Request</label>
+      <select class="form-control" ng-model = 'quick_access.commant_type' ng-change ='checkRes()' required>
+      <option>Chart</option>
+      <option  ng-repeat = 'command in commands track by $index' ng-show='command.name == "selt" || command.name == "port disable" || command.name == "port enable" || command.name == "show mac slot port" || command.name == "reset admin status" || command.name == "change admin status" || command.name == "lcman show" || command.name == "show linestat port" || command.name == "show linerate" || command.name == "show mac" || command.name == "profile adsl show" ' value='{$ command.name $}'>{$ command.name $}
+       </option>
+     </select> </div>
+           <div ng-if='quick_access.search_by === "Province" && (quick_access.commant_type == "selt" || quick_access.commant_type == "port disable" || quick_access.commant_type == "port enable" || quick_access.commant_type == "show mac slot port" || quick_access.commant_type == "reset admin status" || quick_access.commant_type == "change admin status" ||  quick_access.commant_type == "show linestat port" || quick_access.commant_type == "show linerate" || quick_access.commant_type == "Chart")'  class="col-md-3 padding-left-0" >
+             <label class="m-l" >Slot</label>
+             <input  ng-change='checkCommandResult()' type="text" class="form-control"  placeholder="Enter Slot Number"
+             data-ng-model="quick_access.slot" ng-keydown='checkNumber($event)'
+             ng-keyup = 'chekKeyUp($event)' ng-required='quick_access.search_by === "Province" && (quick_access.commant_type == "selt" || quick_access.commant_type == "port disable" || quick_access.commant_type == "port enable" || quick_access.commant_type == "show mac slot port" || quick_access.commant_type == "reset admin status" || quick_access.commant_type == "change admin status" ||  quick_access.commant_type == "show linestat port" || quick_access.commant_type == "show linerate" || quick_access.commant_type == "Chart")' />
+           </div>
+
+
+
+           <div ng-if='quick_access.search_by === "Province" && (quick_access.commant_type == "selt" || quick_access.commant_type == "port disable" || quick_access.commant_type == "port enable" || quick_access.commant_type == "show mac slot port" || quick_access.commant_type == "reset admin status" || quick_access.commant_type == "change admin status" ||  quick_access.commant_type == "show linestat port" || quick_access.commant_type == "show linerate" || quick_access.commant_type == "Chart" )'  value='{$ command.name $}' class="col-md-3 padding-left-0" >
+             <label class="m-l" >port</label>
+             <input ng-change='checkCommandResult()' type="text" class="form-control"  placeholder="Enter Port Index"
+             data-ng-model="quick_access.port" ng-keydown='checkNumber($event)'
+             ng-keyup = 'chekKeyUp($event)' ng-required='quick_access.search_by === "Province" && (quick_access.commant_type == "selt" || quick_access.commant_type == "port disable" || quick_access.commant_type == "port enable" || quick_access.commant_type == "show mac slot port" || quick_access.commant_type == "reset admin status" || quick_access.commant_type == "change admin status" ||  quick_access.commant_type == "show linestat port" || quick_access.commant_type == "show linerate" || quick_access.commant_type == "Chart")'  /></div>
+
+             <button ng-hide='quick_access.commant_type === "Chart"' type="submit" class="btn btn-default margin-top-20"  >
+              Run Command
+            </button>
+
+          </div>
+        </div>
+
+
+      </div>
+    </form>
+  </div>
+
+
+
+
+<div class="col-md-12">
+<div class="portlet mt-element-ribbon light portlet-fit " style="max-height: 300px; border:1px solid #BFCAD1;overflow-y:auto;">
+          <div class="ribbon ribbon-color-info uppercase">Result </div>
+          <div class="portlet-title" style="border-bottom: none!important;"></div>
+
+
+  <div class="portlet-body">
+    <div  ng-show = 'is_loading' class="loader " style="font-size: 16px; z-index: 10;position: relative;">
+    </div>
+    <div class="well"  ng-hide='commands.length > 0'>
+     <p class="text-danger">
+       <i class="fa fa-close"></i> No data Found </p>
+     </div>
+
+     <table class="table" ng-show='commands.length > 0 && quick_access.dslam_name != undefined && quick_access.dslam_name != "" && quick_access.dslam_name != "undefined"'>
+
+       <tbody>
+         <tr>
+           <td  ng-if=' quick_access.slot !== "" && quick_access.port !== "" && port_data.port_name !== "" && quick_access.port !== undefined && (user_access_admin || user_access_view_dslam)' >
+             <a href='#/dslamport/{$ dslam_id $}/{$ port_data.id $}/status-report'
+             ng-click='closeModal()' style="padding-left: 8px;" target="_blank"> click here to visite port page : {$ port_data.port_name $}
+           </a></td>
+           <td>
+           <a ng-show='user_access_admin || user_access_view_dslam' href='#/dslam/{$ dslam_id $}/report'
+             ng-click='closeModal()' style="padding-left: 8px;" target="_blank"> click here to visite Dslam page : {$ quick_access.dslam_name $}
+           </a>
+
+           </td>
+         </tr>
+       </tbody>
+     </table>
+     <div class="well margin-top-20 row" ng-show='result_commands.length>0'>
+     <div  ng-repeat = 'command in result_commands'>
+       <div  ng-if="command.command.text=='selt'">
+       <pre class="shell">
+      <b class="shell-date">
+        {$ command.command.text $}: {$ command.created_at $}
+      </b>
+      cableType :  {$ command.value[0].cableType $}  inprogress : {$ command.value[0].inprogress $} loopEstimateLength : {$ command.value[0].loopEstimateLength $}
+      </pre>
+
+       </div>
+       <div ng-if="command.command.text=='show mac slot port' && command.value.result != 'No results was returned.'">
+
+          <b>{$ command.command.text $}: {$ command.created_at $}</b>
+          <ul style="margin-left: 20px;">
+          <li class="margin-top-10" ng-repeat="i in command.value.result track by $index">
+            <strong>vlan_id:</strong> {$i.vlan_id $} - <strong>Mac:</strong> {$ i.mac $}
+          </li>
+          </ul>
+
+       </div>
+       <div ng-if="command.command.text =='show mac slot port' && command.value.result == 'No results was returned.'">
+
+          <b> {$ command.command.text $}: {$ command.created_at $}</b> No results was returned
+
+       </div>
+       <div ng-if="command.command.text=='change admin status'">
+        <b>{$ command.command.text $}: {$ command.created_at $}</b>{$ command.value.result $}
+       </div>
+       <div  ng-if="command.command.text=='reset admin status'">
+       <b>{$ command.command.text $}: {$ command.created_at $}</b>{$ command.value.result $}
+
+       </div>
+       <div ng-if="command.command.text=='port enable' || command.command.text==='port disable'">
+      <b> {$ command.command.text $}: {$ command.created_at $}</b>{$ command.value.result $}
+       </div>
+       <div class="col-md-6" ng-if="command.command.text=='show linerate'">
+
+     <pre class="shell">
+      <b class="shell-date">{$ command.command.text $}: {$ command.created_at $}</b>
+     {$ command.value.result $}</pre>
+
+       </div>
+       <div class="col-md-12" ng-if="command.command.text ==='show linestat port'">
+    <pre class="shell" >
+    <b class="shell-date"> {$ command.command.text $}: {$ command.created_at $}</b>{$ command.value.result $}</pre>
+
+       </div>
+
+     </div>
+
+<div  ng-repeat = 'command in result_commands2' ng-show='commands.length > 0'>
+  <div ng-if="command.command.text ==='lcman show'">
+
+
+      <pre class="shell" >
+      <b class="shell-date"> {$ command.command.text $}: {$ command.created_at $}</b>
+       {$ command.value.result $}</pre>
+
+  </div>
+  <div class="col-md-6" ng-if="command.command.text === 'show mac'" >
+     <b> {$ command.command.text $}: {$ command.created_at $}</b>
+
+     <a ng-if='command.value.result !== "No results was returned."'  data-toggle="modal" data-target="#show_mac" ng-click='checkMacData(command.value.result) ' class='btn grey-mint btn-outline sbold uppercase' > detailes </a>
+     <span ng-if='command.value.result == "No results was returned."'>No results was returned.</span>
+
+  </div>
+  <div class="col-md-6" ng-if="command.command.text =='profile adsl show'">
+  <div class="margin-top-10">
+   <b> {$ command.command.text $}: {$ command.created_at $}</b>
+   <a class='btn grey-mint btn-outline sbold uppercase' ng-click='Showmodal(command.value.result)'  data-toggle="modal" data-target="#showAboutBox" > detailes </a></div>
+ </div>
+</div>
+
+
+
+</div>
+
+
+
+</div>
+</div>
+
+
+</div>
+<div class="col-md-12">
+ <div class="portlet light" style="height: 300px;overflow-y: auto;border:1px solid #BFCAD1;">
+  <div class="portlet-body">
+  <uib-tabset active="active">
+    <uib-tab index="0" heading="Last 5 dslam command result">
+    <div class="well"  ng-hide='commands.length > 0'>
+     <p class="text-danger">
+       <i class="fa fa-close"></i> No data Found </p>
+     </div>
+       <div  ng-repeat = 'command in dslam_result_commands' ng-show='commands.length > 0'>
+  <div ng-if="command.command.text ==='lcman show'">
+
+
+      <pre class="shell" >
+      <b class="shell-date"> {$ command.command.text $}: {$ command.created_at $}</b>
+       {$ command.value.result $}</pre>
+
+  </div>
+  <div class="margin-top-10 margin-bottom-10"  ng-if="command.command.text === 'show mac'" >
+     <b> {$ command.command.text $}: {$ command.created_at $}</b>
+
+     <a ng-if='command.value.result !== "No results was returned."'  data-toggle="modal" data-target="#show_mac" ng-click='checkMacData(command.value.result) ' class='btn grey-mint btn-outline sbold uppercase' > detailes </a>
+     <span ng-if='command.value.result == "No results was returned."'>No results was returned.</span>
+
+  </div>
+  <div  ng-if="command.command.text =='profile adsl show'">
+  <div class="margin-top-10">
+   <b> {$ command.command.text $}: {$ command.created_at $}</b>
+   <a class='btn grey-mint btn-outline sbold uppercase' ng-click='Showmodal(command.value.result)'  data-toggle="modal" data-target="#showAboutBox" > detailes </a></div>
+ </div>
+</div>
+    </uib-tab>
+    <uib-tab index="1" heading="Last 5 port command result">
+    <div class="well"  ng-hide='last_5_port_command_result.length > 0'>
+     <p class="text-danger">
+       <i class="fa fa-close"></i> No data Found </p>
+     </div>
+          <div  ng-repeat = 'command in last_5_port_command_result'>
+       <div  ng-if="command.command.text=='selt'">
+       <pre class="shell">
+      <b class="shell-date">
+        {$ command.command.text $}: {$ command.created_at $}
+      </b>
+         cableType :  {$ command.value[0].cableType $} inprogress : {$ command.value[0].inprogress $} loopEstimateLength : {$ command.value[0].loopEstimateLength $}
+      </pre>
+
+       </div>
+       <div ng-if="command.command.text=='show mac slot port' && command.value.result != 'No results was returned.'">
+
+          <b>{$ command.command.text $}: {$ command.created_at $}</b>
+          <ul style="margin-left: 20px;">
+          <li class="margin-top-10" ng-repeat="i in command.value.result track by $index">
+            <strong>vlan_id:</strong> {$i.vlan_id $} - <strong>Mac:</strong> {$ i.mac $}
+          </li>
+          </ul>
+
+       </div>
+       <div ng-if="command.command.text =='show mac slot port' && command.value.result == 'No results was returned.'">
+
+          <b> {$ command.command.text $}: {$ command.created_at $}</b> No results was returned
+
+       </div>
+       <div ng-if="command.command.text=='change admin status'">
+        <b>{$ command.command.text $}: {$ command.created_at $}</b>{$ command.value.result $}
+       </div>
+       <div  ng-if="command.command.text=='reset admin status'">
+       <b>{$ command.command.text $}: {$ command.created_at $}</b>{$ command.value.result $}
+
+       </div>
+       <div ng-if="command.command.text=='port enable' || command.command.text==='port disable'">
+      <b> {$ command.command.text $}: {$ command.created_at $}</b>{$ command.value.result $}
+       </div>
+       <div  ng-if="command.command.text=='show linerate'">
+
+     <pre class="shell">
+      <b class="shell-date">{$ command.command.text $}: {$ command.created_at $}</b>
+     {$ command.value.result $}</pre>
+
+       </div>
+       <div  ng-if="command.command.text ==='show linestat port'">
+    <pre class="shell" >
+    <b class="shell-date"> {$ command.command.text $}: {$ command.created_at $}</b>{$ command.value.result $}</pre>
+
+       </div>
+
+     </div>
+    </uib-tab>
+    </uib-tabset>
+    </div>
+
+
+
+
+</div>
+
+<div class="row">
+<div class="col-md-12" ng-show='quick_access.commant_type == "Chart" && quick_access.slot !== "" && quick_access.port !== "" && quick_access.slot !== undefined && quick_access.port !== undefined' >
+<div class="portlet light" style="border:1px solid #BFCAD1; ">
+  <div class="portlet-body" style="min-height: 200px;">
+
+  <div class="col-md-8 col-md-offset-2" >
+    <div class="mt-element-step" >
+      <div class="row step-thin">
+
+        <div class="col-lg-4 bg-grey mt-step-col  text-center" ng-show='show_chart' style="padding: 12px;">
+          <button class="btn btn-default red"   ng-click="changeShowState()">End Live Charts</button>
+
+        </div>
+        <div class="col-lg-4 bg-grey mt-step-col  text-center" ng-show='!show_chart' style="padding: 12px;">
+
+
+         <button class="btn btn-default green" ng-show='!show_chart' ng-click="changeShowState()">Start Live Charts</button>
+       </div>
+
+       <div class="col-lg-4 mt-step-col bg-grey text-center active" style="padding: 12px;">
+
+        <div style="padding: 7px;" >
+         <span class="text-center" style="background-color: white;border-radius: 100%!important;margin-right: 9px; padding: 7px 10px 7px 10px;"> {$ socket_count $} </span> Received
+
+       </div>
+     </div>
+     <div class="col-lg-4 bg-grey mt-step-col  " >
+       Admin Status:
+       <span data-ng-show="admin_status == 'UNLOCK'"
+       style="width:12px;height:12px;border-radius:100%!important;"
+       class="badge badge-info" title = "UNLOCK"> </span>
+       <span data-ng-show="admin_status == 'UNLOCK'" style="font-size:12px">UNLOCK</span>
+       <span data-ng-show="admin_status == 'LOCK'"
+       style="width:12px;height:12px;border-radius:100%!important;"
+       class="badge badge-danger"  title = "LOCK">  </span>
+       <span data-ng-show="admin_status == 'LOCK'" style="font-size:12px">LOCK</span> <br>
+       Oper Status:
+       <span data-ng-show="oper_status == 'SYNC'" style="width:12px;height:12px;border-radius:100%!important;"
+       class="badge badge-success" title="Sync"> </span><span
+       style="font-size:12px;"
+       data-ng-show="oper_status == 'SYNC'"> SYNC</span>
+       <span data-ng-show="oper_status != 'SYNC'" style="width:12px;height:12px;border-radius:100%!important;"
+       class="badge badge-danger" title="No Sync">
+
+     </span> <span style="font-size:12px;" data-ng-show="oper_status != 'SYNC'"> No Sync</span>
+
+
+
+   </div>
+ </div>
+</div>
+</div>
+<div ng-show='quick_access.commant_type == "Chart" && quick_access.slot !== "" && quick_access.port !== "" && quick_access.slot !== undefined && quick_access.port !== undefined' >
+
+
+        <div id='ave-traffic'></div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+ <div  ng-show='quick_access.commant_type == "Chart" && quick_access.slot !== "" && quick_access.port !== "" && quick_access.port !== undefined''>
+ <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <div class="portlet light" style="border:1px solid #BFCAD1;">
+                <div class="portlet-body">
+                    <div  id="port-snr"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div class="portlet light" style="border:1px solid #BFCAD1;">
+                <div class="portlet-body">
+                    <div id="port-tx"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+    </div>
+
+<div class="modal fade " id="show_mac" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content" style="max-height: 600px;overflow-y: auto;">
+      <div class="modal-body">
+
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-striped table-hover">
+              <thead>
+               <tr>
+                <th>
+                  card
+                </th>
+                <th>
+                  port
+                </th>
+
+                <th>
+                  mac-address
+                </th>
+                <th>
+                  vlan id
+                </th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in  mac_list track by $index">
+                <td>
+                  {$ item.slot_number $}
+                </td><td>{$ item.port_number $}
+              </td>
+              <td>{$ item.mac $}
+              </td>
+              <td>{$ item.vlan_id $}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+<div class="modal fade " role="dialog" id="showAboutBox" >
+  <div class="modal-dialog">
+
+   <div class="modal-content" style="min-height: 100px;height: 400px;overflow-y: scroll;">
+     <div class="modal-header" style="border-bottom: none!important;">
+
+     </div>
+     <div class="modal-body" >
+      <div class="row">
+        <div class="col-xs-12">
+
+
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>name</th>
+                <th>min ds transmit rate</th>
+                <th>max ds transmit rate</th>
+                <th>min us transmit rate</th>
+                <th>max us transmit rate</th>
+                <th>ds snr margin</th>
+                <th>us snr margin</th>
+                <th>max ds interleaved</th>
+                <th>max us interleaved</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr ng-repeat="m in modal_data track by $index">
+                <td>{$ m.name $}</td>
+                <td>{$ m.min_ds_transmit_rate $}</td>
+                <td>{$ m.max_ds_transmit_rate $}</td>
+                <td>{$ m.min_us_transmit_rate $}</td>
+                <td>{$ m.max_us_transmit_rate $}</td>
+                <td>{$ m.ds_snr_margin $}</td>
+                <td>{$ m.us_snr_margin $}</td>
+                <td>{$ m.max_ds_interleaved $}</td>
+                <td>{$ m.max_us_interleaved $}</td>
+
+              </tr>
+            </tbody>
+          </table>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

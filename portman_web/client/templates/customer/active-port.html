@@ -1,0 +1,160 @@
+<div class="row" ng-show='user_access_admin || user_access_view_customerport'>
+    <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/subscriber/active-port">Subscriber Management</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/subscriber/active-port">Subscriber Port Activation</a>
+                        
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+<div class="row" ng-show='user_access_admin || user_access_view_customerport'>
+    <div class="col-md-12" >
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+        <div class="portlet light" style="border:1px solid #BFCAD1;">
+            <div class="portlet-title">
+                <div class="caption ">
+                    <i class="icon-settings font-torange"></i>
+                    <span class="caption-subject bold uppercase">Subscribers</span>
+                </div>
+                <div class="tools"> </div>
+            </div>
+            <div class="portlet-body">
+                 <div class="panel " style="border:1px solid #E9EDEF;"  ng-show='user_access_edit_customerport || user_access_admin'>
+                    <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                        <h3 class="panel-title"><strong>Active Port Panel</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                <div class="row">
+                    <div class="form" ng-submit="check()">
+                    <form  class="form-group">
+                        <div class="form-body">
+                            <div class='col-md-12'>
+                        <div class="col-md-2">
+                            
+                            <div class="clearfix">
+                                <div class="form-group  pull-left">
+                                    <label>Reseller</label>
+                                    <input type="text" ng-model="active_port_select.reseller"
+                                                       uib-typeahead="c as c.name for c in getResellerList($viewValue)"
+                                                       class="form-control" typeahead-on-select="SelectReseller()" 
+                                                       typeahead-min-length = '0'
+                                                        />
+                             
+                                </div>
+                              
+
+                            </div>
+                        </div>
+                        <div class="col-md-2" ng-show='vlan_list.length>0'>
+                             <div class="form-group  pull-left">
+                           <label>Vlan</label>
+                           <select ng-model="active_port_select.vlan_id" class="form-control" >
+                             <option ng-repeat = 'v in vlan_list track by $index'
+                             ng-value='v.id' value='v.id'>
+                             {$ v.vlan_name $}
+                              </option>
+                           </select>
+
+                         
+                             </div>
+                           
+                        </div>
+                        <div class="col-md-2">
+                            
+                            <div class="form-group  pull-left">
+                                <label>Subscriber</label>
+                            <input type="text" ng-model="active_port_select.identifier_key"
+                                                       uib-typeahead="c as c.username for c in getCustomer($viewValue)"
+                                                       class="form-control"
+                                                       typeahead-min-length = '0'
+                                                         required/>
+                            </div>
+                    
+                        </div>
+                        <div class='col-md-2 text-center' >
+                         <div  >
+                                    <a style="margin-top:22px;" ng-click="setButton('active')" type='submit'  class="btn btn-default">
+                                        <i class="fa fa-check font-torange" style="margin-right:5px;"></i>
+                                       
+                                        Active</a>
+                                </div>
+                        </div>
+                         <div class='col-md-2' >
+                         <div>
+                                    <a style="margin-top:22px;" ng-click="setButton('deactive')" type='submit'  class="btn btn-default">
+                                          <i class="fa fa-close font-torange" style="margin-right:5px;"></i>
+                                       
+                                        Deactive</a>
+                                         
+                                </div>
+                        </div>
+                </div>
+                <div class='col-md-12'>
+                    <div style="cursor:pointer!important;" class='col-md-2 pointer' ng-click="openDetailes()">
+                        <i style="margin:5px;" class='fa fa-plus font-torange'></i>More Detailes
+
+                    </div>
+                </div>
+                
+                     <div class="col-md-12 margin-top-20" ng-show='show_detailes'>
+                    <div class="form-group  col-md-2">
+                        <label>VPI</label>
+                        <input ng-model="port_pvc.vpi"   type="text" class="form-control"/>
+                    </div>
+                     <div class="form-group  col-md-2">
+                         <label>VCI</label>
+                        <input ng-model="port_pvc.vci"  type="text" class="form-control"/>
+                    </div>
+                     <div class="form-group  col-md-2">
+                          <label>Profile</label>
+                        <input ng-model="port_pvc.profile"  type="text" class="form-control"/>
+                    </div>
+                     <div class="form-group  col-md-2">
+                         <label>MUX</label>
+                        <input ng-model="port_pvc.mux"  type="text" class="form-control"/>
+                    </div>
+                     <div class="form-group  col-md-2">
+                         <label>Priority</label>
+                        <input ng-model="port_pvc.priority"  type="text" class="form-control"/>
+                    </div>
+                   
+                </div>
+                    </div>
+                    </div>
+                </div>
+                    </div>
+                
+                  </form>
+                </div>
+                <!--<div>-->
+                    <!--<table style="margin:auto;">-->
+                        <!--<tr>-->
+
+                            <!--<td>User Name: &nbsp;</td>-->
+                            <!--<td>-->
+                                <!--<input ng-model="searchText" placeholder="Search...">-->
+                                <!--<a href="javascript:;" class="btn btn-lg green" ng-click="searchData()"> Search-->
+                                    <!--<i class="fa fa-search"></i>-->
+                                <!--</a>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</div>-->
+                <br>
+                <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+            </div>
+        </div>
+        <!-- END EXAMPLE TABLE PORTLET-->
+    </div>
+</div>

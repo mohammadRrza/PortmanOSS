@@ -1,0 +1,78 @@
+<div class="row">
+    <div class='col-md-12'>
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="index.html">Home</a>
+                    <i class="fa fa-caret-right font-torange"></i>
+                </li>
+                <li>
+                    <a href="#/subscribers">Subscriber Management</a>
+                    <i  class="fa fa-caret-right font-torange"></i>
+                </li>
+                <li>
+                    <a href="#/subscribers">Subscribers</a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">      
+
+
+    <div class="col-md-12" >
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+        <div class="portlet light " style="border:1px solid #BFCAD1;">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-torange"></i>
+                    <span class="caption-subject bold uppercase">Subscribers</span>
+                </div>
+                <div class="tools"> </div>
+            </div>
+            <div class="portlet-body">
+                <div class="panel " style="border:1px solid #E9EDEF;">
+                    <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                        <h3 class="panel-title"><strong>Subscriber Search Panel</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class='col-md-3 margin-top-20'>
+                            Username <input class='form-control' type="text" ng-model='search.username' ng-enter="searchData()" />
+                        </div>
+                        <div class='col-md-3 margin-top-20'>
+                            Identifier Key <input class='form-control' type="text" ng-model='search.identifier' ng-enter="searchData()" />
+                        </div>
+                        <div class='col-md-3 margin-top-20'>
+                            First Name <input class='form-control' type="text" ng-model='search.fname' ng-enter="searchData()" />
+                        </div>
+                        <div class='col-md-3 margin-top-20'>
+                            Last Name <input class='form-control' type="text" ng-model='search.lname' ng-enter="searchData()" />
+                        </div>
+                        <div class='col-md-3 margin-top-20'>
+                            Email <input class='form-control' type="email" ng-model='search.mail' ng-enter="searchData()" />
+                        </div>
+                        <div class='col-md-3 margin-top-20'>
+                            Tel <input class='form-control' type="text" ng-model='search.tel' ng-enter="searchData()" ng-keydown='checkNumber($event)'
+                            ng-keyup = 'chekKeyUp($event)'/>
+                        </div>
+                        
+                        <div class='col-md-3 margin-top-20'>
+                            National Code <input class='form-control' type="text" ng-model='search.code' ng-enter="searchData()" ng-keydown='checkNumber($event)'
+                            ng-keyup = 'chekKeyUp($event)'/>
+                        </div>
+                        <div class="col-md-3 margin-top-20">
+                         <a style="margin-top:18px;"  href="javascript:;" class="btn btn-default" ng-click="searchData()"> 
+                            <i class="fa fa-search font-torange" style="margin-right:5px;"></i>Search
+
+                        </a>
+                    </div>
+                </div>
+            </div></div>
+            
+            <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+        </div>
+    </div>
+    <!-- END EXAMPLE TABLE PORTLET-->
+</div>
+</div> 

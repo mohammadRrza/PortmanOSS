@@ -1,0 +1,157 @@
+<div class="row" ng-show='user_access_admin || user_access_edit_reseller'>
+  <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/add-reseller/">Reseller  Management</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/add-reseller/">Add Reseller</a>
+                        
+                    </li>
+                </ul>
+            </div>
+    </div>
+    <div class="col-md-12">
+        <div class="portlet light " style="border:1px solid #BFCAD1;">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-equalizer font-red-sunglo"></i>
+                    <span class="caption-subject font-red-sunglo bold uppercase">Add Reseller Form</span>
+                    <span class="caption-helper">form actions on top...</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form  class="form-horizontal" ng-submit="add_reseller()">
+                    <div class="form-body" >
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class='col-md-12'>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Name</label>
+
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" placeholder="Enter Name" data-ng-model="name" required>
+                               
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class='col-md-12'>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">VPI/VCI</label>
+
+                                <div class="col-md-2">
+                                    <input type="text" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)'
+                                      class="form-control" placeholder="VPI" data-ng-model="vpi" >
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)'
+                                      class="form-control" placeholder="VCI" data-ng-model="vci" >
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class='col-md-12'>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Tel</label>
+
+                                <div class="col-md-9">
+
+                                    <input type="text" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)'
+                                      class="form-control" placeholder="Tel" data-ng-model="tel" >
+                               
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-12'>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Fax</label>
+
+                                <div class="col-md-9">
+                                    <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" placeholder="Fax" data-ng-model="fax" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-12'>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Address</label>
+
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" placeholder="Address" data-ng-model="address">
+                                </div>
+                            </div>
+                        </div>
+                        
+                            <div class='col-md-12'>
+                                <div class="form-group" id="cityContainer">
+                                    <label class="col-md-3 control-label">Province</label>
+
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="selectedCity0"
+                                        uib-typeahead="c as c.text for c in getProveList($viewValue)"
+                                        class="form-control" placeholder="Enter Province"
+                                        typeahead-min-length = '0' data-ng-change="selectCity(selectedCity0.id);"
+                                        typeahead-on-select = 'fetchChildParent(selectedCity0.id , selectedCity)'
+                                        />
+                               
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class='col-md-12' ng-show='show_city'>
+                        <div class="form-group" >
+                            <label class="col-md-3 control-label">City</label>
+                            <div class="col-md-9">
+                               
+                               <input type="text" ng-model="selectedCity"
+                               uib-typeahead="c as c.text for c in fetchChildParent(selectedCity0.id , $viewValue)"
+                               class="form-control" placeholder="Enter Name" 
+                               typeahead-min-length = '0'
+                               required
+                               />
+                           </div>
+                       </div>
+                       </div>
+                       <div class="col-md-12 form-actions">
+            
+                <div class="  text-center">
+                    <button type="submit" class="btn btn-default" >
+                       <i class="fa fa-check font-torange"></i> Submit
+                      
+                    </button>
+                </div>
+            
+        </div>
+        </div>
+        <div class="col-md-6">
+        <img src='./img/map.jpg' class="img-responsive" />
+        </div>
+        </div>
+        
+        
+
+                  
+              
+           </div>
+           
+    </form>
+    <!-- END FORM-->
+</div>
+</div>
+</div>
+</div>

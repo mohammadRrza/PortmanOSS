@@ -1,0 +1,179 @@
+<style type="text/css">
+    .ui-grid-contents-wrapper{
+        font-size: 11px;
+    }
+</style>
+<div class="row">
+    <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/dslamportstatus">Port Management</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/dslamportstatus">Port Status</a>
+                        
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+        <div class="portlet light " style="border:1px solid #BFCAD1; ">
+            <div class="portlet-title">
+                <div class="caption ">
+                    <i class="icon-settings font-torange"></i>
+                    <span class="caption-subject bold uppercase">DSLAM Port -- Total Ports : {$ gridOptions.totalItems $}</span>
+                </div>
+                <!-- <div class="tools"></div> -->
+            </div>
+            <!-- begin dslam search panel -->
+            
+                <!--<div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer font-dark hide"></i>
+                        <span class="caption-subject font-dark bold uppercase">search panel</span>
+                    </div>
+                    <div class="tools">
+                        <a href="" class="collapse" data-original-title="" title=""> </a>
+                    </div>
+                </div>-->
+                <div class="portlet-body" style="display: block;">
+                    <div class="panel " style="border:1px solid #E9EDEF;">
+                    <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                        <h3 class="panel-title"><strong> Search Panel</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                    <div class="row">
+                        <div class="form-body">
+                            <div class="col-md-3">
+                                <div class="form-group  "> 
+                                <label >DSLAM Name</label>
+                                <input type="text" ng-model="dslam_name"
+                                           uib-typeahead="c.name as c.name for c in getDslamNameList($viewValue)"
+                                           class="form-control" placeholder="Enter DSLAM Name"  typeahead-on-select="searchData()" typeahead-min-length = '0'
+                                           required/>
+                              
+                                </div>
+                                
+                            </div>
+                            <div class="  col-md-3">
+                                <div class="form-group ">
+                                 <label >Cart Number</label>
+                                <input type="text" class="form-control" placeholder="Enter Cart Number" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)' ng-enter='searchData()'
+                                       data-ng-model="slot_number">
+                            </div>
+                               
+                            </div>
+
+                            <div class=" col-md-3">
+                                <div class="form-group  ">
+                                <label >Port Number</label>
+                                <input type="text" class="form-control" placeholder="Enter Port Number" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)' ng-enter='searchData()'
+                                       data-ng-model="port_number">
+                                </div>
+                                
+                            </div>
+                            
+                            <div class=" col-md-3"
+                                 style="margin-bottom:10px;">
+                                 <div class="form-group ">
+                                 <label >Up Stream SNR Status</label>
+                                <select class="form-control"  ng-change='searchData()'
+                                        data-ng-model="upstream_snr_flag">
+                                    <option value="">Please Select ...</option>        
+            <option value="outstanding">Outstanding</option>
+            <option value="excellent">Excellent</option>
+            <option value="good">Good</option>
+            <option value="fair">Fair</option>
+            <option value="bad">Bad</option>
+                                </select>
+                                 </div>
+                                
+                            </div>
+                            <div class=" col-md-3"
+                                 style="margin-bottom:10px;">
+                                 <div class="form-group  ">
+                                 <label >Down Stream SNR Status</label>
+                                <select  ng-change='searchData()' class="form-control" id="downstream_snr_flag"
+                                        data-ng-model="downstream_snr_flag">
+                                    <option value="">Please Select ...</option>
+                                    <option value="outstanding">Outstanding</option>
+            <option value="excellent">Excellent</option>
+            <option value="good">Good</option>
+            <option value="fair">Fair</option>
+            <option value="bad">Bad</option>
+                                </select>
+    </div>
+                                
+                            </div>
+                            <div class="  col-md-3"
+                                 style="margin-bottom:10px;">
+                                 <div class="form-group ">
+                                 <label>Upstream Attenuation Flag</label>
+                                <select class="form-control" id="upstream_attenuation_flag"  ng-change='searchData()'
+                                        data-ng-model="upstream_attenuation_flag">
+                                    <option value="">Please Select ...</option>
+            <option value="outstanding">Outstanding</option>
+            <option value="excellent">Excellent</option>
+            <option value="very_good">Very Good</option>
+            <option value="good">Good</option>
+            <option value="poor">Poor</option>
+            <option value="bad">Bad</option>
+                                </select>
+                            </div>
+                            </div>
+                            <div class="col-md-3">
+                            <div class="form-group  "
+                                 style="margin-bottom:10px;">
+                                 <label >Down Stream Attenuation Status</label>
+                                <select class="form-control"   ng-change='searchData()'
+                                        data-ng-model="downstream_attenuation_flag">
+                                    <option value="">Please Select ...</option>
+            <option value="outstanding">Outstanding</option>
+            <option value="excellent">Excellent</option>
+            <option value="very_good">Very Good</option>
+            <option value="good">Good</option>
+            <option value="poor">Poor</option>
+            <option value="bad">Bad</option>
+
+                                           </select>
+                                
+                            </div>
+                        </div>
+
+
+                           
+                        </div>
+                        <div class="col-md-3">
+                            <a style="margin-top:22px;" href="javascript:;" class="btn btn-default" ng-click="searchData()"> 
+                                <i class="fa fa-search font-torange" style="margin-right:5px;"></i>Search
+                                
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+</div></div>
+           
+            <!-- end dslam search panel -->
+            <div style="clear:both"></div>
+            <br>
+
+            <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns
+                 ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+
+        </div> </div>
+        <!-- END EXAMPLE TABLE PORTLET-->
+    </div>
+</div> 

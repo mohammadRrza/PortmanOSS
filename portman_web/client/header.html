@@ -1,0 +1,216 @@
+<style>
+  .dropdown.open>.dropdown-toggle, .dropup.open>.dropdown-toggle {
+    border-color: #2C3E50 !important;
+    border : none!important ;
+  }
+  .nav .open > span, .nav .open > span:hover, .nav .open > span:focus{
+    background-color : #2C3E50 !important;
+  }
+  .nav > li > span:hover, .nav > li > span:focus {
+    background-color : #2C3E50 !important;
+  }
+  .nav > li > span {
+    padding: 0!important;
+  }
+  .navbar-nav > li > span {
+   padding-top: 5px!important;
+   padding-bottom: 0!important;
+ }
+ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color: #888  !important;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+  color: #888 !important;
+}
+
+</style>
+<div class="page-header navbar navbar-fixed-top">
+  <div class="page-header-inner ">
+    <div class="page-logo">
+      <a href="index.html">
+        <img src='layouts/layout/img/portman_title.png' style="height: 40px;margin-top: 2px!important;"  alt="logo" class="logo-default"/> </a>
+      </div>
+      <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse"
+      data-target=".navbar-collapse"> </a>
+
+      <div class="page-top">
+        <ul class="nav navbar-nav">
+          <li class="dropdown" style="margin-top: 6px;">
+
+            <span  class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true" style="background-color : #2b3643 !important; border-color: #2b3643 !important;">
+
+
+             <input ng-model='quicksearch.data' class=" form-control bg-font-white" style="font-size: 10px;border: 1px solid #666;background-color: #23282e;height: 26px;margin-top: 4px;border-radius: 2px!important;width: 160px;" ng-change='quickSearch(quicksearch.data)' ng-model-options="{ debounce: 800 }" placeholder="Dslam & Port Quick Access">
+           </span>
+
+           <ul class="dropdown-menu" style="width:600px;" ng-show='quicksearch.data.length>0'>
+            <div class="col-md-6" >
+              <li class="external"><h4 style="border-bottom: 1px solid beige;padding-bottom: 4px;">Ports</h4></li>
+              <li class="well" ng-show='quick_access_data.ports.length<1'>
+                No Port found
+              </li>
+              <li style="line-height: 35px;" ng-repeat= "port in quick_access_data.ports track by $index"> 
+                <a href='#/dslamport/{$ port.dslam_id $}/{$ port.id $}/status-report'>
+                  <span ng-if='port.hostname'>{$ port.hostname $} {$ port.port_name $}</span>
+                  <span ng-if='!port.hostname'>{$ port.dslam_name $} {$ port.port_name $}</span>
+
+                </a>
+
+              </li>
+
+            </div>
+            <div class="col-md-6" ng-if='user_access_admin'>
+              <li class="external" ><h4 style="border-bottom: 1px solid beige;padding-bottom: 4px;">Dslams</h4></li>
+              <li class="well" ng-show='quick_access_data.dslams.length<1'>
+                No Dslam found
+              </li>
+              <li style="line-height: 35px;" 
+              ng-repeat  = "dslam in quick_access_data.dslams"><a  href='#/dslam/{$ dslam.id $}/report'
+              >
+              {$ dslam.name$}    
+              {$ dslam.type $}
+            </a>
+
+          </li>
+
+        </div>
+
+
+
+
+      </ul>
+
+    </li>
+  </ul>
+
+
+
+  <div class="top-menu">
+    <ul class="nav navbar-nav pull-right">
+      <!-- <li class="dropdown dropdown-quick-sidebar-toggler" data-toggle="modal" data-target="#header-test">
+        <div title="Port Quick Access">
+          <i style="font-size: 20px;padding-top: 18px;cursor: pointer;" class="fa fa-search"></i> 
+        </div>
+      </li> -->
+      <li class="dropdown dropdown-quick-sidebar-toggler">
+        <a ng-click='logout()'  class="dropdown-toggle" title="logout">
+          <i class="icon-logout"></i>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</div>
+</div>
+</div>
+<div class="modal fade " id="header-test" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+     <div class="modal-header">
+      Port Quick Access
+    </div>
+    <div class="modal-body">
+      <div class="form">
+        <form ng-submit='searchPort()'>
+          <div class="form-body" >
+            <div class="row">
+
+                                           <div class="col-md-12" >
+                                             <label>
+                                               Province
+                                             </label>
+                                             <input type="text" ng-model="quick_access.prove"
+                                             uib-typeahead="c as c.text for c in getProveList($viewValue)"
+                                             class="form-control" placeholder="Enter Name" 
+                                             typeahead-min-length = '0' ng-model-options="{ debounce: 1000 }"
+                                             />
+                                             <label class="control-label">city</label>
+
+                                             <input type="text" ng-model="quick_access.city"
+                                             uib-typeahead="c as c.text for c in fetchChildParent($viewValue)"
+                                             class="form-control" placeholder="Enter Name" 
+                                             typeahead-min-length = '0' 
+
+                                             />
+                                             <label class=" control-label">Telecom Center</label>
+                                             <input type="text" ng-model="quick_access.telecom_center"
+                                             uib-typeahead="c as c.text for c in selectCity($viewValue)"
+                                             class="form-control" placeholder="Enter " 
+                                             typeahead-min-length = '0' typeahead-on-select ='selectTele(quick_access.telecom_center_id)'
+
+                                             />
+                                             <label class="m-l" >DSLAM Name</label> 
+
+                                             <input  type="text" ng-model="quick_access.dslam_name" ng-model-options="{ debounce: 1000 }"
+                                             uib-typeahead="d as d.name for d in searchDslamName($viewValue) " 
+                                             class="form-control" placeholder="Enter DSLAM Name"  
+                                             typeahead-min-length = '0' />
+
+                                             <label class="m-l" >Slot</label>
+                                             <input type="text" class="form-control"  placeholder="Enter Slot Number"
+                                             data-ng-model="quick_access.slot" ng-keydown='checkNumber($event)'
+                                             ng-keyup = 'chekKeyUp($event)'>
+
+                                             <label class="m-l" >port</label>
+                                             <input type="text" class="form-control"  placeholder="Enter Port Index"  
+                                             data-ng-model="quick_access.port" ng-keydown='checkNumber($event)'
+                                             ng-keyup = 'chekKeyUp($event)'>
+
+
+                                           </div></div></div>
+                                           <div class="row" ng-show='port_data.length > 0'>
+                                             <div class="col-md-12">
+                                               <table class="table">
+                                                 <thead>
+                                                   <th>Port Name</th>
+                                                   <th>Dslam</th>
+                                                   <!--   <th>Link</th> -->
+                                                 </thead>
+                                                 <tbody>
+                                                   <tr ng-repeat = 'port in port_data track by $index'>
+                                                     <td><a href='#/dslamport/{$ port.dslam $}/{$ port.id $}/status-report '
+                                                       ng-click='closeModal()'>{$ port.port_name $}
+                                                     </a></td>
+                                                     <td>
+                                                       <a  href='#/dslam/{$ port.dslam_info.id $}/report'
+                                                       ng-click='closeModal()'>
+                                                       {$ port.dslam_info.name$}
+                                                     </a>
+                                                   </td>
+                                                    
+                                                       </tr>
+                                                     </tbody>
+                                                   </table>
+                                                 </div>
+                                               </div>
+
+                                               <div class="col-md-12" ng-if='null_data'>
+                                                 <div class="well">
+                                                   <p class="text-danger"> 
+                                                     <i class="fa fa-close"></i> No data Found </p>
+                                                   </div>
+                                                 </div>
+
+
+                                                 <div class="row">
+                                                  <div class="col-md-offset-3 col-md-6">
+                                                    <button type="submit" class="btn btn-primary" style="width:100%;margin-top: 20px;"  >
+                                                      <i class="fa fa-check"></i>
+                                                      Search
+                                                    </button>
+
+
+                                                  </div>
+
+                                                </div>
+
+
+                                              </form>
+                                            </div>
+
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                    </div>

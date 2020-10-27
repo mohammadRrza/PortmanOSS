@@ -1,0 +1,25 @@
+{
+  "name": "Portman Ui",
+  "authors": [
+    "Hamed Amjadi <h.cpuman@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "^2.1.3",
+    "angular-ui-grid": "^3.2.7",
+    "ng-timeago": "^0.0.2",
+    "toastr": "^2.1.3",
+    "ng-ip-address": "^1.1.10"
+  }
+}

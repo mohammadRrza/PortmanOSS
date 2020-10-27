@@ -1,0 +1,237 @@
+  <div class="row margin-bottom-20">
+    <div class='col-md-12'>
+      <div class="page-bar">
+        <ul class="page-breadcrumb">
+          <li>
+            <a href="index.html">Home</a>
+            <i class="fa fa-caret-right font-torange"></i>
+          </li>
+          <li>
+            <a href="#/vlan">Vlan  Management</a>
+            <i  class="fa fa-caret-right font-torange"></i>
+          </li>
+          <li>
+            <a href="#/vlan">Vlans</a>
+
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" >
+      <div class="portlet light" style="border:1px solid #BFCAD1;padding: 0!important;">
+        <div class="portlet-body" style="padding-top: 0!important;">
+        <uib-tabset  active="active" style="border: 1px solid #E9EDEF;width: 100%;">
+          <uib-tab  index="0" heading="Search Vlans">
+           <div class="portlet box " >
+            <div class="portlet-body" >
+              <form ng-submit="getPage()">
+                <div class="col-md-3">
+                  <label style='margin-top: 5px;'>DSLAM Name</label>
+                  <input class="form-control input-inline" style="width:100%!important;"
+                  data-ng-model="search.dslam"
+                  uib-typeahead="t as t.text for t in searchName($viewValue)"
+                  typeahead-on-select = 'getPage()'
+                  typeahead-min-length='0' />
+                </div>
+
+                <div class="col-md-3">
+                  <label
+                  style='margin-top: 5px;'>Vlan ID</label>
+                  <input type="text" ng-model="search.vlan_id"
+                  ng-model-options="{ debounce: 1000 }"
+                  uib-typeahead="vlan_list as vlan_list.vlan_id for vlan_list in getVlanList($viewValue)"
+                  typeahead-on-select = 'getPage()'
+                  class="form-control" typeahead-min-length='0'
+                  />             
+                </div>
+
+                <div class="col-md-3">
+                  <label
+                  style='margin-top: 5px;'>Vlan Name</label>
+                  <input type="text" ng-model="search.vlan_name"
+                  ng-model-options="{ debounce: 1000 }"
+                  uib-typeahead="vlan_list as vlan_list.vlan_name for vlan_list in getVlanList($viewValue)"
+                  typeahead-on-select = 'getPage()'
+                  class="form-control" typeahead-min-length='0'
+                  />             
+                </div>
+
+                <div class="col-md-3">
+                  <label style='margin-top: 5px;'>Reseller</label>
+                  <input type="text" ng-model="search.reseller"
+                  typeahead-on-select = 'getPage()'
+                  ng-model-options="{ debounce: 1000 }"
+                  uib-typeahead="reseller_list as reseller_list.name for reseller_list in getResellerList($viewValue)"
+                  class="form-control"
+                  typeahead-min-length='0'/>
+                </div>
+
+                <div class="row ">
+                  <div class="col-md-12">
+                    <div class="col-md-4 pull-right margin-top-20">
+                      <button class="btn btn-default pull-right"  type="submit">
+                        <i class="fa fa-search font-torange"></i>
+                        Search</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>                
+          </uib-tab>
+
+          <uib-tab ng-show='user_access_admin ||user_access_edit_vlan' index="1"  heading="Create Vlan">
+            <div class="portlet box " >
+
+              <div class="portlet-body" >
+                <form ng-submit="CreateNewVlan()">
+                  <div class="col-md-3">
+                    <label
+                    >Vlan ID</label>
+                    <input type="text" ng-model="selected.vlan1"
+                    class="form-control"
+                    required/>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label>Vlan Name</label>
+                    <input type="text" ng-model="selected.vlan2" class="form-control"
+                    required/>
+                  </div>
+
+                  <button class="btn btn-default" type="submit" style="margin-top: 24px;">
+                   <i class="fa fa-plus font-torange" style="margin-right: 1px;"></i>
+                   Create New Vlan</button>
+
+                 </form>
+               </div>
+             </div>
+           </uib-tab>
+
+           <uib-tab ng-show='user_access_admin ||user_access_edit_vlan' index="2"  heading="Assign Vlan to reseller">
+            <div class="portlet box " >
+              <div class="portlet-body" >
+                <form ng-submit="SetVlan()">
+                  <div class="col-md-3">
+                    <label
+                    >Vlan Name</label>
+                    <input type="text" ng-model="selected.vlan3"
+                    ng-model-options="{ debounce: 1000 }"
+                    uib-typeahead="vlan_list as vlan_list.vlan_name for vlan_list in getVlanList($viewValue) "
+                    class="form-control"
+                    typeahead-min-length='0'
+                    required/>
+                  </div>
+                  <div class="col-md-3">
+                    <label >Reseller</label>
+                    <input type="text" ng-model="selected.reseller" ng-model-options="{ debounce: 1000 }"
+                    uib-typeahead="reseller_list as reseller_list.name for reseller_list in getResellerList($viewValue)" 
+                    class="form-control"
+                    typeahead-min-length='0'/>
+                  </div>
+                  <button class="btn btn-default" type="submit" style="margin-top: 24px;"><i class="fa fa-plus font-torange" style="margin-right: 5px;"></i>Assign</button>
+                </form>
+              </div>
+            </div>
+          </uib-tab>
+
+          <uib-tab ng-show='user_access_admin ||user_access_edit_vlan' index="3"  heading="Assign Vlan to Subscribers">
+            <div class="portlet box" >
+              <div class="portlet-body" >
+                <form ng-submit="assignToSubscribers()">
+                 <div class="col-md-3">
+                   <label>Filter by</label>
+                   <select class="form-control" ng-model='assign.subscriber' ng-change='checkData()'  required>
+                     <option value='reseller'>Filter by reseller</option>
+                     <option value='identifier'>Filter by identifier key</option>
+                     <option value='card-port'>Filter by card-port</option>
+                   </select>
+                 </div>
+                 <div class="col-md-3" >
+                   <label>Vlan Id</label>
+                   <input class="form-control" type="text" ng-model='assign.vlan_id'
+                   ng-model-options="{ debounce: 1000 }"
+                   uib-typeahead="vlan_list as vlan_list.vlan_name for vlan_list in getVlanList($viewValue) "  ng-required='assign.flag == "Vlan" && assign.subscriber == "reseller"' typeahead-min-length='0'>
+                 </div>
+
+                 <div class="col-md-3" ng-if='assign.subscriber == "reseller"'>
+                   <label>Reseller</label>
+                   <input class="form-control" type="text" ng-model='assign.reseller' 
+                   ng-model-options="{ debounce: 1000 }"
+                   uib-typeahead="reseller_list as reseller_list.name for reseller_list in getResellerList($viewValue)" 
+                   typeahead-min-length='0' ng-required='assign.subscriber == "reseller"' />
+                 </div>
+
+                 <div class="col-md-3" ng-if='assign.subscriber == "reseller"'>
+                   <label>Flag</label>
+                   <select class="form-control" ng-model='assign.flag' ng-required='assign.subscriber == "reseller"'>
+                     <option>All</option>
+                     <option>Vlan</option>
+                     <option>No Vlan</option>
+                   </select>
+                 </div>
+
+                 <div class="col-md-3" ng-if='assign.flag == "Vlan" && assign.subscriber == "reseller"'>
+                   <label>New Vlan Id</label>
+                   <input class="form-control" type="text" ng-model='assign.new_vlan_id' 
+                   ng-model-options="{ debounce: 1000 }"
+                   uib-typeahead="vlan_list as vlan_list.vlan_name for vlan_list in getVlanListByReseller($viewValue) "  ng-required='assign.flag == "Vlan" && assign.subscriber == "reseller"' typeahead-min-length='0'>
+                 </div>
+
+                 <div class="col-md-3" ng-if='assign.subscriber == "identifier"' >
+                   <label>Identifier Key</label>
+                   <input class="form-control" type="text" ng-model='assign.identifier'
+                   ng-model-options="{ debounce: 1000 }"
+                   uib-typeahead="i as i.identifier_key for i in getIdentifierKey($viewValue) " 
+                   ng-required='assign.subscriber == "identifier"'
+                   typeahead-min-length='0' />
+                 </div>
+
+                 <div class="col-md-3"  ng-if='assign.subscriber == "card-port"'>
+                  <div class="form-group">
+                    <label class="m-l" >DSLAM Name</label>
+                    <input class="form-control input-inline" style="width:100%!important;" 
+                    data-ng-model="assign.dslam"
+                    uib-typeahead="t as t.text for t in searchName($viewValue)"
+                    typeahead-min-length='0' ng-required='assign.subscriber == "card-port"' />
+                  </div>
+                </div>
+
+                <div class="col-md-3"  ng-if='assign.subscriber == "card-port"'>
+                 <label>Card</label>
+                 <input class="form-control" type="text" ng-model='assign.card' ng-required='assign.subscriber == "card-port"'/>
+               </div>
+
+               <div class="col-md-3"  ng-if='assign.subscriber == "card-port"'>
+                 <label>Port</label>
+                 <input class="form-control" type="text" ng-model='assign.port' ng-required='assign.subscriber == "card-port"' />
+               </div>
+
+               <button  class="btn btn-default " type="submit"
+               style="margin-top: 24px;margin-left: 17px;"><i style="margin-right: 5px;" class="fa fa-plus font-torange"></i>Assign</button>
+
+             </form>
+           </div>
+         </div>
+
+
+       </uib-tab>
+     </uib-tabset>
+   </div>
+ </div>
+</div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+    <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%;border:1px solid #BFCAD1;"></div>
+
+  </div>
+  
+
+
+</div>

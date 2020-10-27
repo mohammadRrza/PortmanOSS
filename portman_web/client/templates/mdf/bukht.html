@@ -1,0 +1,627 @@
+<style type="text/css">
+    .small-font-size {
+         font-size: 12px!important;
+    }
+</style>
+<div class="row" >
+
+
+  <div class='col-md-12'>
+    <div class="page-bar">
+      <ul class="page-breadcrumb">
+        <li>
+          <a href="index.html">Home</a>
+          <i class="fa fa-caret-right font-torange"></i>
+        </li>
+        <li>
+          <a href="#/telecom">Telecom</a>
+          <i class="fa fa-caret-right font-torange"></i>
+        </li>
+        <li>
+          <a >Bukht</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+    <div class="delete_box">
+        <div class="alert alert-block alert-danger fade in center">
+            <button type="button" class="close" data-dismiss="alert"></button>
+            <h4 class="alert-heading">Warning!</h4>
+
+            <p>
+                Do you want delete MDF Structure?
+            </p>
+
+            <p>
+                <br/>
+                <a class="btn red" href="javascript:;" data-ng-click="delete_mdf_structure()"> Do this </a>
+                <button class="btn blue" onclick="$('.delete_box').hide('slow');"> Cancel</button>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet light " style="border:1px solid #BFCAD1;">
+            <div class="portlet-title">
+                <div class="caption font-dark">
+                    <i class="icon-settings font-dark"></i>
+                    <span ng-hide='user_access_edit_telecomcenter || user_access_admin'>  Dslam's List </span>
+                    <span ng-show='user_access_edit_telecomcenter || user_access_admin' class="caption-subject bold uppercase total-ports">
+                    Bukht Management </span>
+
+                </div>
+                <div class="tools">
+                    <b ng-show="TelecomInfo">
+                        {$ TelecomInfo.name $}
+                        ({$ TelecomInfo.prefix_bukht_name $})
+                    </b>
+
+
+
+                </div>
+            </div>
+
+            <!-- begin dslam search panel -->
+
+            <div class="portlet-body " style="display: block;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <uib-tabset active="activeTab">
+                                <uib-tab index="0" >
+                                <uib-tab-heading>
+                                  <span ng-hide='user_access_edit_telecomcenter || user_access_admin'>  Dslam's List </span>
+                                  <span ng-show='user_access_edit_telecomcenter || user_access_admin'>  Bukht's List </span>
+                                </uib-tab-heading>
+
+                                <table class="table table-striped table-bordered table-advance table-hover">
+                                    <thead>
+                                        <tr>
+                                        <th ng-show='user_access_edit_telecomcenter || user_access_admin'>
+                                                Row
+                                            </th>
+                                            <th ng-show='user_access_edit_telecomcenter || user_access_admin'>
+                                                Floor
+                                            </th>
+                                            <th ng-show='user_access_edit_telecomcenter || user_access_admin'>
+                                                Connection
+                                            </th>
+                                            <th class="hidden-xs">
+                                                Dslam
+                                            </th>
+                                            <th>
+                                                Port Name
+                                            </th>
+                                            <th>
+                                                Reseller
+                                            </th>
+                                             <th>
+                                                Subscriber
+                                            </th>
+                                            <th>
+                                                card
+                                            </th>
+                                            <th>
+                                                Port
+                                            </th>
+                                            <th>
+                                                Unique Key
+                                            </th>
+                                            <th >
+                                                Status
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="TMD in TelecomMDFDSLAM.results track by $index" ng-class="{'disable':'bg - danger','enable':''}[status]">
+                                            <td ng-show='user_access_edit_telecomcenter || user_access_admin'>
+                                                {$ TMD.row_number $}
+                                            </td>
+                                            <td ng-show='user_access_edit_telecomcenter || user_access_admin'>
+                                                {$ TMD.floor_number $}
+                                            </td>
+                                            <td ng-show='user_access_edit_telecomcenter || user_access_admin'>
+                                                {$ TMD.connection_number $}
+                                            </td>
+                                            <td>
+                                                <!--{$ showDSLAM(TMD.dslam_id) $}-->
+                                                <a ng-show='user_access_edit_dslam' href="#/dslam/{$ TMD.dslam_id $}/report">
+                                                    {$ TMD.dslam_name $}
+                                                </a>
+                                                <span ng-hide='user_access_edit_dslam'>
+                                                     {$ TMD.dslam_name $}
+                                                </span>
+                                            </td>
+                                            <td>
+                                            <a href="#/dslamport/{$ TMD.dslam_id $}/{$ TMD.port_detail.id $}/status-report">
+                                            {$ TMD.port_detail.port_name $}  </a>
+                                            </td>
+                                            <td>
+                                                {$ TMD.reseller.name $}
+                                            </td>
+                                             <td>
+                                                {$ TMD.subscriber.name $}
+                                            </td>
+                                            <td>
+                                                {$ TMD.slot_number $}
+                                            </td>
+                                            <td>
+                                                {$ TMD.port_number $}
+                                            </td>
+                                            <td>
+                                                {$ TMD.identifier_key $}
+                                            </td>
+
+                                            <td ng-show='user_access_edit_telecomcenter || user_access_admin'>
+                                                 <select
+                                                ng-change="updateBukht(TMD.id , TMD.status)" ng-model="TMD.status">
+                                                 <option ng-value='FREE'>FREE</option>
+                                                 <option ng-value='BUSY'>BUSY</option>
+                                                 <option ng-value='DISABLE'>DISABLE</option>
+                                                 <option ng-value='VPN'>VPN</option>
+                                                 <option ng-value='FAULTY'>FAULTY</option>
+                                                 <option ng-value='RESELLER'>RESELLER</option>
+                                               </selcet>
+                                            </td>
+
+                                             <td ng-hide='user_access_edit_telecomcenter || user_access_admin'>
+
+                                               {$ TMD.status $}
+                                                </td>
+
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                                <div class="text-center">
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <ul uib-pagination
+                                                total-items="TelecomMDFDSLAM.totalItems"
+                                                items-per-page="TelecomMDFDSLAM.pageSize"
+                                                ng-model="TelecomMDFDSLAM.pageNumber"
+                                                max-size="4"
+                                                class="pagination-sm"
+                                                boundary-link-numbers="true"
+                                                force-ellipses="true"
+                                                ng-change="loadMDFDSLAMs()"
+                                                ></ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="row">
+                                            <select class="form-control pagination"
+                                                    data-ng-model="TelecomMDFDSLAM.pageSize"
+                                                    data-ng-options="num for num in TelecomMDFDSLAM.numPerPageOpt"
+                                                    data-ng-change="loadMDFDSLAMs()">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </uib-tab>
+                            <uib-tab ng-show='user_access_edit_telecomcenter || user_access_admin' index="1">
+                                <uib-tab-heading>
+                                    Terminal lists
+                                </uib-tab-heading>
+                                <div  class="table-scrollables">
+                                    <table class="table table-striped table-bordered table-advance table-hover ">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center small-font-size">
+                                                    Priority
+                                                </th>
+                                                <th class="text-center small-font-size">
+                                                    Row Number
+                                                </th>
+                                                <th class="text-center small-font-size">
+                                                    Terminal
+                                                </th>
+                                                <th class="text-center small-font-size">
+                                                    Floor Number
+                                                </th>
+                                                <th class="text-center small-font-size">
+                                                    Floor Count
+                                                </th>
+                                                <th class="text-center small-font-size"> Floor Counting Status</th>
+                                                <th class="text-center small-font-size">
+                                                    Conn Num
+                                                </th>
+                                                <th class="text-center small-font-size">
+                                                    Conn Start
+                                                </th>
+                                                <th class="text-center small-font-size" width="120" style="min-width: 112px!important;" >
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="mdf in MDFLists track by $index">
+                                                <td class="text-center">
+                                                    {$ mdf.priority $}
+                                                </td>
+                                                <td class="text-center">
+                                                    {$ mdf.row_number $}
+                                                </td>
+                                                <td class="text-center">
+                                                    {$ mdf.terminal_info.name $}
+                                                </td>
+                                                <td class="text-center">
+                                                    {$ mdf.floor_start $}
+                                                </td>
+                                                <td class="text-center">
+                                                    {$ mdf.floor_count $}
+                                                </td>
+                                                <td class="text-center">
+                                                    {$ mdf.floor_counting_status $}
+                                                </td>
+                                                <td class="text-center">
+                                                    {$ mdf.connection_count $}
+                                                </td>
+                                                <td class="text-center">
+                                                    {$ mdf.connection_start $}
+                                                </td>
+                                                <td>
+                                                    <div class="clearfix ">
+                                                        <button class="btn btn-primary btn-xs" ng-click="editMDF({$ mdf $})" style="margin-right: 2px!important;">
+                                                            <i class="icon-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-xs"  ng-confirm-click="removeMDF(mdf.id)" ng-confirm-message="Are You Sure To delete record?" style="margin-right: 2px!important;">
+                                                            <i class="icon-trash"></i>
+                                                        </button>
+                                                        <button class="btn btn-info btn-xs" ng-click="loadMDFDSLAMs({$ mdf.id $})" style="margin-right: 2px!important;">
+                                                            <i class="icon-list"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </uib-tab>
+                            <uib-tab ng-show='user_access_edit_telecomcenter || user_access_admin' index="2">
+                                <uib-tab-heading>
+                                    <span ng-show="mdf.id">
+                                        Edit Terminal
+                                    </span>
+                                    <span ng-hide="mdf.id">
+                                        Add new Terminal
+                                    </span>
+                                </uib-tab-heading>
+
+                                <div class="form-body">
+                                <form ng-submit="addMDF()">
+
+                                     <div class="form-group  col-md-4">
+                                    <label>Priority اولویت</label>
+                                        <input type="text" ng-model="mdf.priority" class="form-control"  >
+
+                                    </div>
+
+                                    <div class="form-group  col-md-4">
+                                    <label>Row Number شماره ردیف</label>
+                                        <input type="text" ng-model="mdf.row_number" class="form-control"  >
+
+                                    </div>
+                                    <div class="form-group   col-md-4">
+                                    <label for="terminal">Terminal نوع ترمینال</label>
+                                        <input type="text"
+                                               ng-model="mdf.terminal"
+
+                                               uib-typeahead="T as T.name for T in TerminalsList | filter:$viewValue"
+                                               class="form-control"
+                                               typeahead-show-hint="true"
+                                               typeahead-on-select="mdf.connection_count=mdf.terminal.port_count"
+                                               typeahead-min-length="0" >
+
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Floor Counting Status نحوه شمارش طبقه</label>
+                                        <select class="form-control" ng-model='mdf.floor_counting_status' required>
+                                            <option>STANDARD</option>
+                                            <option>ODD</option>
+                                            <option>EVEN</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Floor Count تعداد طبقات</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="mdf.floor_count" required>
+
+                                    </div>
+                                     <div class="form-group  col-md-4">
+                                     <label>Floor Start شماره شروع طبقه</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="mdf.floor_start" required>
+
+                                    </div>
+                                    <div class="form-group  col-md-4">
+                                    <label>Connection Start  شماره شروع پورت</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="mdf.connection_start" required>
+
+                                    </div>
+                                    <div class="form-group  col-md-4">
+                                     <label >Connection Number تعداد پورت در هر طبقه</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="mdf.connection_count" required>
+
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                     <label >Status of Port وضعیت پورت</label>
+                                        <select class="form-control" ng-model='mdf.status_of_port' required>
+                                             <option ng-value='FREE'>FREE</option>
+                                                 <option ng-value='BUSY'>BUSY</option>
+                                                 <option ng-value='DISABLE'>DISABLE</option>
+                                                 <option ng-value='VPN'>VPN</option>
+                                                 <option ng-value='FAULTY'>FAULTY</option>
+                                                 <option ng-value='RESELLER'>RESELLER</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group col-md-4" ng-show='mdf.status_of_port == "RESELLER"'>
+                                     <label>Reseller نماینده</label>
+                                     <input class='form-control' ng-model="mdf.reseller_detail" typeahead-min-length = '0'
+                                      uib-typeahead="reseller as reseller.name for reseller in getReseller($viewValue) "
+                                      typeahead-on-select='searchData()' ng-required='mdf.status_of_port == "RESELLER"'>
+
+                                    </div>
+                                    <div class="form-group  col-md-4">
+                                     <label >Connection Counting Status نحوه شمارش پورت</label>
+                                        <select class="form-control" ng-model='mdf.connection_counting_status' required>
+                                            <option>STANDARD</option>
+                                            <option>ODD</option>
+                                            <option>EVEN</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group">
+                                    <button type="submit" class="btn green btn-sm pull-right" style="margin-top: 22px;margin-right: 15px;">
+                                        <span ng-hide="mdf.id">
+                                          <i class="fa fa-plus"></i>  Add
+                                        </span>
+                                        <span ng-show="mdf.id">
+                                            Edit
+                                        </span>
+                                        MDF structure
+                                    </button>
+                                    <button class="btn  btn-sm " ng-show="mdf.id" ng-click='cancelBukhtEdit()' style="float: right;margin-right: 5px;margin-top: 22px;">
+                                        Cancel
+                                    </button></div>
+                                    </form>
+                                </div>
+                            </uib-tab>
+                            <uib-tab ng-show='user_access_edit_telecomcenter || user_access_admin' index="3">
+                                 <uib-tab-heading>
+                                 <span ng-show="cart_dslam.id">
+                                        Edit Cart
+                                    </span>
+                                    <span ng-hide="cart_dslam.id">
+                                        Add new Cart
+                                    </span>
+
+                                </uib-tab-heading>
+                               <div class="form">
+                                <form  ng-submit='AddDslam()'>
+                                    <div class="form-group col-md-4">
+                                     <label >Dslam</label>
+                                        <input type="text" class="form-control"
+                                         ng-model-options="{ debounce: 1000 }"
+                                          ng-model="cart_dslam.dslam"
+             uib-typeahead="d as d.name for d in searchDslamName($viewValue) "
+             typeahead-min-length = '0'
+                                               required>
+
+                                    </div>
+                                     <div class="form-group  col-md-4">
+                                     <label >priority اولویت</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="cart_dslam.priority" required>
+
+                                    </div>
+
+                                     <div class="form-group col-md-4">
+                                     <label >Cart Count تعداد کارت</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="cart_dslam.cart_count" required>
+
+                                    </div>
+
+
+                                     <div class="form-group  col-md-4">
+                                     <label >Cart Start شماره شروع کارت</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="cart_dslam.cart_start" required>
+
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                     <label >Port Count تعداد پورت در هر کارت</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="cart_dslam.port_count" required>
+
+                                    </div>
+
+                                    <div class="form-group  col-md-4">
+                                     <label >Port Start شماره شروع پورت</label>
+                                        <input type="text" class="form-control"
+                                               ng-model="cart_dslam.port_start" required>
+
+                                    </div>
+                                    <button class="btn btn-sm green pull-right" type="submit" style="margin-right: 15px;">
+                                    <i class="fa fa-plus"></i>
+                                    <span ng-show="cart_dslam.id">Edit Cart</span>
+                                    <span ng-hide="cart_dslam.id">Add New Cart</span>
+                                    </button>
+                                    <button class="btn btn-sm pull-right" style="margin-right: 15px;" ng-click='CancelCartEdit()' ng-show="cart_dslam.id">
+                                        Cancel
+                                    </button>
+
+                                </form>
+
+                               </div>
+
+                            </uib-tab>
+                                <uib-tab ng-show='user_access_edit_telecomcenter || user_access_admin' index="4">
+                                 <uib-tab-heading>
+                                    <span>
+                                        Cart List
+                                    </span>
+                                </uib-tab-heading>
+                               <table class="table table-striped">
+                                   <thead>
+                                       <th>Cart Count</th>
+                                        <th>Cart Start</th>
+                                         <th>Dslam Name</th>
+                                          <th>Port Count</th>
+                                          <th>port Start</th>
+                             <th>priority</th>
+                             <th>Action</th>
+
+                                   </thead>
+                                   <tbody>
+
+                                       <tr ng-repeat = 'port in dslam_port_list track by $index'>
+                                           <td>{$ port.cart_count $}</td>
+                                           <td>{$ port.cart_start $}</td>
+                                           <td>{$ port.dslam_info.name $}</td>
+                                           <td>{$ port.port_count $}</td>
+                                           <td>{$ port.port_start $}</td>
+                                             <td>{$ port.priority $}</td>
+                                             <td>
+                                                    <div class="clearfix ">
+                                                        <button class="btn btn-primary btn-xs" ng-click="editDslamCart({$ port $})" style="margin-right: 2px!important;">
+                                                            <i class="icon-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-xs"  ng-confirm-click="removeDslamCart(port.id)" ng-confirm-message="Are You Sure To delete record?" style="margin-right: 2px!important;">
+                                                            <i class="icon-trash"></i>
+                                                        </button>
+
+                                                    </div>
+                                                </td>
+
+                                       </tr>
+                                   </tbody>
+
+                               </table>
+
+                            </uib-tab>
+
+
+                            <uib-tab ng-show='user_access_edit_telecomcenter || user_access_admin' index="5">
+                                <uib-tab-heading>
+                                    DSLAM's Details
+                                </uib-tab-heading>
+                                <div class="table-scrollable">
+
+                                    <table class="table table-striped table-bordered table-advance table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 268px;">
+                                                    Name
+                                                </th>
+                                                <th class="hidden-xs">
+                                                    Dslam Type
+                                                </th>
+                                                <th>
+                                                    Port Count
+                                                </th>
+                                                <th>
+                                                    Slot Count
+                                                </th>
+                                                <th>
+                                                    Status
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="D in DSLAMLists">
+                                                <td>
+                                                    <a href="#/dslam/{$ D.id $}/report">
+                                                        {$ D.name $}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {$ D.dslam_type_info.name $}
+                                                </td>
+                                                <td>
+                                                    {$ D.port_count $}
+                                                </td>
+                                                <td>
+                                                    {$ D.slot_count $}
+                                                </td>
+                                                <td>
+                                                    <div ng-switch on="D.status" style="float:left;margin:10px 15px;">
+                                                        <a ng-switch-when="new" href="javascript:;" class="btn btn-sm yellow" title="new"><i class="fa fa-ellipsis-h"></i></a>
+                                                        <a ng-switch-when="ready" href="javascript:;" class="btn btn-sm green-turquoise" title="ready"><i class="fa fa-check"></i></a>
+                                                        <a ng-switch-default href="javascript:;" class="btn btn-sm green" title="updating"><i class="fa fa-spinner fa-spin"></i></a>
+                                                    </div>
+                                                    <!--{$ D.status $}-->
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </uib-tab>
+                            <uib-tab ng-show='user_access_admin || user_access_edit_telecomcenter' index="6" data-toggle="modal" data-target="#recal" >
+                                <uib-tab-heading  class='btn green btn-xs'>
+                                    Recalculate MDF/DSLAM
+                                </uib-tab-heading>
+                                <pre class='text-center' ng-show='show_mdf_tab'>
+<div class="col-md-2" style='padding-top: 20px;'><span class="fa fa-refresh fa-spin fa-4x"></span></div>
+<div class="col-md-10 textwidget">Calculating in progress ....</div>
+                                </pre>
+                            </uib-tab>
+
+                                <uib-tab-heading ng-show='user_access_edit_telecomcenter || user_access_admin' style='float:right;'>
+                                       <a  href="{$ download_url $}" download> <i class="fa fa-download"></i> </a>
+                                </uib-tab-heading>
+                        </uib-tabset>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+ <div class="modal fade " id="recal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                   Faulty Port Option
+                </div>
+                <div class="form-actions bg-grey-steel" style="height: 80px;">
+                    <div class="row">
+                        <div class="col-md-offset-1 col-md-5">
+                            <button type="submit" class="btn bg-primary" style="width:100%;margin-top: 20px;" ng-click="createMDFDSLAM('y')" data-dismiss="modal">
+                                <i class="fa fa-check"></i>
+                                Show Faulty ports
+                            </button>
+
+
+                        </div>
+                        <div class=" col-md-5">
+                            <button type="submit" class="btn bg-danger" style="width:100%;margin-top: 20px;" ng-click="createMDFDSLAM('n')" data-dismiss="modal">
+                                <i class="fa fa-check"></i>
+                                Dont Show Faulty Ports
+                            </button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>

@@ -1,0 +1,231 @@
+<style>
+    .l-class{
+        padding: 15px;
+        border-color: #e8eaed;
+    }
+</style>
+<div class="row" ng-show='user_access_admin || user_access_view_resellerport'>
+    <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/add-reseller-port">Reseller</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/add-reseller-port">Reseller Port Manager</a>
+                        
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+
+<div class="row" >
+    <div class="col-md-12" ng-show='user_access_admin || user_access_edit_resellerport'>
+        <div class="portlet light " style="border:1px solid #BFCAD1;">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-torange"></i>
+                    <span class="caption-subject  bold uppercase">Add Reseller Port</span>
+                </div>
+                
+            </div>
+            <div class="portlet-body" style="display: block;">
+                <div class="row" >
+                    <div class="form" >
+                        <form ng-submit="submit()">
+                        <div class="form-body " >
+                 
+                            <div class="panel-body">
+                          
+                            <div class="col-md-12">
+                                    <div class="form-group   col-md-3" style="margin-bottom:10px;">
+                                        <label for="select_dslam">DSLAM</label>
+                                         <input class="form-control  input-inline" style="width:100%!important;"  type="text" ng-model="dslam_model" ng-change="getDslamList()" ng-model-options="{ debounce: 1000 }"
+                                                           uib-typeahead="dslam_list as dslam_list.name for dslam_list in getDslamList($viewValue)" 
+                                                           typeahead-on-select = 'selectValue(dslam_model.id,"dslam" , "1")'
+                                                          typeahead-min-length = '0' required>
+
+                                    
+                                    </div>
+                                    <div class="form-group  col-md-3" style="margin-bottom:10px;">
+                                        <label for="select_reseller">Reseller</label>
+                                        <input class="form-control  input-inline" style="width:100%!important;"  type="text" ng-model="selectedReseller" 
+                                        typeahead-on-select="selectValue(selectedReseller,'reseller' , '1')"
+                                                           uib-typeahead="reseller_list as reseller_list.name for reseller_list in getResellerList($viewValue)" 
+                                                          typeahead-min-length = '0' required>
+                                 
+                                    </div>
+                                    <div ng-if='vlan_list.length>0'  class="form-group  col-md-3" style="margin-bottom:10px;">
+                                        <label for="select_reseller">Vlan</label>
+                                        <input type="text" ng-model="vlan_data.vlan_id"
+                                               uib-typeahead="vlan_list as vlan_list.vlan_name for vlan_list in vlan_list | filter:$viewValue | limitTo:20" typeahead-min-length = '0'
+                                               class="form-control" />
+                                    </div>
+                                    
+                                    <div  class="col-md-3" style="margin-bottom:10px;">
+                                    <label for="select_reseller">Select Way</label>
+                                    <select ng-change="AddResellerPort()" class="form-control" ng-model="tab" >
+                                        <option ng-value="1" ng-show='show_identifier'>Select by Identifier Key</option>
+                                        <option ng-value="3">Select by Range Port</option>
+                                        <option ng-value="4"> Select by Single Port</option>
+                                    </select></div>
+                                    </div>
+                                    <div class="col-md-12" >
+                                 
+                                
+                                            <div  ng-show="iden_key ">
+                                                <div class="form-group  col-md-3" >
+                                                    <label>Identifier Key</label>
+                                                    <input type="text" ng-model="id_key"
+                                                           uib-typeahead="i as i for i in identifier_list | filter:$viewValue | limitTo:8" typeahead-min-length='0'
+                                                           class="form-control"/>
+                                                </div>
+                                            </div>
+                                            <div ng-show="range">
+                                                <div class="form-group  col-md-3" >
+                                                    <label >Slot from</label>
+                                                    <input class="form-control" data-ng-model='search_slot_number_from' />
+
+                                                </div>
+                                                <div class="form-group  col-md-3" >
+                                                    <label>Slot To</label>
+                                                    <input class="form-control" data-ng-model='search_slot_number_to' />
+
+                                                </div>
+                                                <div class="form-group  col-md-3" >
+                                                    <label >Port From</label>
+                                                    <input type="text" class="form-control ng-pristine ng-valid ng-touched"
+                                                            data-ng-model="search_port_number_from">
+
+                                                </div>
+                                                <div class="form-group  col-md-3" >
+                                                    <label>Port To</label>
+                                                    <input type="text" class="form-control ng-pristine ng-valid ng-touched"
+                                                           data-ng-model="search_port_number_to">
+
+                                                </div>
+                                            </div>
+                                            <div ng-show="single" >
+
+                                                <div class="col-md-3" >
+                                                    <label>Port</label>
+                                                    <div class="form-group " >
+                                                        <input type="text" class="form-control ng-pristine ng-valid ng-touched"
+                                                                data-ng-model="search_port_number">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3" >
+                                                    <label>Slot</label>
+                                                    <div class="form-group" >
+                                                        <input type="text" class="form-control ng-pristine ng-valid ng-touched"
+                                                               data-ng-model="search_slot_number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-show="bukht" >
+                                                <div class="col-md-6" >
+                                                    <label>Port From:</label>
+                                                    <div class="form-group " >
+                                                        <input  class="form-control" type="number" ng-model="row_table_port.from" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" >
+                                                    <label>Port To</label>
+                                                    <div class="form-group " >
+                                                        <input  class="form-control" type="number" ng-model="row_table_port.to" />                                                    </div>
+                                                </div>
+                                            </div></div>
+
+                                       
+                                    
+                                    <button type="submit" class="btn btn-default pull-right" >
+                                        <i class="fa fa-check font-torange"></i>
+                                        Submit</button>
+
+                                </div>
+
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <div id="error_reserved_port">
+                </div>
+
+            </div>
+            <div style="clear:both"></div>
+            <br>
+        </div>
+    </div>
+    <br/>
+    <hr/>
+    <br/>
+        <div class="col-md-12"  ng-show='user_access_admin || user_access_view_resellerport'>
+            <div class="portlet light " style="border:1px solid #BFCAD1;">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-equalizer  font-torange"></i>
+                        <span class="caption-subject  bold uppercase">Search Reseller Port</span>
+                    </div>
+                    
+                </div>
+                <div class="portlet-body" style="display: block;">
+                    <div class="row">
+                        <div class="form-body">
+                            <div class="form-group   col-md-3">
+                                <label for="search_select_dslam">DSLAM</label>
+                                <input class="form-control  input-inline" style="width:100%!important;"  type="text" ng-model="dslam_model_2" 
+                                                           uib-typeahead="dslam_list_2 as dslam_list_2.name for dslam_list_2 in getDslamList($viewValue)"
+                                                           ng-change='search_dslam()'
+                                                           typeahead-on-select = 'search()'
+                                                          typeahead-min-length = '0'/>
+                               
+                            </div>
+                         
+                            <div class="form-group  col-md-3">
+                                <label for="search_select_reseller">Reseller</label>
+                                <input class="form-control  input-inline" style="width:100%!important;"  type="text" ng-model="search_selectedReseller" 
+                                        typeahead-on-select ="selectValue(selectedReseller,'reseller' , '2');search()"
+                                                           uib-typeahead="search_reseller_list as search_reseller_list.name for search_reseller_list in getResellerList($viewValue)"
+                                                          
+                                                          typeahead-min-length = '0' >
+                           
+                            </div>
+                        </div>
+                        
+                            <div class="col-md-12">
+                                    <button type="button" class="btn btn-default pull-right"  data-ng-click="search()">
+                    <i class="fa fa-search font-torange"></i>
+                    Search</button>
+                            </div>
+                        
+                        
+                    </div>
+                </div>
+                
+                
+            </div>
+            <div style="clear:both"></div>
+            <br>
+            <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%;border:1px solid #BFCAD1;"></div>
+
+
+        </div>
+
+
+    <div class="showAboutBox col-md-6">
+        <div class="overlay-loader center">
+            <div class="loader" style="font-size:20px;" ng-show="dslam_loading" >Loading...</div>
+          
+        </div>
+    </div>
+   
+    </div>
+

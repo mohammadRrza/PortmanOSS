@@ -1,0 +1,123 @@
+<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        <div class="nav-side-menu">
+            <div class="brand ">Menu</div>
+
+
+            <div class="menu-list page-header-fixed">
+
+                <ul id="menu-content" class="menu-content out">
+                    <li ng-show='user_access_admin'>
+                        <a href="#/dashboard">
+                            <i class="fa fa-dashboard fa-lg"></i> Dashboard
+                        </a>
+                    </li>
+                    <li ng-show='user_access_admin || user_access_view_telecomcenter' data-toggle="collapse" data-target="#telecom" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-bolt fa-lg"></i> Telecom Center <span class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin || user_access_view_telecomcenter' class="sub-menu collapse" id="telecom">
+                        <li><a href="#/telecom">Telecom</a></li>
+                        <li ng-show='user_access_admin || user_access_edit_telecomcenter'><a href="#/add-telecom/">Add Telecom</a></li>
+                    </ul>
+
+                    <li data-toggle="collapse" data-target="#dslams" class="collapsed "
+                    ng-show="user_access_admin || user_access_view_dslam  ">
+                        <a href="javascript:;"><i class="fa fa-gift fa-lg"></i> DSLAM Management <span
+                                class="arrow"></span></a>
+                    </li>
+                    <ul ng-show="user_access_admin || user_access_view_dslam" class="sub-menu collapse" id="dslams">
+                        <li ng-show="user_access_admin ||user_access_edit_dslam" ><a href="#/add-dslam/">Add DSLAMs</a></li>
+                        <li><a href="#/dslams">Show DSLAMs</a></li>
+                        <li ng-show='user_access_admin || user_access_view_command'><a href="#/bulkcommand">Bulk Commands</a></li>
+                    </ul>
+
+
+                    <li data-toggle="collapse" data-target="#dslamport" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-bullseye fa-lg"></i> Port Management <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="dslamport">
+                        <li><a href="#/dslamport/">Ports</a></li>
+                        <li><a href="#/dslamportstatus">Ports Status</a></li>
+                    </ul>
+
+                <li data-toggle="collapse" data-target="#search" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-search fa-lg"></i> Search  <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="search">
+                        <li><a href="#/quick-search">Quick Search</a></li>
+
+                    </ul>
+
+
+
+                    <li ng-show='user_access_admin|| user_access_view_reseller' data-toggle="collapse" data-target="#reseller" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-gear fa-lg"></i> Reseller <span class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin || user_access_view_reseller' class="sub-menu collapse" id="reseller">
+                        <li><a href="#/resellers">Resellers</a></li>
+                        <li ng-show='user_access_admin || user_access_edit_reseller' ><a href="#/add-reseller/">Add Reseller</a></li>
+                        <li ng-show='user_access_admin || user_access_view_resellerport'><a href="#/add-reseller-port">Reseller Port Manager</a></li>
+                    </ul>
+
+                    <li ng-show='user_access_admin|| user_access_view_user' data-toggle="collapse" data-target="#users" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-users fa-lg"></i> User Management <span class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin || user_access_view_user' class="sub-menu collapse" id="users">
+                        <li><a href="#/users">Users</a></li>
+                        <li ng-show='user_access_admin|| user_access_edit_user'><a href="#/users/add/">Add User</a></li>
+                    </ul>
+
+                    <li ng-show='user_access_admin || user_access_view_customer' data-toggle="collapse" data-target="#customer" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-user fa-lg"></i> Subscriber Management <span class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin || user_access_view_customer' class="sub-menu collapse" id="customer">
+                        <li><a href="#/subscribers">Subscribers</a></li>
+                        <li><a href="#/add-subscriber/">Add Subscriber</a></li>
+                        <li ng-show='user_access_admin || user_access_view_customerport'><a href="#/subscriber/active-port">Subscriber Port Activation </a></li>
+                    </ul>
+
+                    <li ng-show='user_access_admin' data-toggle="collapse" data-target="#city" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-asterisk fa-lg"></i> City Management <span class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin' class="sub-menu collapse" id="city">
+                        <li><a href="#/add-city">Add City</a></li>
+                    </ul>
+
+                   <!--  <li ng-show='user_access_admin' data-toggle="collapse" data-target="#report" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-globe fa-lg"></i> Report Management <span class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin' class="sub-menu collapse" id="report">
+                        <li><a href="">Statistical Reports</a></li>
+                        <li ng-show='user_access_view_userauditlog'><a href="#/users/auditlog">Audit Log Reports</a></li>
+                    </ul> -->
+                    <ul class="sub-menu collapse" >
+                        <li><a href="#/bulkcommand">Bulk Commands</a></li>
+                    </ul>
+
+                    <li ng-show='user_access_admin' data-toggle="collapse" data-target="#vlan" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-bookmark-o fa-lg"></i> Vlan Management <span class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin' class="sub-menu collapse" id="vlan">
+                        <li><a href="#/vlan">Vlans </a></li>
+                    </ul>
+                    <li ng-show='user_access_admin' data-toggle="collapse" data-target="#line" class="collapsed">
+                        <a href="javascript:;"><i class="fa fa-clone fa-lg"></i> LineProfile Management <span class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin' class="sub-menu collapse" id="line">
+                        <li><a href="#/lineprofile">LineProfile </a></li>
+                        <li><a href="#/addlineprofile">Add New LineProfile </a></li>
+                    </ul>
+                     <li ng-show='user_access_admin' data-toggle="collapse" data-target="#permissions" class="collapsed ">
+                        <a href="javascript:;"><i class="fa  fa-key fa-lg"></i> Permissions  <span
+                                class="arrow"></span></a>
+                    </li>
+                    <ul ng-show='user_access_admin' class="sub-menu collapse" id="permissions">
+                        <li><a href="#/userpermission">User Permission</a></li>
+                        <li><a href="#/permission">Permission Profile</a></li>
+
+                    </ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

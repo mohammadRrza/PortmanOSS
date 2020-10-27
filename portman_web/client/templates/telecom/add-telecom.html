@@ -1,0 +1,116 @@
+
+<div  class="row" ng-show='user_access_admin || user_access_edit_telecomcenter'>
+ 
+    <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/add-telecom/">Telecom Center</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/add-telecom/">Add Telecom</a>
+                        
+                    </li>
+                </ul>
+            </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="portlet light " style="border:1px solid #BFCAD1; ">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-equalizer font-red-sunglo"></i>
+                    <span class="caption-subject font-red-sunglo bold uppercase">Telecom Form</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+            <div class="form">
+                <!-- BEGIN FORM-->
+                <form class="form-horizontal" ng-submit="add_telecom()">
+                    <div class="row form-body" >
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" placeholder="Enter Name" data-ng-model="name" required>
+                                    <!--<span class="help-block"> A block of help text. </span>-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Prefix Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" placeholder="Enter Prefix Name"
+                                           data-ng-model="prefix_bukht_name" required>
+                                    <!--<span class="help-block"> A block of help text. </span>-->
+                                </div>
+                            </div>
+
+
+                            <h3 class="form-section">Location:</h3>
+                            <div class="form-group" >
+                                <label class="col-md-3 control-label">Province</label>
+                                <div class="col-md-9">
+                                        <input type="text" ng-model="selectedCity0"
+                                           uib-typeahead="c as c.text for c in getProvince($viewValue)"
+                                           class="form-control" placeholder="Enter Name" 
+                                            typeahead-min-length = '0' typeahead-on-select="selectCity(selectedCity0)" ng-model-options="{ debounce: 1000 }"
+                                           required/>
+                                    <!--<select class="select-city-0-array form-control" data-ng-model="selectedCity0"
+                                            data-ng-change="selectCity(selectedCity0)"></select>-->
+                                </div>
+
+                            </div>
+                             <div ng-show='show_city' class="form-group">
+                                <label class="col-md-3 control-label">city</label>
+                                <div class="col-md-9">
+                                        <input type="text" ng-model="selectedCity"
+                                           uib-typeahead="c as c.text for c in fetchChildParent($viewValue)"
+                                           class="form-control" placeholder="Enter Name" 
+                                            typeahead-min-length = '0'
+                                           required
+                                           />
+                                  
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Telecom Lat</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="telecom_lat" placeholder="Telecom Lat" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)'
+                                           data-ng-model="lat" required>
+                                    <!--<span class="help-block"> A block of help text. </span>-->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Telecom Long</label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" id="telecom_long" placeholder="Telecom Long" ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)'
+                                           data-ng-model="long" required>
+                                    <!--<span class="help-block"> A block of help text. </span>-->
+                                </div>
+                            </div>
+                            <div class="form-actions text-center">
+                                <button type="submit" class="btn  btn-default" >
+                                   <i class="fa fa-check font-torange"></i>  Submit
+                                </button>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

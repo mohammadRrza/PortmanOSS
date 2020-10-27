@@ -1,0 +1,218 @@
+<!--<h3 ng-show="has_user_management || is_superuser" class="page-title"> User Manager </h3>-->
+<div  ng-controller="PermissionProfileController">
+    <div class="row"> <div class='col-md-12'>
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="index.html">Home</a>
+                    <i class="fa fa-caret-right font-torange"></i>
+                </li>
+                <li>
+                    <a href="#/permission">Permissions</a>
+                    <i  class="fa fa-caret-right font-torange"></i>
+                </li>
+                <li>
+                    <a href="#/permission">Permission Profile</a>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="portlet light" style="border:1px solid #BFCAD1;">
+        <div class="portlet-title">
+           <span class="caption-subject font-red-sunglo bold uppercase"> Permissions
+           </span>
+
+            <div class="actions">
+        <button class="btn btn-outline green" data-toggle="modal"  data-target="#create-permission" my-modal>
+            <i class="fa fa-plus"></i> Add Profile
+        </button>
+   
+    </div>
+        </div>
+        <div class="portlet-body flip-scroll" >
+            <div>
+                <table class="table table-bordered table-striped table-condensed flip-content">
+                    <thead class="flip-content">
+                        <th >Permission Name</th>
+                        <th class="hidden-xs  hidden-sm">Action</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="permission in permission_profile_list" style="height: 45px!important;">
+                            <td >{$ permission.name $}</td>
+                            <td class="hidden-xs  hidden-sm">
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" type="button" class="btn btn-success dropdown-toggle  btn-xs" aria-expanded="false">
+                                        Actions
+                                        <i class="fa fa-angle-down"></i>
+                                    </button>
+                                    <ul role="menu" class="dropdown-menu">
+                                        <li><a ng-click="UpdatePermission(permission.id)" data-toggle="modal"  data-target="#update-permission"><i class="glyphicon glyphicon-pencil"></i>Edit</a></li>
+                                        <li><a ng-confirm-click="DeletePermissionProfile(permission.id)" ng-confirm-message="Are You Sure To Delete Permission?"><i class="glyphicon glyphicon-remove"></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <ul uib-pagination 
+                total-items="permission_pagination.TotalItems" 
+                ng-model='permission_pagination.currentPage' 
+                items-per-page='permission_pagination.itemsPerPage' 
+                ng-change="GetPermissionProfileList()"
+                max-size="10"
+                force-ellipses="true"                                    
+                previous-text="&lsaquo;" 
+                next-text="&rsaquo;">
+            </ul>
+               
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade " id="update-permission" role="dialog" >
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" >
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update Permission Profile List</h4>
+                </div>
+                <div class=" form">
+
+                    <!-- BEGIN FORM-->
+                    <form class="form-horizontal form-bordered">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Name</label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <input type="text" class="form-control" ng-model="name" required>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Add Permission</label>
+                                <div class="col-md-6">
+
+                                 <ui-select multiple ng-model="update_permission_list_to_add.permission" theme="bootstrap"  close-on-select="false" style="width: 300px;" title="Choose a permission">
+                                            <ui-select-match >
+                                            {$ $item.title $}
+                                            <span ng-bind="$select.selected.title"></span>
+                                            </ui-select-match>
+                                            <ui-select-choices repeat="item in (select2_permission_list | filter: $select.search) track by item.id">
+                                              <span ng-bind="item.title"></span>
+                                          </ui-select-choices>
+                                      </ui-select>
+
+                                
+                                </div>
+                            </div>
+                         
+
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-offset-3 col-md-6">
+                                        <button type="submit" class="btn bg-primary" style="width: 100%;" ng-click="UpdatePermissionInfo(); DeleteInput()"  data-dismiss="modal">
+                                            <i class="fa fa-check"></i>
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade " id="create-permission" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content" >
+                    <div class="modal-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add New Permission Profile</h4>
+                    </div>
+                    <div class=" form">
+
+                        <!-- BEGIN FORM-->
+                        <form class="form-horizontal form-bordered" ng-submit="CreateNewPermission()">
+                            <div class="form-body" >
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Name</label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <input type="text" class="form-control" ng-model="new_permission.name" required>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Permissions</label>
+                                    <div class="input-icon right">
+                                        <div class="col-md-6">
+                                         <ui-select multiple ng-model="add_new_permission.permission" theme="bootstrap"  close-on-select="false" style="width: 300px;" title="Choose a permission">
+                                            <ui-select-match >
+                                            {$ $item.title $}
+                                            <span ng-bind="$select.selected.title"></span>
+                                            </ui-select-match>
+                                            <ui-select-choices repeat="item in (select2_permission_list | filter: $select.search) track by item.id">
+                                              <span ng-bind="item.title"></span>
+                                          </ui-select-choices>
+                                      </ui-select>
+
+                                  </div>
+                              </div>
+                          </div>
+                          <div style="margin-top: 18px;margin-bottom: 18px;">
+                            <div class="row"><div class="col-md-12">
+
+                                <span ng-repeat="profile in new_profile track by $index" >
+                                    <span style="padding:10px;margin:5px;margin-top:8px;" >
+                                        <div class="col-md-4 inline-block">
+                                            <div class='col-md-10 bg-grey-steel bg-font-grey-steel' style="padding:10px;margin:5px;margin-top:8px;" >
+                                                {$ profile.title $}
+                                            </div>
+                                            <span >
+                                                <a ng-click="DeleteNewProfile(profile, $index)">
+                                                    <i class="glyphicon glyphicon-remove bg-font-grey-steel pull-right">
+                                                    </i></a>
+                                                </span>
+                                            </div>
+
+                                        </span>
+
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <button type="submit" class="btn bg-primary" style="width: 100%;" >
+                                        <i class="fa fa-check"></i>
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+

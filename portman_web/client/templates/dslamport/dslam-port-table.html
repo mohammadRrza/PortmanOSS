@@ -1,0 +1,551 @@
+<style>
+    .m-l{
+        margin-left: 15px;
+    }
+    .nav-dropdown {
+        color:lightslategrey;
+    }
+    .ui-grid-selectable .ui-grid-disable-selection {
+     -webkit-touch-callout: default!important;
+     -webkit-user-select: text!important;
+     -khtml-user-select: text!important;
+     -moz-user-select: text!important;
+     -ms-user-select: text!important;
+     user-select: text!important;
+     cursor:auto!important;
+ }
+
+</style>
+
+<div class="row">
+    <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/dslamport/">Port Management</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/dslamport/">Ports</a>
+                        
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div id="showAboutBox" class="showAboutBox wrapper22 vertical-center">
+
+            <div class="col-xs-12 col-md-6 panel panel-info center">
+                <div class="panel-heading" style="height:65px;padding:13px;">
+                    <div class="pull-left">
+                        <h3 class="panel-title" style="font-weight: bold;font-size:20px">
+                            DSLAMPort Information
+                        </h3>
+                    </div>
+                    <div class="pull-right"><a class="btn red-mint" href="javascript:;"
+                                               onclick="$('#showAboutBox').hide('slow');">Close</a>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+
+                    <table id="dslamport-info-report">
+                        <tr>
+                            <th>DSLAM</th>
+                            <td>{$ dslam_info $}</td>
+                        </tr>
+                        <tr>
+                            <th>Port Name</th>
+                            <td>{$ port_name $}</td>
+                        </tr>
+                        <tr>
+                            <th>Port Index</th>
+                            <td>{$ port_index $}</td>
+                        </tr>
+                        <tr>
+                            <th>Admin Status</th>
+                            <td>
+                                <span data-ng-show="admin_status === 'UNLOCK'"
+                                      class="badge badge-info"> &nbsp;&nbsp;</span>
+                                <span data-ng-show="admin_status !== 'UNLOCK'"
+                                      class="badge badge-danger">&nbsp;&nbsp;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Oper Status</th>
+                            <td>
+                                <span data-ng-show="oper_status === 'SYNC'"
+                                      class="badge badge-success"> &nbsp;&nbsp;</span>
+                                <span data-ng-show="oper_status !== 'SYNC'"
+                                      class="badge badge-danger">&nbsp;&nbsp;</span>
+                            </td>
+
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>Line Profile</th>
+                            <td>
+                                <label id="line_profile_label">{$ line_profile $}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Attainable Rate (Up/Down)</th>
+                            <td>{$ upstream_attainable_rate $} / {$ downstream_attainable_rate $}</td>
+                        </tr>
+                        <tr>
+                            <th>TX Rate (Up/Down)</th>
+                            <td>{$ upstream_tx_rate $} / {$ downstream_tx_rate $}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Attenuation (Up/Down)</th>
+                            <td>{$ upstream_attenuation $} / {$ downstream_attenuation $}</td>
+                        </tr>
+                        <tr>
+                            <th>SNR (Up/Down)</th>
+                            <td>{$ upstream_snr $} / {$ downstream_snr $}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Updated At</th>
+                            <td>{$ updated_at $}</td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+        <div class="portlet light " style="border:1px solid #BFCAD1;">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-torange"></i>
+                    <span class="caption-subject bold uppercase total-ports">DSLAM Port -- Total Ports : {$ gridOptions.totalItems $} </span>
+                </div>
+                <div class="tools"></div>
+            </div>
+            <!-- begin dslam search panel -->
+            
+               
+                <div class="portlet-body" style="display: block;">
+                       <div class="panel " style="border:1px solid #E9EDEF;">
+                    <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                        <h3 class="panel-title"><strong>Port Search Panel</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                    <div class="row">
+                        <div class="form-body">
+                         <div class="form-group   col-md-2"
+                                 style="margin-bottom:10px;">
+                                 <label class="m-l" >Province</label>
+                                  <input  type="text" ng-model="selected_pro" ng-model-options="{ debounce: 500 }"
+                                       uib-typeahead="c as c.text for c in getProveList($viewValue) "
+                                       class="form-control" placeholder="Enter Province"  
+                                        typeahead-min-length = '0' typeahead-on-select='searchData()'/>
+
+                                
+                            </div>
+                            <div class="form-group   col-md-2"
+                                 style="margin-bottom:10px;">
+                                 <label class="m-l" >City</label>
+                                  <input  type="text" ng-model="selected_city" ng-model-options="{ debounce: 500 }"
+                                       uib-typeahead="c as c.text for c in getCityList($viewValue) "
+                                       class="form-control" placeholder="Enter City"  
+                                        typeahead-min-length = '0' typeahead-on-select='searchData()'/>
+
+                                
+                            </div>
+                            <div class="form-group   col-md-2"
+                                 style="margin-bottom:10px;">
+                                 <label class="m-l" >Telecom</label>
+                            
+                                  <input  type="text" ng-model="selected_telecom"
+                                       uib-typeahead="c as c.text for c in getTelecomList($viewValue) " ng-model-options="{ debounce: 1000 }"
+                                       class="form-control" placeholder="Enter Telecom"  
+                                        typeahead-min-length = '0' typeahead-on-select='searchData()' />
+
+                                
+                            </div>
+                            
+                            <div class="form-group  col-md-2">
+                                <label class="m-l" >DSLAM Name</label> 
+                                
+                                        <input  type="text" ng-model="dslam_name" ng-model-options="{ debounce: 500 }"
+                                       uib-typeahead="d.name as d.name for d in searchDslamName($viewValue) " typeahead-on-select='searchData()'
+                                       class="form-control" placeholder="Enter DSLAM Name"  
+                                        typeahead-min-length = '0' />
+                                
+                            </div>
+                             <div class="form-group  col-md-2" ng-show='user_access_admin || user_access_view_dslam'>
+                                <label class="m-l" >IP</label> 
+                                        <input  type="text" ng-model="dslam_ip"
+                                        ng-model-options="{ debounce: 500 }"
+                                       uib-typeahead="d.ip as d.ip for d in searchIp($viewValue) " typeahead-on-select='searchData()'
+                                       class="form-control" placeholder="Enter IP"  
+                                     ng-ip-address/>
+                                
+                            </div>
+                            <div class="form-group  col-md-2">
+                                 <label class="m-l" >Port Name</label>
+                                    <input  type="text" class="form-control"  ng-model="port_name" placeholder="Enter Port Name" ng-enter='searchData()'>
+                            
+                               
+                            </div>
+                            <div class="form-group   col-md-2">
+                                <label class="m-l" >Slot</label>
+                                <input type="text" class="form-control"  placeholder="Enter Slot Number"  ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)'  ng-enter='searchData()'
+                                       data-ng-model="slot">
+                                
+                            </div>
+                            <div class="form-group   col-md-2">
+                                <label class="m-l" >Port</label>
+                                <input type="text" class="form-control"  placeholder="Enter Port Index"  ng-keydown='checkNumber($event)'
+                                    ng-keyup = 'chekKeyUp($event)'  ng-enter='searchData()'
+                                       data-ng-model="port">
+                                
+                            </div>
+                            
+
+                            
+                            <div  class="form-group  col-md-2"
+                                 >
+                               
+                                <label class="m-l" >Line Profile</label>
+                                <input  type="text" ng-model="selected_line_profile"
+                                       uib-typeahead="line_profile.name as line_profile.name for line_profile in getLineProfileList($viewValue) " ng-model-options="{ debounce: 500 }"
+                                       class="form-control" placeholder="Enter Line Profile"  typeahead-on-select="ChangeSelectedLineProfile();searchData()"
+                                        typeahead-min-length = '0' />
+                                
+
+                            </div>
+                             <div class="form-group col-md-2">
+                                <label class="m-l" >Type</label>
+                                <select class="form-control" ng-model='search_type' ng-change='searchData()'>
+                                <option value="">Please Select ...</option>
+                                    <option value='{$ type.id $}'  ng-repeat='type in vendor_list'>
+                                        {$ type.name $}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group  col-md-2">
+                                <label class="m-l" >Admin Status</label>
+                                <select ng-change='searchData()' class="form-control"  data-ng-model="admin_status">
+                                    <option value="">Please Select ...</option>
+                                    <option value="UNLOCK">UNLOCK</option>
+                                    <option value="LOCK">LOCK</option>
+                                </select>
+                                
+                            </div>
+                            <div class="form-group   col-md-2">
+                                <label class="m-l" >Oper Status</label>
+                                <select class="form-control" data-ng-model="oper_status" ng-change='searchData()'>
+                                    <option value="">Please Select ...</option>
+                                    <option value="SYNC">SYNC</option>
+                                    <option value="NO-SYNC">NO-SYNC</option>
+                                </select>
+                            </div>
+                            
+                           
+                            <div class="col-md-2 pull-right">
+                                <a style="margin-left: 40px;margin-top: 20px;" href="javascript:;" class="btn btn-default" 
+                                ng-click="searchData()"> 
+                                    <i class="fa fa-search font-torange" style="margin-right:5px;"></i>Search
+                                </a>
+                            </div>
+
+                            <div style="clear:both"></div>
+                            <br/>
+                            <br/>
+                            <div class="nav-dropdown">
+
+                                    <ul id="menu-content" class="menu-content out" style="width: 100%;">
+                                        <li data-toggle="collapse" data-target="#dslamsport-advanced"
+                                            class="collapsed active pointer">
+                                            <a><i class="fa fa-gift fa-lg"></i> Advanced Search <span
+                                                    class="arrow"></span></a>
+                                        </li>
+                                <ul class="collapse" id="dslamsport-advanced">
+    <li>
+                                        <div class="form-body" >
+                                            <div class="form-group form-md-line-input has-success  col-md-3">
+                                                <label for="up_snr_range" id="lbl_up_snr_range">Up Stream SNR
+                                                    Range</label>
+                                                <section data-ticks="true" data-range-slider class="range-slider"
+                                                         step="1" ng-model="up_snr_range" min="0" max="up_snr_max_range"
+                                                         id="up_snr_range"></section>
+                                                <ul class="from-to">
+                                                    <li><label>From:</label><input type="number"
+                                                                                   ng-model="up_snr_range.from"/></li>
+                                                    <li><label>To:</label><input type="number"
+                                                                                 ng-model="up_snr_range.to"/></li>
+                                                </ul>
+                                            </div>
+                                            <div class="form-group form-md-line-input has-success col-md-3">
+                                                <label for="down_snr_range" id="lbl_down_snr_range">Down Stream SNR
+                                                    Range</label>
+                                                <section data-ticks="true" data-range-slider class="range-slider"
+                                                         step="1" ng-model="down_snr_range" min="0"
+                                                         max="down_snr_max_range" id="down_snr_range"></section>
+                                                <ul class="from-to">
+                                                    <li><label>From:</label><input type="number"
+                                                                                   ng-model="down_snr_range.from"/></li>
+                                                    <li><label>To:</label><input type="number"
+                                                                                 ng-model="down_snr_range.to"/></li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="form-group form-md-line-input has-success  col-md-3">
+                                                <label for="up_attenuation_range" id="lbl_up_attenuation_range">Up Stram
+                                                    Attenuation</label>
+                                                <section data-ticks="true" data-range-slider class="range-slider"
+                                                         step="1" ng-model="up_attenuation_range" min="0"
+                                                         max="up_attenuation_max_range"
+                                                         id="up_attenuation_range"></section>
+                                                <ul class="from-to">
+                                                    <li><label>from:</label><input type="number"
+                                                                                   ng-model="up_attenuation_range.from"/>
+                                                    </li>
+                                                    <li><label>to:</label><input type="number"
+                                                                                 ng-model="up_attenuation_range.to"/>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="form-group form-md-line-input has-success  col-md-3">
+                                                <label for="down_attenuation_range" id="lbl_down_attenuation_range">Down
+                                                    Stream Attenuation</label>
+                                                <section data-ticks="true" data-range-slider class="range-slider"
+                                                         step="1" ng-model="down_attenuation_range" min="0"
+                                                         max="down_attenuation_max_range"
+                                                         id="down_attenuation_range"></section>
+                                                <ul class="from-to">
+                                                    <li><label>from:</label><input type="number"
+                                                                                   ng-model="down_attenuation_range.from"/>
+                                                    </li>
+                                                    <li><label>to:</label><input type="number"
+                                                                                 ng-model="down_attenuation_range.to"/>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="form-group form-md-line-input has-success  col-md-3">
+                                                <label for="up_attainable_rate_range" id="lbl_up_attainable_rate_range">Up
+                                                    Stream Attainable Rate</label>
+                                                <section data-ticks="true" data-range-slider class="range-slider"
+                                                         step="1" ng-model="up_attainable_rate_range" min="0"
+                                                         max="up_attainable_rate_max_range"
+                                                         id="up_attainable_rate_range"></section>
+                                                <ul class="from-to">
+                                                    <li><label>from:</label><input type="number"
+                                                                                   ng-model="up_attainable_rate_range.from"/>
+                                                    </li>
+                                                    <li><label>to:</label><input type="number"
+                                                                                 ng-model="up_attainable_rate_range.to"/>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="form-group form-md-line-input has-success  col-md-3">
+                                                <label for="down_attainable_rate_range"
+                                                       id="lbl_down_attainable_rate_range">Down Stream Attainable
+                                                    Rate</label>
+                                                <section data-ticks="true" data-range-slider class="range-slider"
+                                                         step="1" ng-model="down_attainable_rate_range" min="0"
+                                                         max="down_attainable_rate_max_range"
+                                                         id="down_attainable_rate_range"></section>
+                                                <ul class="from-to">
+                                                    <li><label>from:</label><input type="number"
+                                                                                   ng-model="down_attainable_rate_range.from"/>
+                                                    </li>
+                                                    <li><label>to:</label><input type="number"
+                                                                                 ng-model="down_attainable_rate_range.to"/>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="form-group form-md-line-input has-success  col-md-3">
+                                                <label for="up_tx_rate_range" id="lbl_up_tx_rate_range">Up Stream TX
+                                                    Rate</label>
+                                                <section data-ticks="true" data-range-slider class="range-slider"
+                                                         step="1" ng-model="up_tx_rate_range" min="0"
+                                                         max="up_tx_rate_max_range" id="up_tx_rate_range"></section>
+                                                <ul class="from-to">
+                                                    <li><label>from:</label><input type="number"
+                                                                                   ng-model="up_tx_rate_range.from"/>
+                                                    </li>
+                                                    <li><label>to:</label><input type="number"
+                                                                                 ng-model="up_tx_rate_range.to"/></li>
+                                                </ul>
+                                            </div>
+                                            <div class="form-group form-md-line-input has-success col-md-3">
+                                                <label for="down_tx_rate_range" id="lbl_down_tx_rate_range">Down Stream
+                                                    TX Rate</label>
+                                                <section data-ticks="true" data-range-slider class="range-slider"
+                                                         step="1" ng-model="down_tx_rate_range" min="0"
+                                                         max="down_tx_rate_max_range" id="down_tx_rate_range"></section>
+                                                <ul class="from-to">
+                                                    <li><label>from:</label><input type="number"
+                                                                                   ng-model="down_tx_rate_range.from"/>
+                                                    </li>
+                                                    <li><label>to:</label><input type="number"
+                                                                                 ng-model="down_tx_rate_range.to"/></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+</li></ul>
+                                    </ul>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <!--<div class="row margin-top-10">
+                        <div class="nav-dropdown">
+                            <ul class="menu-content out" style="width: 100%;">
+                                <li data-toggle="collapse" data-target="#dslamsport-command"
+                                    class="collapsed active pointer">
+                                    <a><i class="fa fa-lg"></i> Run Command <span
+                                            class="arrow"></span></a>
+                                </li>
+                                <ul class="collapse" id="dslamsport-command" style="min-height: 300px;">
+                                    <li>
+                                        <div class="form-body margin-top-20" >
+                                            <div class="form-group   col-md-3">
+                                                <input type="text" ng-model="selected_command_type.command"
+                                                       uib-typeahead="c for c in commands | filter:$viewValue | limitTo:8"
+                                                       class="form-control"  typeahead-on-select="checkCommandType()"
+                                                       required/>
+                                            </div>
+                                            <a href="javascript:;" class="btn dark btn-outline" data-ng-click="run_command()">RunCommand</a>
+                                            <div class="loader" style="font-size:20px;" ng-show="changing_line_profile_loader" >Loading...</div>
+                                            <div class="row margin-bottom-20 margin-top-20"  ng-show="is_change_long_profile">
+                                                <div class="col-sm-4 col-md-8">
+                                                    <div class="radio-list">
+                                                        <input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="one" />Filter by Slot/Port
+                                                        <input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="two" />Filter by Slot/Port Range
+                                                        <input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="three" />Filter by Line Profiles
+                                                
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row margin-bottom-20"  ng-show="is_change_long_profile">
+                                                <div class="col-xs-6 col-md-2" ng-show="change_one_slot">
+                                                    Slot Number<input class="form-control" type="text" ng-model="search.search_slot_number"/>
+                                                </div>
+                                                <div class="col-xs-6 col-md-2" ng-show="change_one_slot">
+                                                    Port Number<input class="form-control" type="text" ng-model="search.search_port_number"/>
+                                                </div>
+
+
+                                                <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot">
+                                                    Slot From<input class="form-control" type="text" ng-model="search.search_slot_from"/>
+                                                </div>
+                                                <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot">
+                                                    Slot To<input class="form-control" type="text" ng-model="search.search_slot_to" />
+                                                </div>
+                                                <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot">
+                                                    Port From<input class="form-control" type="text" ng-model="search.search_port_from" />
+                                                </div>
+                                                <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot">
+                                                    Port To<input class="form-control" type="text" ng-model="search.search_port_to" />
+                                                </div>
+                                                <div class="col-xs-6 col-md-2" ng-show="change_by_line_profile">
+                                                    Line Profile
+                                                    <input type="text" ng-model="search.search_line_profile"
+                                                           uib-typeahead="l.name for l in line_profile_list | filter:$viewValue | limitTo:8"
+                                                           class="form-control"/></div>
+
+                                                <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot || change_one_slot || change_by_line_profile" >
+                                                    <button class="btn dark btn-outline margin-top-20"  ng-click="getPage1()">Filter</button>
+                                                </div>
+
+                                                <div class="row" ng-show="is_change_long_profile">
+                                                    <div class="col-sm-8 col-md-4" >
+                                                        New Line Profile  <input type="text" ng-model="search.lineProfile"
+                                                                                 uib-typeahead="l.name for l in line_profile_list | filter:$viewValue | limitTo:8"
+                                                                                 class="form-control"
+                                                                                 required/></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix" ng-show="is_change_long_profile">
+                                                <div class="grid" ui-grid="gridOptions2" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns
+                                                     ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+                                            </div>
+
+                                            <div class="clearfix" ng-show="create_vlan_command">
+                                                <div class="form-body">
+                                                    <div  class="form-group form-md-line-input has-success  col-md-2 ">
+                                                        <input type="text" class="form-control ng-pristine ng-valid ng-touched"
+                                                               placeholder="VNAME" data-ng-model="command_params.vname" ng-change="set_vname_as_vid()">
+                                                        <label for="slot_number">Vname</label>
+                                                    </div>
+                                                    <div class="form-group form-md-line-input has-success  col-md-2  ">
+                                                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid"
+                                                               placeholder="VID" data-ng-model="command_params.vid">
+                                                        <label for="profile_name">VID</label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="clearfix">
+                                                <div class="form-body">
+                                                    <div ng-show="show_slot_number" class="form-group form-md-line-input has-success  col-md-2  slot_number">
+                                                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" id="slot_number"
+                                                               placeholder="Slot Number" data-ng-model="command_params.slot_number">
+                                                        <label for="slot_number">Slot Number</label>
+                                                    </div>
+                                                    <div ng-show="profile_adsl_set || profile_adsl_delete" class="form-group form-md-line-input has-success  col-md-2  profile_name">
+                                                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid" id="profile_name"
+                                                               placeholder="profile_name" data-ng-model="command_params.profile">
+                                                        <label for="profile_name">Profile Name</label>
+                                                    </div>
+                                                    <div ng-show="profile_adsl_set" class="form-group form-md-line-input has-success  col-md-2  us_max_rate">
+                                                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid" id="us_max_rate"
+                                                               placeholder="us_max_rate" data-ng-model="command_params.us_max_rate">
+                                                        <label for="us_max_rate">us-max-rate</label>
+                                                    </div>
+                                                    <div ng-show="profile_adsl_set" class="form-group form-md-line-input has-success  col-md-2  ds_max_rate">
+                                                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid" id="ds_max_rate"
+                                                               placeholder="ds_max_rate" data-ng-model="command_params.ds_max_rate">
+                                                        <label for="ds_max_rate">ds-max-rate</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li></ul>
+                            </ul>
+
+                        </div>
+                    </div>-->
+
+
+
+
+                </div>
+            </div>
+                </div>
+            <!-- end dslam search panel -->
+            <div style="clear:both"></div>
+            <br>
+
+            <div class="grid ui-grid-selectable" ui-grid="gridOptions" ui-grid-selection ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns ui-grid-cell-selection
+                 ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+</div>
+        </div>
+        <!-- END EXAMPLE TABLE PORTLET-->
+    </div>
+</div> 

@@ -1,0 +1,146 @@
+<div class="row" ng-show='user_access_admin || user_access_edit_user'>
+  <div class='col-md-12'>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+                <i class="fa fa-caret-right font-torange"></i>
+            </li>
+            <li>
+                <a>User  Management</a>
+                <i  class="fa fa-caret-right font-torange"></i>
+            </li>
+            <li>
+                <a>Add User</a>
+                
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="portlet box " style="border:1px solid #BFCAD1;">
+        <div class="portlet-title" >
+            <div class="caption">
+                <i class="icon-equalizer font-red-sunglo"></i>
+                <span class="caption-subject font-red-sunglo bold uppercase">Add User Form</span>
+            </div>
+            
+            
+        </div>
+
+        <div class="portlet-body ">
+            <!-- <div class="panel " style="border:1px solid #E9EDEF;"> -->
+                    <!-- <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                        <strong> <i class="icon-equalizer font-torange"></i>
+                            <span class="caption-subject  bold uppercase">Add User Form</span></strong>
+                        </div> -->
+                        <div class=" form">
+                            <!-- BEGIN FORM-->
+                            <form  class="form-horizontal" ng-submit="add_user()" >
+                                <div class="form-body" >
+                                    <div class='row'>
+                                       <div class="form-group col-md-6">
+                                        <label class="col-md-4 ">First Name</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="Enter First Name" data-ng-model="firstname" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="col-md-4 ">Last Name</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="Enter Last Name" data-ng-model="lastname" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class="form-group  col-md-6">
+                                        <label class="col-md-4 ">Username</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" placeholder="Username" data-ng-model="username" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  col-md-6">
+                                        <label class="col-md-4 ">Email</label>
+                                        <div class="col-md-8">
+                                            <input type="email" class="form-control" placeholder="Email" data-ng-model="email" required>
+                                        </div>
+                                    </div>    
+                                </div>
+                                <div class="row">                                                 
+                                    <div class="form-group  col-md-6">
+                                        <label class="col-md-4 ">Tel</label>
+                                        <div class="col-md-8">
+
+                                            <input type="text" class="form-control" placeholder="Tel" ng-keydown='checkNumber($event)'
+                                            ng-keyup = 'chekKeyUp($event)' data-ng-model="tel" required> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group  col-md-6 passwd">
+                                        <label class="col-md-4">Password</label>
+                                        <div class="col-md-8">
+
+                                            <input type="password" class="form-control" placeholder="Password" data-ng-model="password" ng-required="edit_user"> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='row'>
+                                    <div class="form-group  col-md-6 passwd">
+                                        <label class="col-md-4 ">Confirm Password</label>
+                                        <div class="col-md-8">
+
+                                            <input type="password" class="form-control" placeholder="Password" data-ng-model="password2" ng-required="edit_user"> 
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group  col-md-6 ">
+
+                                        <label class='col-md-4 '>Type</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control"  data-ng-model="selectedType" data-ng-change="selectType(selectedType)" required>
+                                                <option value=""></option>
+                                                <option value="ADMIN">ADMIN</option>
+                                                <option value="SUPPORT">SUPPORT</option>
+                                                <option value="RESELLER">RESELLER</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div ng-show='selectedType == "RESELLER"' class="form-group  col-md-6 ">
+                                        <label class='col-md-4 '>Reseller</label>
+                                        <div class="col-md-8 ">
+
+                                          
+                                            <input class=' form-control' type="text" ng-model="selectedReseller"
+                                            uib-typeahead="c as c.name for c in getReseller($viewValue) " placeholder="Reseller"
+                                            typeahead-min-length='0'/>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-group  col-md-6">
+                                    <label class="col-md-4 " for="chkActive">Active</label>
+                                    <div class="col-md-8">
+                                       <input type="checkbox" id="chkActive" name="chkActive" data-ng-model="active" class="ng-pristine ng-valid ng-touched" > 
+                                   </div>
+                               </div>
+                           </div>
+
+
+                           <div class="margin-bottom-40" style="background-color: none!important;'border-top: none;">
+                            <div class="row">
+                                <div class=" col-md-4" style="float: right;">
+                                    <button style="float: right;margin-right: 75px;" type="submit"  class="btn btn-default"  >{$ btn_text $}</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <!-- END FORM-->
+                </div>
+                <!--  </div> -->
+            </div>
+        </div>
+    </div>
+</div>

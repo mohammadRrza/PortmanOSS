@@ -1,0 +1,91 @@
+<div class="row" ng-show='user_access_admin || user_access_view_user'>
+    <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/users">User Management</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a href="#/users">Users</a>
+                        
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+<div class="row" ng-show='user_access_admin || user_access_view_user'>      
+<div class="col-md-12">
+                            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                            <div class="portlet light " style="border:1px solid #BFCAD1;">
+                                <div class="portlet-title">
+                                    <div class="caption font-dark">
+                                        <i class="icon-settings font-torange"></i>
+                                        <span class="caption-subject bold uppercase">Users</span>
+                                    </div>
+                                    <div class="tools"> </div>
+                                </div>
+                                <div class="portlet-body">
+                                      <div class="panel " style="border:1px solid #E9EDEF;">
+                                        <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                                            <h3 class="panel-title"><strong>User Search Panel</strong></h3>
+                                        </div>
+                                        <div class="panel-body">
+                                        <div class="form">
+                                        <form ng-submit="searchData()">
+                                        <div class="form-body">
+                                    
+                                        <div class='col-md-2'>
+                                            <label>User Name:</label>
+                                            <input class='form-control' ng-enter='searchData()' type="text" ng-model='searchText.user_name'  />
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>First Name:</label>
+                                            <input class='form-control' ng-enter='searchData()' type="text" ng-model='searchText.first_name' />
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>Last Name:</label>
+                                            <input class='form-control' ng-enter='searchData()' type="text" ng-model='searchText.last_name' />
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <label>Type:</label>
+                                            <select class='form-control' ng-change='searchData()' ng-model='searchText.type' >
+                                                <option ng-value='admin'>ADMIN</option>
+                                                <option ng-value='support'>SUPPORT</option>
+                                                <option ng-value='reseller'>RESELLER</option>
+                                            </select>
+                                            
+                                        </div>
+                                        <div class='col-md-2' style="margin-top:22px;">
+                                             <button href="javascript:;" class="btn btn-default" type="submit">
+                                                        <i class="fa fa-search font-torange"></i>  Search
+                                                    </button>
+                                        </div>
+                                        <!--<table style="margin:auto;">
+                                            <tr>
+
+                                                <td>Name: &nbsp;</td>
+                                                <td>
+                                                    <input ng-model="searchText" placeholder="Search...">
+                                                    <a href="javascript:;" class="btn btn-lg green" ng-click="searchData()"> Search
+                                                        <i class="fa fa-search"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>-->
+                                    </div></form></div>
+                                        </div>
+                                    <br>
+                                </div>
+                                                                    <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+
+                            </div>
+                            <!-- END EXAMPLE TABLE PORTLET-->
+                        </div>
+                            
+</div>
+</div> 

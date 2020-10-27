@@ -1,0 +1,103 @@
+<div ng-show='user_access_admin || user_access_view_reseller' class="row">
+  <div class='col-md-12'>
+    <div class="page-bar">
+      <ul class="page-breadcrumb">
+        <li>
+          <a href="index.html">Home</a>
+          <i class="fa fa-caret-right font-torange"></i>
+        </li>
+        <li>
+          <a href="#/resellers">Reseller</a>
+          <i  class="fa fa-caret-right font-torange"></i>
+        </li>
+        <li>
+          <a href="#/resellers">Reseller Detail</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row" ng-show='user_access_admin || user_access_view_reseller'>
+  <div class="col-md-6">
+    <div class="portlet light " style="border:1px solid #BFCAD1;">
+      <div class="portlet-title">
+        <div class="caption ">
+          <i class="icon-settings font-torange"></i>
+          <span class="caption-subject bold uppercase">Reseller</span>
+        </div>
+        <div class="tools"> </div>
+      </div>
+      <div class="portlet-body">
+        <div id='up-down'></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="portlet light " style="border:1px solid #BFCAD1;height:496px;">
+      <div class="portlet-title">
+        <div class="caption ">
+          <i class="icon-settings font-torange"></i>
+          <span class="caption-subject bold uppercase">Telecom List</span>
+        </div>
+        <div class="tools"> </div>
+      </div>
+      <div class="portlet-body">
+        <table class="table table-stripped ">
+          <thead>
+            <th>Telecom Name</th>
+            <th>Total Ports</th>
+            <th>Up Ports</th>
+            <th>Down Ports</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat='tele in telecom_list track by $index' style='cursor:pointer;' ng-click='getPortDetaile("{$ tele.telecom_center.id $}" , "{$ tele.telecom_center.name $}")'>
+              <td><a ng-href="#/bukht/{$ tele.telecom_center.id $}">  {$ tele.telecom_center.name $}</td>
+                <td >{$ tele.total_ports_count $}</td>
+                <td >{$ tele.up_ports_count $}</td>
+                <td >{$ tele.down_ports_count $}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- END EXAMPLE TABLE PORTLET-->
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="portlet light " style="border:1px solid #BFCAD1;">
+        <div class="portlet-title">
+          <div class="caption ">
+            <i class="icon-settings font-torange"></i>
+            <span class="caption-subject bold uppercase">{$ tele_name $} Port List </span>
+          </div>
+          <div class="tools"> </div>
+        </div>
+        <div class="portlet-body">
+          <table class="table table-stripped ">
+            <thead>
+              <th>Dslam</th>
+              <th>Port</th>
+              <th>Slot</th>
+              <th>Port name</th>
+              <th>Admin Status</th>
+              <th>Oper Status</th>
+              <th>Uptime</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat='port in port_list  track by $index'>
+                <td>{$ port.dslam_info.name $}</td>
+                <td>{$ port.port_number $}</td>
+                <td>{$ port.slot_number $}</td>
+                <td>{$ port.port_name $}</td>
+                <td>{$ port.admin_status $}</td>
+                <td>{$ port.oper_status $}</td>
+                <td>{$ port.dslam_info.uptime $}</td>
+              </tr>
+            </tbody>
+          </table>
+          <ul uib-pagination total-items="pagination_port_list.count" ng-model="pagination_port_list.page" ng-change="getPortDetaile(tele_id , tele_name)" max-size='10'></ul>
+        </div>
+      </div>
+    </div>
+  </div>

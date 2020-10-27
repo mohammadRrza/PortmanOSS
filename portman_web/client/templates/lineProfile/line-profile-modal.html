@@ -1,0 +1,44 @@
+<div ng-controller='lineProfileController'>
+       <div class="row">
+       <div class="col-md-12">
+           
+              <table class="table table-striped table-bordered table-advance table-hover">
+              <thead>
+                  <tr>
+                      <th>attr name</th>
+                      <th>attr value</th>
+                      <!-- <th>channel_mode</th>
+                      <th>usra ds mgn</th>
+                      <th>dsra</th>
+                      <th>dsra us mgn</th>
+                      <th>dsra ds mgn</th>
+                      <th>min us snr margin</th>
+                      <th>max ds snr margin</th>
+                      <th>min ds snr margin</th>
+                      <th>max us snr margin</th> -->
+                  </tr>
+              </thead>
+              <tbody>
+                   <tr ng-repeat = 'data in modal_box_data track by $index'>
+                       <td>{$ data.attr_name $}</td>
+                       <td>{$ data.attr_value $}</td>
+                       <!-- <td>{$ data.usra_us_mgn $}</td>
+                       <td>{$ data.usra_ds_mgn $}</td>
+                       <td>{$ data.dsra $}</td>
+                       <td>{$ data.dsra_us_mgn $}</td>
+                       <td>{$ data.dsra_ds_mgn $}</td>
+                       <td>{$ data.min_us_snr_margin $}</td>
+                       <td>{$ data.max_ds_snr_margin $}</td>
+                       <td>{$ data.min_ds_snr_margin $}</td>
+                       <td>{$ data.max_us_snr_margin $}</td> -->
+                   </tr>
+              </tbody>
+                 
+              </table>
+              </div>
+              </div>
+               
+            
+
+      
+    </div>

@@ -1,0 +1,79 @@
+<div class="row">
+<div class='col-md-12'>
+<div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="index.html">Home</a>
+                    <i class="fa fa-caret-right font-torange"></i>
+                </li>
+                <li>
+                    <a href="#/telecom">Telecom Center</a>
+                    <i  class="fa fa-caret-right font-torange"></i>
+                </li>
+                <li>
+                    <a href="#/telecom">Telecom</a>
+                </li>
+            </ul>
+        </div>
+</div>
+</div>
+<div class="row">      
+<div class="col-md-12" >
+   <!-- BEGIN EXAMPLE TABLE PORTLET-->
+    <div class="portlet light " style="border:1px solid #BFCAD1; ">
+         <div class="portlet-title">
+               <div class="caption">
+                   <i class="icon-settings font-torange"></i>
+                    <span class="caption-subject bold uppercase">Telecom</span>
+               </div>
+               <div class="tools"> </div>
+        </div>
+        <div class="portlet-body">
+                                <div class="panel " style="border:1px solid #E9EDEF;">
+                <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                    <h3 class="panel-title"><strong>Telecom Search Panel</strong></h3>
+                </div>
+                <div class="panel-body">
+                                <div class='row'>
+                                   
+                                    <div class='col-md-2'>
+                                        <label>Name</label>
+                                          <input type="text" ng-model="searchText.dslam_name"
+                                       uib-typeahead="c.name as c.name for c in getName($viewValue)" ng-model-options="{ debounce: 1000 }" typeahead-on-select='searchData()'
+                                       class="form-control" placeholder="Enter  Name"   typeahead-min-length = '0'
+                                       />
+                                         <!--<input class='form-control' ng-model="searchText.dslam_name" placeholder="Search...">-->
+                                    </div>
+                                    <div class='col-md-2'>
+                                         <label>Prefix Name</label>
+                                         <input class='form-control' ng-model="searchText.pre_name" ng-enter='searchData()' placeholder="Search...">
+
+                                    </div>
+                                    <div class='col-md-2'>
+                                         <label>City</label>
+                                         
+                                         <input type="text" ng-model="searchText.city"
+                                                   uib-typeahead="c as c.text for c in getCityList($viewValue)"  ng-model-options="{ debounce: 1000 }"
+                                                   class="form-control" ng-change="checkCity('2')"  typeahead-on-select="checkCity('1');searchData()"
+                                                   typeahead-min-length = '0'/>
+                                         
+
+                                    </div>
+                                   <div style="margin-top:23px;" class='col-md-2'>
+                                                
+                                                <a href="javascript:;" class="btn  btn-default" ng-click="searchData()"> 
+                                                    <i class="fa fa-search font-torange"></i> Search
+                                                </a>
+                                   </div>
+                                            
+                                </div>
+                </div>
+                                </div>
+                                <br>
+                                <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+                            </div>
+                        </div>
+                        <!-- END EXAMPLE TABLE PORTLET-->
+                    </div>
+                       
+</div> 

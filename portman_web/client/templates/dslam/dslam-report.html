@@ -1,0 +1,1339 @@
+<style>
+  #port-admin-status  #port-oper-status
+  #line-profile-usage #dslam-vlan-value
+  #pie-slot #sec-per-slot-chart{
+    height:100%;
+    width:100%;
+    position:absolute!important;
+  }
+  .border-style {
+    border-color:#FFA992!important;
+    color:white;
+    background-color: #FFA992;
+  }
+  .btn-style {
+    border-color:#FFE192!important;
+    color:dimgray;
+    background-color: #FFE192;
+
+  }
+  .dslam-pic-class{
+
+  }
+  .slack-class{
+    color: #777777;
+    border: 1px solid  #e7ecf1!important;
+    background-color: #fbfcfd;
+    height: 50px;
+    min-width: 62px;
+    border-radius: 5px!important;
+
+  }
+  .slack-class-2 {
+    color: #777777;
+    border: 1px solid  #e7ecf1!important;
+    background-color: #fbfcfd;
+    height: 50px;
+    min-width: 22px;
+    border-radius: 5px!important;
+
+  }
+  .slack-class-selected {
+    color: #777777;
+    border: 1px solid  #e7ecf1!important;
+    background-color: #e6ffff;
+    height: 50px;
+    min-width: 62px;
+    border-radius: 5px!important;
+  }
+  .change-paginatio-style > li > a {
+    line-height: 8.42857!important ;
+    border-color:  #e7ecf1!important;
+    background-color: #fbfcfd;
+    width: 45px;
+  }
+  .data-box {
+    border: 1px solid  #e7ecf1!important;
+  }
+
+  .change-paginatio-style > li > span {
+    line-height: 8.42857!important ;
+    border-color:  #e7ecf1!important;
+    background-color: #fbfcfd;
+    width: 45px;
+  }
+  .change-paginatio-style-up >li > span{
+    background-color: #32c5d2;
+  }
+  .change-paginatio-style-up >li > a{
+    background-color: #32c5d2;
+  }
+  .change-paginatio-style-down >li > span{
+    background-color: #e7505a;
+  }
+  .change-paginatio-style-down >li > a{
+    background-color: #e7505a;
+  }
+  .font-size-11 {
+    font-size: 11px !important;
+  }
+</style>
+<div class="row margin-top-10">
+
+  <div class='col-md-12' ng-show='user_access_admin || user_access_view_dslam'>
+    <div class="page-bar">
+      <ul class="page-breadcrumb">
+        <li>
+          <a href="index.html">Home</a>
+          <i class="fa fa-caret-right font-torange"></i>
+        </li>
+        <li>
+          <a href='#/dslams'>Dslam Management</a>
+          <i  class="fa fa-caret-right font-torange"></i>
+        </li>
+        <li>
+          <a href='#/dslams'>Show Dslams</a>
+          <i  class="fa fa-caret-right font-torange"></i>
+        </li>
+        <li>
+          <a>Dslam Report</a>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+
+
+  <div class="col-md-3" ng-show='user_access_admin || user_access_view_dslam'>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="portlet box grey-steel">
+          <div class="portlet-body" style="border:1px solid #BFCAD1; ">
+            <div class="row">
+              <div class="col-md-6 text-center margin-top-10" style="padding-right:0;">
+               <button style="width:100%;" ng-click="update_single_dslam_port()" class="btn btn-info"  title="Port Update" >
+                <span style="font-size:11px;">  Port Update </span>
+              </button>
+
+            </div>
+            <div class="col-md-6 text-center margin-top-10 margin-bottom-10" style="padding-left:0;">
+              <button style="width:100%;" ng-click="update_single_dslam_general()" class="btn btn-danger" title="General Update" >
+                <span style="font-size:11px;"> General Update </span>
+              </button>
+            </div></div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="pull-left">
+                  <h3 ng-if='dslam.dslam.hostname != undefined && dslam.dslam.hostname != "" ' class="panel-title margin-bottom-10" style="font-weight: bold;font-size:15px;color:#525E64;">
+                    <i class="fa fa-gg"></i> {$ dslam.dslam.hostname $}
+                  </h3>
+                  <h3 ng-if='dslam.dslam.hostname == undefined || dslam.dslam.hostname == "" ' class="panel-title margin-bottom-10" style="font-weight: bold;font-size:15px;color:#525E64;">
+                    <i class="fa fa-gg"></i> {$ dslam.dslam.name $}
+                  </h3>
+                </div></div>
+                <div class="col-xs-12">
+                  <div style="display: inline-block; margin-top:7px;" class="text-center" uib-popover="Availability" popover-trigger="'mouseenter'">
+                    <i class="fa fa-bar-chart" style="font-size:14px"></i>
+                    {$ dslam.dslam_availability || '--'$}%
+
+                  </div></div>
+                  <div class="col-md-12 margin-top-10">
+
+
+                    <i class="fa fa-bookmark"></i> Fqdn: {$ dslam.dslam.fqdn | limitTo : 15  $}
+
+                    <a data-toggle="popover" title="fqdn: {$ dslam.dslam.fqdn $}" data-content="{$ dslam.dslam.fqdn"
+                    data-trigger="hover"
+                    >
+                    <i class="fa fa-ellipsis-h"></i>
+                  </a>
+
+
+                </div>
+
+
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-12">
+                  <i class="fa fa-circle-o"></i>
+                  Status: <span  ng-switch on="dslam.dslam.status" id="status_led"
+                  >
+                  <div ng-switch-when="new" style="width:17px;height:17px;border-radius:100%!important;"  class="badge badge-success"   title="new"> &nbsp;&nbsp;</div>
+                  <span ng-switch-when="ready" style="width:17px;height:17px;border-radius:100%!important;" class="badge badge-info" title="ready"> &nbsp;&nbsp;</span>
+                  <span ng-switch-when="updating" style="width:17px;height:17px;border-radius:100%!important;" class="badge badge-warning" title="updating">&nbsp;&nbsp;</span>
+                  <span ng-switch-default class="badge badge-danger" style="width:17px;height:17px;border-radius:100%!important;" title="error">&nbsp;&nbsp;</span>
+                  <label style="margin-left:2px;">{$ dslam.dslam.status $}</label>
+                </span>
+              </div>
+
+              <div class="col-md-12">
+               <i class="fa fa-circle-o"></i> Active:<span ng-switch on="dslam.dslam.active" id="active_led"
+               >
+               <span style="width:17px;height:17px;border-radius:100%!important;" ng-switch-when="true" title="true"
+               class="badge badge-success"> &nbsp;&nbsp;</span>
+               <span style="width:17px;height:17px;border-radius:100%!important;" ng-switch-default title="false" class="badge badge-danger">&nbsp;&nbsp;</span>
+               <label style="margin-left:2px">{$ dslam.dslam.active $}</label>
+             </span>
+           </div>
+         </div>
+         <hr>
+
+
+
+         <div class="row margin-top-10">
+          <div class="col-md-12">
+           <i class="fa fa-cube"></i> Vendor:  <strong style="font-size:12px;">{$ dslam.dslam_type $}</strong>
+         </div>
+       </div>
+       <hr>
+       <div class="row margin-top-10">
+        <div class="col-md-12">
+         <i class="fa fa-circle-o"></i> IP:  <strong>{$ dslam.dslam.ip $}</strong>
+       </div>
+     </div>
+     <hr>
+     <div class="row margin-top-10">
+      <div class="col-md-12">
+       <i class="fa fa-th-large"></i> SNMP Port:  <strong>{$ dslam.dslam.snmp_port $}</strong>
+     </div>
+   </div>
+
+
+   <hr>
+
+   <div class="row margin-top-10">
+    <div class="col-md-12">
+     <i class="fa fa-sun-o"></i>  Connection Type:  <strong> {$ dslam.dslam.conn_type $}
+   </strong>
+ </div>
+</div>
+<hr>
+
+
+
+<div class="row margin-top-10">
+  <div class="col-md-12">
+    <i class="fa fa-hourglass-o"></i>  <strong> Up Time:
+
+  </strong>{$ dslam.dslam.uptime $}
+</div>
+</div>
+<hr>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-hover table-bordered">
+      <thead>
+        <th>Up Ports</th>
+        <th>Down</th>
+        <th>Total</th>
+      </thead>
+      <tbody>
+        <tr>
+
+          <td>{$ dslam.up_ports $}</td>
+          <td>{$ dslam.down_ports $}</td>
+          <td>{$ dslam.total_ports $}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="table-scrollable">
+      <table class="table-hover table-bordered table">
+        <thead>
+          <th>Get <span style="font-size: 10px;">SNMP Community</span></th>
+          <th>Set <span style="font-size: 10px;">SNMP Community</span></th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{$ dslam.dslam.get_snmp_community $}</td>
+            <td>{$ dslam.dslam.set_snmp_community
+             $}</td>
+           </tr>
+         </tbody>
+       </table>
+     </div>
+   </div>
+ </div>
+
+
+</div>
+
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="col-md-9" ng-show='user_access_admin || user_access_view_dslam'>
+  <div class="portlet box grey-steel">
+    <div class="portlet-body" style="border: 1px solid #BFCAD1; ">
+      <uib-tabset active="active">
+
+       <uib-tab heading='Line Card'>
+         <div class="row ">
+           <div class="col-md-12">
+
+
+            <div class=" margin-bottom-20">
+              <div style="display: inline-block!important;position: relative;">
+                <div ng-if='card_data_in_dslam.length > 0' style="display: inline-block;position: relative;" class="margin-top-20">
+                  <div >
+                    <i style="font-size: 30px;cursor: pointer!important;"  ng-click='changeDslamShow("prev")' class="fa fa-caret-left"></i>
+                  </div>
+                </div>
+                <div ng-class="{true: 'slack-class-selected text-center', false: 'slack-class text-center'}[$index == current_cart_number]"  style="display: inline-block!important; cursor: pointer;position: relative;font-size: 17px;" ng-repeat = 'card in card_data_in_dslam track by $index'
+                ng-click='getSlotDetailes($index)'   ng-if='card.show'>
+                <div style="margin-top: 14px;display: inline-block;">
+
+                 <div ng-show='card.card_status == "active"' style="display: inline-block;">
+                   <i style="font-size:14px;color: #36c6d3;" class="fa fa-check-circle"></i>
+                 </div>
+                 <div ng-show='card.card_status != "active"' style="display: inline-block;">
+                   <i style="font-size:12px;color: gray;" class="glyphicon glyphicon-remove-sign"></i>
+                 </div>
+                 {$ card.card_number $}</div>
+
+               </div>
+               <div ng-if='card_data_in_dslam.length > 0' style="display: inline-block;position: relative;" class="margin-top-20">
+                <i style="font-size:30px;cursor: pointer!important;" ng-click='changeDslamShow("next" )' class="fa fa-caret-right "></i>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+      <div class="row" ng-show='show_cart_dslam_detail'>
+       <div class="col-md-12">
+         <div class="flip-scroll">
+          <table class="table table-bordered table-striped table-condensed flip-content">
+           <thead class="flip-content">
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].cart_number != null'>
+               Card Number
+             </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].cart_status != null'>Cart Status</th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].card_type != null'> Cart Type  </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].fw_version != null'>
+               Firmware Version
+             </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].hw_version != null'>
+               Hardware Version
+             </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].mac_address != null'>
+               Mac Address
+             </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].outband_mac_address != null'>
+               Outband Mac Address
+             </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].inband_mac_address != null'>
+               Inband Mac Address
+             </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].serial_number != null'>
+               Serial Number
+             </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].total_ports_count != null'>
+               Total Ports | up | down
+             </th>
+             <th class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].uptime != null'>
+               Uptime
+             </th>
+           </thead>
+
+
+           <tbody>
+             <tr>
+               <td class="font-size-11"  ng-show='card_data_in_dslam[current_cart_number].cart_number != null'>{$ card_data_in_dslam[current_cart_number].cart_number $}</td>
+               <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].cart_status != null'>
+                 {$ card_data_in_dslam[current_cart_number].card_status $}
+               </td>
+               <td class="font-size-11"  ng-show='card_data_in_dslam[current_cart_number].card_type != null'>{$ card_data_in_dslam[current_cart_number].card_type $}</td>
+               <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].fw_version != null'>
+                 {$ card_data_in_dslam[current_cart_number].fw_version $}
+               </td>
+               <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].hw_version != null'>
+                 {$ card_data_in_dslam[current_cart_number].hw_version $}
+               </td>
+               <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].mac_address != null'>
+                 {$ card_data_in_dslam[current_cart_number].mac_address $}
+               </td>
+               <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].outband_mac_address != null'>
+                 {$ card_data_in_dslam[current_cart_number].outband_mac_address $}
+               </td>
+               <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].inband_mac_address != null'>
+                 {$ card_data_in_dslam[current_cart_number].inband_mac_address $}
+               </td>
+               <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].serial_number != null'>
+                 {$ card_data_in_dslam[current_cart_number].serial_number $}
+               </td>
+               <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].total_ports_count != null'>
+                {$ card_data_in_dslam[current_cart_number].total_ports_count $} | {$ card_data_in_dslam[current_cart_number].up_ports_count $} |{$ card_data_in_dslam[current_cart_number].down_ports_count $}
+              </td>
+              <td class="font-size-11" ng-show='card_data_in_dslam[current_cart_number].uptime != null'>
+               {$ card_data_in_dslam[current_cart_number].uptime $}
+             </td>
+           </tr>
+         </tbody>
+       </table>
+     </div>
+
+     <div class="col-md-12 margin-bottom-20" ng-init='cart_detailes_in_dslam_face()'>
+       <div ng-show='run_tempreture_loader' class='loader' style="font-size:14px;z-index: 1000!important;"> </div>
+       <span  class="col-md-4" ng-repeat="x in temp_data_per_slot track by $index" style="display: inline-block;" >
+       <!--  <img style="max-width: 40px;max-height: 40px;cursor: pointer!important; cursor: hand!important;" class="img-responsive center-block"
+        ng-src="{$'img/temperature-5121.png' $}"  ng-click='drawTempreturePerSlotINDslam(x.name)'  /> -->
+
+         <div ng-click='drawTempreturePerSlotINDslam(x.name)' style="height: 150px;" ng-attr-id="{$ 'container-temp-' + $index $}"  ></div>
+
+        <div ng-click='drawTempreturePerSlotINDslam(x.name)'  style="font-size:10px;" class="text-center">{$ x.name $}: {$ x.value|| '--'$}</div>
+      </span>
+
+    </div>
+    <hr>
+                    <div ng-show='chart_show_per_slot' class="margin-top-20 col-md-12" id='sec-per-slot-chart'>
+
+                    </div>
+
+
+
+                 <!--  <div class="col-md-12 margin-top-10">
+                   <div  class="text-center">
+                     <span class="text-center" id='pie-slot'></span>
+                   </div>
+
+
+                 </div> -->
+
+
+
+               </div>
+
+             </div>
+
+
+
+           </uib-tab>
+           <uib-tab  heading="Command" ng-show='user_access_admin || user_access_view_command || user_access_edit_command'>
+            <div class="row" class="margin-top-20" style="margin-top:20px!important; ">
+              <div class="col-md-12">
+                <div class="pull-left">
+                  <h3 style="font-weight: bold;font-size:18px">Recent Command Result for {$
+                    port_name $}</h3>
+                  </div>
+
+                  <div class="clearfix">
+
+                  </div>
+
+                  <div class="clearfix">
+                    <div class="form-group pull-left" ng-show='user_access_admin || user_access_edit_command'>
+                      <label style="margin-top:26px;">Command Type</label>
+                      <br/>
+
+                      <input type="text" ng-model="selected_command_type.command"
+                      uib-typeahead="c.name for c in commands | filter:$viewValue"
+                      class="form-control"  typeahead-on-select="checkCommandType()" typeahead-min-length = '0'
+                      required/>
+
+                    </div>
+                    <div ng-show='user_access_admin || user_access_edit_command' class="pull-left" style="margin:50px 0px 0px 30px;">
+                      <a href="javascript:;" class="btn dark btn-outline" data-ng-click="run_command()">RunCommand</a>
+                    </div>
+
+
+
+
+                  </div>
+                  <div class="loader" style="font-size:20px;" ng-show="changing_line_profile_loader" >Loading...</div>
+                  <div class="col-xs-6 col-md-2" ng-show='show_cart_command_param'>
+                    Slot
+                    <input class="form-control"  ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model='command_params.show_cart_5006'>
+                  </div>
+
+                  <div class="row"  ng-show="show_loop_to_wan_vc">
+                    <div class="col-xs-6 col-md-2" >
+                      Port Vpi<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                      ng-keyup = 'chekKeyUp($event)' ng-model="command_params.port_vpi"/>
+                    </div>
+                    <div class="col-xs-6 col-md-2"  >
+                     Port Vci<input class="form-control" ng-keydown='checkNumber($event)'
+                     ng-keyup = 'chekKeyUp($event)' type="text" ng-model="command_params.port_vci"/>
+                   </div>
+                   <div class="col-xs-6 col-md-2" >
+                    Start Slot Num<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="command_params.start_slot_number" />
+                  </div>
+                  <div class="col-xs-6 col-md-2" >
+                    Start Port Num<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="command_params.start_port_number" />
+                  </div>
+                  <div class="col-xs-6 col-md-2" >
+                    Wan Slot Num<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="command_params.wan_slot_number" />
+                  </div>
+                  <div class="col-xs-6 col-md-2" >
+                    Wan Port Num<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="command_params.wan_port_number" />
+                  </div>
+                  <div class="col-xs-6 col-md-2" >
+                    Wan Vpi<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="command_params.wan_vpi" />
+                  </div>
+                  <div class="col-xs-6 col-md-2" >
+                    Wan Vci<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="command_params.wan_vci" />
+                  </div>
+                  <div class="col-xs-6 col-md-2" >
+                    Vc Num<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="command_params.vc_number" />
+                  </div>
+                </div>
+
+
+
+                <div class="row margin-bottom-20 margin-top-20"  ng-show="show_linestat_params">
+                  <div class="col-sm-4 col-md-8">
+                    <div class="radio-list">
+                      <label><input ng-change="Changestat()" type="radio" ng-model="statoptions.line" value="slot" id="first_radio"/>Filter by Slot</label>
+                      <label><input ng-change="Changestat()" type="radio" ng-model="statoptions.line" value="range" id="second_radio"/>Filter by Slot Range</label>
+                      <label><input ng-change="Changestat()" type="radio" ng-model="statoptions.line" value="all" id="third_radio" checked="checked" />All</label>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row"  ng-show="show_linestat_params">
+                  <div class="col-xs-6 col-md-2" ng-show="show_single_slot_stat">
+                    Slot Number<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="search.stat_slot"/>
+                  </div>
+                  <div class="col-xs-6 col-md-2"  ng-show="show_range_slot_stat">
+                    Slot From<input class="form-control" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' type="text" ng-model="search.stat_slot_from"/>
+                  </div>
+                  <div class="col-xs-6 col-md-2" ng-show="show_range_slot_stat">
+                    Slot To<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="search.stat_slot_to" />
+                  </div>
+                </div>
+                <div class="row margin-bottom-20 margin-top-20"  ng-show="is_change_long_profile">
+                  <div class="col-sm-4 col-md-8">
+                    <div class="radio-list">
+                      <label for="first_radio"><input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="one" id="first_radio"/>Filter by Slot/Port</label>
+                      <label for="second_radio"><input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="two" id="second_radio"/>Filter by Slot/Port Range</label>
+                      <label for="third_radio"><input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="three" id="third_radio" checked="checked" />Filter by Line Profiles</label>
+
+                    </div>
+                  </div>
+
+                </div>
+                <div class="row margin-bottom-20"  ng-show="show_uplink_pvc_show_slot">
+                  <div class="col-xs-6 col-md-2">
+                    Slot Number<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="command_params.slotnumberss"/>
+                  </div>
+                </div>
+                <div class="row margin-bottom-20"  ng-show="is_change_long_profile">
+                  <div class="col-xs-6 col-md-2" ng-show="change_one_slot">
+                    Slot Number<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="search.search_slot_number"/>
+                  </div>
+                  <div class="col-xs-6 col-md-2" ng-show="change_one_slot">
+                    Port Number<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="search.search_port_number"/>
+                  </div>
+
+
+                  <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot">
+                    Slot From<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="search.search_slot_from"/>
+                  </div>
+                  <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot">
+                    Slot To<input class="form-control" type="text" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' ng-model="search.search_slot_to" />
+                  </div>
+                  <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot">
+                    Port From<input class="form-control" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' type="text" ng-model="search.search_port_from" />
+                  </div>
+                  <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot">
+                    Port To<input class="form-control" ng-keydown='checkNumber($event)'
+                    ng-keyup = 'chekKeyUp($event)' type="text" ng-model="search.search_port_to" />
+                  </div>
+
+                  <div class="col-xs-6 col-md-2" ng-show="change_by_line_profile">
+                    Line Profile
+                    <input type="text" ng-model="search.search_line_profile"
+                    typeahead-on-select="lineProfileId()"
+                    uib-typeahead="lpl as lpl.name for lpl in getLineProfileList($viewValue)"
+                    class="form-control" typeahead-min-length = '0' /></div>
+
+                    <div class="col-xs-6 col-md-2" ng-show="change_multiple_slot || change_one_slot || change_by_line_profile" >
+                      <button class="btn dark btn-outline margin-top-20"  ng-click="getPage1()">Filter</button>
+                    </div>
+
+                    <div ng-show="is_change_long_profile">
+                      <div class="col-sm-8 col-md-4" >
+                        New Line Profile  <input type="text" ng-model="search.lineProfile"
+                        uib-typeahead="l.name as l.name for l in getNewLineProfileList($viewValue) "
+                        class="form-control" typeahead-min-length = '0'
+                        required/></div>
+                      </div>
+
+                    </div>
+                    <div class="clearfix" ng-show="is_change_long_profile">
+                      <div class="grid" ui-grid="gridOptions2" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns
+                      ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+
+                    </div>
+
+
+                    <div class="clearfix" ">
+                      <div class="form-body">
+                        <div ng-show="create_vlan_command " class="form-group   col-md-3 " style="padding-left:0;padding-right:0">
+                          <label >Vlan name</label>
+                          <input type="text" class="form-control ng-pristine ng-valid ng-touched"
+                          placeholder="Vlan NAME" data-ng-model="command_params.vlan_name" >
+
+                        </div>
+                        <div ng-show="create_vlan_command || vlan_show_command" class="form-group  col-md-3  " style="padding-right:0;padding-left:0px;">
+                         <label >Vlan ID</label>
+                         <input type="text" class="form-control ng-pristine ng-untouched ng-valid"
+                         placeholder="Vlan ID" data-ng-model="command_params.vlan_id">
+
+                       </div>
+
+                     </div>
+                   </div>
+                   <div class="clearfix">
+                    <div class="form-body">
+
+                      <div ng-show="show_slot_number" style="padding-left:0;padding-right:0" class="form-group col-md-3  slot_number">
+                        <label>Slot Number</label>
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" id="slot_number"
+                        placeholder="Slot Number" data-ng-model="command_params.slot_number">
+
+                      </div>
+                      <div ng-show="profile_adsl_set || profile_adsl_delete" style="padding-left:0;padding-right:0" class="form-group col-md-3  profile_name">
+                        <label>Profile Name</label>
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid"
+                        placeholder="profile_name" data-ng-model="command_params.profile">
+
+                      </div>
+                      <div ng-show="profile_adsl_set" style="padding-right:0;padding-left:22px;" class="form-group   col-md-3  us_max_rate">
+                       <label >us-max-rate</label>
+                       <input type="text" class="form-control ng-pristine ng-untouched ng-valid"
+                       placeholder="us_max_rate" data-ng-model="command_params.us_max_rate">
+
+                     </div>
+                     <div ng-show="profile_adsl_set" style="padding-right:0;padding-left:22px;"   class="form-group  col-md-3  ds_max_rate">
+                       <label >ds-max-rate</label>
+                       <input type="text" class="form-control ng-pristine ng-untouched ng-valid"
+                       placeholder="ds_max_rate" data-ng-model="command_params.ds_max_rate">
+
+                     </div>
+                   </div>
+                 </div>
+                 <hr/>
+                 <div class="slimScrollDiv" style="overflow-y: auto;height:560px;">
+                  <table class="table" >
+                    <thead>
+                      <tr>
+                        <th> Command</th>
+                        <th> Create At</th>
+                        <th> Result Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr data-ng-repeat="item in result_commands">
+                        <td>
+                          <h5><b> {$ item.command.text $}</b></h5>
+                        </td>
+                        <td>
+                          <h6><b> {$ item.created_at $} </b> </h6>
+                        </td>
+
+                        <td ng-if="item.command.text =='profile adsl show'">
+                        <a ng-show='item.value.result != "No results was returned."' class='btn grey-mint btn-outline sbold uppercase' ng-click='Showmodal(item.value.result)'  data-toggle="modal" data-target="#showAboutBox" > detailes </a>
+                        <span ng-show='item.value.result == "No results was returned."'>No results was returned.</span>
+                       </td>
+
+                       <td ng-if="item.command.text ==='lcman show slot'">
+                        <pre style="max-width:500px;">{$ item.value.result $}</pre>
+                      </td>
+                      <td ng-if="item.command.text ==='show shelf' || item.command.text ==='show temperature' || item.command.text === 'show cart' ">
+                        <pre style="max-width:500px;">{$ item.value.result $}</pre>
+                      </td>
+
+                      <td ng-if="item.command.text ==='lcman enable slot'">
+                        {$ item.value $}
+                      </td>
+
+                      <td ng-if="item.command.text ==='lcman show'">
+                        <pre style="max-width:500px;"> {$ item.value.result $}</pre>
+                      </td>
+
+                      <td ng-if="item.command.text === 'show mac'" >
+                       <a ng-if='item.value.result !== "No results was returned."'  data-toggle="modal" data-target="#show_mac" ng-click='checkMacData(item.value.result) ' class='btn grey-mint btn-outline sbold uppercase' > detailes </a>
+                       <span ng-if='item.value.result == "No results was returned."'>No results was returned.</span>
+                     </td>
+
+
+
+                     <td  ng-if="item.command.text ==='show linestat'">
+                      <pre style="max-width:500px;"> {$ item.value.result $}</pre>
+                    </td>
+                    <td ng-if="item.command.text ==='loop to wan vc'"> <pre style="max-width:500px;"> {$ item.value.result $}</pre></td>
+                    <td ng-if="item.command.text ==='uplink pvc show slot'"> <pre style="max-width:500px;"> {$ item.value.result $}</pre></td>
+
+                    <td ng-if="item.command.text ==='vlan show' && item.value.result != 'No results was returned.'">
+
+                      <li ng-if='item.value.result != []' ng-repeat="(key, value) in item.value.result">vlan_id:{$key$}  vlan name: {$value$}</li>
+                      <li ng-if='item.value.result == []'>
+                        Ip uplink card no any vlan!
+                      </li>
+
+                    </td>
+
+                    <td ng-if="item.command.text==='vlan show' && item.value.result == 'No results was returned.'">
+                      {$ item.value.result $}
+                    </td>
+
+                    <td ng-if="item.command.text=== 'create vlan' ">
+                      {$ item.value.result $}
+                    </td>
+
+
+
+
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div></uib-tab>
+      <uib-tab  heading="ICMP Commands">
+        <div class="row">
+          <div class="col-md-12">
+            <!--<div class="panel panel-info">-->
+            <!--<div class="panel-heading" style="height:65px;padding:13px;">-->
+            <h3  style="font-weight: bold;font-size:18px">
+              Run ICMP Command on DSLAM: {$ dslam.name $}
+
+            </h3>
+
+
+            <!--</div>-->
+            <div class="panel-body" >
+              <div class="col-md-12">
+                <div class="portlet light bordered">
+                  <div class="portlet-title">
+                    <div class="caption">
+                      <i class="icon-settings font-red"></i>
+                      <span class="caption-subject font-red sbold uppercase">Latest Trace Route Result</span>
+
+                    </div>
+                    <div class="action">
+                      <a href="javascript:;" class="btn dark btn-outline pull-right  btn-circle"
+                      data-ng-click="getTraceRouteResult()">Trace Route</a>
+                    </div>
+                  </div>
+                  <div class="portlet-body" >
+                    <div class="loader" id="trLoading" ng-show="trace_loader_show">Loading...</div>
+                    <div style="clear: both"></div>
+                    <br/>
+                    <div >
+                      <pre class="border-grey-steel" style="background-color: inherit;border:none;">
+                        {$ tracerouteResult $}
+                      </pre>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="portlet light bordered">
+                  <div class="portlet-title">
+                    <div class="caption">
+                      <i class="icon-settings font-red"></i>
+                      <span class="caption-subject font-red sbold uppercase">Latest Ping Result</span>
+                    </div>
+                  </div>
+                  <div class="portlet-body" style="height: 300px;">
+                    <div class="row">
+                      <div class="loader" id="pingLoading" ng-show="ping_loader_show" style="z-index: 30;">Loading...</div>
+                    </div>
+
+                    <div class="row"></div>
+                    <div class="row">
+                      <div class="col-md-1"></div>
+                      <div class=" col-md-5 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">
+                        <label style="line-height: 30px; " class=" control-label ">
+                          Sent:</label><label style="line-height: 30px; " class=" control-label ">{$ icmpResult.sent $}</label></div>
+                          <!--<div class="col-md-2 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">-->
+                          <!--<label style="line-height: 30px; " class=" control-label ">{$ icmpResult.sent $}</label></div>-->
+
+                          <div class="col-md-5 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">
+                            <label style="line-height: 30px; " class=" control-label text-center">
+                              Received: </label><label style="line-height: 30px; " class=" control-label ">{$ icmpResult.received $}</label></div>
+                              <!--<div class="col-md-2 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">-->
+                              <!--<label style="line-height: 30px; " class=" control-label ">{$ icmpResult.received $}</label></div>-->
+                              <div class="col-md-1"></div>
+                              <div class="col-md-5  border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">
+                                <label style="line-height: 30px; " class=" control-label text-center">
+                                  Packet Loss: </label><label style="line-height: 30px; " class=" control-label ">{$ icmpResult.packet_loss $}</label></div>
+                                  <!--<div class="col-md-2 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">-->
+                                  <!--<label style="line-height: 30px; " class=" control-label ">{$ icmpResult.received $}</label></div>-->
+                                  <div class="col-md-5 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">
+                                    <label style="line-height: 30px; " class=" control-label text-center">
+                                      Jitter: </label><label style="line-height: 30px; " class=" control-label ">{$ icmpResult.jitter $}</label></div>
+                                      <!--<div class="col-md-2 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">-->
+                                      <!--<label style="line-height: 30px; " class=" control-label ">{$ icmpResult.received $}</label></div>-->
+                                      <div class="col-md-1"></div>
+                                      <div class="col-md-5  border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">
+                                        <label style="line-height: 30px; " class=" control-label text-center">
+                                          Max Ping: </label><label style="line-height: 30px; " class=" control-label ">{$ icmpResult.maxping $}</label></div>
+                                          <!--<div class="col-md-2 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">-->
+                                          <!--<label style="line-height: 30px; " class=" control-label ">{$ icmpResult.received $}</label></div>-->
+
+                                          <div class="col-md-5 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">
+                                            <label style="line-height: 30px; " class=" control-label text-center">
+                                              Min Ping: </label><label style="line-height: 30px; " class=" control-label ">{$ icmpResult.minping $}</label></div>
+                                              <!--<div class="col-md-2 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">-->
+                                              <!--<label style="line-height: 30px; " class=" control-label ">{$ icmpResult.received $}</label></div>-->
+                                              <div class="col-md-1"></div>
+                                              <div class="col-md-5  border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">
+                                                <label style="line-height: 30px; " class=" control-label text-center">
+                                                  Avg Ping: </label><label style="line-height: 30px; " class=" control-label "> {$ icmpResult.avgping $}</label></div>
+                                                  <!--<div class="col-md-2 border-grey-steel" style="margin: 2px !important;border: 2px solid #fff;">-->
+                                                  <!--<label style="line-height: 30px; " class=" control-label ">{$ icmpResult.received $}</label></div>-->
+                                                </div>
+                                                <div class="row" style="margin-top: 10px;">
+                                                  <div class="col-md-1"></div>
+                                                  <div class="col-md-10" style="padding-right: 0!important;padding-left: 0!important;">
+                                                    <div class="table-scrollable" style="width: 100%;">
+                                                      <table class="table">
+                                                        <thead>
+                                                          <tr>
+                                                            <th>
+                                                              Ping Count
+                                                            </th>
+                                                            <th>Ping Timeout</th>
+                                                            <th>Ping</th>
+                                                          </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                          <tr>
+                                                            <td><input type="text" class="form-control ng-pristine ng-valid ng-touched" id="pingCount"
+                                                             placeholder="Ping Count" data-ng-model="pingCount" value="4"></td>
+
+                                                             <td><input type="text" class="form-control ng-pristine ng-valid ng-touched" id="pingTimeout"
+                                                               placeholder="Ping Timeout" data-ng-model="pingTimeout" value="0.2"></td>
+
+                                                               <td><a href="javascript:;" class="btn dark btn-outline" data-ng-click="getPingResult()"
+                                                                >Ping</a></td>
+                                                              </tr>
+                                                            </tbody>
+                                                          </table></div>
+                                                        </div>
+
+                                                        <!--<div class="col-md-1"></div>-->
+                                                        <!--<div class="border-grey-steel col-md-5" style="margin: 2px !important;border: 2px solid #fff;">-->
+                                                        <!--<div class="form-group form-md-line-input ">-->
+                                                        <!--<div class="col-md-6"><label for="pingCount">Ping Count</label></div>-->
+                                                        <!--<div class="col-md-6"><input type="text" class="form-control ng-pristine ng-valid ng-touched" id="pingCount"-->
+                                                        <!--placeholder="Ping Count" data-ng-model="pingCount" value="4"></div>-->
+
+
+                                                        <!--</div>-->
+                                                        <!--</div>-->
+
+                                                        <!--<div class="border-grey-steel col-md-5" style="margin: 2px !important;border: 2px solid #fff;">-->
+                                                        <!--<div class="form-group form-md-line-input  col-md-4">-->
+                                                        <!--<div class="col-md-6">-->
+                                                        <!--<label for="pingTimeout">Ping Timeout</label>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="col-md-6">-->
+                                                        <!--<input type="text" class="form-control ng-pristine ng-valid ng-touched" id="pingTimeout"-->
+                                                        <!--placeholder="Ping Timeout" data-ng-model="pingTimeout" value="0.2">-->
+                                                        <!--</div>-->
+
+                                                        <!--</div>-->
+                                                        <!--</div>-->
+                                                        <!--<div class="border-grey-steel col-md-4" style="margin: 2px !important;border: 2px solid #fff;">-->
+                                                        <!--<a href="javascript:;" class="btn blue-ebonyclay pull-left" data-ng-click="getPingResult()"-->
+                                                        <!--style="margin:20px;">Ping</a>-->
+                                                        <!--</div>-->
+                                                      </div>
+                                                      <!--<div class="table-scrollable">-->
+                                                      <!--<table class="table table-hover table-light">-->
+                                                      <!--<thead>-->
+                                                      <!--<tr>-->
+                                                      <!--<th>Sent</th>-->
+                                                      <!--<th>Received</th>-->
+                                                      <!--<th>Packet Loss</th>-->
+                                                      <!--<th>Jitter</th>-->
+                                                      <!--<th>Max Ping</th>-->
+                                                      <!--<th>Min Ping</th>-->
+                                                      <!--<th>Avg Ping</th>-->
+                                                      <!--</tr>-->
+                                                      <!--</thead>-->
+                                                      <!--<tbody>-->
+                                                      <!--<tr>-->
+                                                      <!--<td> {$ icmpResult.sent $}</td>-->
+                                                      <!--<td> {$ icmpResult.received $}</td>-->
+                                                      <!--<td> {$ icmpResult.packet_loss $}</td>-->
+                                                      <!--<td> {$ icmpResult.jitter $}</td>-->
+                                                      <!--<td> {$ icmpResult.maxping $}</td>-->
+                                                      <!--<td> {$ icmpResult.minping $}</td>-->
+                                                      <!--<td> {$ icmpResult.avgping $}</td>-->
+                                                      <!--</tr>-->
+                                                      <!--</tbody>-->
+                                                      <!--</table>-->
+                                                      <!--</div>-->
+                                                    </div>
+                                                  </div>
+                                                </div>
+
+                                              </div>
+                                              <!--</div>-->
+                                            </div>
+
+                                          </div>
+
+                                        </uib-tab>
+
+                                        <uib-tab ng-show='chart_is_drawed.chart3 || chart_is_drawed.chart2 || chart_is_drawed.chart1'  heading="Port Stats">
+                                          <div class="row">
+                                            <div class="col-md-12" ng-show='chart_is_drawed.chart3'>
+                                              <div class="portlet light ">
+                                                <div class="portlet-body">
+                                                  <div id="line-profile-usage">
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="col-md-6" ng-show='chart_is_drawed.chart1'>
+                                              <div class="portlet light ">
+                                                <div class="portlet-body">
+                                                  <div id="container" style="width:100%;margin: 0 auto">
+                                                    <div  id="port-admin-status"></div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="col-md-6" ng-show='chart_is_drawed.chart2'>
+                                              <div class="portlet light">
+                                                <div class="portlet-body">
+                                                  <div   id="port-oper-status"></div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </uib-tab>
+                                        <uib-tab heading='Port list'>
+                                         <div class="row">
+                                           <div class="form-group   col-md-3">
+                                            <label class="m-l" >Slot</label>
+                                            <select class="form-control" data-ng-model="port_list.slot"
+                                            ng-change='getPortList()'>
+                                            <option ng-repeat = 'slot in slot_list track by $index'>{$ slot $}</option>
+                                          </select>
+
+
+                                        </div>
+                                        <div class="form-group   col-md-3">
+                                          <label class="m-l" >Port</label>
+                                          <select class="form-control" data-ng-model="port_list.port"
+                                          ng-change='getPortList()'>
+                                          <option ng-repeat = 'port in port_list track by $index' >{$ port.port_number $}</option>
+                                        </select>
+
+
+                                      </div>
+
+                                      <div class="form-group   col-md-3">
+                                        <button class="btn btn-default" style="margin-top: 22px;">
+                                          <i class="fa fa-search font-torange" ></i>
+                                          Search</button>
+
+                                        </div>
+
+                                      </div>
+                                      <div class="row">
+                                       <div class="col-md-12">
+                                         <table class="table table-hover">
+                                           <thead>
+                                             <th>Port Index</th>
+                                             <th>Port Name</th>
+                                             <th>Slot</th>
+                                             <th>Port</th>
+                                             <th>Uptime</th>
+                                             <th>Reseller</th>
+                                             <th>Subscriber</th>
+                                             <th>Oper Status</th>
+                                             <th>Admin Status</th>
+                                           </thead>
+                                           <tbody>
+                                             <tr ng-repeat= 'port in port_list.data'>
+                                               <td>{$ port.port_index $}</td>
+                                               <td>
+                                                 <a href="#/dslamport/{$ port.dslam $}/{$ port.id $}/status-report"> {$ port.port_name $} </a></td>
+                                                 <td>{$ port.slot_number $}</td>
+                                                 <td>{$ port.port_number $}</td>
+                                                 <td>{$ port.dslam_info.uptime $}</td>
+                                                 <td> {$ port.subscriber $} </td>
+                                                 <td>{$ port.reseller $}</td>
+                                                 <td>{$ port.oper_status $}</td>
+                                                 <td>{$ port.admin_status $}</td>
+                                               </tr>
+                                             </tbody>
+                                           </table>
+                                         </div>
+                                         <ul style="margin-left: 15px;" uib-pagination total-items="port_list.count" ng-model="port_list.page" ng-change="getPortList()" max-size='5'></ul>
+                                       </div>
+                                     </uib-tab>
+                                     <uib-tab  heading="Faulty Ports">
+                                      <div class="row">
+                                        <div class="form-body">
+                                          <form ng-submit='addWastedConfig()'>
+                                            <div class="form-group">
+                                              <div class="col-md-3">
+                                                <label>Slot Number From</label>
+                                                <input class="form-control" type="text"
+                                                ng-model='waste.slot_number_from' required/>
+                                              </div>
+                                            </div>
+                                            <div class="form-group">
+                                              <div class="col-md-3">
+                                                <label>Port Number From</label>
+                                                <input class="form-control" type="text"
+                                                ng-model='waste.port_number_from'
+                                                required/>
+                                              </div>
+                                            </div>
+                                            <div class="form-group">
+                                              <div class="col-md-3">
+                                                <label>Slot Number To</label>
+                                                <input class="form-control" type="text"
+                                                ng-model='waste.slot_number_to'
+                                                required/>
+                                              </div>
+                                            </div>
+                                            <div class="form-group">
+                                              <div class="col-md-3">
+                                                <label>Port Number To</label>
+                                                <input class="form-control" type="text"
+                                                ng-model='waste.port_number_to'
+                                                required />
+                                              </div>
+                                            </div>
+                                            <div class="col-md-2 pull-right">
+                                              <button type="submit" class="btn btn-default margin-top-20 margin-bottom-10 pull-right">
+                                                Add New
+                                              </button>
+                                            </div>
+
+                                          </form>
+                                          <div class="col-md-12 margin-top-20" ng-if='wasted_list.length>0'>
+                                            <table class="table table-striped table-bordered table-advance table-hover">
+                                              <thead>
+                                                <th>Slot From</th>
+                                                <th>Port From</th>
+                                                <th>Slot To</th>
+                                                <th>Port To</th>
+                                                <th>Action</th>
+                                              </thead>
+                                              <tbody>
+                                                <tr ng-repeat = 'waste in wasted_list track by $index '>
+                                                  <td> <input  style="cursor:pointer;border:none!important;width: 40px!important;"
+                                                   class="pointer hand input-xs" ng-value="waste.slot_number_from"
+                                                   readonly="true" ng-model='wasted_list[$index]["slot_number_from"]'
+                                                   ondblclick="this.readOnly = ''"
+                                                   />
+                                                   <!--    {$ waste.slot_number_from $} -->
+                                                 </td>
+                                                 <td>
+                                                   <input  style="cursor:pointer;border:none!important;width: 40px!important;"
+                                                   class="pointer hand input-xs" ng-value="waste.port_number_from"
+                                                   readonly="true" ng-model='wasted_list[$index]["port_number_from"]'
+                                                   ondblclick="this.readOnly = ''"
+                                                   />
+                                                 </td>
+                                                 <td>
+                                                  <input  style="cursor:pointer;border:none!important;width: 40px!important;"
+                                                  class="pointer hand input-xs" ng-value="waste.slot_number_to"
+                                                  readonly="true" ng-model='wasted_list[$index]["slot_number_to"]'
+                                                  ondblclick="this.readOnly = ''"
+                                                  />
+                                                </td>
+                                                <td>
+                                                  <input  style="cursor:pointer;border:none!important;width: 40px!important;"
+                                                  class="pointer hand input-xs" ng-value="waste.port_number_to"
+                                                  readonly="true" ng-model='wasted_list[$index]["port_number_to"]'
+                                                  ondblclick="this.readOnly = ''"
+                                                  />
+                                                </td>
+
+
+                                                <td>
+                                                  <button class="btn btn-primary btn-xs" ng-click='UpdateFaultyPorts(wasted_list[$index], waste.id)'>
+                                                    <i class="icon-pencil"></i>
+                                                  </button>
+                                                  <button ng-confirm-click="DeleteFaultyPorts(waste)" ng-confirm-message="Are You Sure ?" class="btn btn-danger btn-xs" >
+                                                    <i class="icon-trash"></i>
+                                                  </button>
+                                                </td>
+                                              </tr>
+
+                                            </tbody>
+
+                                          </table>
+
+
+                                          <ul ng-if='wasted.TotalItems > 1' uib-pagination total-items="wasted.TotalItems" ng-model="wasted.page" ng-change='getWastedList()'  class="pagination-sm" boundary-links="true"></ul>
+                                        </div>
+                                        <div class="col-md-12" ng-if='wasted_list_port.length > 0'>
+                                          <table class="table table-striped table-bordered table-advance table-hover">
+                                            <thead>
+                                              <th>Slot Number</th>
+                                              <th>Port Number</th>
+                                              <th>Create Time</th>
+
+                                            </thead>
+                                            <tbody>
+                                              <tr ng-repeat = 'port in wasted_list_port track by $index '>
+                                                <td>
+                                                  {$ port.slot_number $}
+                                                </td>
+                                                <td>
+                                                 {$ port.port_number $}
+                                               </td>
+                                               <td>
+                                                 {$ port.created_at $}
+                                               </td>
+
+                                             </tr>
+
+                                           </tbody>
+
+                                         </table>
+
+                                         <ul ng-if='wasted_port.TotalItems > 1' uib-pagination total-items="wasted_port.TotalItems" ng-model="wasted_port.page" ng-change='getWastedPortList()'  class="pagination-sm" boundary-links="true" max-size='5'></ul>
+                                       </div>
+                                     </div>
+                                   </div>
+
+                                 </uib-tab>
+                               </uib-tabset>
+                             </div>
+                           </div>
+                         </div>
+
+
+
+                       </div>
+                       <div class="row">
+                         <div class="col-md-12">
+                           <div class="portlet light" ng-show='user_access_admin || user_access_view_dslam' style="border:1px solid #BFCAD1; padding: 0;">
+                            <div class="portlet-body" style="border : 1px solid #E9EDEF;padding-top: 0;min-height: 450px;">
+
+                              <uib-tabset  active="active2" >
+                                <uib-tab  heading="Ping History">
+                                  <div class="col-md-12" id="pingresultcontent">
+                                    <div id="dslamavgping"></div>
+                                  </div>
+                                </uib-tab>
+                                <uib-tab heading="Live ping">
+                                 <div class="row" style="min-height:250px;">
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <div class="col-md-3" style="padding-left: 30px;">
+
+                                      </div>
+                                      <div class="col-md-6" >
+                                        <div class="mt-element-step" >
+                                          <div class="row step-thin text-center">
+                                            <div class="col-lg-1"></div>
+
+                                            <div class="col-lg-5 bg-grey mt-step-col  text-center" ng-show='show_chart'>
+                                              <button class="btn btn-default red"   ng-click="changeShowState()">End Live Data</button>
+
+                                            </div>
+                                            <div class="col-lg-5 bg-grey mt-step-col  text-center" ng-show='!show_chart'>
+
+
+                                             <button class="btn btn-default green" ng-show='!show_chart' ng-click="changeShowState()">Get Live Data</button>
+                                           </div>
+                                           <div class="col-lg-5 mt-step-col bg-grey active" >
+
+                                            <div style="padding: 7.5px;" >
+                                             <span class="text-center" style="background-color: white;border-radius: 100%!important;margin-right: 9px; padding: 7px 10px 7px 10px;"> {$ socket_count $} </span>
+
+                                             Receive Count</div>
+                                           </div>
+
+
+                                         </div>
+                                       </div>
+
+
+
+                                     </div>
+                                     <div class="col-md-3" style="padding-right: 30px;">
+
+                                     </div>
+
+                                   </div></div>
+                                   <div class="col-md-12" >
+                                     <div id="liveping"></div>
+                                   </div>
+
+                                 </div>
+
+                               </uib-tab>
+
+
+                             </uib-tabset>
+                           </div>
+                         </div>
+                       </div>
+
+
+                     </div>
+                   </div>
+
+                   <div class="row" ng-show='user_access_admin || user_access_view_dslam'>
+                    <div class="col-md-12">
+                      <div class="portlet light" style="border:1px solid #BFCAD1; ">
+                        <div class="portlet-body">
+                          <div id="dslam-map" style="position: inherit!important;height: 200px;"></div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="modal fade " id="show_mac" role="dialog">
+                    <div class="modal-dialog">
+                      <div class="modal-content" style="max-height: 600px;overflow-y: auto;">
+                        <div class="modal-body">
+
+
+
+                          <div class="row">
+                            <div class="col-md-12">
+                              <table class="table table-striped table-hover">
+                                <thead>
+                                 <tr>
+                                  <th>
+                                    card
+                                  </th>
+                                  <th>
+                                    port
+                                  </th>
+
+                                  <th>
+                                    mac-address
+                                  </th>
+                                  <th>
+                                    vlan id
+                                  </th>
+
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr ng-repeat="item in  mac_list track by $index">
+                                  <td>
+                                    {$ item.slot_number $}
+                                  </td><td>{$ item.port_number $}
+                                </td>
+                                <td>{$ item.mac $}
+                                </td>
+                                <td>{$ item.vlan_id $}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+              <div class="modal fade " role="dialog" id="showAboutBox" >
+                <div class="modal-dialog">
+
+                  <div class="modal-content" style="min-height: 100px;height: 400px;overflow-y: scroll;">
+                   <div class="modal-header" style="border-bottom: none!important;">
+
+                   </div>
+                   <div class="modal-body" >
+                    <div class="row">
+                      <div class="col-xs-12">
+
+
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                             <th>name</th>
+                             <th>min ds transmit rate</th>
+                             <th>max ds transmit rate</th>
+                             <th>min us transmit rate</th>
+                             <th>max us transmit rate</th>
+                             <th>ds snr margin</th>
+                             <th>us snr margin</th>
+                             <th>max ds interleaved</th>
+                             <th>max us interleaved</th>
+
+
+                           </tr>
+                         </thead>
+                         <tbody>
+
+                          <tr ng-repeat="m in modal_data track by $index">
+                            <td>{$ m.name $}</td>
+                            <td>{$ m.min_ds_transmit_rate $}</td>
+                            <td>{$ m.max_ds_transmit_rate $}</td>
+                            <td>{$ m.min_us_transmit_rate $}</td>
+                            <td>{$ m.max_us_transmit_rate $}</td>
+                            <td>{$ m.ds_snr_margin $}</td>
+                            <td>{$ m.us_snr_margin $}</td>
+                            <td>{$ m.max_ds_interleaved $}</td>
+                            <td>{$ m.max_us_interleaved $}</td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>

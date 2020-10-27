@@ -1,0 +1,496 @@
+<!-- <div class="row" >
+    <div class="col-md-12" >
+        <br/>
+        <div class="form-group form-md-line-input has-success col-md-4">
+            <input id="selectedCity" type="text" ng-model="selected_City"  ng-change="loadDSLAMMarker()" ng-model-options="{ debounce: 1000 }"
+            uib-typeahead="d as d.name for d in loadProvince($viewValue) " 
+            class="form-control" placeholder="Enter Province Name"  
+            typeahead-min-length = '0' />
+          
+            <label for="selectedCity"> Province</label>
+        </div>
+        <hr style="clear:both"/>
+        <div id="map"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-red"></i>
+                    <span class="caption-subject font-red sbold uppercase">DSLAM Report</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            <div class="portlet-body">
+              <div class="delete_box">
+                  <div class="alert alert-block alert-danger fade in center">
+                     <button type="button" class="close" data-dismiss="alert"></button>
+                     <h4 class="alert-heading">Warning!</h4>
+                     <p> Do you want delete this DSLAM? 
+                     </p>
+                     <p>
+                       <br/>
+                       <a class="btn red" href="javascript:;" data-ng-click="delete_dslam()"> Do this </a>
+                       <button class="btn blue" onclick="$('.delete_box').hide('slow');"> Cancel </button>
+                   </p>
+               </div>
+           </div>
+           <div class="tab-content">
+             <ul class="feeds">
+              <li data-ng-repeat="item in dslamEvents.results">
+                  <div class="col1">
+                      <div class="cont">
+                       <div class="cont-col1">
+                          <div class="label label-sm" ng-class="{'info': 'label-success','warning': 'label-warning','error': 'label-danger'}[item.flag]">
+                            <i class="fa fa-bell-o"></i>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="cont-col2">
+                      <div class="desc"> 
+                       <a href="#/dslam/{$ item.dslam $}/report">
+                           {$ item.dslam_info.name $} -  {$ item.type $} 
+                           <br>
+                           <b>
+                            {$ item.message $}      
+                        </b>
+                    </div>                
+                    <span class="fa fa-edit"></span>
+                </button>
+            </a>    
+            <button class="btn btn-danger btn-xs" ng-click="removeFuelCarry($index, FuelCarryRecord.ID)"  ng-hide="FuelCarryRecord.Check == 1">
+                <span class="fa fa-remove"></span>
+            </button>
+        </td>
+    </tr>
+</tbody>
+</table>
+<footer class="table-footer">
+  <div class="row">
+    <div class="col-md-4 page-num-info">
+       <span>view
+         <select data-ng-model="dslam_events_options.numPerPage"
+         data-ng-options="num for num in dslam_events_options.numPerPageOpt"
+         data-ng-change="onDslamEventsNumPerPageChange()">
+     </select> 
+     record per page
+ </span>
+</div>
+<div class="col-md-6 text-right pagination-container">
+  <uib-pagination class="pagination-sm"
+  ng-model="dslam_events_options.currentPage"
+  total-items="dslam_events_options.totalItems"
+  max-size="4"
+  ng-change="selectDslamEvents(currentPage)"
+  items-per-page="dslam_events_options.numPerPage"
+  rotate="false"
+  previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+  boundary-links="true"></uib-pagination>
+</div>
+<div class="col-md-2 text-right pagination-container">  go to page
+
+ <input type="text" size="3" value="" data-ng-model="gotopage" data-ng-keyup="goToPage(gotopage)" style="border-radius:5px; border:1px solid #31c0be; margin-right: 20px;">
+</div>
+</div>
+</footer>                
+</div>
+
+</div>
+<div class="col-md-6">
+    <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="icon-settings font-red"></i>
+                <span class="caption-subject font-red sbold uppercase">Port Event</span>
+            </div>
+            <div class="actions">
+
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <div class="tab-content">
+                <ul class="feeds">
+                 <li data-ng-repeat="item in dslamPortEvents.results">
+                     <div class="col1">
+                       <div class="cont">
+                         <div class="cont-col1">
+                           <div class="label label-sm" ng-class="{'info': 'label-success','warning': 'label-warning','error': 'label-danger'}[item.flag]">
+                               <i class="fa fa-bell-o"></i>
+                           </div>
+                       </div>
+                       <div class="cont-col2">
+                        <div class="desc"> 
+                          <a href="#/dslamport/{$ item.dslam $}/status-report/{$ item.slot_number $}/{$ item.port_number $}">
+
+                           {$ item.dslam_info.name $} -  {$ item.type $} 
+                           <br>
+                           <b>
+                            {$ item.message $}      
+                        </b>      <i class="fa fa-share"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col2">
+      <div class="date"> 
+       {$ item.created_at | timeago $}      
+   </div>
+</div>
+</li>
+</ul>
+</div>
+
+</div>
+<div class="text-center">
+ <ul uib-pagination 
+ total-items="dslamPortEvents.totalItems" 
+ ng-model="dslamPortEvents.pageNumber" 
+ max-size="7" 
+ class="pagination-sm" 
+ boundary-link-numbers="true" 
+ force-ellipses="true"
+ ng-change="getDslamPortEventsPage()"></ul>
+</div>
+
+
+</div>
+</div>
+</div>
+ -->
+
+ 
+ <div class="row">
+    <div class="col-md-12" >
+        <br/>
+        <div class="form-group form-md-line-input has-success col-md-4">
+            <select class="form-control ng-pristine ng-valid ng-touched" id="selectedCity" ng-model="selected_City" ng-change="loadDSLAMMarker()">
+                <option value="">Please Select ...</option>
+                <option data-ng-repeat="item in cities" value="{$ item.id $}">{$ item.name $}</option>
+            </select>
+            <label for="selectedCity"> Province</label>
+        </div>
+        <hr style="clear:both"/>
+        <div id="map"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-red"></i>
+                    <span class="caption-subject font-red sbold uppercase">DSLAM Report</span>
+                </div>
+                <div class="actions">
+                    <!--                    <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                            <label class="btn btn-transparent red btn-outline btn-circle btn-sm">
+                                                <input type="radio" name="options" class="toggle" id="option1">Read</label>
+                                            <label class="btn btn-transparent red btn-outline btn-circle btn-sm active">
+                                                <input type="radio" name="options" class="toggle" id="option2">Unread</label>
+                                            <label class="btn btn-transparent red btn-outline btn-circle btn-sm">
+                                                <input type="radio" name="options" class="toggle" id="option2">Resolve</label>
+                                        </div>-->
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="delete_box">
+                    <div class="alert alert-block alert-danger fade in center">
+                        <button type="button" class="close" data-dismiss="alert"></button>
+                        <h4 class="alert-heading">Warning!</h4>
+                        <p>
+                            Do you want delete this DSLAM? 
+                        </p>
+                        <p>
+                            <br/>
+                            <a class="btn red" href="javascript:;" data-ng-click="delete_dslam()"> Do this </a>
+                            <button class="btn blue" onclick="$('.delete_box').hide('slow');"> Cancel </button>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <ul class="feeds">
+                        <li data-ng-repeat="item in dslamEvents.results">
+                            <div class="col1">
+                                <div class="cont">
+                                    <div class="cont-col1">
+                                        <div class="label label-sm" ng-class="{'info': 'label-success','warning': 'label-warning','error': 'label-danger'}[item.flag]">
+                                            <i class="fa fa-bell-o"></i>
+                                        </div>
+                                    </div>
+                                    <div class="cont-col2">
+                                        <div class="desc"> 
+                                            <a href="#/dslam/{$ item.dslam $}/report">
+
+                                                {$ item.dslam_info.name $} - 
+                                                {$ item.type $} 
+                                                <br>
+                                                <b>
+                                                    {$ item.message $}      
+
+                                                </b>
+                                                <!--                                            <span class="label label-sm label-info"> 
+                                                                                                <i class="fa fa-share"></i>
+                                                                                            </span>-->
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col2">
+                                <div class="date"> 
+                                    {$ item.created_at | timeago $}      
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <ul uib-pagination 
+                        total-items="dslamEvents.totalItems" 
+                        ng-model="dslamEvents.pageNumber" 
+                        max-size="7" 
+                        class="pagination-sm" 
+                        boundary-link-numbers="true" 
+                        force-ellipses="true"
+                        ng-change="getDslamEventsPage()"
+                        ></ul>
+                </div>
+            </div>
+            <!-- END PORTLET-->
+        </div>                
+
+        <!--<div class="grid" ui-grid="dslamEventsGridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>-->
+
+
+        <!--                <div class="table-scrollable">
+                            <div class="table-filters" ng-if="dslam_events_options">
+                                <div class="row">
+        
+                                    <div class="col-sm-12  text-right">
+                                        <span>
+                                            {$ dslam_events_options.totalItems $}  
+                                            / 
+                                            {$ dslam_events_options.currentPage * dslam_events_options.numPerPage $} 
+                                            - 
+                                            {$ ((dslam_events_options.currentPage - 1) * dslam_events_options.numPerPage) + 1 $}
+                                        </span>              
+                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <form>
+                                                            <input type="text"
+                                                                   placeholder="جستجو"
+                                                                   class="form-control"
+                                                                   data-ng-model="searchKeywords"
+                                                                   data-ng-keyup="search($event)">
+                                                        </form>
+                                                    </div>
+                                </div>
+                            </div>
+        
+                            <table class="table table-hover table-light">
+                                <thead>
+                                    <tr>
+                                        <th> #</th>
+                                        <th>DSLAM</th>
+                                        <th>Event Type</th>
+                                        <th>Message</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   data-ng-model="dslam_search.dslam_name"
+                                                   data-ng-keyup="searchDslamEvents($event, dslam_search.dslam_name, dslam_search.dslam_name)">
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-ng-repeat="item in dslamEvents">
+                                        <td> {$ item.id $}</td>
+                                        <td> {$ item.dslam_info.name $}</td>
+                                        <td> {$ item.type $}</td>
+                                        <td> {$ item.message $}</td>
+                                        <td>
+                                            <span class="label label-sm label-danger"> Blocked </span>
+                                                                                <span class="label label-sm label-info"> Pending </span>
+                                                                                <span class="label label-sm label-warning"> Suspended </span>
+                                                                                <span class="label label-sm label-danger"> Blocked </span>
+                                                                                <span class="label label-sm label-success"> Resolved </span>
+                                        </td>
+                                        <td>
+                                                                                <a href="#/fuel-carry/view/{{FuelCarryRecord.ID}}/{{ASIACode}}">
+                                                                                    <button class="btn btn-primary btn-xs" type="button">
+                                                                                        <span class="fa fa-edit"></span>
+                                                                                    </button>
+                                                                                </a>    
+                                                                                <button class="btn btn-danger btn-xs" ng-click="removeFuelCarry($index, FuelCarryRecord.ID)"  ng-hide="FuelCarryRecord.Check == 1">
+                                                                                    <span class="fa fa-remove"></span>
+                                                                                </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <footer class="table-footer">
+                                <div class="row">
+                                    <div class="col-md-4 page-num-info">
+                                        <span>
+                                            view
+                                            <select data-ng-model="dslam_events_options.numPerPage"
+                                                    data-ng-options="num for num in dslam_events_options.numPerPageOpt"
+                                                    data-ng-change="onDslamEventsNumPerPageChange()">
+                                            </select> 
+        
+                                            record per page
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 text-right pagination-container">
+                                        <uib-pagination class="pagination-sm"
+                                                        ng-model="dslam_events_options.currentPage"
+                                                        total-items="dslam_events_options.totalItems"
+                                                        max-size="4"
+                                                        ng-change="selectDslamEvents(currentPage)"
+                                                        items-per-page="dslam_events_options.numPerPage"
+                                                        rotate="false"
+                                                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                                                        boundary-links="true"></uib-pagination>
+                                    </div>
+                                    <div class="col-md-2 text-right pagination-container">
+        
+                                        go to page
+        
+                                        <input type="text" size="3" value="" data-ng-model="gotopage" data-ng-keyup="goToPage(gotopage)" style="border-radius:5px; border:1px solid #31c0be; margin-right: 20px;">
+                                    </div>
+                                </div>
+                            </footer>                
+        
+        
+        
+                        </div>-->
+
+        <!--                <div class="table-scrollable">
+                            <table class="table table-hover table-light">
+                                <thead>
+                                <tr>
+                                    <th> #</th>
+                                    <th>DSLAM</th>
+                                    <th>Event Type</th>
+                                    <th>Message</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr data-ng-repeat="item in dslam_events">
+                                    <td> {$ item.id $}</td>
+                                    <td> {$ item.dslam_info.name $}</td>
+                                    <td> {$ item.type $}</td>
+                                    <td> {$ item.message $}</td>
+                                    <td>
+                                     <span class="label label-sm label-danger"> Blocked </span>
+                                        
+                                        <span class="label label-sm label-info"> Pending </span>
+                                        <span class="label label-sm label-warning"> Suspended </span>
+                                        <span class="label label-sm label-danger"> Blocked </span>
+                                           <span class="label label-sm label-success"> Resolved </span>
+                                        
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>-->
+    </div>
+    <div class="col-md-6">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-red"></i>
+                    <span class="caption-subject font-red sbold uppercase">Port Event</span>
+                </div>
+                <div class="actions">
+                    <!--                    <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                            <label class="btn btn-transparent red btn-outline btn-circle btn-sm">
+                                                <input type="radio" name="options" class="toggle" id="option1">Read</label>
+                                            <label class="btn btn-transparent red btn-outline btn-circle btn-sm active">
+                                                <input type="radio" name="options" class="toggle" id="option2">Unread</label>
+                                            <label class="btn btn-transparent red btn-outline btn-circle btn-sm">
+                                                <input type="radio" name="options" class="toggle" id="option2">Resolve</label>
+                                        </div>-->
+                </div>
+            </div>
+            <div class="portlet-body">
+
+                <div class="tab-content">
+                    <ul class="feeds">
+                        <li data-ng-repeat="item in dslamPortEvents.results">
+                            <div class="col1">
+                                <div class="cont">
+                                    <div class="cont-col1">
+                                        <div class="label label-sm" ng-class="{'info': 'label-success','warning': 'label-warning','error': 'label-danger'}[item.flag]">
+                                            <i class="fa fa-bell-o"></i>
+                                        </div>
+                                    </div>
+                                    <div class="cont-col2">
+                                        <div class="desc"> 
+                                            <a href="#/dslamport/{$ item.dslam $}/status-report/{$ item.slot_number $}/{$ item.port_number $}">
+                                                <!--/dslamport/133/adsl10-9/status-report-->
+                                            {$ item.dslam_info.name $} - 
+                                            {$ item.type $} 
+                                            <br>
+                                            <b>
+                                                {$ item.message $}      
+
+                                            </b>
+                                            <!--                                            <span class="label label-sm label-info"> 
+                                                                                            <i class="fa fa-share"></i>
+                                                                                        </span>-->
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col2">
+                                <div class="date"> 
+                                    {$ item.created_at | timeago $}      
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="text-center">
+                <ul uib-pagination 
+                    total-items="dslamPortEvents.totalItems" 
+                    ng-model="dslamPortEvents.pageNumber" 
+                    max-size="7" 
+                    class="pagination-sm" 
+                    boundary-link-numbers="true" 
+                    force-ellipses="true"
+                    ng-change="getDslamPortEventsPage()"
+                    ></ul>
+            </div>
+
+
+        </div>
+        <!-- END SAMPLE TABLE PORTLET-->
+    </div>
+</div>

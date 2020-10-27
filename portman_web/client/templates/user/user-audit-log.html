@@ -1,0 +1,216 @@
+<div class="row" ng-show='user_access_view_userauditlog'>
+    <div class='col-md-12'>
+    <div class="page-bar">
+                <ul class="page-breadcrumb">
+                    <li>
+                        <a href="index.html">Home</a>
+                        <i class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a>Report Management</a>
+                        <i  class="fa fa-caret-right font-torange"></i>
+                    </li>
+                    <li>
+                        <a>Audit Log</a>
+                        
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+
+<div class="row" ng-show='user_access_view_userauditlog'>
+    <div class="col-md-12" >
+        <div class="delete_box">
+            <div class="alert alert-block alert-danger fade in center">
+                <button type="button" class="close" data-dismiss="alert"></button>
+                <h4 class="alert-heading">Warning!</h4>
+                <p>
+                    Do you want delete this DSLAM?
+                </p>
+                <p>
+                    <br/>
+                    <a class="btn red" href="javascript:;" data-ng-click="delete_dslam()"> Do this </a>
+                    <button class="btn blue" onclick="$('.delete_box').hide('slow');"> Cancel </button>
+                </p>
+            </div>
+        </div>
+
+        <div id="showAboutBox" class="showAboutBox wrapper22 vertical-center" >
+
+            <div class="col-xs-12 col-md-6 panel panel-info center">
+                <div class="panel-heading" style="height:65px;padding:13px;">
+                    <div class="pull-left">
+                        <h3 class="panel-title" style="font-weight: bold;font-size:20px">
+                            DSLAM Information
+                        </h3>
+                    </div>
+                    <div class="pull-right"> <a class="btn red-mint" href="javascript:;" onclick="$('#showAboutBox').hide('slow');">Close</a>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <table id="dslamport-info-report">
+                        <tr>
+                            <th>Name</th>
+                            <td>{$ name $}</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>{$ telecom_center $}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Dslam Type</th>
+                            <td>{$ dslam_type $}</td>
+                        </tr>
+                        <tr>
+                            <th>IP</th>
+                            <td>{$ ip $}</td>
+                        </tr>
+                        <tr>
+                            <th>Active</th>
+                            <td >
+                                <div ng-switch on="active" id="admin_status_led" style="float:left;margin-right:10px;">
+                                    <span ng-switch-when="true" class="badge badge-success"> &nbsp;&nbsp;</span>
+                                    <span ng-switch-default class="badge badge-danger">&nbsp;&nbsp;</span>
+                                </div>
+                                <label >{$ active $}</label>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                <div ng-switch on="status" id="status_led" style="float:left;margin-right:10px;">
+                                    <span ng-switch-when="new" class="badge badge-success"> &nbsp;&nbsp;</span>
+                                    <span ng-switch-when="ready" class="badge badge-info"> &nbsp;&nbsp;</span>
+                                    <span ng-switch-default class="badge badge-danger">&nbsp;&nbsp;</span>
+                                </div>
+
+                                <label id="line_profile_label">{$ status $}</label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Ports Count (total | up | down)</th>
+                            <td>{$ total_ports_count $} | {$ up_ports_count $} | {$ down_ports_count $}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Last Sync</th>
+                            <td>{$ last_sync_duration $}</td>
+                        </tr>
+                        <tr>
+                            <th>Conn Type</th>
+                            <td>
+                                <label id="line_profile_label">{$ conn_type $}</label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th> Snmp Community </th>
+                            <td>{$ snmp_community $}</td>
+                        </tr>
+                        <tr>
+                            <th>Snmp Port</th>
+                            <td>{$ snmp_port $}</td>
+                        </tr>
+                        <tr>
+                            <th>Snmp Timeout</th>
+                            <td>{$ snmp_timeout $}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Updated At</th>
+                            <td>{$ updated_at $}</td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i  class="icon-settings font-torange"></i>
+                    <span class="caption-subject bold uppercase">DSLAMs</span>
+                </div>
+                <div class="tools"> </div>
+            </div>
+            <div class="portlet-body">
+                <div class="panel " style="border:1px solid #E9EDEF;">
+                    <div class=" bg-font-grey-steel" style="padding:10px;background-color:#fbfcfd;border-bottom:1px solid #E9EDEF;">
+                        <h3 class="panel-title"><strong>DSLAM Search Panel</strong></h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="form-body">
+                            <div class="form-group   col-md-3">
+                                <label for="username">UserName</label>
+                                <input type="text" class="form-control"  id="username" placeholder="username" data-ng-model="search.username">
+                                
+
+                            </div>
+
+                            <div class="form-group   col-md-3">
+                                <label for="IP">IP</label>
+                                <input type="text" class="form-control" id="IP"  placeholder="IP" data-ng-model="search.ip" ng-ip-address>
+                                
+
+                            </div>
+                            <div class="form-group  col-md-3" style="margin-bottom:10px;">
+                                <label for="select_city">Action</label>
+                                <input type="text" data-ng-model="search.selected_action"
+                                       uib-typeahead="actions.text as actions.text for actions in actions | filter:$viewValue | limitTo:8"
+                                       class="form-control"
+                                         required/>
+                                <!--<select class="select-action-data-array form-control" id="select_action" data-ng-model="search.selected_action">-->
+                                    <!--<option value="">Please Select ...</option>-->
+                                <!--</select>-->
+                                
+                            </div>
+                            <div class="form-group   col-md-3">
+                                 <label for="keywords">Keywords</label>
+                                <input type="text" class="form-control" id="keywords"  placeholder="keywords" data-ng-model="search.keywords">
+                               
+                                <span class="help-block">keyword seperated by ,</span>
+                            </div>
+                            <div class="col-md-3">
+                               <label>Start Date:</label>
+                              <adm-dtp ng-model='search.data_from' ng-change="setCalendar(1,search.data_from)"  options='{calType: "jalali", format: "YYYY/MM/DD", multiple : "false",   multiple: "false"}'></adm-dtp>
+                            </div>
+                            <div class="col-md-3">
+                                                    <label>   End Date:   </label>           
+                                                       <adm-dtp ng-model='search.data_to' ng-change="setCalendar(2,search.data_to)"  options='{calType: "jalali", format: "YYYY/MM/DD", multiple : "false",   multiple: "false"}'></adm-dtp>
+                            </div>
+                            <div class="col-md-2  margin-top-20">
+                                
+                                                    
+                                                    <a  href="javascript:;" class="btn btn-default" ng-click="searchData()"> 
+                                                        <i class="fa fa-search font-torange" style="margin-right:5px;"></i>Search
+                                                        
+                                                    </a>
+                                       
+                            </div>
+
+                        </div>
+                        <div style="clear:both"></div>
+                        <!--<a href="javascript:;" class="btn btn-lg green pull-right" ng-click="searchData()"> Search-->
+                            <!--<i class="fa fa-search"></i>-->
+                        <!--</a>-->
+
+                    </div>
+                </div>
+                <br>
+                <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+            </div>
+        </div>
+        <!-- END EXAMPLE TABLE PORTLET-->
+    </div>
+</div>

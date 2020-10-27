@@ -1,0 +1,109 @@
+
+<form class="form-horizontal form-bordered" ng-init="new_data=searchParams.record">
+    <div class="form-body">
+        <div class="form-group">
+            <label class="control-label col-md-3">User</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                   
+                     <input class="form-control"  type="text" ng-model="new_data.user_info.username"
+                           uib-typeahead="user as user.username for user in getUserList($viewValue)"
+                           typeahead-on-select = 'userChanged(new_data.user_info.username)'
+                           placeholder="Type User" required>
+                </div>
+
+            </div>
+        </div>
+      
+      <div class="form-group" >
+            <label class="control-label col-md-3">Dslam</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+
+                    
+                    <input class="form-control"  type="text" ng-model="edit.dslam_name"
+                           uib-typeahead="dslam as dslam.search_name for dslam in getDslam($viewValue)"
+                           typeahead-on-select = 'addTodslam_added(dslam_name)'
+                           placeholder="Type dslam">   
+                           <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
+                               <div ng-repeat = 'd in dslam_added' style="padding: 3px;border:1px solid crimson;margin-top: 2px;">
+                                  <span style="padding:15px;"> {$ d.object_name $} </span>
+                                  <i style="color: crimson; cursor: pointer;" class="glyphicon glyphicon-remove-circle pull-right" class="fa fa-close" ng-click='DeleteFromList($index)'></i>
+                                  <br >
+                               </div>
+                           </div>               
+                </div>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="control-label col-md-3">Commands</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                
+                     
+                     <input class="form-control"  type="text" ng-model="edit.command_name"
+                           uib-typeahead="command as command.name for command in getCommands($viewValue)" 
+                           typeahead-on-select = 'addTocommand_added(dslam_name)'
+                           placeholder="Type command" /> 
+                            <div class="col-md-12" style="padding-right: 0!important;padding-left: 0;">
+                               <div ng-repeat = 'c in command_added' style="padding: 3px;border:1px solid crimson;margin-top: 2px;">
+                                  <span > {$ c.object_name $}</span>
+                                  <i style="color: crimson; cursor: pointer;" class=" glyphicon glyphicon-remove-circle pull-right" ng-click='DeleteFromCList($index)'></i>
+                                   <br >
+                               </div>
+                           </div> 
+                           
+
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">Permission Profile</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                
+                      <input class="form-control"  type="text" ng-model="new_data.permission_profile_name"
+                           uib-typeahead="profile as profile.name for profile in GetPermissionProfileList($viewValue)"
+                           typeahead-on-select = 'profileChanged(new_data.permission_profile_name)'
+                           placeholder="Type Permission" required>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">Action</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                    <select class="form-control" ng-model="new_data.action">
+                        <option value="allow">Allow</option>
+                        <option value="deny">Deny</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">Is Active</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                    <select class="form-control" ng-model="new_data.is_active" ng-options="o.v as o.n for o in [{ n: 'False', v: false }, { n: 'True', v: true }]">
+                    </select>
+                </div>
+
+            </div>
+        </div>
+     
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <button type="submit" class="btn bg-primary" style="width: 100%;" ng-click="UpdatePermissionInfo(new_data)" data-dismiss="modal">
+                    <i class="fa fa-check"></i>
+                    Submit
+                </button>
+            
+            </div>
+        </div>
+    </div>
+</form>

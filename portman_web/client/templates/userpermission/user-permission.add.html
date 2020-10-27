@@ -1,0 +1,119 @@
+
+<form class="form-horizontal form-bordered" ng-submit="AddUserPermission(new_data)">
+    <div class="form-body">
+        <div class="form-group">
+            <label class="control-label col-md-3">User</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                    <!--<select class="form-control" ng-model="new_data.username">-->
+                    <!--<option ng-repeat="user in user_list">{{user.username}}</option>-->
+                    <!--</select>-->
+
+                    <input class="form-control"  type="text" ng-model="new_data.username"
+                           uib-typeahead="user as user.username for user in getUserList($viewValue)"
+                           placeholder="Type User" required>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="control-label col-md-3">Dslam</label>
+            <div class="col-md-9">
+                <div class="input-icon right">
+
+                    <div
+                        isteven-multi-select 
+                        input-model="dslam_list" 
+                        output-model="new_data.dslam_name"
+                        button-label="icon search_name"        
+                        item-label="search_name"       
+                        tick-property="ticked"  
+                        orientation="horizontal"
+                        >
+                    </div>                      
+                </div>
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="control-label col-md-3">Commands</label>
+            <div class="col-md-9">
+                <div class="input-icon right">
+                
+                    <div
+                        isteven-multi-select 
+                        input-model="command_list" 
+                        output-model="new_data.command_name"
+                        button-label="icon name"        
+                        item-label="icon name maker"        
+                        tick-property="ticked"  
+                        orientation="horizontal"
+                        >
+                    </div>                      
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">Permission Profile</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                    <!--<select class="form-control" ng-model="new_data.permission_profile_name">-->
+                    <!--<option ng-repeat="permission in permission_profile_list">{{permission.name}}</option>-->
+                    <!--</select>-->
+                    <input class="form-control"  type="text" ng-model="new_data.permission_profile_name"
+                           uib-typeahead="profile as profile.name for profile in GetPermissionProfileList($viewValue)"
+                           
+                           placeholder="Type Permission" required>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">Action</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                    <!--<input style="margin-right: 3px;" ng-model="new_data.action" type="radio" name="optionsRadios"  value="allow" >-->
+
+                    <!--<label class="radio-inline" >-->
+                    <!--Allow </label>-->
+                    <!--<input style="margin-bottom:4px;" ng-model="new_data.action" type="radio" name="optionsRadios"  value="deny" >-->
+                    <!--<label class="radio-inline">-->
+                    <!--Deny </label>-->
+
+                    <!--<input type="radio" name="gender" value="male"> Male-->
+                    <!--<input type="radio" name="gender" value="female"> Female-->
+                    <!--<input type="radio" name="gender" value="other"> Other-->
+
+                    <select class="form-control" ng-model="new_data.action" ng-required>
+                        <option value="allow" ng-selected="true">Allow</option>
+                        <option value="deny">Deny</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-3">Is Active</label>
+            <div class="col-md-6">
+                <div class="input-icon right">
+                    <select class="form-control" ng-model="new_data.is_active" required>
+                        <option value="true" ng-selected="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <button type="submit" class="btn bg-primary" style="width: 100%;" >
+                    <i class="fa fa-check"></i>
+                    Submit
+                </button>
+                <!--<a href="#/devices/{{device.network}}" class="btn default"> Cancel</a>-->
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,378 @@
+
+<script type="text/ng-template" id="customTemplate.html">
+    <a>
+        <img ng-src="http://upload.wikimedia.org/wikipedia/commons/thumb/{{match.model.flag}}" width="16">
+        <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+<style>
+    .m-bot {
+        margin-bottom: 0!important;
+    }
+    .m-b-r {
+        margin-bottom: 10px!important;
+    }
+
+    .not-selected {
+        background-color: #eee;
+        color: #337ab7;
+    }
+    .selected{
+        background-color: #17C4BB;
+        color: #fff;
+    }
+    .is-done {
+        background-color: #F1C40F!important;
+    }
+    @media only screen and (min-width:768px) {
+        .wizard-circle {
+            display: inline-block;
+        }
+    }
+    @media only screen and (max-width:868px) {
+        .m-t-20 {
+            margin-top: -20px!important;
+        }
+        .bl {
+            display: inline-block;
+        }
+    }
+    .wizard-circle {
+        font-weight: 300;
+        border-radius: 100%!important;
+        height:55px!important;
+        width: 55px!important;
+        margin-right:15px;
+        padding-top:14px;
+        font-size:18px;
+    }
+    .pd-top-15{
+       margin-top: 15px!important;
+   }
+   .bl{
+    color: #337ab7;
+}
+.m-r-3 {
+    margin-right : 3px;
+}
+
+</style>
+
+<div class="row">
+  <div >
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+                <i class="fa fa-caret-right font-torange"></i>
+            </li>
+            <li>
+                <a>Subscriber  Management</a>
+                <i  class="fa fa-caret-right font-torange"></i>
+            </li>
+            <li>
+                <a>Add Subscriber</a>
+                
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="col-md-12 portlet light" style="border:1px solid #BFCAD1;margin-bottom: 30px;">
+    <div class="portlet-title blue">
+
+    </div>
+    <div class='portlet-body'>
+        
+        <div class="caption" style="margin-bottom:20px;margin-top:-30px;">
+            <i class=" icon-layers font-red"></i>
+            <span class="caption-subject font-red bold uppercase"> Form Wizard -
+                <span class="step-title"> Step {$ step $} of 2 </span>
+            </span>
+        </div>
+        
+        <div class='row'>
+            <div id="bar" class="progress progress-striped" role="progressbar">
+                <div class="progress-bar progress-bar-success" style="width:{$ percent $}%;"> </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="padding-right:0!important;padding-left:0!important;">
+            <div  >
+                <span class="col-xs-12 col-sm-4 col-md-4  bl margin-bottom-10">
+                    <div ng-class="{true:'selected' , false : 'not-selected'}[show_wizard_1 == true ];" ng-style="show_wizard_2 || show_wizard_3 || show_wizard_4 ? {'background-color':'#F1C40F' , 'color' : 'white'}:{}" class="wizard-circle col-xs-6 text-center" href="#" >1</div>
+                    <i ng-show="show_wizard_1 || show_wizard_2 || show_wizard_3 || show_wizard_4 " class="fa fa-check m-r-3 pd-top-15"></i> <span class="pd-top-15">Add Subscriber Detail</span>
+                </span>
+                <span class="col-xs-12 col-sm-4 col-md-4  bl margin-bottom-10">
+                    <div ng-class="{true:'selected' , false : 'not-selected'}[show_wizard_2 == true]"  ng-style="show_wizard_3 || show_wizard_4 ? {'background-color':'#F1C40F' , 'color' : 'white'}:{}" href="#"  class="wizard-circle col-xs-6 text-center">2</div>
+                    <i ng-show="show_wizard_2 || show_wizard_3 || show_wizard_4" class="fa fa-check m-r-3 pd-top-15"></i><span  class="pd-top-15">Active Port Detail</span>
+                </span>
+                
+            </div>
+            
+            <div >
+             
+                <div class="col-md-12" style="padding-right:0!important;padding-left:0!important;">
+                    <div class="portlet-light" >
+                        <div class='loader ' style="font-size:14px;z-index:10000!important;" ng-show='change_wizard_state'></div>
+                        <div class="portlet-title">
+
+                        </div>
+                        <div class="portlet-body" ng-show="show_wizard_1">
+                            <div  style="min-height: 100px;">
+                              <div class="portlet-body form col-md-12" style="padding-right:0!important;padding-left:0!important;">
+                                
+                                <form ng-show="show_wizard_1" ng-submit="GoToSecondWizard()" >
+                                    <div class="form-body" >
+                                      
+                                        <div class="row m-b-r">
+                                            <div class="form-group m-bot">
+                                                <div class=" col-md-6">
+                                                    <label class="control-label">Username</label>
+                                                    <input type="text" class="form-control" placeholder="Enter User Name" data-ng-model="new_customer.username" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group username m-bot">
+                                                <div class="col-md-6 ">
+                                                    <label class="control-label">Family</label>
+                                                    <input type="text" class="form-control" placeholder="family" data-ng-model="new_customer.family" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-r">
+
+                                            <div class="form-group m-bot">
+                                                <div class="col-md-6 ">
+                                                    <label class="control-label">Name</label>
+                                                    <input type="text" class="form-control" placeholder="name" data-ng-model="new_customer.name" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-bot">
+                                                <div class="col-md-6">
+                                                    <label class="control-label">Tel</label>
+                                                    <input type="text" class="form-control" placeholder="tel" data-ng-model="new_customer.tel" ng-keydown='checkNumber($event)'
+                                                    ng-keyup = 'chekKeyUp($event)' required>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row m-b-r">
+                                            <div class="form-group m-bot">
+                                                <div class="col-md-6 ">
+                                                    <label class="control-label">Email</label>
+                                                    <input type="email" class="form-control" placeholder="email" data-ng-model="new_customer.email" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group passwd m-bot">
+                                                <div class="col-md-6 ">
+                                                    <label class="control-label">National Code</label>
+                                                    <input type="text" class="form-control" placeholder="national code" ng-keydown='checkNumber($event)'
+                                                    ng-keyup = 'chekKeyUp($event)' data-ng-model="new_customer.national_code" required>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row m-b-r">
+                                            <div class="form-group m-bot">
+                                                <div class="col-md-6 ">
+                                                    <label class="control-label">Mobile</label>
+                                                    <input type="text" ng-keydown='checkNumber($event)'
+                                                    ng-keyup = 'chekKeyUp($event)' class="form-control" placeholder="mobile" data-ng-model="new_customer.mobile" required>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-actions" style="margin-left:-15px;margin-right:-15px;">
+                                        <div class="row">
+                                           
+                                           <div class="row" style="margin-top: 15px;">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-8"></div>
+                                            <div class="col-md-2 pull-right">
+                                                <button ng-show="show_wizard_1" type="submit" class="btn btn-default" >
+                                                    Next
+                                                    <i class="glyphicon glyphicon-arrow-right"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                        </div></div>
+
+                        <div class="portlet-body" ng-show="show_wizard_2">
+                            <div class='form'>
+                                <form ng-submit="add_customer()" >
+                                   <div class="form-body">
+                                     <div class="loader" id="form-customer"></div>
+                                     <div class="row m-b-r">
+                                        <div class="col-md-6 ">
+                                            <div class="form-group m-bot" >
+                                                <label class=" control-label">Province</label>
+                                                <input type="text" ng-model="selectedCity0"
+                                                uib-typeahead="c as c.text for c in getProveList($viewValue)"
+                                                class="form-control" placeholder="Enter Name" 
+                                                typeahead-min-length = '0' typeahead-on-select="fetchChildParent(selectedCity0.id)" ng-model-options="{ debounce: 1000 }"
+                                                required/>
+                                                
+                                            </div>
+                                        </div>
+                                        <div ng-show='show_city' class="form-group">
+                                            <div class="col-md-6"><label class="control-label">city</label>
+                                                <input ng-model="selectedCity"
+                                                uib-typeahead="c as c.text for c in fetchChildParent(selectedCity0.id)"
+                                                class="form-control" placeholder="Enter Name"  typeahead-min-length = '0' 
+                                                typeahead-on-select ='selectCity(selectedCity.id)' 
+                                                required
+                                                />
+                                                
+                                            </div>
+
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="row m-b-r">
+                                        <div ng-show="selectedCity.id != '' && selectedCity.id !== undefined"  class="form-group m-bot">
+                                            <div class="col-md-6 ">
+                                                <label class=" control-label">Telecom Center</label>
+                                                <input type="text" ng-model="new_customer.telecom_center_id"
+                                                uib-typeahead="c as c.text for c in selectCity(selectedCity.id)"
+                                                class="form-control" placeholder="Enter " 
+                                                typeahead-min-length = '0' typeahead-on-select ='selectTele(new_customer.telecom_center_id)'
+                                                required
+                                                />
+
+                                                
+                                            </div>
+                                        </div>
+                                        <div ng-show="new_customer.telecom_center_id != '' && new_customer.telecom_center_id !== undefined"  class="form-group m-bot">
+                                            <div class="col-md-6">
+                                                <label class=" control-label">Identifier Key</label>
+                                                <input type="text" ng-model="new_customer.identifier_key"
+                                                uib-typeahead="c as c for c in selectTele(new_customer.telecom_center_id)"
+                                                class="form-control" placeholder="Enter " 
+                                                typeahead-min-length = '0' tepeahead-on-select ='selectIde(new_customer.identifier_key)'
+                                                required
+                                                />
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class="col-md-6">
+                                            
+                                            <div class="clearfix">
+                                                <div class="form-group  pull-left">
+                                                    <label>Reseller</label>
+                                                    <input style="width:100%;" type="text" ng-model="active_port_select.reseller"
+                                                    uib-typeahead="c as c.name for c in reseller_active_port | filter:$viewValue "
+                                                    class="form-control" typeahead-on-select="SelectReseller()" 
+                                                    typeahead-min-length = '0'
+                                                    />
+                                                    
+                                                </div>
+                                                
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                           <div class="form-group  pull-left">
+                                             <label>Vlan</label>
+
+                                             <input style="width:100%;" id='vid' type="text" ng-model="active_port_select.vlan_id"
+                                             uib-typeahead="v as v.vlan_name for v in vlan_list | filter:$viewValue "
+                                             class="form-control"
+                                             typeahead-min-length = '0' />
+                                         </div>
+                                         
+                                     </div>
+                                     
+                                     
+                                 </div>
+                                 
+                                 <div class="nav-dropdown">
+                                    <ul id="menu-content" class="menu-content" style="width: 100%;">
+                                        <li data-toggle="collapse" data-target="#runcommand"
+                                        class="collapsed  pointer">
+                                        <a><i class="fa fa-lg"></i> Change Detail <span
+                                            class="arrow"></span></a>
+                                        </li>
+                                        <ul class="collapse" id="runcommand">
+                                            <li>
+                                                <div class="clearfix">
+
+                                                    <div class="form-group  col-md-2">
+                                                        <label>VPI</label>
+                                                        <input ng-model="port_pvc.vpi"   type="text" class="form-control"/>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                       <label>VCI</label>
+                                                       <input ng-model="port_pvc.vci"  type="text" class="form-control"/>
+                                                   </div>
+                                                   <div class="form-group  col-md-2">
+                                                      <label>Profile</label>
+                                                      <input ng-model="port_pvc.profile"  type="text" class="form-control"/>
+                                                  </div>
+                                                  <div class="form-group  col-md-2">
+                                                   <label>MUX</label>
+                                                   <input ng-model="port_pvc.mux"  type="text" class="form-control"/>
+                                               </div>
+                                               <div class="form-group  col-md-2">
+                                                   <label>Priority</label>
+                                                   <input ng-model="port_pvc.priority"  type="text" class="form-control"/>
+                                               </div>
+
+                                           </div>
+                                       </li>
+                                   </ul>
+                               </ul>
+                           </div>
+
+
+
+                       </div>
+
+                       <div >
+                        <div>
+                            <div  class="row"  style="margin-left:-15px;margin-right:-15px;border-top:1px solid #e7ecf1;
+                            background-color:#f5f5f5;height:100%;min-height:100px;">
+                            
+                            
+                            <div style="margin-top: 15px;">
+                                <div class="col-md-2"><a class="btn btn-default" ng-click="GoToFirstWizard()">
+                                    <i class="glyphicon glyphicon-arrow-left"></i> Previous
+                                </a> </div>
+                                
+                            </div>
+                            <div class="col-md-3 pull-right">
+                                <button type="submit" class="btn btn-default" >
+                                    Create Subscriber
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+

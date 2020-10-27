@@ -1,0 +1,485 @@
+<style>
+    .m-bot {
+        margin-bottom: 0!important;
+    }
+    .m-b-r {
+        margin-bottom: 10px!important;
+    }
+
+    .not-selected {
+        background-color: #eee;
+        color: #337ab7;
+    }
+    .selected{
+        background-color: #17C4BB;
+        color: #fff;
+    }
+    .is-done {
+        background-color: #F1C40F!important;
+    }
+    @media only screen and (min-width:768px) {
+        .wizard-circle {
+            display: inline-block;
+        }
+    }
+    @media only screen and (max-width:868px) {
+        .m-t-20 {
+            margin-top: -20px!important;
+        }
+        .bl {
+            display: inline-block;
+        }
+    }
+    .wizard-circle {
+        font-weight: 300;
+        border-radius: 100%!important;
+        height:55px!important;
+        width: 55px!important;
+        margin-right:15px;
+        padding-top:14px;
+        font-size:18px;
+    }
+    .pd-top-15{
+       margin-top: 15px!important;
+   }
+   .bl{
+    color: #337ab7;
+}
+.m-r-3 {
+    margin-right : 3px;
+}
+
+</style>
+<div  ng-show='user_access_admin || user_access_view_command ||  user_access_edit_command'>
+<div class="row">
+   <div class='col-md-12'  >
+   <div class="page-bar margin-top-10">
+        <ul class="page-breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+                <i class="fa fa-caret-right font-torange"></i>
+            </li>
+            <li>
+                <a href='#/bulkcommand'>Dslam Management</a>
+                <i  class="fa fa-caret-right font-torange"></i>
+            </li>
+
+            <li>
+                <a href='#/bulkcommand'>Bulk Command</a>
+
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+</div>
+<div class="row"  ng-show='user_access_admin ||   user_access_edit_command'>
+    <div class="col-md-12">
+        <div class='portlet light ' style="border:1px solid #BFCAD1; ">
+            <div class='portlet-title'></div>
+            <div class='portlet-body'>
+                <div  class='row'>
+                   <!--<div class="btn-group btn-breadcrumb">-->
+                   <span class="col-xs-12 col-sm-4 col-md-4  bl margin-bottom-10">
+                       <div ng-class="{true:'selected' , false : 'not-selected'}[show_wizard_1 == true];" ng-style="show_wizard_2 || show_wizard_3 || show_wizard_4 ? {'background-color':'#F1C40F' , 'color' : 'white'}:{}" class="wizard-circle col-xs-6 text-center" href="#" >1</div>
+                       <i ng-show="show_wizard_1 || show_wizard_2 || show_wizard_3 || show_wizard_4 " class="fa fa-check m-r-3 pd-top-15"></i> <span class="pd-top-15">Filter dslams</span>
+                   </span>
+                   <span class="col-xs-12 col-sm-4 col-md-4  bl margin-bottom-10">
+                     <div ng-class="{true:'selected' , false : 'not-selected'}[show_wizard_2 == true]"  ng-style="show_wizard_3 || show_wizard_4 ? {'background-color':'#F1C40F' , 'color' : 'white'}:{}" href="#"  class="wizard-circle col-xs-6 text-center">2</div>
+                     <i ng-show="show_wizard_2 || show_wizard_3 || show_wizard_4" class="fa fa-check m-r-3 pd-top-15"></i><span  class="pd-top-15">Select Ports </span>
+                 </span>
+                 <span class="col-xs-12 col-sm-4 col-md-4  bl margin-bottom-10">
+                     <div ng-class="{true:'selected' , false : 'not-selected'}[show_wizard_3 == true]"  ng-style="show_wizard_4 ? {'background-color':'#F1C40F' , 'color' : 'white'}:{}" href="#"  class="wizard-circle col-xs-6 text-center">3</div>
+                     <i ng-show="show_wizard_2 || show_wizard_3 || show_wizard_4" class="fa fa-check m-r-3 pd-top-15"></i><span  class="pd-top-15">Run Command on filtered dslams</span>
+                 </span>
+             </div>
+             <div class='row'>
+              <div id="bar" class="progress progress-striped" role="progressbar">
+                <div class="progress-bar progress-bar-success" style="width:{$ percent $}%;"> </div>
+            </div>
+        </div>
+        <div class='row' ng-show='show_wizard_1'>
+           <div class="form" ng-submit="searchData();GoToSecondWizard();">
+            <form>
+                <div class="form-body" >
+                 <div  class="form-group   col-md-2"
+                 style="margin-bottom:10px;">
+
+                 <label>Dslam Name</label>
+                 <input class="form-control input-inline" style="width:100%!important;"
+                 placeholder="DSLAM Name" data-ng-model="dslam"
+                 uib-typeahead="t.name as t.text for t in searchName($viewValue)"
+                 typeahead-min-length='0'
+                 ng-model-options="{ debounce: 1000 }" />
+
+             </div>
+             <div class="form-group  col-md-2">
+                <label for="add_command">IP</label>
+                <input  class="form-control"  placeholder="Enter IP Adress"
+                data-ng-model="select.ip" ng-enter=' AddNewIp()' data-toggle="tooltip" title="To add multiple ips press enter after each item"
+                ng-ip-address/>
+                <!-- <p style="font-size:11px;color:#17c4bb;">Click Enter To Add IP</p> -->
+                <div class="row">
+
+                    <span ng-repeat="ip in new_ip track by $index" >
+                        <span style="padding:10px;margin:5px;margin-top:8px;" >
+                            <div class="col-md-12 inline-block" >
+                                <div class='  bg-font-grey-steel' style="padding:10px;margin:5px;margin-top:8px;border: 1px solid crimson;" >
+                                    {$ ip $}
+                                    <span style="margin-top:8px;">
+                                        <a ng-click="DeleteNewIp(ip, $index)" style="margin-top:8px;color:crimson ">
+                                            <i class="glyphicon glyphicon-remove-circle  pull-right">
+                                            </i></a>
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </span>
+
+                        </span>
+
+                    </div>
+                </div>
+
+                <div  class="form-group   col-md-2"
+                style="margin-bottom:10px;">
+
+                <label>Province/City</label>
+                <input type="text" ng-model="select.city" ng-change="checkdata()"
+                uib-typeahead="cities as cities.name for cities in getProveList($viewValue)" typeahead-min-length = '0'
+                class="form-control" typeahead-on-select="GetCityID()"
+                />
+
+            </div>
+
+            <div  class="form-group   col-md-2"
+            style="margin-bottom:10px;">
+
+            <label>Telecom</label>
+            <input type="text" ng-model="select.tele" ng-change="checkdata()"
+            uib-typeahead="telecom_centers as telecom_centers.name for telecom_centers in telecom_centers | filter:$viewValue | limitTo:8"
+            class="form-control" typeahead-on-select="GetTeleID()"
+            />
+
+        </div>
+        <div class="form-group  col-md-2">
+            <label>Dslam Type</label>
+                <!--<select  class='form-control' ng-model="select.vendor" ng-change="GetDslamList();" ng-required="'true'" required> 
+                        <option ng-repeat="vendor in vendor_list track by $index" ng-value='vendor.id' ng-selected="selected">{$ vendor.name $}</option>
+                    </select>-->
+                    <input type="text" ng-model="select.vendor" ng-change="checkdata()"
+                    uib-typeahead="vendor_list as vendor_list.name for vendor_list in vendor_list | filter:$viewValue | limitTo:8 "
+                    class="form-control"  typeahead-on-select="GetDslamList();" 
+                    typeahead-min-length = '0'
+                    required/>
+                </div>
+
+            </div>
+            <div class="form-action">
+                <div class="col-md-2">
+
+                    <button type="submit" style="margin-top:4px;"  href="javascript:;" class="btn btn-default" > 
+                        <i class="fa fa-search font-torange"></i> Filter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class='row' ng-show='show_wizard_2'>
+  <div class="form" ng-submit="GoToThirdWizard()">
+    <form>
+        <div class="form-body" >
+            <div class="row">
+                <div class="col-md-12">
+                   <div class="col-sm-4 col-md-8">
+                    <div class="radio-list">
+                       <label for="firsts_radio"><input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="all" id="firsts_radio"/>Without Filter</label>
+                       <label for="first_radio"><input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="one" id="first_radio"/>Filter by Slot/Port</label>
+                       <label for="second_radio"><input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="two" id="second_radio"/>Filter by Slot/Port Range</label>
+                       <label for="third_radio"><input ng-change="ChangeRadioButton()" type="radio" ng-model="optionsRadios.line" value="three" id="third_radio" checked="checked" />Filter by Line Profiles</label>
+
+                   </div></div>
+               </div></div>
+               <div class="form-group  col-md-2" ng-show='change_by_line_profile'>
+                <label>Line Profile</label>
+                <input type="text" ng-model="select.line_profile" ng-change = 'lineProfileId()' 
+                uib-typeahead="line_profile_list as line_profile_list.name for line_profile_list in GetLineProfileData($viewValue) "
+                class="form-control"  typeahead-min-length = '0' /></div>
+
+                <div class="form-group  col-md-2" ng-show="change_one_slot">
+                    <label>Slot Number</label>
+                    <input type="text" ng-model="select.slot_number"
+                    class="form-control"  
+
+                    />
+                </div>
+                <div class="form-group  col-md-2" ng-show="change_one_slot">
+                    <label>Port Number</label>
+                    <input type="text" ng-model="select.port_number"
+                    class="form-control" 
+                    />
+                </div>
+
+                <div class="form-group  col-md-2" ng-show="change_multiple_slot">
+                    <label>Slot Number From</label>
+                    <input type="text" ng-model="select.slot_number_from"
+                    class="form-control"  
+                    />
+                </div>
+                <div class="form-group  col-md-2" ng-show="change_multiple_slot">
+                    <label>Slot Number To</label>
+                    <input type="text" ng-model="select.slot_number_to" 
+                    class="form-control"  
+                    />
+                </div>
+                <div class="form-group  col-md-2" ng-show="change_multiple_slot">
+                    <label>Port Number From</label>
+                    <input type="text" ng-model="select.port_number_from" 
+                    class="form-control" 
+
+                    />
+                </div>
+                <div class="form-group  col-md-2" ng-show="change_multiple_slot">
+                    <label>Port Number To</label>
+                    <input type="text" ng-model="select.port_number_to" 
+                    class="form-control"  
+
+                    />
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+
+            <div class='row margin-top-20'>
+                <div class="col-md-3 ">
+                    <a class="btn btn-default" style="margin-left:30px;" ng-click="GoToFirstWizard()">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Previous
+                    </a> 
+
+                </div>
+                <div class="form-action">
+                    <div class="col-md-3 pull-right">
+                        <button style="float:right;margin-right:30px;" type="submit"  href="javascript:;" class="btn btn-default ">
+                           <i class="glyphicon glyphicon-arrow-right"></i>  Next
+
+                       </button>
+                   </div>
+               </div>
+
+           </div>
+       </form>
+   </div>
+</div>
+<div class='row' ng-show='show_wizard_3'>
+    <div class="form" ng-submit="RunCommand()">
+        <form>
+            <div class="form-body" >
+                <div class='loader' ng-show='run_command_loader' style="font-size:18px;"></div>
+
+                <div>
+                    <div class="form-group  col-md-10 ">
+                        <div class="col-md-4">
+                            <label>Command</label>
+
+                            <input type = "text" ng-model = "new_command"
+                            uib-typeahead = "c as c.text for c in commands | filter:$viewValue "
+                            class = "form-control" ng-change="CheckParams()"
+                            typeahead-on-select = "CheckParams()" typeahead-min-length = '0' 
+                            />                                        
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="col-md-7">
+                    <div class="col-md-3" ng-show='show_acl_macaccount'>
+
+                        <label>vpi</label>
+                        <input type="text" class="form-control" ng-model='vpi_data' ng-keydown='checkNumber($event)'
+                        ng-keyup = 'chekKeyUp($event)'
+                        /> 
+
+                    </div>
+                    <div class="col-md-3" ng-show='show_acl_macaccount'>
+
+                        <label>vci</label>
+                        <input type="text" class="form-control" ng-model='vci_data' ng-keydown='checkNumber($event)'
+                        ng-keyup = 'chekKeyUp($event)'
+                        /> 
+
+                    </div>
+                    <div class="col-md-3" ng-show='show_acl_macaccount'>
+
+                        <label>Count</label>
+                        <input type="text" class="form-control" ng-model='count_data' ng-keydown='checkNumber($event)'
+                        ng-keyup = 'chekKeyUp($event)'
+                        /> 
+
+                    </div>
+                    <div class="col-md-3" ng-show='show_performance_command'>
+
+                        <label>Time elapsed</label>
+                        <select class="form-control" ng-model='performance_command_opt'>
+                            <option>curr</option>
+                            <option>15min</option>
+                            <option>1day</option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-3" ng-show="show_profile_input || show_profile_adsl_set_input">
+                        <label>Profile Name</label>
+                        <input type="text" class="form-control" ng-model='profile_name_param'
+                        /> </div>
+                        <div class="col-md-3" ng-show="show_new_line_profile_input">
+                            <label>New Line Profile</label>
+                            <input type="text" class="form-control" ng-model='new_line_profile_param' uib-typeahead="line_profile_list as line_profile_list.name for line_profile_list in GetLineProfileData($viewValue) "
+                            /> 
+                        </div>
+                        <div class="col-md-3" ng-show="show_profile_adsl_set_input">
+                            <label>us-max-rate</label>
+                            <input type="text" class="form-control" ng-model='us_max_rate_param'
+                            /> </div>
+                            <div class="col-md-3" ng-show="show_profile_adsl_set_input">
+                                <label>ds-max-rate</label>
+                                <input type="text" class="form-control" ng-model='ds_max_rate_param'
+                                /> </div>
+                                <div class="col-md-3" ng-show="show_create_vlan_inputs">
+                                    <label>vlan_name</label>
+                                    <input type="text" class="form-control" ng-model='vlan_name_param'
+                                    /></div>
+                                    <div class="col-md-3" ng-show="show_create_vlan_inputs || show_vlan_show_command">
+                                        <label>vlan_id</label>
+                                        <input type="text" class="form-control" ng-model='vlan_id_param'
+                                        /></div>
+                                        <div class="col-md-12" ng-show="show_profile_input || show_new_line_profile_input|| show_profile_adsl_set_input || show_create_vlan_inputs || show_add_new_command || show_vlan_show_command || show_performance_command || show_acl_macaccount">
+                                         <a style="margin-top:23px;" 
+                                         href="javascript:;" class="btn btn-default col-md-3" ng-click ='AddCommand()'>
+                                         <i class="fa fa-check"></i> Add Command
+                                     </a>
+                                 </div>
+
+                             </div>
+                             <div class="col-md-5" style="margin-top:-50px;">
+                                <div ng-show='commandType.length>0' >
+                                    <div class="col-md-5 margin-bottom-10" style="padding-right:0;padding-left:0;">
+                                        <button style="width:100%;" type="submit"  style="margin-left: 40px;margin-top: 20px;" href="javascript:;" class="btn btn-default" >
+                                            <i class="fa fa-check"></i> Run Commands
+                                        </button>
+                                    </div>
+                                    <div class="col-md-7 margin-bottom-10" style="padding-right:0!important;">
+                                       <div class="form-group   ">
+                                        <!--<label class="col-md-4">Title</label>-->
+                                        <input type="text" class="form-control col-md-8"  placeholder="Enter Title"
+                                        data-ng-model="commandType.title" required/>
+                                    </div>
+                                </div>
+
+                                <table   class="table table-striped table-bordered table-advance table-hover ">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Command</th>
+                                                <th>Params</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                         <tr ng-repeat="c in commandType track by $index">
+                                             <td> {$ c.command_name $} </td>
+                                             <td>
+                                                <!--<span ng-repeat="p in c.params">-->
+                                                <span ng-show='c.command_name  == "acl maccount set"'>
+                                                  vpi : {$ c.params.vpi $}
+                                                  vci : {$ c.params.vci $}
+                                                  count : {$ c.params.count $}
+                                              </span>
+                                              <span ng-show='c.command_name  == "create vlan"'>
+                                                vlan_id: {$ c.params.vlan_id $} - vlan_name: {$ c.params.vlan_name $}
+                                            </span>
+                                            <span ng-show='c.command_name  == "vlan show"'>
+                                                vlan_id: {$ c.params.vlan_id $} 
+                                            </span>
+                                            <span ng-show=" c.command_name == 'profile adsl set'">
+                                             Profile Name: {$ c.params.profile $} - us-max-rate: {$ c.params['us-max-rate'] $} - ds-max-rate: {$ c.params['ds-max-rate'] $}
+                                         </span>
+                                         <span ng-show='c.command_name  == "profile adsl delete"'>
+                                            Profile name: {$ c.params.profile $} 
+                                        </span>
+
+
+                                    </td>
+
+                                    <td> <a class="btn btn-danger" ng-click="deleteCommand($index)">
+                                     Delete
+                                 </a>
+                             </td>
+                         </tr>
+
+                     </tbody>
+
+                 </table>
+
+             </div>
+
+
+         </div>
+     </div>
+     <div class="row">
+        <div class="col-md-12">
+            <div class="form-action">
+              <div style="margin-top: 15px;">
+                <div class="col-md-2">
+                    <a style="margin-left:18px;" class="btn btn-default" ng-click="GoToSecondWizard()">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Previous
+                    </a> </div>
+                    <div class="col-md-3 pull-right">
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+</div>
+<div class="row"  ng-show='user_access_admin ||  user_access_edit_command'>
+    <div class='col-md-12'>
+        <div class="grid" ui-grid="gridOptions" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%; border:1px solid #BFCAD1;"></div>
+    </div>
+</div>
+
+<div class="row margin-top-30"  ng-show='user_access_admin || user_access_view_command'>
+    <div class="col-md-12">
+        <div class="portlet light bordered" style="border:1px solid #BFCAD1!important;">
+            <div class="portlet-title">
+                <div class="caption ">
+                    <i class="icon-settings font-torange"></i>
+                    <span class="caption-subject bold uppercase">Bulk Command Results</span>
+                </div>
+                <div class="tools"> </div>
+            </div>
+            <div class="portlet-body">
+                <div class="grid" ui-grid="gridOptions2" ui-grid-pagination ui-grid-cellNav ui-grid-resize-columns  ui-grid-auto-resize external-scopes="$scope" style="margin:auto;width:100%"></div>
+            </div>
+        </div>
+    </div>
+</div>
