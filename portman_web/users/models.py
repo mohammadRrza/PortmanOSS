@@ -15,7 +15,7 @@ class User(AbstractUser):
     )
     type = models.CharField(max_length=20, choices=USER_TYPES, default='ADMIN')
     tel = models.CharField(max_length=15, blank=True, null=True)
-    reseller = models.ForeignKey(Reseller, blank=True, null=True)
+    reseller = models.ForeignKey(Reseller, blank=True, null=True, on_delete=models.CASCADE)
 
     ############# permission related properties ##########
     @property
@@ -361,8 +361,8 @@ class PermissionProfile(models.Model):
 
 
 class PermissionProfilePermission(models.Model):
-    permission_profile = models.ForeignKey(PermissionProfile)
-    permission = models.ForeignKey(Permission)
+    permission_profile = models.ForeignKey(PermissionProfile,on_delete=models.CASCADE)
+    permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('permission_profile', 'permission'),)
@@ -376,8 +376,8 @@ class UserPermissionProfile(models.Model):
         ('allow', 'Allow'),
         ('deny', 'Deny'),
     )
-    user = models.ForeignKey(User)
-    permission_profile = models.ForeignKey(PermissionProfile, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    permission_profile = models.ForeignKey(PermissionProfile, blank=True, null=True, on_delete=models.CASCADE)
     action = models.CharField(choices=ACTIONS, max_length=30, default='allow')
     is_active = models.BooleanField(default=True)
 
@@ -386,7 +386,7 @@ class UserPermissionProfile(models.Model):
 
 
 class UserPermissionProfileObject(models.Model):
-    user_permission_profile = models.ForeignKey(UserPermissionProfile)
+    user_permission_profile = models.ForeignKey(UserPermissionProfile, on_delete=models.CASCADE)
     content_type = models.ForeignKey(
             ContentType,
             models.CASCADE,

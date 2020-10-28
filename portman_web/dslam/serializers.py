@@ -30,13 +30,13 @@ class CitySerializer(serializers.ModelSerializer):
     text = serializers.SerializerMethodField('get_cascade_city')
 
     def get_cascade_city(self, obj):
-        cities = unicode(obj.name)
+        cities = str(obj.name)
         while True:
             if obj.parent is None:
                 break
             obj = City.objects.get(id=obj.parent.id)
             #cities =  unicode(obj.name + '-' + obj.english_name)+' / '+cities
-            cities =  unicode(obj.name)+' / '+cities
+            cities =  str(obj.name)+' / '+cities
         return cities
 
     class Meta:
@@ -367,7 +367,7 @@ class MDFDSLAMSerializer(serializers.ModelSerializer):
             port = DSLAMPort.objects.get(dslam__id=obj.dslam_id, slot_number=obj.slot_number, port_number=obj.port_number)
             return {'id': port.id, 'port_name': port.port_name}
         except Exception as ex:
-            print ex
+            print(ex)
             return None
 
     def get_dslamname(self, obj):

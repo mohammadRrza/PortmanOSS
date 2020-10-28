@@ -305,7 +305,7 @@ class DSLAMFaultyConfig(models.Model):
         return '{0}: {1} - {2} :: {3} - {4}'.format(self.dslam_id, self.slot_number_from, self.port_number_from , self.slot_number_to, self.port_number_to)
 
 class DSLAMPortFaulty(models.Model):
-    dslam_faulty_config = models.ForeignKey(DSLAMFaultyConfig,on_delete=models.CASCADE)
+    dslam_faulty_config = models.ForeignKey(DSLAMFaultyConfig, on_delete=models.CASCADE)
     dslam_id = models.IntegerField()
     port_number = models.IntegerField()
     slot_number = models.IntegerField()
@@ -334,7 +334,6 @@ class DSLAMStatus(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-@architect.install('partition', type='range', subtype='date', constraint='month', column='created_at')
 class DSLAMStatusSnapshot(models.Model):
     dslam_id = models.IntegerField(null=True, blank=True, db_index=True)
     line_card_temp = JSONField(max_length=2048, blank=True, null=True)
@@ -343,7 +342,7 @@ class DSLAMStatusSnapshot(models.Model):
 
 
 class DSLAMICMP(models.Model):
-    dslam = models.ForeignKey(DSLAM, db_index=True)
+    dslam = models.ForeignKey(DSLAM, db_index=True, on_delete=models.CASCADE)
     avgping = models.CharField(max_length=10, blank=True, null=True)
     jitter = models.CharField(max_length=10, blank=True, null=True)
     maxping = models.CharField(max_length=10, blank=True, null=True)
@@ -356,7 +355,6 @@ class DSLAMICMP(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-@architect.install('partition', type='range', subtype='date', constraint='month', column='created_at')
 class DSLAMICMPSnapshot(models.Model):
     dslam_id = models.IntegerField(null=True, blank=True, db_index=True)
     avgping = models.CharField(max_length=10, blank=True, null=True)
@@ -392,7 +390,7 @@ class DSLAMEvent(models.Model):
             ('error',  'Error')
             )
 
-    dslam = models.ForeignKey(DSLAM)
+    dslam = models.ForeignKey(DSLAM, on_delete=models.CASCADE)
     type = models.CharField(max_length=100, choices=type_keys, default='dslam_connection_error')
     flag = models.CharField(max_length=100, choices=flag_keys, default='error')
     message = models.TextField(blank=True, null=True)
@@ -423,7 +421,7 @@ class LineProfile(models.Model):
 
 
 class LineProfileExtraSettings(models.Model):
-    line_profile = models.ForeignKey(LineProfile,db_index=True)
+    line_profile = models.ForeignKey(LineProfile,db_index=True, on_delete=models.CASCADE)
     attr_name = models.CharField(max_length=256)
     attr_value = models.CharField(max_length=256)
 
@@ -446,7 +444,7 @@ class DSLAMPort(models.Model):
             ('bad', 'Bad')
             )
 
-    dslam = models.ForeignKey(DSLAM,db_index=True)
+    dslam = models.ForeignKey(DSLAM,db_index=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     slot_number = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -508,7 +506,7 @@ class DSLAMPort(models.Model):
             return None
 
 
-@architect.install('partition', type='range', subtype='integer', constraint='1000000', column='id')
+#@architect.install('partition', type='range', subtype='integer', constraint='1000000', column='id')
 class DSLAMPortSnapshot(models.Model):
     attenuation_flag_keys = (
             ('outstanding', 'Outstanding'),
@@ -554,7 +552,7 @@ class DSLAMPortSnapshot(models.Model):
 
 
 class DSLAMPortMac(models.Model):
-    port = models.ForeignKey(DSLAMPort, db_index=True)
+    port = models.ForeignKey(DSLAMPort, db_index=True, on_delete=models.CASCADE)
     mac_address = models.CharField(max_length=20)
 
 
@@ -575,7 +573,7 @@ class DSLAMPortEvent(models.Model):
             ('warning', 'Warning'),
             ('error',  'Error')
             )
-    dslam = models.ForeignKey(DSLAM)
+    dslam = models.ForeignKey(DSLAM, on_delete=models.CASCADE)
     slot_number = models.PositiveSmallIntegerField()
     port_number = models.PositiveSmallIntegerField()
     type = models.CharField(max_length=100, choices=type_keys, default='no_such_object')
@@ -589,7 +587,7 @@ class Reseller(models.Model):
     name = models.CharField(max_length=256)
     tel = models.CharField(max_length=15, blank=True, null=True)
     fax = models.CharField(max_length=15, blank=True, null=True)
-    city = models.ForeignKey(City, blank=True, null=True)
+    city = models.ForeignKey(City, blank=True, null=True, on_delete=models.CASCADE)
     address = models.CharField(max_length=1000, blank=True, null=True)
     vpi = models.IntegerField(null=True)
     vci = models.IntegerField(null=True)
@@ -613,10 +611,10 @@ class TelecomCenterMDF(models.Model):
             ('RESELLER', 'Reseller'),
             )
 
-    telecom_center = models.ForeignKey(TelecomCenter)
+    telecom_center = models.ForeignKey(TelecomCenter,on_delete=models.CASCADE)
     priority = models.IntegerField(default=1)
     row_number = models.IntegerField()
-    terminal = models.ForeignKey(Terminal)
+    terminal = models.ForeignKey(Terminal, on_delete=models.CASCADE)
 
     floor_start = models.IntegerField()
     floor_count = models.IntegerField()
@@ -626,7 +624,7 @@ class TelecomCenterMDF(models.Model):
     connection_start = models.IntegerField(default=1)
     connection_counting_status = models.CharField(choices=counting_status_flag, default='STANDARD', max_length=8)
     status_of_port = models.CharField(choices=status_keys, default='FREE', max_length=8)
-    reseller =models.ForeignKey(Reseller, blank=True, null=True)
+    reseller =models.ForeignKey(Reseller, blank=True, null=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -638,7 +636,7 @@ class ResellerPort(models.Model):
            ('DISABLE', 'Disable'),
            ('ENABLE','Enable'),
          )
-    reseller = models.ForeignKey(Reseller, db_index=True)
+    reseller = models.ForeignKey(Reseller, db_index=True, on_delete=models.CASCADE)
     telecom_center_id = models.IntegerField(db_index=True)
     identifier_key = models.CharField(max_length=16, unique=True)
     status = models.CharField(max_length=100, choices=KEYS,default='ENABLE')
@@ -654,7 +652,7 @@ class ResellerPort(models.Model):
 class Vlan(models.Model):
     vlan_id = models.CharField(max_length=256)
     vlan_name = models.CharField(max_length=256)
-    reseller = models.ForeignKey(Reseller, blank=True, null=True)
+    reseller = models.ForeignKey(Reseller, blank=True, null=True, on_delete=models.CASCADE)
 
     @property
     def get_port_count(self):
@@ -675,8 +673,8 @@ class Vlan(models.Model):
 
 
 class DSLAMPortVlan(models.Model):
-    port = models.ForeignKey(DSLAMPort, db_index=True)
-    vlan = models.ForeignKey(Vlan, blank=True, null=True)
+    port = models.ForeignKey(DSLAMPort, db_index=True, on_delete=models.CASCADE)
+    vlan = models.ForeignKey(Vlan, blank=True, null=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -710,15 +708,15 @@ class Command(models.Model):
 
 
 class DSLAMTypeCommand(models.Model):
-    command = models.ForeignKey(Command)
-    dslam_type = models.ForeignKey(DSLAMType)
+    command = models.ForeignKey(Command, on_delete=models.CASCADE)
+    dslam_type = models.ForeignKey(DSLAMType, on_delete=models.CASCADE)
     command_template = models.CharField(max_length=256, blank=True, null=True)
 
 
 class PortCommand(models.Model):
-    dslam = models.ForeignKey(DSLAM, db_index=True)
+    dslam = models.ForeignKey(DSLAM, db_index=True, on_delete=models.CASCADE)
     card_ports = JSONField(blank=True, null=True)
-    command = models.ForeignKey(Command, db_index=True)
+    command = models.ForeignKey(Command, db_index=True, on_delete=models.CASCADE)
     value = JSONField(blank=True, null=True)
     username = models.CharField(max_length=256, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -731,8 +729,8 @@ class PortCommand(models.Model):
 
 
 class DSLAMCommand(models.Model):
-    dslam = models.ForeignKey(DSLAM, db_index=True)
-    command = models.ForeignKey(Command, db_index=True)
+    dslam = models.ForeignKey(DSLAM, db_index=True, on_delete=models.CASCADE)
+    command = models.ForeignKey(Command, db_index=True, on_delete=models.CASCADE)
     value = JSONField(blank=True, null=True)
     username = models.CharField(max_length=256, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

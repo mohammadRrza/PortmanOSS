@@ -2,14 +2,13 @@ from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route, list_route
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets, status, views, mixins
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from django.conf import settings
@@ -105,7 +104,7 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @detail_route(methods=['POST'])
+    @action(methods=['POST'],detail=True)
     def changepassword(self, request, pk=None):
         """
         Change Password
@@ -128,7 +127,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-    @list_route(methods=['POST'], permission_classes=[], authentication_classes=[])
+    @action(mmethods=['POST'],detail=True, permission_classes=[], authentication_classes=[])
     def login(self, request):
         """
         Login User
@@ -166,7 +165,7 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response({'msg': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'],detail=False)
     def get_permission(self, request):
         user = request.user
         data = request.data
@@ -174,7 +173,7 @@ class UserViewSet(viewsets.ModelViewSet):
         permissions = PermissionProfilePermission.objects.filter(permission_profile__in=pp_list).values_list('permission__codename', flat=True)
         return Response({'permissions': permissions, 'user_type': user.type}, status=status.HTTP_200_OK)
 
-    @list_route(methods=['POST'])
+    @action(methods=['POST'],detail=False)
     def logout(self, request):
         """
         Logout User
@@ -206,7 +205,7 @@ class UserAuditLogViewSet(mixins.ListModelMixin,
         if keywords:
             keyword_params = keywords.split(',')
             for keyword in keyword_params:
-                print keyword
+                print(keyword)
                 queryset = queryset.filter(description__icontains=keyword)
 
         if ip:
@@ -237,7 +236,7 @@ class UserAuditLogViewSet(mixins.ListModelMixin,
         return queryset
 
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'],detail=False)
     def actions(self, request):
         data = tuple(enumerate(UserAuditLog.objects.values_list('action').order_by().distinct(),1))
         data_dict = [{'id':key, 'text':value} for key, value in data]
@@ -264,7 +263,7 @@ class PermissionViewSet(mixins.ListModelMixin,
 
         return queryset
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'],detail=False)
     def get_user_permissions(self, request):
         user = request.user
         data = request.query_params
@@ -312,7 +311,7 @@ class PermissionProfilePermissionViewSet(mixins.ListModelMixin,
         queryset = PermissionProfilePermission.objects.all()
         return queryset
 
-    @list_route(methods=['POST'])
+    @action(methods=['POST'],detail=False)
     def delete_permission_profile(self, request):
         user = request.user
         data = request.data
@@ -413,7 +412,7 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
 
         return Response('Permissions Profile User Updated', status=status.HTTP_204_NO_CONTENT)
 
-    @detail_route(methods=['GET',])
+    @action(methods=['GET'],detail=True)
     def objects(self, request, pk=None):
         user = request.user
         data = self.request.query_params
