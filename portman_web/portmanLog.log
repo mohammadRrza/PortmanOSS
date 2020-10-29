@@ -1,2 +1,6 @@
 Bad Request: /
 Bad Request: /favicon.ico
+Not Found: /
+Not Found: /
+Method Not Allowed: /users/get-token
+Method Not Allowed: /users/get-token
