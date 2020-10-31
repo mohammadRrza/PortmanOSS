@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class VlanShow(BaseCommand):
@@ -68,12 +68,12 @@ class VlanShow(BaseCommand):
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            print '********************************'
-            print vlans
-            print '********************************'
+            print('********************************')
+            print(vlans)
+            print('********************************')
             return {"result": vlans}
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

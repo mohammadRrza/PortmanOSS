@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class GetBackUp(BaseCommand):
@@ -56,17 +56,17 @@ class GetBackUp(BaseCommand):
             output = tn.read_until("configuration has been changed, save it? ('y' to save)")
             tn.write("y\r\n")
             tn.close()
-            print '******************************************'
-            print "show config"
-            print '******************************************'
+            print('******************************************')
+            print("show config")
+            print('******************************************')
             return dict(results = output)
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

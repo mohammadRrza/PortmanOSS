@@ -1,0 +1,82 @@
+import telnetlib
+from easysnmp import Session
+import time
+from socket import error as socket_error
+from .command_base import BaseCommand
+import re
+
+class GetDSLAMBoard(BaseCommand):
+    def __init__(self, params=None):
+        self.__HOST = None
+        self.__telnet_username = None
+        self.__telnet_password = None
+        self.__params = params
+
+    @property
+    def HOST(self):
+        return self.__HOST
+
+    @HOST.setter
+    def HOST(self, value):
+        self.__HOST = value
+
+    @property
+    def telnet_username(self):
+        return self.__telnet_username
+
+    @telnet_username.setter
+    def telnet_username(self, value):
+        self.__telnet_username = value
+
+    @property
+    def telnet_password(self):
+        return self.__telnet_password
+
+    @telnet_password.setter
+    def telnet_password(self, value):
+        self.__telnet_password = value
+
+    retry = 1
+    def run_command(self):
+        try:
+            session = Session(hostname=self.__HOST, community=self.__params['get_snmp_community'], version=2, retries=3, timeout=40)
+            boards = {}
+            for item in session.walk('1.3.6.1.4.1.2011.6.3.3.2.1.21.0'):
+                card_index = item.oid.split('.')[-1]
+                boards[card_index] = {'card_type': item.value, 'card_number': card_index}
+
+            for item in session.walk('1.3.6.1.4.1.2011.6.3.3.2.1.13.0'):
+                card_index = item.oid.split('.')[-1]
+                if card_index not in boards:
+                    boards[card_index] = {'card_number': card_index}
+                boards[card_index]['temperature'] = item.value
+
+            for item in session.walk('1.3.6.1.4.1.2011.6.3.3.2.1.5.0'):
+                try:
+                    card_index = item.oid.split('.')[-1]
+                    hw_version = re.search(r'(Pcb|PCB)\s+Version:\s+\S+\sVER\s(\w)+', item.value, re.M).groups()[1]
+                    fw_version = re.search(r'(Logic|Software)\s+Version:\s(\S+)',item.value , re.M).groups()[1]
+                    status = 'active'
+                    if card_index not in boards:
+                        boards[card_index] = {'card_number': card_index}
+                    boards[card_index]['hw_version'] = hw_version
+                    boards[card_index]['fw_version'] = fw_version
+                    boards[card_index]['status'] = status
+                except Exception as ex:
+                    print('++++++')
+                    print(self.__HOST)
+                    print(self.__params['get_snmp_community'])
+                    print(ex)
+                    print(item.value)
+                    print('++++++')
+            return {"result" : list(boards.values())}
+        except (EOFError, socket_error) as e:
+            print(e)
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()
+        except Exception as e:
+            print(e)
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()

@@ -2,7 +2,7 @@ import telnetlib
 from easysnmp import Session
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class GetDSLAMBoard(BaseCommand):
@@ -63,20 +63,20 @@ class GetDSLAMBoard(BaseCommand):
                     boards[card_index]['fw_version'] = fw_version
                     boards[card_index]['status'] = status
                 except Exception as ex:
-                    print '++++++'
-                    print self.__HOST
-                    print self.__params['get_snmp_community']
-                    print ex
-                    print item.value
-                    print '++++++'
-            return {"result" : boards.values()}
+                    print('++++++')
+                    print((self.__HOST))
+                    print((self.__params['get_snmp_community']))
+                    print(ex)
+                    print((item.value))
+                    print('++++++')
+            return {"result" : list(boards.values())}
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class ShowLineRate(BaseCommand):
@@ -57,17 +57,17 @@ class ShowLineRate(BaseCommand):
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            print '*******************************************'
-            print "show linerate {0}".format(result)
-            print '*******************************************'
+            print('*******************************************')
+            print(("show linerate {0}".format(result)))
+            print('*******************************************')
             return {"result": result}
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

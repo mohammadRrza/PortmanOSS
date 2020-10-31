@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class AddToVlan(BaseCommand):
@@ -80,18 +80,18 @@ class AddToVlan(BaseCommand):
             tn.close()
             if 'example' in result:
                 return {"result" : "add to valn {1} give error".format(self.__vlan_id), "port_indexes": self.__port_indexes}
-            print  "{0} added to vlan {1}".format(self.__port_indexes, self.__vlan_id)
+            print(("{0} added to vlan {1}".format(self.__port_indexes, self.__vlan_id)))
             return dict(result="added to vlan {0}".format(self.__vlan_id), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
             else:
-                print "error : add to valn {1}".format(self.__vlan_id)
+                print(("error : add to valn {1}".format(self.__vlan_id)))
                 return {"result" : "add to valn {1}".format(self.__vlan_id)}

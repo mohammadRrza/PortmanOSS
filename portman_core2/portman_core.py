@@ -63,7 +63,7 @@ class PortmanRPC(object):
 
     def bulk_commands(self, title, commands, conditions):
         print('-------------------------------------------')
-        print(title, commands, conditions)
+        print((title, commands, conditions))
         print('-------------------------------------------')
         task = DSLAMBulkCommand(title, commands, conditions)
         self.portman_runner.add_to_service_queue(task)
@@ -125,7 +125,7 @@ class PortmanRPC(object):
         logging.basicConfig(filename='example.log', level=logging.DEBUG)
         logging.info('AddCommand')
         print('------------------------')
-        print(dslam_id, command, params)
+        print((dslam_id, command, params))
         print('------------------------')
         busy_key = '-'.join([str(item) for item in list(params.values())])
 
@@ -242,7 +242,9 @@ class Portman_Runner(object):
         QueueManager.register('fiberhomeAN5006_q', callable = lambda: fiberhomeAN5006_q)
         QueueManager.register('fiberhomeAN3300_q', callable = lambda: fiberhomeAN3300_q)
         QueueManager.register('zyxel_q', callable = lambda: zyxel_q)
-
+        print('+++++++++++++++++++++++++++++++++++')
+        print(PORT)
+        print('+++++++++++++++++++++++++++++++++++')
         manager = QueueManager(address = (HOST, PORT), authkey = AUTHKEY)
         manager.start() # This actually starts the server
         return manager
@@ -307,15 +309,15 @@ class Portman_Runner(object):
             django_orm_cursor = DjangoORMCursor(self.django_orm_queue_isnew)
             django_orm_cursor.start()
 
-        for item in range(self.num_workers / 2):
+        for item in range(int(self.num_workers / 2)):
             django_orm_cursor_fiberhomeAN2200_q = DjangoORMCursor(self.fiberhomeAN2200_q)
             django_orm_cursor_fiberhomeAN2200_q.start()
 
-        for item in range(self.num_workers / 2):
+        for item in range(int(self.num_workers / 2)):
             django_orm_cursor_fiberhomeAN5006_q = DjangoORMCursor(self.fiberhomeAN5006_q)
             django_orm_cursor_fiberhomeAN5006_q.start()
 
-        for item in range(self.num_workers / 2):
+        for item in range(int(self.num_workers / 2)):
             django_orm_cursor_fiberhomeAN3300_q = DjangoORMCursor(self.fiberhomeAN3300_q)
             django_orm_cursor_fiberhomeAN3300_q.start()
 
@@ -336,9 +338,8 @@ class Portman_Runner(object):
             worker = Worker(queue=self.queue_big_task, django_orm_queue=self.django_orm_queue, \
                     request_q=self.request_q, zyxel_q=self.zyxel_q, fiberhomeAN2200_q=self.fiberhomeAN2200_q, fiberhomeAN5006_q=self.fiberhomeAN5006_q, fiberhomeAN3300_q=self.fiberhomeAN3300_q)
             worker.start()
-
         #run worker for dslam new
-        for item in range(self.num_workers / 4):
+        for item in range(int(self.num_workers / 4)):
             worker = Worker(queue=self.queue_isnew, django_orm_queue=self.django_orm_queue_isnew, \
                     request_q=self.request_q, zyxel_q=self.zyxel_q, fiberhomeAN2200_q=self.fiberhomeAN2200_q, fiberhomeAN5006_q=self.fiberhomeAN5006_q, fiberhomeAN3300_q=self.fiberhomeAN3300_q)
             worker.start()
@@ -385,6 +386,6 @@ class Portman_Runner(object):
                 continue
 
 if __name__ == '__main__':
-    num_workers = int(ceil(multiprocessing.cpu_count()*2))
-    print('Creating {0} workers'.format(num_workers))
+    num_workers = int(ceil(multiprocessing.cpu_count()*4))
+    print(('Creating {0} workers'.format(num_workers)))
     Portman_Runner(num_workers)

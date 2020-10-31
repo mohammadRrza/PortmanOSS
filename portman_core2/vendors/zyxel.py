@@ -8,46 +8,46 @@ from vendors.base import BaseDSLAM
 import telnetlib
 from easysnmp import Session
 import re
-from command_factory import CommandFactory
-from zyxel_commands.selt import Selt
-from zyxel_commands.show_mac_slot_port import ShowMacSlotPort
-from zyxel_commands.show_mac import ShowMac
-from zyxel_commands.lcman_show import LcmanShow
-from zyxel_commands.profile_adsl_show import ProfileADSLShow
-from zyxel_commands.create_profile import CreateProfile
-from zyxel_commands.delete_profile import DeleteProfile
-from zyxel_commands.lcman_disable_slot import LcmanDisableSlot
-from zyxel_commands.lcman_reset_slot import LcmanResetSlot
-from zyxel_commands.lcman_enable_slot import LcmanEnableSlot
-from zyxel_commands.lcman_show_slot import LcmanShowSlot
-from zyxel_commands.port_disable import PortDisable
-from zyxel_commands.port_enable import PortEnable
-from zyxel_commands.port_pvc_set import PortPvcSet
-from zyxel_commands.port_pvc_delete import PortPvcDelete
-from zyxel_commands.add_to_vlan import AddToVlan
-from zyxel_commands.create_vlan import CreateVlan
-from zyxel_commands.vlan_show import VlanShow
-from zyxel_commands.change_admin_status import ChangeAdminStatus
-from zyxel_commands.reset_admin_status import ResetAdminStatus
-from zyxel_commands.change_lineprofile_port import ChangeLineProfilePort
-from zyxel_commands.switch_mac_flush_all import SwitchMacFlushAll
-from zyxel_commands.get_dslam_board import GetDSLAMBoard
-from zyxel_commands.sys_snmp_setcommunity import SysSnmpSetCommunity
-from zyxel_commands.sys_snmp_getcommunity import SysSnmpGetCommunity
-from zyxel_commands.show_lineinfo import ShowLineInfo
-from zyxel_commands.show_linerate import ShowLineRate
-from zyxel_commands.show_linestat_port import ShowLineStatPort
-from zyxel_commands.show_linestat_slot import ShowLineStatSlot
-from zyxel_commands.show_performance import ShowPerformance
-from zyxel_commands.acl_maccount_set import AclMaccountSet
-from zyxel_commands.enable_annexm import EnableAnnexm
-from zyxel_commands.disable_annexm import DisableAnnexm
-from zyxel_commands.port_pvc_show import PortPvcShow
-from zyxel_commands.port_info import PortInfo
-from zyxel_commands.removeFromVlan import RemoveFromVlan
-from zyxel_commands.get_backup import GetBackUp
-from zyxel_commands.set_time import SetTime
-from zyxel_commands.show_slot_port_with_mac import ShowSlotPortWithMac
+from .command_factory import CommandFactory
+from .zyxel_commands.selt import Selt
+from .zyxel_commands.show_mac_slot_port import ShowMacSlotPort
+from .zyxel_commands.show_mac import ShowMac
+from .zyxel_commands.lcman_show import LcmanShow
+from .zyxel_commands.profile_adsl_show import ProfileADSLShow
+from .zyxel_commands.create_profile import CreateProfile
+from .zyxel_commands.delete_profile import DeleteProfile
+from .zyxel_commands.lcman_disable_slot import LcmanDisableSlot
+from .zyxel_commands.lcman_reset_slot import LcmanResetSlot
+from .zyxel_commands.lcman_enable_slot import LcmanEnableSlot
+from .zyxel_commands.lcman_show_slot import LcmanShowSlot
+from .zyxel_commands.port_disable import PortDisable
+from .zyxel_commands.port_enable import PortEnable
+from .zyxel_commands.port_pvc_set import PortPvcSet
+from .zyxel_commands.port_pvc_delete import PortPvcDelete
+from .zyxel_commands.add_to_vlan import AddToVlan
+from .zyxel_commands.create_vlan import CreateVlan
+from .zyxel_commands.vlan_show import VlanShow
+from .zyxel_commands.change_admin_status import ChangeAdminStatus
+from .zyxel_commands.reset_admin_status import ResetAdminStatus
+from .zyxel_commands.change_lineprofile_port import ChangeLineProfilePort
+from .zyxel_commands.switch_mac_flush_all import SwitchMacFlushAll
+from .zyxel_commands.get_dslam_board import GetDSLAMBoard
+from .zyxel_commands.sys_snmp_setcommunity import SysSnmpSetCommunity
+from .zyxel_commands.sys_snmp_getcommunity import SysSnmpGetCommunity
+from .zyxel_commands.show_lineinfo import ShowLineInfo
+from .zyxel_commands.show_linerate import ShowLineRate
+from .zyxel_commands.show_linestat_port import ShowLineStatPort
+from .zyxel_commands.show_linestat_slot import ShowLineStatSlot
+from .zyxel_commands.show_performance import ShowPerformance
+from .zyxel_commands.acl_maccount_set import AclMaccountSet
+from .zyxel_commands.enable_annexm import EnableAnnexm
+from .zyxel_commands.disable_annexm import DisableAnnexm
+from .zyxel_commands.port_pvc_show import PortPvcShow
+from .zyxel_commands.port_info import PortInfo
+from .zyxel_commands.removeFromVlan import RemoveFromVlan
+from .zyxel_commands.get_backup import GetBackUp
+from .zyxel_commands.set_time import SetTime
+from .zyxel_commands.show_slot_port_with_mac import ShowSlotPortWithMac
 
 
 
@@ -101,7 +101,7 @@ class Zyxel(BaseDSLAM):
 
 
     EVENT = {'dslam_connection_error':'DSLAM Connection Error', 'no_such_object':'No Such Objects'}
-    EVENT_INVERS = dict(zip(EVENT.values(),EVENT.keys()))
+    EVENT_INVERS = dict(list(zip(list(EVENT.values()),list(EVENT.keys()))))
 
     PORT_DETAILS_OID_TABLE = {
         "1.3.6.1.2.1.2.2.1.7"         : "PORT_ADMIN_STATUS",
@@ -119,15 +119,15 @@ class Zyxel(BaseDSLAM):
         "1.3.6.1.2.1.31.1.1.1.6"      : "INCOMING_TRAFFIC"
     }
 
-    PORT_DETAILS_OID_TABLE_INVERSE = {v:k for k, v in PORT_DETAILS_OID_TABLE.iteritems()}
+    PORT_DETAILS_OID_TABLE_INVERSE = {v:k for k, v in list(PORT_DETAILS_OID_TABLE.items())}
 
     PORT_ADMIN_STATUS = {1:"UNLOCK", 2:"LOCK", 3:"TESTING"}
-    PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in PORT_ADMIN_STATUS.iteritems()}
+    PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in list(PORT_ADMIN_STATUS.items())}
 
     PORT_OPER_STATUS = {1:"SYNC", 2:"NO-SYNC", 3:"TESTING",
                         4:"UNKNOWN", 5:"DORMANT", 6:"NOT-PRESENT",
                         7:"LOWER-LAYER-DOWN", 65536:"NO-SYNC-GENERAL"}
-    PORT_OPER_STATUS_INVERSE = {v:k for k, v in PORT_OPER_STATUS.iteritems()}
+    PORT_OPER_STATUS_INVERSE = {v:k for k, v in list(PORT_OPER_STATUS.items())}
 
     PORT_INDEX_TO_PORT_NAME_OID = '1.3.6.1.2.1.2.2.1.2'
     PORT_UPTIME_OID = '1.3.6.1.2.1.2.2.1.9'
@@ -182,18 +182,18 @@ class Zyxel(BaseDSLAM):
             try:
                 dslam_hostname = session.get(cls.HOSTName_OID).value
             except Exception as ex:
-                print ex
+                print(ex)
                 dslam_hostname = 'error'
 
             try:
                 sys_up_time = session.get(cls.SYS_UP_TIME)
-                seconds = long(sys_up_time.value) / 100
+                seconds = int(sys_up_time.value) / 100
                 dslam_uptime = "{:0>8}".format(timedelta(seconds=seconds))
             except Exception as ex:
-                print ex
+                print(ex)
                 uptime = 'error'
         except Exception as ex:
-            print ex
+            print(ex)
             return None, None
         return (dslam_uptime, dslam_hostname)
 
@@ -224,7 +224,7 @@ class Zyxel(BaseDSLAM):
 
             du = time.time() - start
         except Exception as e:
-            print e
+            print(e)
             info['dslam_events'] = (dslam_data['id'], cls.translate_event_by_text('DSLAM Connection Error'),e)
         finally:
             info['port_index_mapping'] = port_index_mapping
@@ -240,7 +240,7 @@ class Zyxel(BaseDSLAM):
         snmp_timeout = int(dslam_data.get('snmp_timeout', 5))
         port_event_items = []
         session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port,timeout=5, retries=1, version=2)
-        for oid, item_name in cls.PORT_DETAILS_OID_TABLE.iteritems():
+        for oid, item_name in list(cls.PORT_DETAILS_OID_TABLE.items()):
             try:
                 var_bind = session.get(oid+".{0}".format(port_index))
             except Exception as ex:
@@ -262,7 +262,7 @@ class Zyxel(BaseDSLAM):
             elif item_name == 'PORT_OPER_STATUS':
                 value = cls.translate_oper_status_by_value(var_bind.value)
             elif item_name in ('ADSL_UPSTREAM_ATT_RATE', 'ADSL_DOWNSTREAM_ATT_RATE', 'ADSL_CURR_UPSTREAM_RATE', 'ADSL_CURR_DOWNSTREAM_RATE'):
-                value = long(var_bind.value) / 8192
+                value = int(var_bind.value) / 8192
             else:
                 value = var_bind.value
 
@@ -275,28 +275,28 @@ class Zyxel(BaseDSLAM):
         try:
             port_last_change_var = session.get('{0}.{1}{2}'.format(cls.PORT_UPTIME_OID, slot_number, port_number))
             sys_up_time_var = session.get(cls.SYS_UP_TIME)
-            port_up_time_value = long(sys_up_time_var.value) - long(port_last_change_var.value)
+            port_up_time_value = int(sys_up_time_var.value) - int(port_last_change_var.value)
         except Exception as ex:
             port_up_time_value = 100
 
         if port_up_time_value:
-            port_up_time_tikcs = long(port_up_time_value)
+            port_up_time_tikcs = int(port_up_time_value)
             seconds = port_up_time_tikcs / 100
             port_up_time = "{:0>8}".format(timedelta(seconds=seconds))
             uptime = port_up_time
 
         port_current_status['ADSL_UPTIME'] = uptime
 
-        if port_current_status.has_key('ADSL_UPSTREAM_ATTEN'):
+        if 'ADSL_UPSTREAM_ATTEN' in port_current_status:
             port_current_status['ADSL_UPSTREAM_ATTEN_FLAG'] = cls.get_atten_flag(float(port_current_status['ADSL_UPSTREAM_ATTEN']) / 10)
 
-        if port_current_status.has_key('ADSL_DOWNSTREAM_ATTEN'):
+        if 'ADSL_DOWNSTREAM_ATTEN' in port_current_status:
             port_current_status['ADSL_DOWNSTREAM_ATTEN_FLAG'] = cls.get_atten_flag(float(port_current_status['ADSL_DOWNSTREAM_ATTEN']) / 10)
 
-        if port_current_status.has_key('ADSL_UPSTREAM_SNR'):
+        if 'ADSL_UPSTREAM_SNR' in port_current_status:
             port_current_status['ADSL_UPSTREAM_SNR_FLAG'] = cls.get_snr_flag(float(port_current_status['ADSL_UPSTREAM_SNR']) / 10)
 
-        if port_current_status.has_key('ADSL_DOWNSTREAM_SNR'):
+        if 'ADSL_DOWNSTREAM_SNR' in port_current_status:
             port_current_status['ADSL_DOWNSTREAM_SNR_FLAG'] = cls.get_snr_flag(float(port_current_status['ADSL_DOWNSTREAM_SNR']) / 10)
 
         port_results['port_current_status'] = port_current_status
@@ -384,7 +384,7 @@ class Zyxel(BaseDSLAM):
                         oid, port_index = cls._resolve_oid(str(oid))
                         port_name = dslam_port_map[port_index]
                         item_name = cls.PORT_DETAILS_OID_TABLE[oid]
-                        if not ports_status.has_key(port_name):
+                        if port_name not in ports_status:
                             ports_status[port_name] = {}
                         ports_status[port_name][item_name] = val.prettyPrint()
                         ports_status[port_name][
@@ -392,7 +392,7 @@ class Zyxel(BaseDSLAM):
                         ] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         du = time.time()-start
-        print '======================= Get Port Status Bulk Donw in %s'%du
+        print(('======================= Get Port Status Bulk Donw in %s'%du))
         return ports_status
 
     @classmethod
@@ -431,10 +431,10 @@ class Zyxel(BaseDSLAM):
 
             du = time.time() - start
         except Exception as e:
-            print e
+            print(e)
             info['dslam_events'] = (dslam_data['id'], cls.translate_event_by_text('DSLAM Connection Error'),e)
         finally:
-            info['port_vpi_vci'] = port_vpi_vci.values()
+            info['port_vpi_vci'] = list(port_vpi_vci.values())
             return info
 
 
@@ -524,7 +524,7 @@ class Zyxel(BaseDSLAM):
                     error_index and var_binds[int(error_index)-1][0] or '?'
                 ))
 
-        print 'reset port admin status'
+        print('reset port admin status')
         return True
 
         #time.sleep(5)
@@ -581,9 +581,9 @@ class Zyxel(BaseDSLAM):
             telnet_username = dslam_data.get('telnet_username')
             telnet_password = dslam_data.get('telnet_password')
             result = Zyxel.run_commands(dslam_id, ip, telnet_username, telnet_password, commands, slot_ports)
-            print '*****************************************'
-            print result
-            print '*****************************************'
+            print('*****************************************')
+            print(result)
+            print('*****************************************')
             if result:
                 with open(result_filepath, 'ab') as log_file:
                     log_file.write('\r\n\r\n=======================================\r\n\r\n')
@@ -618,7 +618,7 @@ class Zyxel(BaseDSLAM):
                                     template_tag_value.update({'slot_number': slot})
                                     tn.write(template_tag.format(**template_tag_value)+'\r\n\r\n'.encode('utf-8'))
                             except Exception as ex:
-                                print 'run_commands (slot section) =>>>', ex
+                                print(('run_commands (slot section) =>>>', ex))
                 else:
                     for port in slot_port_objs[dslam_id]:
                         for command in commands:
@@ -630,7 +630,7 @@ class Zyxel(BaseDSLAM):
                                     tn.write((template_tag.format(**template_tag_value)+'\r\n\r\n').encode('utf-8'))
                                     time.sleep(1)
                             except Exception as ex:
-                                print 'run_commands (port section) =>>>', ex
+                                print(('run_commands (port section) =>>>', ex))
             else:
                 for command in commands:
                     if bool(command.get('params')):
@@ -642,7 +642,7 @@ class Zyxel(BaseDSLAM):
                                 tn.write(command)
                                 time.sleep(1)
                         except Exception as ex:
-                            print 'run_commands (dslam section) =>>>', ex
+                            print(('run_commands (dslam section) =>>>', ex))
                     else:
                         tn.write(command.get('text')+'\r\n\r\n'.encode('utf-8'))
                     time.sleep(1)
@@ -656,8 +656,8 @@ class Zyxel(BaseDSLAM):
             results = '\n'.join(results[3:len(results)-2])
             return results
         except Exception as ex:
-            print '---------------------'
-            print ex
-            print HOST+','+user+','+password
-            print '---------------------'
+            print('---------------------')
+            print(ex)
+            print((HOST+','+user+','+password))
+            print('---------------------')
             return None

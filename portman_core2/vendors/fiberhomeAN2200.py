@@ -2,10 +2,10 @@ import time
 from vendors.base import BaseDSLAM
 import telnetlib
 import jsonrpclib
-from command_factory import CommandFactory
-from fiberhomeAN2200_commands.ShowCard import ShowCard
-from fiberhomeAN2200_commands.Version import Version
-from fiberhomeAN2200_commands.ShowShelf import ShowShelf
+from .command_factory import CommandFactory
+from .fiberhomeAN2200_commands.ShowCard import ShowCard
+from .fiberhomeAN2200_commands.Version import Version
+from .fiberhomeAN2200_commands.ShowShelf import ShowShelf
 
 
 class FiberhomeAN2200(BaseDSLAM):
@@ -14,15 +14,15 @@ class FiberhomeAN2200(BaseDSLAM):
     command_factory.register_type('Version', Version)
 
     EVENT = {'dslam_connection_error':'DSLAM Connection Error', 'no_such_object':'No Such Objects'}
-    EVENT_INVERS = dict(zip(EVENT.values(),EVENT.keys()))
+    EVENT_INVERS = dict(list(zip(list(EVENT.values()),list(EVENT.keys()))))
 
     PORT_ADMIN_STATUS = {1:"UNLOCK", 2:"LOCK", 3:"TESTING"}
-    PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in PORT_ADMIN_STATUS.iteritems()}
+    PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in list(PORT_ADMIN_STATUS.items())}
 
     PORT_OPER_STATUS = {1:"SYNC", 2:"NO-SYNC", 3:"TESTING",
                         4:"UNKNOWN", 5:"DORMANT", 6:"NOT-PRESENT",
                         7:"LOWER-LAYER-DOWN", 65536:"NO-SYNC-GENERAL"}
-    PORT_OPER_STATUS_INVERSE = {v:k for k, v in PORT_OPER_STATUS.iteritems()}
+    PORT_OPER_STATUS_INVERSE = {v:k for k, v in list(PORT_OPER_STATUS.items())}
 
     @classmethod
     def translate_event_by_text(cls, event):
@@ -73,16 +73,16 @@ class FiberhomeAN2200(BaseDSLAM):
 
     @classmethod
     def get_ports_status(cls, dslam_info, request_q):
-        print '++++++++++++++++++++++++++++'
-        print 'send request'
-        print '++++++++++++++++++++++++++++'
+        print('++++++++++++++++++++++++++++')
+        print('send request')
+        print('++++++++++++++++++++++++++++')
         request_q.put((dslam_info.get('id'), 'get ports status', {'dslam_id': dslam_info.get('id'), 'slots': dslam_info.get('slot_count')}))
 
     @classmethod
     def get_port_vpi_vci(cls, dslam_info, request_q):
-        print '++++++++++++++++++++++++++++'
-        print 'send request get vpi vci'
-        print '++++++++++++++++++++++++++++'
+        print('++++++++++++++++++++++++++++')
+        print('send request get vpi vci')
+        print('++++++++++++++++++++++++++++')
         request_q.put((dslam_info.get('id'), 'get ports vpi vci', {'dslam_id': dslam_info.get('id')}))
 
     @classmethod
@@ -133,9 +133,9 @@ class FiberhomeAN2200(BaseDSLAM):
             telnet_username = dslam_data.get('telnet_username')
             telnet_password = dslam_data.get('telnet_password')
             result = Zyxel.run_commands(ip, telnet_username,telnet_password, task.commands)
-            print '*****************************************'
-            print result
-            print '*****************************************'
+            print('*****************************************')
+            print(result)
+            print('*****************************************')
             if result:
                 with open(result_filepath, 'ab') as log_file:
                     log_file.write('\r\n\r\n=======================================\r\n\r\n')
@@ -170,8 +170,8 @@ class FiberhomeAN2200(BaseDSLAM):
             results = '\n'.join(results[3:len(results)-4])
             return results
         except Exception as ex:
-            print '---------------------'
-            print ex
-            print HOST+','+user+','+password
-            print '---------------------'
+            print('---------------------')
+            print(ex)
+            print((HOST+','+user+','+password))
+            print('---------------------')
             return None

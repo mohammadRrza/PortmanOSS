@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class GetDSLAMBoard(BaseCommand):
@@ -73,8 +73,8 @@ class GetDSLAMBoard(BaseCommand):
                             inband_mac_address = re.search(r'inband\smac(\s)+:\s([0-9A-F]{2}[:-]){5}([0-9A-F]{2})',result , re.M).group(0).split()[3]
                             outband_mac_address = re.search(r'outband\smac(\s)+:\s([0-9A-F]{2}[:-]){5}([0-9A-F]{2})',result , re.M).group(0).split()[3]
                     except Exception as ex:
-                        print ex
-                        print result
+                        print(ex)
+                        print(result)
                         continue
                 boards.append(dict(
                     card_number=card_number,
@@ -93,12 +93,12 @@ class GetDSLAMBoard(BaseCommand):
             tn.close()
             return {"result" : boards}
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

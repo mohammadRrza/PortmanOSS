@@ -180,9 +180,9 @@ class Portman(object):
             task.command,
             task.params
         )
-        print '=================='
-        print task_result
-        print '=================='
+        print('==================')
+        print(task_result)
+        print('==================')
         dslam_id = task.dslam_data['id']
         command = task.command
         if task_result:
@@ -360,7 +360,7 @@ class Portman(object):
                     dict(status="updating")
                     ))
                 result = dslam_class.get_port_index_mapping(task.dslam_data)
-                if result.has_key('dslam_events'):
+                if 'dslam_events' in result:
                     dslam_id, event, msg = result['dslam_events']
                     if event=='dslam_connection_error':
                         self.__django_orm_queue.put((
@@ -399,7 +399,7 @@ class Portman(object):
                         dict(status='ready', uptime=dslam_uptime, hostname=dslam_hostname)
                         ))
         except Exception as e:
-            print u'Error on {0} : {1}'.format(task, e)
+            print(('Error on {0} : {1}'.format(task, e)))
             self.__django_orm_queue.put((
                 "update_dslam_status",
                 task.dslam_data['id'],
@@ -457,9 +457,9 @@ class Portman(object):
                     self._execute_command(task, task.params.get('is_queue'), False)
                     self._execute_command(task2, task.params.get('is_queue'), False)
                     info = dslam_class.get_port_vpi_vci(task.dslam_data)
-                    if 'dslam_events' in info.keys():
+                    if 'dslam_events' in list(info.keys()):
                         pass
-                    elif 'port_vpi_vci' in info.keys():
+                    elif 'port_vpi_vci' in list(info.keys()):
                         self.__django_orm_queue.put((
                             "update_port_vpi_vci",
                             task.dslam_data['id'],
@@ -473,7 +473,7 @@ class Portman(object):
                     dict(status='ready', uptime=dslam_uptime, hostname=dslam_hostname)
                 ))
             except Exception as e:
-                print u'Error on {0}-{1} : {2}'.format(port_index, port_name, e)
+                print(('Error on {0}-{1} : {2}'.format(port_index, port_name, e)))
                 self.__django_orm_queue.put((
                     "update_dslam_status",
                     task.dslam_data['id'],

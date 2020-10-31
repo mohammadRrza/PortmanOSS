@@ -48,7 +48,7 @@ class PortStatusMonitoring(object):
             )
             total_seconds = int(time.time() - start_time) % 60
             port_status = port_results['port_current_status']
-            print port_status
+            print(port_status)
 
             self.django_orm_queue.put(("update_port_status", dslam_data.get('id'), [{"PORT_INDEX": port_index, "PORT_OPER_STATUS": port_status.get('PORT_OPER_STATUS')}]))
 
@@ -66,15 +66,15 @@ class PortStatusMonitoring(object):
                     self.last_outgoing_traffic_average_rate = 0
                     self.last_incomming_traffic_average_rate = 0
                 else:
-                    self.last_incomming_traffic_average_rate = ((long(port_status['INCOMING_TRAFFIC']) - self.last_incomming_traffic) / (3 + total_seconds) / 1024)
-                    self.last_outgoing_traffic_average_rate = ((long(port_status['OUTGOING_TRAFFIC']) - self.last_outgoing_traffic) / (3 + total_seconds) / 1024)
+                    self.last_incomming_traffic_average_rate = ((int(port_status['INCOMING_TRAFFIC']) - self.last_incomming_traffic) / (3 + total_seconds) / 1024)
+                    self.last_outgoing_traffic_average_rate = ((int(port_status['OUTGOING_TRAFFIC']) - self.last_outgoing_traffic) / (3 + total_seconds) / 1024)
 
                 port_status['INCOMING_TRAFFIC_AVERAGE_RATE'] = self.last_incomming_traffic_average_rate
                 port_status['OUTGOING_TRAFFIC_AVERAGE_RATE'] = self.last_outgoing_traffic_average_rate
                 self.redis.publish(channel, json.dumps(port_status))
-                if 'INCOMING_TRAFFIC' in port_status.keys():
-                    self.last_incomming_traffic = long(port_status['INCOMING_TRAFFIC'])
-                    self.last_outgoing_traffic = long(port_status['OUTGOING_TRAFFIC'])
+                if 'INCOMING_TRAFFIC' in list(port_status.keys()):
+                    self.last_incomming_traffic = int(port_status['INCOMING_TRAFFIC'])
+                    self.last_outgoing_traffic = int(port_status['OUTGOING_TRAFFIC'])
                 if not dslam_data['dslam_type'] in ('fiberhomeAN2200', 'fiberhomeAN3300'):
                     time.sleep(3)
-        print 'shutdown socket_id: ', socket_id
+        print(('shutdown socket_id: ', socket_id))

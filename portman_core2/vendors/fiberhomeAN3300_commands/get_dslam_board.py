@@ -50,7 +50,7 @@ for item in re.findall('(?P<card_number>\d+)\s+\S+\s+(?P<fw>R(?:\d+|\.)*)\s+(?P<
     card_number, fw_version, hw_version = item[0:3]
     cards[card_number]['fw_version'] = fw_version
     cards[card_number]['hw_version'] = hw_version
-for key, value in cards.iteritems():
-    print key, value
+for key, value in list(cards.items()):
+    print((key, value))
 tn.write("exit\r\n")
 tn.write("y\r\n")

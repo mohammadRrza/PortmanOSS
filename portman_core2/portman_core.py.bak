@@ -25,14 +25,14 @@ import os
 import signal
 from portman import Portman
 import time
-import SocketServer
+import socketserver
 from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer, SimpleJSONRPCRequestHandler
 from port_status_monitoring import PortStatusMonitoring
 from threading import Thread
 from tornado.ioloop import IOLoop
 
 # Threaded mix-in
-class AsyncJSONRPCServer(SocketServer.ThreadingMixIn,SimpleJSONRPCServer): pass
+class AsyncJSONRPCServer(socketserver.ThreadingMixIn,SimpleJSONRPCServer): pass
 
 class PortmanRPC(object):
     """
@@ -62,9 +62,9 @@ class PortmanRPC(object):
         return 'shutting down {0}'.format(socket_id)
 
     def bulk_commands(self, title, commands, conditions):
-        print '-------------------------------------------'
-        print title, commands, conditions
-        print '-------------------------------------------'
+        print('-------------------------------------------')
+        print(title, commands, conditions)
+        print('-------------------------------------------')
         task = DSLAMBulkCommand(title, commands, conditions)
         self.portman_runner.add_to_service_queue(task)
         return 'wait for a few moments'
@@ -124,13 +124,13 @@ class PortmanRPC(object):
     def add_command(self, dslam_id, command, params):
         logging.basicConfig(filename='example.log', level=logging.DEBUG)
         logging.info('AddCommand')
-        print '------------------------'
-        print dslam_id, command, params
-        print '------------------------'
-        busy_key = '-'.join([str(item) for item in params.values()])
+        print('------------------------')
+        print(dslam_id, command, params)
+        print('------------------------')
+        busy_key = '-'.join([str(item) for item in list(params.values())])
 
         if self.portman_runner.check_dslam_port_busy(dslam_id, busy_key, command):
-            print 'DSLAM Busy Please Run After 15 Secounds'
+            print('DSLAM Busy Please Run After 15 Secounds')
             return 'DSLAM Busy Please Run After 15 Secounds'
         else:
             dslam = DSLAM.objects.get(id=dslam_id)
@@ -151,7 +151,7 @@ class PortmanRPCStarter(threading.Thread):
         while self.portman_runner.service_queue is None:
             pass
 
-        print "Listening on port 7060..."
+        print("Listening on port 7060...")
         # Instantiate and bind to localhost:8080
         server = AsyncJSONRPCServer(('localhost', 7060), SimpleJSONRPCRequestHandler)
         server.register_introspection_functions()
@@ -159,10 +159,10 @@ class PortmanRPCStarter(threading.Thread):
 
         server.register_instance(PortmanRPC(self.portman_runner))
         try:
-            print 'Use Control-C to exit'
+            print('Use Control-C to exit')
             server.serve_forever()
         except KeyboardInterrupt:
-            print 'Exiting'
+            print('Exiting')
 
 
 class Portman_Runner(object):
@@ -326,19 +326,19 @@ class Portman_Runner(object):
     def create_process(self):
 
         #run worker that dslam's time is less than 500
-        for item in xrange(1, self.num_workers * 2):
+        for item in range(1, self.num_workers * 2):
             worker = Worker(queue=self.queue, django_orm_queue=self.django_orm_queue, \
                     request_q=self.request_q, zyxel_q=self.zyxel_q, fiberhomeAN2200_q=self.fiberhomeAN2200_q, fiberhomeAN5006_q=self.fiberhomeAN5006_q, fiberhomeAN3300_q=self.fiberhomeAN3300_q)
             worker.start()
 
         #run worker that dslam's time is more than 500
-        for item in xrange(1, self.num_workers * 4):
+        for item in range(1, self.num_workers * 4):
             worker = Worker(queue=self.queue_big_task, django_orm_queue=self.django_orm_queue, \
                     request_q=self.request_q, zyxel_q=self.zyxel_q, fiberhomeAN2200_q=self.fiberhomeAN2200_q, fiberhomeAN5006_q=self.fiberhomeAN5006_q, fiberhomeAN3300_q=self.fiberhomeAN3300_q)
             worker.start()
 
         #run worker for dslam new
-        for item in xrange(self.num_workers / 4):
+        for item in range(self.num_workers / 4):
             worker = Worker(queue=self.queue_isnew, django_orm_queue=self.django_orm_queue_isnew, \
                     request_q=self.request_q, zyxel_q=self.zyxel_q, fiberhomeAN2200_q=self.fiberhomeAN2200_q, fiberhomeAN5006_q=self.fiberhomeAN5006_q, fiberhomeAN3300_q=self.fiberhomeAN3300_q)
             worker.start()
@@ -356,7 +356,7 @@ class Portman_Runner(object):
 
 
     def resync_dslams(self):
-        print 'periodic dslam sync started ... '
+        print('periodic dslam sync started ... ')
 
         queryset = DSLAM.objects.all().order_by('last_sync_duration','created_at', 'last_sync')
         task = None
@@ -386,5 +386,5 @@ class Portman_Runner(object):
 
 if __name__ == '__main__':
     num_workers = int(ceil(multiprocessing.cpu_count()*2))
-    print 'Creating {0} workers'.format(num_workers)
+    print('Creating {0} workers'.format(num_workers))
     Portman_Runner(num_workers)

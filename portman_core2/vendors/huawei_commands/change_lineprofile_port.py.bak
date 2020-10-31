@@ -1,0 +1,97 @@
+from pysnmp.entity.rfc3413.oneliner import cmdgen
+from pysnmp.proto import rfc1902
+from .command_base import BaseCommand
+import re
+
+class ChangeLineProfilePort(BaseCommand):
+    def __init__(self, params=None):
+        self.__HOST = None
+        self.__telnet_username = None
+        self.__telnet_password = None
+        self.__LINE_PROFILE_OID = params.get('line_profile_oid')
+        self.__port_indexes = params.get('port_indexes')
+        self.__snmp_port = params.get('snmp_port', 161)
+        self.__snmp_timeout = params.get('snmp_timeout', 7)
+        self.__lineprofile = params.get('new_lineprofile')
+        self.__set_snmp_community = params.get('set_snmp_community')
+
+    @property
+    def HOST(self):
+        return self.__HOST
+
+    @HOST.setter
+    def HOST(self, value):
+        self.__HOST = value
+
+    @property
+    def telnet_username(self):
+        return self.__telnet_username
+
+    @telnet_username.setter
+    def telnet_username(self, value):
+        self.__telnet_username = value
+
+    @property
+    def telnet_password(self):
+        return self.__telnet_password
+
+    @telnet_password.setter
+    def telnet_password(self, value):
+        self.__telnet_password = value
+
+    def __clear_port_name(self, port_name):
+        pattern = r'\d+(\s)?-(\s)?\d+'
+        st = re.search(pattern, port_name, re.M | re.DOTALL)
+        return st.group()
+
+    def run_command(self):
+        '''
+        tn = telnetlib.Telnet("192.168.22.54")
+if tn.read_until('>>User name:'):
+    tn.write(("admin1\r\n").encode('utf-8'))
+if tn.read_until('>>User password:'):
+    tn.write(("secureetp1\r\n").encode('utf-8'))
+tn.write("enable\r\n")
+tn.write("config\r\n")
+tn.write(("interface adsl 0/1\r\n").encode('utf-8'))
+tn.write(("deactivate 1\r\n").encode('utf-8'))
+tn.write(("activate 1 profile-name\r\n").encode('utf-8'))
+time.sleep(1)
+tn.write(("16M\r\n").encode('utf-8'))
+result = tn.read_until('Please input profile name:16M')
+tn.write("exit\r\n")
+result = tn.read_until('exit')
+tn.write("quit\r\n")
+tn.write("y\r\n")
+tn.close()
+        '''
+        target_oids_value = []
+        for index, port_item in enumerate(self.__port_indexes, 1):
+            target_oids_value.append(('.{0}.{1}'.format(self.__LINE_PROFILE_OID, port_item['port_index']), rfc1902.OctetString(self.__lineprofile)))
+            if index % 40 == 0 or index == len(self.__port_indexes):
+                target_oids_value_tupple = tuple(target_oids_value)
+                cmd_gen = cmdgen.CommandGenerator()
+
+                error_indication, error_status, error_index, var_binds = cmd_gen.setCmd(
+                    cmdgen.CommunityData(self.__set_snmp_community),
+                    cmdgen.UdpTransportTarget((self.__HOST, self.__snmp_port), timeout=self.__snmp_timeout, retries=2),
+                    *target_oids_value_tupple
+                )
+                target_oids_value = []
+
+                # Check for errors and print out results
+                if error_indication:
+                    raise Exception(error_indication)
+                else:
+                    if error_status:
+                        Exception('%s at %s' % (
+                            error_status.prettyPrint(),
+                            error_index and var_binds[int(error_index)-1][0] or '?'
+                        ))
+        print('++++++++++++++++++++++')
+        print(error_indication, error_status, error_index, var_binds)
+        print('++++++++++++++++++++++')
+        #print '------------------------------------------------------'
+        #print {"result": "ports line profile changed to {0}".format(self.__lineprofile), "port_indexes": self.__port_indexes}
+        #print '------------------------------------------------------'
+        return {"result": "ports line profile changed to {0}".format(self.__lineprofile), "port_indexes": self.__port_indexes}

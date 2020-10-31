@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class ShowMacSlotPort(BaseCommand):
@@ -37,7 +37,7 @@ class ShowMacSlotPort(BaseCommand):
 
     retry = 1
     def run_command(self):
-        print 'start run command'
+        print('start run command')
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
@@ -48,7 +48,7 @@ class ShowMacSlotPort(BaseCommand):
                 time.sleep(2)
                 tn.write("end\r\n")
                 result = tn.read_until('end')
-                print result
+                print(result)
                 com = re.compile(r'(?P<vlan_id>\s(\d{1,10}))(\s)*(?P<mac>([0-9A-F]{2}[:-]){5}([0-9A-F]{2}))(\s)*(?P<port>(\d{1,3})?-(\s)?(\d{1,3})?)',re.MULTILINE | re.I)
                 port = com.search(result).group('port').split('-')[1].strip()
                 slot = com.search(result).group('port').split('-')[0].strip()
@@ -65,17 +65,17 @@ class ShowMacSlotPort(BaseCommand):
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            print '***********************'
-            print results
-            print '***********************'
+            print('***********************')
+            print(results)
+            print('***********************')
             return {'result': results}
         except (EOFError,socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
-        except Exception,e:
-            print e
+        except Exception as e:
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

@@ -1,6 +1,6 @@
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class ChangeAdminStatus(BaseCommand):
@@ -9,7 +9,7 @@ class ChangeAdminStatus(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.PORT_ADMIN_STATUS = {1:"UNLOCK", 2:"LOCK", 3:"TESTING"}
-        self.PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in self.PORT_ADMIN_STATUS.iteritems()}
+        self.PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in list(self.PORT_ADMIN_STATUS.items())}
         self.PORT_ADMIN_STATUS_OID = '1.3.6.1.2.1.2.2.1.7'
         self.__port_indexes = params.get('port_indexes')
         self.__admin_status = params.get('admin_status')
@@ -80,7 +80,7 @@ class ChangeAdminStatus(BaseCommand):
                     error_status.prettyPrint(),
                     error_index and var_binds[int(error_index)-1][0] or '?'
                 ))
-        print '**************************************************************'
-        print dict(port_indexes = self.__port_indexes, result="Changed admin status ports to {0}".format(self.__admin_status))
-        print '**************************************************************'
+        print('**************************************************************')
+        print((dict(port_indexes = self.__port_indexes, result="Changed admin status ports to {0}".format(self.__admin_status))))
+        print('**************************************************************')
         return dict(port_indexes = self.__port_indexes, result="Changed admin status ports to {0}".format(self.__admin_status))

@@ -1,7 +1,7 @@
 import telnetlib
 import sys
 import time
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class Selt(BaseCommand):
@@ -74,12 +74,12 @@ class Selt(BaseCommand):
             tn.write('exit\r\n')
             tn.write("y\r\n")
             tn.close()
-            print '**********************************'
-            print {'result': results}
-            print '**********************************'
+            print('**********************************')
+            print({'result': results})
+            print('**********************************')
             return results
-        except Exception,e:
-            print e
+        except Exception as e:
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

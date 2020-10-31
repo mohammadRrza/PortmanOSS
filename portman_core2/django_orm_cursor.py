@@ -5,7 +5,7 @@ from dj_bridge import DSLAM, DSLAMPort, DSLAMPortSnapshot, LineProfile, DSLAMEve
 import time
 import datetime
 import threading
-import Queue
+import queue
 from django.core.files import File
 from os.path import basename
 import os
@@ -89,17 +89,17 @@ class Transaction(object):
                 dslam_obj.last_sync = datetime.datetime.now()
             dslam_obj.save()
         except Exception as ex:
-            print '++++++++++++++++++++++++++++++++++++++++'
-            print ex
-            print '++++++++++++++++++++++++++++++++++++++++'
+            print('++++++++++++++++++++++++++++++++++++++++')
+            print(ex)
+            print('++++++++++++++++++++++++++++++++++++++++')
 
 
     @classmethod
     def update_dslam_board(cls, dslam_id, result_boards):
         dslam_obj = DSLAM.objects.get(id=dslam_id)
-        print '++++++++++++++++++++++++'
-        print result_boards.get('result')
-        print '++++++++++++++++++++++++'
+        print('++++++++++++++++++++++++')
+        print((result_boards.get('result')))
+        print('++++++++++++++++++++++++')
         if type(result_boards.get('result')) == list:
             for board in result_boards.get('result'):
                 card_number=board.get('card_number')
@@ -118,7 +118,7 @@ class Transaction(object):
                                 }
                             )
                 except Exception as ex:
-                    print ex
+                    print(ex)
 
 
     @classmethod
@@ -139,9 +139,9 @@ class Transaction(object):
                 dslamport_obj.line_profile = line_profile
                 dslamport_obj.save()
         except Exception as ex:
-            print '++++++++++++++++'
-            print ex
-            print '++++++++++++++++'
+            print('++++++++++++++++')
+            print(ex)
+            print('++++++++++++++++')
 
 
     @classmethod
@@ -154,9 +154,9 @@ class Transaction(object):
                 port_vlan_obj.vlan = Vlan.objects.get(vlan_id=vlan_id)
                 port_vlan_obj.save()
         except Exception as ex:
-            print '+++++++++++++++++'
-            print ex
-            print '+++++++++++++++++'
+            print('+++++++++++++++++')
+            print(ex)
+            print('+++++++++++++++++')
 
 
     @classmethod
@@ -208,7 +208,7 @@ class Transaction(object):
             if port_obj:# we need to update
                 port_obj = port_obj[0]
             else:
-                print 'port not found for update: %s'%str(port_status)
+                print(('port not found for update: %s'%str(port_status)))
                 continue
 
             Transaction._update_port_status(dslam_id, port_obj, port_status)
@@ -241,14 +241,14 @@ class Transaction(object):
 
             port_obj.save()
         except Exception as ex:
-            print ex
-            print '---------------------------'
-            print "error for dslam port object"
-            print 'dslam_id: '
-            print dslam_id
-            print 'print status: '
-            print port_status
-            print '---------------------------'
+            print(ex)
+            print('---------------------------')
+            print("error for dslam port object")
+            print('dslam_id: ')
+            print(dslam_id)
+            print('print status: ')
+            print(port_status)
+            print('---------------------------')
 
         Transaction._port_status_snapshot(dslam_id, port_status)
         return (port_obj.slot_number, port_obj.port_number, )
@@ -279,20 +279,20 @@ class Transaction(object):
             port_obj.downstream_attenuation_flag = port_status.get('ADSL_DOWNSTREAM_ATTEN_FLAG', port_obj.upstream_attenuation_flag)
             port_obj.save()
         except Exception as ex:
-            print '---------------------------'
-            print ex
-            print "error for dslam port object"
-            print 'dslam_id: '
-            print dslam_id
-            print 'portstatus: '
-            print port_status
-            print 'obj: '
-            print port_obj
+            print('---------------------------')
+            print(ex)
+            print("error for dslam port object")
+            print('dslam_id: ')
+            print(dslam_id)
+            print('portstatus: ')
+            print(port_status)
+            print('obj: ')
+            print(port_obj)
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-            print traceback.format_exc()
-            print '---------------------------'
+            print((exc_type, fname, exc_tb.tb_lineno))
+            print((traceback.format_exc()))
+            print('---------------------------')
 
         Transaction._port_status_snapshot(dslam_id,port_status)
 
@@ -324,18 +324,18 @@ class Transaction(object):
             snp.downstream_attenuation_flag = port_status.get('ADSL_DOWNSTREAM_ATTEN_FLAG', None)
             snp.save()
         except Exception as ex:
-            print '---------------------------'
-            print ex
-            print "error for dslam port object"
-            print 'dslam_id: '
-            print dslam_id
-            print 'portstatus: '
-            print port_status
+            print('---------------------------')
+            print(ex)
+            print("error for dslam port object")
+            print('dslam_id: ')
+            print(dslam_id)
+            print('portstatus: ')
+            print(port_status)
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-            print traceback.format_exc()
-            print '---------------------------'
+            print((exc_type, fname, exc_tb.tb_lineno))
+            print((traceback.format_exc()))
+            print('---------------------------')
 
     @classmethod
     def update_port_vpi_vci(cls, dslam_id, ports_info):
@@ -347,14 +347,14 @@ class Transaction(object):
                 port_obj.vci = port_info.get('vci')
                 port_obj.save()
         except Exception as ex:
-            print '???????????????????????'
-            print ex
-            print port_info.get('port_index')
+            print('???????????????????????')
+            print(ex)
+            print((port_info.get('port_index')))
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-            print traceback.format_exc()
-            print '???????????????????????'
+            print((exc_type, fname, exc_tb.tb_lineno))
+            print((traceback.format_exc()))
+            print('???????????????????????')
 
     @classmethod
     def update_dslamport_command_result(cls, dslam_id, port_indexes, command, result_values, username=None):
@@ -412,14 +412,14 @@ class Transaction(object):
                             'max_us_interleaved': profile.get('max_us_interleaved'),
                             'max_ds_interleaved': profile.get('max_ds_interleaved'),
                             })
-                if 'extra_settings' in profile.keys():
-                    for key, value in profile.get('extra_settings').iteritems():
+                if 'extra_settings' in list(profile.keys()):
+                    for key, value in list(profile.get('extra_settings').items()):
                         LineProfileExtraSettings.objects.update_or_create(line_profile=obj, attr_name=key, defaults={'attr_value': value})
             except Exception as ex:
-                print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-                print 'profiles: ', profiles
-                print ex
-                print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                print(('profiles: ', profiles))
+                print(ex)
+                print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
     @classmethod
     def add_line_profile(cls, params):
@@ -438,12 +438,12 @@ class Transaction(object):
                         'max_ds_interleaved': params.get('max_ds_interleaved'),
                         'extra_settings': params.get('extra_settings')
                         })
-            for key, value in params.get('extra_settings').iteritems():
+            for key, value in list(params.get('extra_settings').items()):
                 LineProfileExtraSettings.objects.update_or_create(line_profile=obj, attr_name=key, defaults={'attr_value': value})
 
         except Exception as ex:
-            print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-            print 'params: ', params
-            print ex
-            print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            print(('params: ', params))
+            print(ex)
+            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 

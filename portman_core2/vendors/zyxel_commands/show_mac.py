@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class ShowMac(BaseCommand):
@@ -85,7 +85,7 @@ class ShowMac(BaseCommand):
                     pass
             return {"result": lst_result}
         except Exception as e:
-            print '=>>>>>>>>>>>>', e
+            print(('=>>>>>>>>>>>>', e))
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

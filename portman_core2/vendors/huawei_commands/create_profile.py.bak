@@ -1,0 +1,122 @@
+import telnetlib
+import time
+from socket import error as socket_error
+from .command_base import BaseCommand
+import re
+
+class CreateProfile(BaseCommand):
+    def __init__(self, params=None):
+        self.__HOST = None
+        self.__telnet_username = None
+        self.__telnet_password = None
+        self.__params = params
+
+    @property
+    def HOST(self):
+        return self.__HOST
+
+    @HOST.setter
+    def HOST(self, value):
+        self.__HOST = value
+
+    @property
+    def telnet_username(self):
+        return self.__telnet_username
+
+    @telnet_username.setter
+    def telnet_username(self, value):
+        self.__telnet_username = value
+
+    @property
+    def telnet_password(self):
+        return self.__telnet_password
+
+    @telnet_password.setter
+    def telnet_password(self, value):
+        self.__telnet_password = value
+
+    def __clear_port_name(self, port_name):
+        pattern = r'\d+(\s)?-(\s)?\d+'
+        st = re.search(pattern, port_name, re.M | re.DOTALL)
+        return st.group()
+
+    retry = 1
+    def run_command(self):
+        profile_name = self.__params.get('profile')        # Initial Parameters
+        template_type = self.__params.get('template_type')
+        channel_mode = self.__params.get('channel_mode')
+        max_us_transmit_rate = self.__params.get('max_us_transmit_rate')
+        max_ds_transmit_rate = self.__params.get('max_ds_transmit_rate')
+        min_us_transmit_rate = self.__params.get('min_us_transmit_rate')
+        min_ds_transmit_rate = self.__params.get('min_ds_transmit_rate')
+        us_snr_margin = self.__params.get('us_snr_margin')
+        ds_snr_margin = self.__params.get('ds_snr_margin')
+        max_us_interleaved = self.__params.get('max_us_interleaved')
+        max_ds_interleaved = self.__params.get('max_ds_interleaved')
+        extra_settings = self.__params.get('extra_settings')
+        if extra_settings:
+            ds_transmit_rate_adaptation = extra_settings.get('ds_transmit_rate_adaptation')
+            ds_transmit_rate_adaptation_index = 0
+            if ds_transmit_rate_adaptation == 'adaptAtStartup':
+                ds_transmit_rate_adaptation_index = 1
+            elif ds_transmit_rate_adaptation == 'adaptAtRuntime':
+                ds_transmit_rate_adaptation_index = 2
+
+            min_us_snr_margin = extra_settings.get('min_us_snr_margin')
+            max_ds_snr_margin = extra_settings.get('max_ds_snr_margin')
+            min_ds_snr_margin = extra_settings.get('min_ds_snr_margin')
+            max_us_snr_margin = extra_settings.get('max_us_snr_margin')
+
+        try:
+            tn = telnetlib.Telnet(self.__HOST)
+            if tn.read_until('>>User name:'):
+                tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            if tn.read_until('>>User password:'):
+                tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write("enable\r\n")
+            tn.write("config\r\n")
+            tn.write(("adsl line-profile add\r\n").encode('utf-8'))
+            tn.write(("\r\n").encode('utf-8'))
+            tn.write(("y\r\n").encode('utf-8'))
+            tn.write(("{0}\r\n".format(profile_name)).encode('utf-8'))
+            tn.write(("{0}\r\n".format(template_type_index)).encode('utf-8'))
+            tn.write(("n\r\n").encode('utf-8'))
+            tn.write(("{0}\r\n".format(channel_mode_index)).encode('utf-8'))
+            if channel_mode != "fixed":
+                tn.write(("y\r\n").encode('utf-8'))
+                tn.write(("{0}\r\n".format(max_ds_interleaved)).encode('utf-8'))
+                tn.write(("{0}\r\n".format(max_us_interleaved)).encode('utf-8'))
+            tn.write(("{0}\r\n".format(ds_transmit_rate_adaptation_index)).encode('utf-8'))
+            tn.write("y\r\n".encode('utf-8'))
+            tn.write("{0}\r\n".format(ds_snr_margin).encode('utf-8'))
+            tn.write("{0}\r\n".format(min_ds_snr_margin).encode('utf-8'))
+            tn.write("{0}\r\n".format(max_ds_snr_margin).encode('utf-8'))
+            tn.write("{0}\r\n".format(us_snr_margin).encode('utf-8'))
+            tn.write("{0}\r\n".format(min_us_snr_margin).encode('utf-8'))
+            tn.write("{0}\r\n".format(max_us_snr_margin).encode('utf-8'))
+
+            tn.write("y\r\n".encode('utf-8'))
+            tn.write("{0}\r\n".format(min_ds_transmit_rate).encode('utf-8'))
+            tn.write("{0}\r\n".format(max_ds_transmit_rate).encode('utf-8'))
+            tn.write("{0}\r\n".format(min_us_transmit_rate).encode('utf-8'))
+            tn.write("{0}\r\n".format(max_us_transmit_rate).encode('utf-8'))
+
+            tn.write("end\r\n")
+            result = tn.read_until('end')
+            tn.write("quit\r\n")
+            tn.write("y\r\n")
+            tn.close()
+            print('*******************************************')
+            print("{0} profile created".format(self.__profile))
+            print('*******************************************')
+            return {"result": "{0} profile created".format(self.__profile)}
+        except (EOFError, socket_error) as e:
+            print(e)
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()
+        except Exception as e:
+            print(e)
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()

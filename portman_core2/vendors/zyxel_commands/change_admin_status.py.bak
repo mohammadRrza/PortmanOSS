@@ -1,0 +1,86 @@
+from pysnmp.entity.rfc3413.oneliner import cmdgen
+from pysnmp.proto import rfc1902
+from .command_base import BaseCommand
+import re
+
+class ChangeAdminStatus(BaseCommand):
+    def __init__(self, params=None):
+        self.__HOST = None
+        self.__telnet_username = None
+        self.__telnet_password = None
+        self.PORT_ADMIN_STATUS = {1:"UNLOCK", 2:"LOCK", 3:"TESTING"}
+        self.PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in self.PORT_ADMIN_STATUS.items()}
+        self.PORT_ADMIN_STATUS_OID = '1.3.6.1.2.1.2.2.1.7'
+        self.__port_indexes = params.get('port_indexes')
+        self.__admin_status = params.get('admin_status')
+        self.__snmp_port = params.get('snmp_port', 161)
+        self.__snmp_timeout = params.get('snmp_timeout', 7)
+        self.__set_snmp_community = params.get('set_snmp_community')
+
+    @property
+    def HOST(self):
+        return self.__HOST
+
+    @HOST.setter
+    def HOST(self, value):
+        self.__HOST = value
+
+    @property
+    def telnet_username(self):
+        return self.__telnet_username
+
+    @telnet_username.setter
+    def telnet_username(self, value):
+        self.__telnet_username = value
+
+    @property
+    def telnet_password(self):
+        return self.__telnet_password
+
+    @telnet_password.setter
+    def telnet_password(self, value):
+        self.__telnet_password = value
+
+    def __clear_port_name(self, port_name):
+        pattern = r'\d+(\s)?-(\s)?\d+'
+        st = re.search(pattern, port_name, re.M | re.DOTALL)
+        return st.group()
+
+    def translate_admin_status_by_text(self, admin_status):
+        admin_status = admin_status.upper()
+        if admin_status in self.PORT_ADMIN_STATUS_INVERSE:
+            return self.PORT_ADMIN_STATUS_INVERSE[admin_status]
+        return None
+
+    def run_command(self):
+        admin_status = self.translate_admin_status_by_text(self.__admin_status)
+        target_oids_value = []
+        for port_item in self.__port_indexes:
+            target_oids_value.append(('.{0}.{1}'.format(self.PORT_ADMIN_STATUS_OID, port_item['port_index']), rfc1902.Integer(admin_status)))
+        target_oids_value = tuple(target_oids_value)
+
+
+        if admin_status is None:
+            raise Exception('Invalid Admin Status Value')
+
+        cmd_gen = cmdgen.CommandGenerator()
+
+        error_indication, error_status, error_index, var_binds = cmd_gen.setCmd(
+            cmdgen.CommunityData(self.__set_snmp_community),
+            cmdgen.UdpTransportTarget((self.__HOST, self.__snmp_port), timeout=self.__snmp_timeout, retries=2),
+            *target_oids_value
+        )
+
+        # Check for errors and print out results
+        if error_indication:
+            raise Exception(error_indication)
+        else:
+            if error_status:
+                Exception('%s at %s' % (
+                    error_status.prettyPrint(),
+                    error_index and var_binds[int(error_index)-1][0] or '?'
+                ))
+        print('**************************************************************')
+        print(dict(port_indexes = self.__port_indexes, result="Changed admin status ports to {0}".format(self.__admin_status)))
+        print('**************************************************************')
+        return dict(port_indexes = self.__port_indexes, result="Changed admin status ports to {0}".format(self.__admin_status))

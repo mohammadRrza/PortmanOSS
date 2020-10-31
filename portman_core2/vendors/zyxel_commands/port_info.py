@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class PortInfo(BaseCommand):
@@ -56,17 +56,17 @@ class PortInfo(BaseCommand):
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            print '******************************************'
-            print "port enable {0}".format(self.__port_indexes)
-            print '******************************************'
+            print('******************************************')
+            print(("port enable {0}".format(self.__port_indexes)))
+            print('******************************************')
             return dict(result=result)
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

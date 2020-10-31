@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class RemoveFromVlan(BaseCommand):
@@ -81,15 +81,15 @@ class RemoveFromVlan(BaseCommand):
                 return {"result" : "delete from card/port {0} give error".format(self.__port_indexes), "port_indexes": self.__port_indexes}
             return dict(result="deleted from card/port{0}".format(self.__port_indexes), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
             else:
-                print "error : delete from card/port {0}".format(self.__port_indexes)
+                print(("error : delete from card/port {0}".format(self.__port_indexes)))
                 return {"result" : "delete from card/port {1}".format(self.__port_indexes)}

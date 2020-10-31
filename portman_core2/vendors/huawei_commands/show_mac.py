@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class ShowMac(BaseCommand):
@@ -56,23 +56,23 @@ class ShowMac(BaseCommand):
                 result = tn.read_until("next")
                 if 'next' in result:
                     break
-            print result
+            print(result)
             com =re.compile(r'(?P<mac>\w{4}-\w{4}-\w{4})\s+\S+\s+\d{1}(\s)?/(?P<slot_number>\d+)(\s/(?P<port_number>\d+)\s+[\d+|\-]+\s+[\d+|\-]+)?\s+(?P<vlan_id>(\d+|\w+))')
             results = [m.groupdict() for m in com.finditer(result)]
             tn.write("quit\r\n")
             tn.write("y\r\n")
             tn.close()
-            print '***********************'
-            print results
-            print '***********************'
+            print('***********************')
+            print(results)
+            print('***********************')
             return {'result': results}
         except (EOFError,socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
-        except Exception,e:
-            print e
+        except Exception as e:
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

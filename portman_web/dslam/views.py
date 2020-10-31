@@ -44,7 +44,7 @@ import csv, time
 import simplejson as json
 import io as StringIO
 from collections import defaultdict
-import dslam.utility
+from dslam import utility
 import logging
 import sys, os
 
@@ -3332,8 +3332,6 @@ class RegisterPortAPIView(views.APIView):
         res = ''
         result = ''
         PVC = ''
-        print()
-        data
         reseller_data = data.get('reseller')
         customer_data = data.get('subscriber')
         mdf_status = data.get('status')

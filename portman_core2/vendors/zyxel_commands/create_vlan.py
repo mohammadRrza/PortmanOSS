@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class CreateVlan(BaseCommand):
@@ -64,16 +64,16 @@ class CreateVlan(BaseCommand):
             tn.write("y\r\n")
             tn.close()
             if 'example' in result:
-                print '************************************'
-                print "error: {0} vlan created".format(self.__vlan_id)
-                print '************************************'
+                print('************************************')
+                print(("error: {0} vlan created".format(self.__vlan_id)))
+                print('************************************')
                 return {"result": "error: {0} vlan created".format(self.__vlan_id)}
-            print '************************************'
-            print "{0} vlan created".format(self.__vlan_id)
-            print '************************************'
+            print('************************************')
+            print(("{0} vlan created".format(self.__vlan_id)))
+            print('************************************')
             return {"result": "{0} vlan created".format(self.__vlan_id)}
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

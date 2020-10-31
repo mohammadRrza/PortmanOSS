@@ -1,6 +1,6 @@
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 class ChangeLineProfilePort(BaseCommand):
@@ -88,9 +88,9 @@ tn.close()
                             error_status.prettyPrint(),
                             error_index and var_binds[int(error_index)-1][0] or '?'
                         ))
-        print '++++++++++++++++++++++'
-        print error_indication, error_status, error_index, var_binds
-        print '++++++++++++++++++++++'
+        print('++++++++++++++++++++++')
+        print((error_indication, error_status, error_index, var_binds))
+        print('++++++++++++++++++++++')
         #print '------------------------------------------------------'
         #print {"result": "ports line profile changed to {0}".format(self.__lineprofile), "port_indexes": self.__port_indexes}
         #print '------------------------------------------------------'
