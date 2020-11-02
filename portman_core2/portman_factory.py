@@ -9,6 +9,7 @@ class PortmanFactory:
         self.__resource_types[name] = klass
 
     def get_type(self, name):
+
         if name in self.__resource_types:
             return self.__resource_types[name]
 

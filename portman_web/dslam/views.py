@@ -3389,7 +3389,7 @@ class RegisterPortAPIView(views.APIView):
             if telecom_mdf_obj:
                 telecom_mdf_obj = telecom_mdf_obj.first()
 
-            mdf_dslam_obj, mdf_dslam__updated = MDFDSLAM.objects.update_or_create(
+            mdf_dslam_obj, mdf_dslam_updated = MDFDSLAM.objects.update_or_create(
                 telecom_center_id=dslam_obj.telecom_center.id, telecom_center_mdf_id=telecom_mdf_obj.id,
                 #### Check this whole line
                 row_number=0, floor_number=0, connection_number=0,  ##### Check this whole line

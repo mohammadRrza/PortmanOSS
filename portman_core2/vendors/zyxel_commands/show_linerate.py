@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -43,31 +45,35 @@ class ShowLineRate(BaseCommand):
     retry = 1
     def run_command(self):
         try:
+            print(self.__telnet_password)
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b'Password:')
             for port_item in self.__port_indexes:
                 tn.write("show linerate {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
                 time.sleep(1)
-            tn.read_until("Communications Corp.")
-            tn.write("end\r\n")
-            result = '\n'.join(tn.read_until('end').split('\n')[:-2])
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.read_until(b'Communications Corp.')
+            tn.write(b'end\r\n')
+            result = tn.read_until(b'end').split(b'\n')[:-2]
+            tn.write(b'exit\r\n')
+            tn.write(b'y\r\n')
             tn.close()
             print('*******************************************')
-            print(("show linerate {0}".format(result)))
+            print(('show linerate {0}'.format(str(result))))
             print('*******************************************')
-            return {"result": result}
+            return {"result": str(result).replace("b'","").split("\\r")}
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(str(exc_tb.tb_lineno))
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()

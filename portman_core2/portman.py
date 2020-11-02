@@ -170,7 +170,7 @@ class Portman(object):
 
 
     def _execute_command(self, task, is_queue=True, save_result=True):
-       
+
         dslam_class = self.__portman_factory.get_type(task.dslam_data['dslam_type'])
         #return  dslam_class
         if task.params.get('port_conditions'):
@@ -180,9 +180,7 @@ class Portman(object):
             task.command,
             task.params
         )
-        print('==================')
-        print(task_result)
-        print('==================')
+
         dslam_id = task.dslam_data['id']
         command = task.command
         if task_result:
