@@ -1,0 +1,60 @@
+import csv
+import telnetlib
+import re
+import time
+
+def process_telnet_option(tsocket, command, option):
+    from telnetlib import IAC, DO, DONT, WILL, WONT, SB, SE, TTYPE, NAWS, LINEMODE, ECHO
+    tsocket.sendall(IAC + WONT + LINEMODE)
+
+f = file('output.csv', 'a')
+def run_command(HOST, user, psw, access_name):
+    try:
+        tn = telnetlib.Telnet(HOST, timeout=5)
+        tn.set_option_negotiation_callback(process_telnet_option)
+
+        index, match_obj, text = tn.expect(
+                    ['[U|u]sername: ', '[L|l]ogin:', '[L|l]oginname:', '[P|p]assword:'])
+
+        print(index, match_obj, text)
+        if index == 1:
+            print('send login ...')
+            tn.write('{0}\r\n'.format(access_name))
+
+        data = tn.read_until('User Name:', 5)
+        print('here')
+        print('==>', data)
+        tn.write((user + "\r\n").encode('utf-8'))
+        print('user sent ...')
+        data = tn.read_until('Password:', 5)
+        print('==>', data)
+        tn.write(( psw + "\r\n").encode('utf-8'))
+        print('password sent ...')
+
+        data = tn.read_until('>', 5)
+        print('got to prompt ...', data)
+        tn.write("ip\r\n".encode('utf-8'))
+        time.sleep(1)
+        data = tn.read_until('>',5)
+        tn.write("addtovlan\r\n".encode('utf-8'))
+        data = tn.read_until('>',5)
+        print("got to prompt 2...", data)
+        time.sleep(1)
+        tn.write("EMS\r\n".encode('utf-8'))
+        time.sleep(1)
+        tn.write("0-1-4\r\n".encode('utf-8'))
+        time.sleep(1)
+        tn.write("0-20\r\n".encode('utf-8'))
+        time.sleep(1)
+        tn.write("n\r\n".encode('utf-8'))
+        time.sleep(1)
+        result = tn.read_until('>',5)
+        print('===================================')
+        print(result)
+        print('===================================')
+        tn.write("exit\r\n\r\n")
+        tn.close()
+    except Exception as e:
+        print(e)
+
+res = run_command('192.168.61.38', 'admin', 'pte-dslam', 'an2100')

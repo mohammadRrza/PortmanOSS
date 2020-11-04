@@ -1,0 +1,92 @@
+import telnetlib
+import time
+from .command_base import BaseCommand
+import re
+import sys
+
+class ShowMac(BaseCommand):
+    def __init__(self, params):
+        self.__HOST = None
+        self.__telnet_username = None
+        self.__telnet_password = None
+
+    @property
+    def HOST(self):
+        return self.__HOST
+
+    @HOST.setter
+    def HOST(self, value):
+        self.__HOST = value
+
+    @property
+    def port_name(self):
+        return self.__port_name
+
+    @port_name.setter
+    def port_name(self, value):
+        self.__port_name = self.__clear_port_name(value)
+
+    @property
+    def telnet_username(self):
+        return self.__telnet_username
+
+    @telnet_username.setter
+    def telnet_username(self, value):
+        self.__telnet_username = value
+
+    @property
+    def telnet_password(self):
+        return self.__telnet_password
+
+    @telnet_password.setter
+    def telnet_password(self, value):
+        self.__telnet_password = value
+
+    def __clear_port_name(self, port_name):
+        pattern = r'\d+(\s)?-(\s)?\d+'
+        st = re.search(pattern, port_name, re.M | re.DOTALL)
+        return st.group()
+
+    retry = 1
+    def run_command(self):
+        try:
+            lst_result = []
+            tn = telnetlib.Telnet(self.__HOST,23,20)
+            time.sleep(1)
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            if self.__telnet_password:
+                tn.read_until("Password: ")
+                tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            time.sleep(1)
+            tn.write(("show mac\r\n").encode('utf-8'))
+            time.sleep(1)
+            quit = False
+            output = '';
+            while not quit:
+                tn.write("n\r\n")
+                tn.write("quit\r\n")
+                output = tn.read_until("quit")
+                if 'quit' in output:
+                    quit = True
+                    break
+            tn.write("exit\r\n")
+            tn.write("y\r\n")
+            tn.close()
+            results = output.split('\n')
+            com = re.compile(r"(?P<vlan_id>(\d)+)?(\s)*(?P<mac>([0-9A-F]{2}[:-]){5}([0-9A-F]{2}))(\s)*(?P<port>(\d+(\s)?-(\s)?\d+))$", re.MULTILINE | re.I)
+            for line in results:
+                try:
+                    lst_result.append((
+                        com.search(line.strip()).group('vlan_id'),
+                        com.search(line.strip()).group('mac'),
+                        com.search(line.strip()).group('port').split('-')[0].strip(),
+                        com.search(line.strip()).group('port').split('-')[1].strip()
+                        ))
+                except:
+                    pass
+            return lst_result
+        except Exception as e:
+            print(e)
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()

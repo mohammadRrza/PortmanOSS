@@ -63,7 +63,7 @@ class ShowLineRate(BaseCommand):
             print('*******************************************')
             print(('show linerate {0}'.format(str(result))))
             print('*******************************************')
-            return {"result": str(result).replace("b'","").split("\\r")}
+            return {"result": str(result).replace("b'", "").split("\\r")}
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
