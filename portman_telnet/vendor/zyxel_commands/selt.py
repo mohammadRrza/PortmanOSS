@@ -38,7 +38,7 @@ class Selt(object):
             result_values = output.split()
             results.append(dict(port={'card': port['slot_number'],'port': port['port_number']}, inprogress=result_values[0]\
                 ,cableType=result_values[1], loopEstimateLength=' '.join(result_values[2:])))
-        print '**********************************'
-        print {'result': results}
-        print '**********************************'
+        print('**********************************')
+        print({'result': results})
+        print('**********************************')
         return results

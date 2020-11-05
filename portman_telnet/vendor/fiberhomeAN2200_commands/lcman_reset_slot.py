@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class LcmanResetSlot(BaseCommand):
     __slot__ = ('tn', 'dslam_id', 'fiberhomeAN2200_q', 'slot_number')
@@ -25,9 +25,9 @@ class LcmanResetSlot(BaseCommand):
         data = self.tn.read_until('>')
         result = {"result": data.split('\n')[-2]}
 
-        print '==================================='
-        print result
-        print '==================================='
+        print('===================================')
+        print(result)
+        print('===================================')
 
         if protocol == 'http':
             return result

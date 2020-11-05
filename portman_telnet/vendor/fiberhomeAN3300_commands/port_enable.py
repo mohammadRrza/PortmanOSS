@@ -1,7 +1,7 @@
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class PortEnable(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN3300_q', 'dslam_id', 'port_indexes')

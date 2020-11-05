@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class ChangeProfile(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'new_profile')
@@ -29,9 +29,9 @@ class ChangeProfile(BaseCommand):
             time.sleep(1)
         result = {"result": "ports profile are changed to {0}".format(self.new_profile)}
 
-        print '==================================='
-        print result
-        print '==================================='
+        print('===================================')
+        print(result)
+        print('===================================')
         if protocl == 'http':
             return result
         elif protocl == 'socket':

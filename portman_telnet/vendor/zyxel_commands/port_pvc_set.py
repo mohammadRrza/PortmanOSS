@@ -25,7 +25,7 @@ class PortPvcSet(object):
                 self.priority
             ).encode('utf-8'))
             time.sleep(1)
-        print '***********************************************'
-        print "port pvc set 0/35 DEFVAL llc  1 0 for {0}".format(self.ports)
-        print '***********************************************'
+        print('***********************************************')
+        print("port pvc set 0/35 DEFVAL llc  1 0 for {0}".format(self.ports))
+        print('***********************************************')
         return dict(result="ports pvc set is done ", ports=self.ports)

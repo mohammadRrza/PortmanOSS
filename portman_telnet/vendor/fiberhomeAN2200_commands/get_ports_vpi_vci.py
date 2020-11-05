@@ -2,7 +2,7 @@ import telnetlib
 import time
 import re
 
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class GetPortsVpiVci(BaseCommand):
     __slot__ = ('tn', 'dslam_id')
@@ -12,9 +12,9 @@ class GetPortsVpiVci(BaseCommand):
         self.dslam_id = params.get('dslam_id')
 
     def run_command(self):
-        print '------------------------------'
-        print self.dslam_id
-        print '------------------------------'
+        print('------------------------------')
+        print(self.dslam_id)
+        print('------------------------------')
         self.tn.write("core\r\n".encode('utf-8'))
         # search on AD32+ type
         self.tn.write("showallvc\r\n".encode('utf-8'))
@@ -27,8 +27,8 @@ class GetPortsVpiVci(BaseCommand):
         results = [m.groupdict() for m in com.finditer(data)]
         for item in results:
             item['port_index'] = item['slot_number'] + item['port_number']
-        print '-----------------------------------'
-        print results
-        print '-----------------------------------'
+        print('-----------------------------------')
+        print(results)
+        print('-----------------------------------')
 
         self.queue.put(('update_port_vpi_vci', self.dslam_id, results))

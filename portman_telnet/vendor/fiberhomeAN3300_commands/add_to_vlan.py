@@ -2,7 +2,7 @@ import csv
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class AddToVlan(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN2200_q', 'dslam_id', 'vlan_name', 'vlan_id', 'port_indexes', 'untagged_port')
@@ -35,9 +35,9 @@ class AddToVlan(BaseCommand):
         else:
             self.tn.write("exit\r\n".encode('utf-8'))
         output = self.tn.read_until('>',5)
-        print '==================================='
-        print output
-        print '==================================='
+        print('===================================')
+        print(output)
+        print('===================================')
         result = {"result": "{0} added to valn {1}".format(self.port_indexes, self.vlan_name)}
         self.tn.write("exit\r\n\r\n")
         self.tn.close()

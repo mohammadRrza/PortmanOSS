@@ -1,7 +1,7 @@
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class ShowFdbSlot(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN3300_q', 'dslam_id', 'slot_number')
@@ -34,5 +34,5 @@ class ShowFdbSlot(BaseCommand):
                     result))
 
         except Exception as ex:
-            print ex
+            print(ex)
             return {'result': 'error: show fdb slot command'}

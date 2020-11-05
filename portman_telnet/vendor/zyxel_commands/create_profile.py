@@ -18,7 +18,7 @@ class CreateProfile(object):
         time.sleep(1)
         self.tn.write("end\r\n")
         result = self.tn.read_until('end')
-        print '*******************************************'
-        print "{0} profile created".format(self.profile)
-        print '*******************************************'
+        print('*******************************************')
+        print("{0} profile created".format(self.profile))
+        print('*******************************************')
         return {"result": "{0} profile created".format(self.profile)}

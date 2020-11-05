@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class UpLinkPvcSet(BaseCommand):
     __slot__ = ('tn', 'port_vpi', 'port_vci', 'port_indexes',\
@@ -31,10 +31,10 @@ class UpLinkPvcSet(BaseCommand):
             self.tn.write("0\r\n".encode('utf-8'))
             time.sleep(1)
         result = {"result": "uplink pvc set, vpi={0} vci={1} ".format(self.port_vpi, self.port_vci)}
-        print '==================================='
-        print result
-        print protocol
-        print '==================================='
+        print('===================================')
+        print(result)
+        print(protocol)
+        print('===================================')
         if protocol == "http":
             return result
         elif protocl == "socket":

@@ -2,7 +2,7 @@ import telnetlib
 import time
 from socket import error as socket_error
 import re
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class GetDSLAMBoard(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN3300_q', 'dslam_id', 'slot_number')
@@ -54,10 +54,10 @@ class GetDSLAMBoard(BaseCommand):
                 cards[card_number]['fw_version'] = fw_version
                 cards[card_number]['hw_version'] = hw_version
 
-            result = {'result': cards.values()}
-            print '+++++++++++++++++++++++++++++'
-            print result
-            print '+++++++++++++++++++++++++++++'
+            result = {'result': list(cards.values())}
+            print('+++++++++++++++++++++++++++++')
+            print(result)
+            print('+++++++++++++++++++++++++++++')
             if protocol == 'http':
                 return result
             elif protocol == 'socket':
@@ -65,5 +65,5 @@ class GetDSLAMBoard(BaseCommand):
                 self.dslam_id,
                 result))
         except Exception as ex:
-            print ex
+            print(ex)
             return {'result': 'error: show fdb slot command'}

@@ -5,7 +5,7 @@ from socket import error as socket_error
 import re
 import telnetlib
 import re
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class GetCurrentPortStatus(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN3300_q', 'slot_number', 'port_number' , 'dslam_id')
@@ -54,9 +54,9 @@ class GetCurrentPortStatus(BaseCommand):
         self.tn.write("\r\n".encode('utf-8'))
         time.sleep(1)
         data = self.tn.read_until("#")
-        print '++++++++++++++++++++++++++++++++++++++++++++++'
-        print data
-        print '++++++++++++++++++++++++++++++++++++++++++++++'
+        print('++++++++++++++++++++++++++++++++++++++++++++++')
+        print(data)
+        print('++++++++++++++++++++++++++++++++++++++++++++++')
         port = {}
         try:
             port['SLOT_NUMBER'], port['PORT_NUMBER'] = re.search('show\sport\s(\d+)\:(\d+)\sconfiguration', data).groups()
@@ -108,8 +108,8 @@ class GetCurrentPortStatus(BaseCommand):
             import os
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print traceback.format_exc()
-            print exc_type, fname, exc_tb.tb_lineno
+            print(traceback.format_exc())
+            print(exc_type, fname, exc_tb.tb_lineno)
             port_event_items.append({
                 "event": "Don't give Result",
                 "message": "error on get current port status command"

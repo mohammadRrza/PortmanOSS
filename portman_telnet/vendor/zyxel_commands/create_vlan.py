@@ -22,11 +22,11 @@ class CreateVlan(object):
         self.tn.write("end\r\n")
         result = self.tn.read_until('end')
         if 'example' in result:
-            print '************************************'
-            print "error: {0} vlan created".format(self.vid)
-            print '************************************'
+            print('************************************')
+            print("error: {0} vlan created".format(self.vid))
+            print('************************************')
             return {"result": "error: {0} vlan created".format(self.vid)}
-        print '************************************'
-        print "{0} vlan created".format(self.vid)
-        print '************************************'
+        print('************************************')
+        print("{0} vlan created".format(self.vid))
+        print('************************************')
         return {"result": "{0} vlan created".format(self.vid)}

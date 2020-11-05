@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 class OpenPortSelt(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'fiberhomeAN2200_q', 'dslam_id')
     def __init__(self, tn, params, fiberhomeAN2200_q=None):
@@ -33,9 +33,9 @@ class OpenPortSelt(BaseCommand):
             time.sleep(1)
 
         result = {"result": "Port is being SELT status."}
-        print '==================================='
-        print result
-        print '==================================='
+        print('===================================')
+        print(result)
+        print('===================================')
         if protocol == 'http':
             return result
         elif protocol == 'socket':

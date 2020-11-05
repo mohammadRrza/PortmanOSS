@@ -2,7 +2,7 @@ import telnetlib
 import time
 from socket import error as socket_error
 import re
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 
 class ShowPort(BaseCommand):
@@ -31,9 +31,9 @@ class ShowPort(BaseCommand):
         data  ='\n'.join(data)
 
         results = {'result': data}
-        print '==================================='
-        print results
-        print '==================================='
+        print('===================================')
+        print(results)
+        print('===================================')
 
         if protocol == 'http':
             return results

@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class PortReset(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'dslam_id', 'fiberhomeAN2200_q')
@@ -25,9 +25,9 @@ class PortReset(BaseCommand):
             self.tn.write("{0}\r\n".format(port['port_number']).encode('utf-8'))
             time.sleep(1)
 
-        print '==================================='
-        print {"result": "Reset port."}
-        print '==================================='
+        print('===================================')
+        print({"result": "Reset port."})
+        print('===================================')
 
         result = {"result": "Reset port"}
         if protocol == 'http':

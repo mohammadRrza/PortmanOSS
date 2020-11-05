@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class PortPvcSet(BaseCommand):
     __slot__ = ('tn', 'port_vpi', 'port_vci', 'start_slot_number', 'start_port_number',\
@@ -39,9 +39,9 @@ class PortPvcSet(BaseCommand):
         time.sleep(1)
         self.tn.read_until('looptowanvc', 5)
         result = self.tn.read_until('>', 5)
-        print '==================================='
-        print {"result": result}
-        print '==================================='
+        print('===================================')
+        print({"result": result})
+        print('===================================')
         if protocol == 'http':
             return {"result": result}
         elif protocol == 'socket':

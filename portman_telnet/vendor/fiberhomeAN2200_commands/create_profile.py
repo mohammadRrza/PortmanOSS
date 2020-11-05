@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 class CreateProfile(BaseCommand):
     __slot__ = ('tn', 'dslam_id', 'latency', 'template_type', 'ds_snr_margin', 'us_snr_margin', 'max_ds_interleaved', 'max_us_interleaved', \
             'min_ds_transmit_rate', 'min_us_transmit_rate', 'max_ds_transmit_rate', 'max_us_transmit_rate', 'fiberhomeAN2200_q', 'profile')
@@ -57,9 +57,9 @@ class CreateProfile(BaseCommand):
 
         self.tn.write("end\r\n".encode('utf-8'))
         result = {"result": self.tn.read_until('end')}
-        print '***********************************'
-        print result
-        print '***********************************'
+        print('***********************************')
+        print(result)
+        print('***********************************')
         if protocol == 'http':
             return result
         elif protocol == 'socket':

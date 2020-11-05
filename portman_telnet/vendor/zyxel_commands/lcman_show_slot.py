@@ -15,7 +15,7 @@ class LcmanShowSlot(object):
         start_point = result.find('slot')
         end_point = result.rfind('\r\n\r\n')
         result = result[start_point:end_point]
-        print '********************************'
-        print result
-        print '********************************'
+        print('********************************')
+        print(result)
+        print('********************************')
         return {"result": result}

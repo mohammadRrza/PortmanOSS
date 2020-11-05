@@ -2,13 +2,13 @@ import telnetlib
 import time
 from socket import error as socket_error
 import traceback
-from command_factory import CommandFactory
-from fiberhomeAN3300_commands.show_fdb_slot import ShowFdbSlot
-from fiberhomeAN3300_commands.port_enable import PortEnable
-from fiberhomeAN3300_commands.port_disable import PortDisable
-from fiberhomeAN3300_commands.get_ports_status import GetPortsStatus
-from fiberhomeAN3300_commands.get_current_port_status import GetCurrentPortStatus
-from fiberhomeAN3300_commands.get_dslam_board import GetDSLAMBoard
+from .command_factory import CommandFactory
+from .fiberhomeAN3300_commands.show_fdb_slot import ShowFdbSlot
+from .fiberhomeAN3300_commands.port_enable import PortEnable
+from .fiberhomeAN3300_commands.port_disable import PortDisable
+from .fiberhomeAN3300_commands.get_ports_status import GetPortsStatus
+from .fiberhomeAN3300_commands.get_current_port_status import GetCurrentPortStatus
+from .fiberhomeAN3300_commands.get_dslam_board import GetDSLAMBoard
 
 class FiberhomeAN3300Telnet(object):
     retry = 1
@@ -30,7 +30,7 @@ class FiberhomeAN3300Telnet(object):
 
     def open_connection(self):
         self.retry += 1
-        print 'try to open connections'
+        print('try to open connections')
         try:
             tn = telnetlib.Telnet(self.__host)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
@@ -42,14 +42,14 @@ class FiberhomeAN3300Telnet(object):
             tn.read_until("Password: ")
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             data = tn.read_until("#")
-            print 'open connection dslam with ip: {0}'.format(self.__host)
+            print('open connection dslam with ip: {0}'.format(self.__host))
             return tn
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             if self.retry < 4:
                 return self.open_connection()
         except Exception as e:
-            print e
+            print(e)
             if self.retry < 4:
                 return self.open_connection()
 
@@ -65,11 +65,11 @@ class FiberhomeAN3300Telnet(object):
             import os
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print traceback.format_exc()
-            print exc_type, fname, exc_tb.tb_lineno
+            print(traceback.format_exc())
+            print(exc_type, fname, exc_tb.tb_lineno)
             if self.retry < 4:
                 self.tn = self.open_connection()
                 return self.run_command(command, params)
             else:
-                if self.dslam_id in self.telnet_dict.keys():
+                if self.dslam_id in list(self.telnet_dict.keys()):
                     del self.telnet_dict[self.dslam_id]

@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class ShowPortSelt(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'fiberhomeAN2200_q', 'dslam_id')
@@ -39,9 +39,9 @@ class ShowPortSelt(BaseCommand):
             ports.append(selt_result)
 
         result = {"result": ports}
-        print '==================================='
-        print result
-        print '==================================='
+        print('===================================')
+        print(result)
+        print('===================================')
         if protocol == 'http':
             return result
         elif protocol == 'socket':

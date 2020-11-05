@@ -1,7 +1,7 @@
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class VlanShow(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN2200_q', 'dslam_id',)
@@ -58,5 +58,5 @@ class VlanShow(BaseCommand):
                     result))
 
         except Exception as ex:
-            print ex
+            print(ex)
             return {'result': 'error: show all vlan get error'}

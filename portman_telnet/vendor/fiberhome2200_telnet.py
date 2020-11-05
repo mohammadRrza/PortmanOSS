@@ -3,33 +3,33 @@ import traceback
 import time
 from socket import error as socket_error
 from threading import Thread
-from command_factory import CommandFactory
-from fiberhomeAN2200_commands.show_mac_slot_port import ShowMacSlotPort
+from .command_factory import CommandFactory
+from .fiberhomeAN2200_commands.show_mac_slot_port import ShowMacSlotPort
 #from fiberhomeAN2200_commands.lcman_show import LcmanShow
-from fiberhomeAN2200_commands.profile_adsl_show import ProfileADSLShow
-from fiberhomeAN2200_commands.create_profile import CreateProfile
-from fiberhomeAN2200_commands.delete_profile import DeleteProfile
-from fiberhomeAN2200_commands.add_to_vlan import AddToVlan
-from fiberhomeAN2200_commands.port_disable import PortDisable
-from fiberhomeAN2200_commands.port_reset import PortReset
-from fiberhomeAN2200_commands.port_enable import PortEnable
-from fiberhomeAN2200_commands.port_pvc_set import PortPvcSet
-from fiberhomeAN2200_commands.port_pvc_delete import PortPvcDelete
-from fiberhomeAN2200_commands.create_vlan import CreateVlan
-from fiberhomeAN2200_commands.vlan_show import VlanShow
-from fiberhomeAN2200_commands.change_profile import ChangeProfile
-from fiberhomeAN2200_commands.uplink_pvc_delete import UpLinkPvcDelete
-from fiberhomeAN2200_commands.uplink_pvc_set import UpLinkPvcSet
-from fiberhomeAN2200_commands.uplink_pvc_show import UpLinkPvcShow
-from fiberhomeAN2200_commands.get_ports_status import GetPortsStatus
-from fiberhomeAN2200_commands.get_dslam_board import GetDSLAMBoard
-from fiberhomeAN2200_commands.get_ports_vpi_vci import GetPortsVpiVci
-from fiberhomeAN2200_commands.lcman_reset_slot import LcmanResetSlot
-from fiberhomeAN2200_commands.dslam_up_time import DSLAMUpTime
-from fiberhomeAN2200_commands.open_port_selt import OpenPortSelt
-from fiberhomeAN2200_commands.show_port_selt import ShowPortSelt
-from fiberhomeAN2200_commands.show_hostname import ShowHostname
-from fiberhomeAN2200_commands.get_current_port_status import GetCurrentPortStatus
+from .fiberhomeAN2200_commands.profile_adsl_show import ProfileADSLShow
+from .fiberhomeAN2200_commands.create_profile import CreateProfile
+from .fiberhomeAN2200_commands.delete_profile import DeleteProfile
+from .fiberhomeAN2200_commands.add_to_vlan import AddToVlan
+from .fiberhomeAN2200_commands.port_disable import PortDisable
+from .fiberhomeAN2200_commands.port_reset import PortReset
+from .fiberhomeAN2200_commands.port_enable import PortEnable
+from .fiberhomeAN2200_commands.port_pvc_set import PortPvcSet
+from .fiberhomeAN2200_commands.port_pvc_delete import PortPvcDelete
+from .fiberhomeAN2200_commands.create_vlan import CreateVlan
+from .fiberhomeAN2200_commands.vlan_show import VlanShow
+from .fiberhomeAN2200_commands.change_profile import ChangeProfile
+from .fiberhomeAN2200_commands.uplink_pvc_delete import UpLinkPvcDelete
+from .fiberhomeAN2200_commands.uplink_pvc_set import UpLinkPvcSet
+from .fiberhomeAN2200_commands.uplink_pvc_show import UpLinkPvcShow
+from .fiberhomeAN2200_commands.get_ports_status import GetPortsStatus
+from .fiberhomeAN2200_commands.get_dslam_board import GetDSLAMBoard
+from .fiberhomeAN2200_commands.get_ports_vpi_vci import GetPortsVpiVci
+from .fiberhomeAN2200_commands.lcman_reset_slot import LcmanResetSlot
+from .fiberhomeAN2200_commands.dslam_up_time import DSLAMUpTime
+from .fiberhomeAN2200_commands.open_port_selt import OpenPortSelt
+from .fiberhomeAN2200_commands.show_port_selt import ShowPortSelt
+from .fiberhomeAN2200_commands.show_hostname import ShowHostname
+from .fiberhomeAN2200_commands.get_current_port_status import GetCurrentPortStatus
 
 '''from fiberhomeAN2200_commands.lcman_disable_slot import LcmanDisableSlot
 from fiberhomeAN2200_commands.lcman_enable_slot import LcmanEnableSlot
@@ -74,7 +74,7 @@ class FiberhomeAN2200Telnet(object):
     '''
 
     def __init__(self, telnet_dict, dslam_data, fiberhomeAN2200_q=None):
-        print telnet_dict, dslam_data
+        print(telnet_dict, dslam_data)
         self.__host = dslam_data.get('ip')
         self.__telnet_username = dslam_data.get('telnet_username')
         self.__telnet_password = dslam_data.get('telnet_password')
@@ -89,7 +89,7 @@ class FiberhomeAN2200Telnet(object):
         tsocket.sendall(IAC + WONT + LINEMODE)
 
     def open_connection(self):
-        print 'try to open connections'
+        print('try to open connections')
         try:
             tn = telnetlib.Telnet(self.__host, timeout=5)
             tn.set_option_negotiation_callback(self.process_telnet_option)
@@ -98,30 +98,30 @@ class FiberhomeAN2200Telnet(object):
                         ['[U|u]sername: ', '[L|l]ogin:', '[L|l]oginname:', '[P|p]assword:'])
 
             if index == 1:
-                print 'send login ...'
+                print('send login ...')
                 tn.write('{0}\r\n'.format(self.__access_name))
 
             data = tn.read_until('User Name:', 5)
-            print 'here'
-            print '==>', data
+            print('here')
+            print('==>', data)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            print 'user sent ...'
+            print('user sent ...')
             data = tn.read_until('Password:', 5)
-            print '==>', data
+            print('==>', data)
             tn.write(( self.__telnet_password + "\r\n").encode('utf-8'))
-            print 'password sent ...'
+            print('password sent ...')
 
             data = tn.read_until('>', 5)
-            print 'got to prompt ...', data
-            print 'open connection dslam with ip: {0}'.format(self.__host)
+            print('got to prompt ...', data)
+            print('open connection dslam with ip: {0}'.format(self.__host))
             return tn
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.open_connection()
             else:
-                if self.dslam_id in self.telnet_dict.keys():
+                if self.dslam_id in list(self.telnet_dict.keys()):
                     del self.telnet_dict[self.dslam_id]
 
         except Exception as e:
@@ -130,7 +130,7 @@ class FiberhomeAN2200Telnet(object):
             if self.retry < 4:
                 return self.open_connection()
             else:
-                if self.dslam_id in self.telnet_dict.keys():
+                if self.dslam_id in list(self.telnet_dict.keys()):
                     del self.telnet_dict[self.dslam_id]
 
     def run_command(self, command, params, protocol='socket'):
@@ -152,5 +152,5 @@ class FiberhomeAN2200Telnet(object):
                 self.tn = self.open_connection()
                 return self.run_command(command, params)
             else:
-                if self.dslam_id in self.telnet_dict.keys():
+                if self.dslam_id in list(self.telnet_dict.keys()):
                     del self.telnet_dict[self.dslam_id]

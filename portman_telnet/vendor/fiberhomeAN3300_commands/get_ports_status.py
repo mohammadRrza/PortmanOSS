@@ -6,7 +6,7 @@ import re
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class GetPortsStatus(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN3300_q', 'dslam_id',)
@@ -48,7 +48,7 @@ class GetPortsStatus(BaseCommand):
         try:
             self.tn.write(("cd device\r\n").encode('utf-8'))
             data = self.tn.read_until("#")
-            print data
+            print(data)
             self.tn.write(("show port all configuration\r\n").encode('utf-8'))
             data = []
             while(True):
@@ -66,8 +66,8 @@ class GetPortsStatus(BaseCommand):
                 try:
                     port['SLOT_NUMBER'], port['PORT_NUMBER'] = re.search('Port:\<(\d+)\:(\d+)\>', row).groups()
                 except Exception as ex:
-                    print ex
-                    print row
+                    print(ex)
+                    print(row)
                     continue
                 port['PORT_NAME'] = 'adsl{0}-{1}'.format(port['SLOT_NUMBER'], port['PORT_NUMBER'])
                 port['PORT_INDEX'] = '{0}-{1:02}'.format(port['SLOT_NUMBER'], int(port['PORT_NUMBER']))
@@ -120,9 +120,9 @@ class GetPortsStatus(BaseCommand):
                         import os
                         exc_type, exc_obj, exc_tb = sys.exc_info()
                         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                        print traceback.format_exc()
-                        print exc_type, fname, exc_tb.tb_lineno
-                        print row
+                        print(traceback.format_exc())
+                        print(exc_type, fname, exc_tb.tb_lineno)
+                        print(row)
                         continue
                 ports.append(port)
 
@@ -141,7 +141,7 @@ class GetPortsStatus(BaseCommand):
             import os
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print traceback.format_exc()
-            print exc_type, fname, exc_tb.tb_lineno
+            print(traceback.format_exc())
+            print(exc_type, fname, exc_tb.tb_lineno)
             return {'result': 'error: get ports status command'}
 

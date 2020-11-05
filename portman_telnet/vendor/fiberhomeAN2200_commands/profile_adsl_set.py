@@ -1,7 +1,7 @@
 import telnetlib
 import time
 import re
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class ProfileADSLSet(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN2200_q', 'dslam_id')
@@ -25,7 +25,7 @@ class ProfileADSLSet(BaseCommand):
         com = re.compile(r'\s+\(\s?(?P<id>\d+)\)\s+(?P<name>\S)+\s')
         profiles_objects = [m.groupdict() for m in com.finditer(st)]
         profiles_dict = [{item['name']: item['id']} for item in profiles_objects]
-        if self.profile in profile_dict.keys():
+        if self.profile in list(profile_dict.keys()):
             profile_id = profile_dict[self.profile]
         for port in self.port_indexes:
             self.tn.write("cfgport\r\n".encode('utf-8'))
@@ -51,9 +51,9 @@ class ProfileADSLSet(BaseCommand):
 
         result = {"result": 'profile adsl set is ok!'}
 
-        print '**********************************'
-        print result
-        print '**********************************'
+        print('**********************************')
+        print(result)
+        print('**********************************')
         if protocol == 'socket':
             self.__django_orm_queue.put(("add_line_profile",
                 self.params,

@@ -2,7 +2,7 @@ import csv
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class DelFromVlan(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN2200_q', 'dslam_id', 'vlan_name', 'vlan_id'\
@@ -37,9 +37,9 @@ class DelFromVlan(BaseCommand):
             result = ''
             if 'Tag port to be deleted' in output:
                 result ={'result': "{0} deleted from valn {1}".format(self.port_indexes, self.vlan_name)}
-            print '==================================='
-            print result
-            print '==================================='
+            print('===================================')
+            print(result)
+            print('===================================')
             self.tn.write("exit\r\n\r\n")
             self.tn.close()
 
@@ -54,5 +54,5 @@ class DelFromVlan(BaseCommand):
                     result))
 
         except Exception as e:
-            print e
+            print(e)
             return "error: {0} deleted from valn {1}".format(self.__port_name, self.__vlan_name)

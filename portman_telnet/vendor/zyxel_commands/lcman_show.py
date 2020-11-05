@@ -14,7 +14,7 @@ class LcmanShow(object):
         result = self.tn.read_until("end").split('\r\n')
         result = result[1:len(result)-2]
         result = '\n'.join(result)
-        print '**************************************'
-        print result
-        print '**************************************'
+        print('**************************************')
+        print(result)
+        print('**************************************')
         return {"result": result}

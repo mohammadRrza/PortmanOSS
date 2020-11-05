@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 class DeleteProfile(BaseCommand):
     __slot__ = ('tn', 'profile', 'dslam_id', 'fiberhomeAN2200_q')
     def __init__(self, tn, params, fiberhomeAN2200_q=None):
@@ -30,15 +30,15 @@ class DeleteProfile(BaseCommand):
             self.tn.write("2\r\n".encode('utf-8'))
             self.tn.write("end\r\n".encode('utf-8'))
             result = self.tn.read_until('end')
-            print result
+            print(result)
             lstProfile = re.findall(r'\s(\S*\.prf)',result)
             for index, line in enumerate(lstProfile, 1):
-                print line
+                print(line)
                 if self.profile == line:
                     delete_profile_index = index
                     break
         if not delete_profile_index:
-            print {"result": "{0} profile doesn't exist.".format(self.profile)}
+            print({"result": "{0} profile doesn't exist.".format(self.profile)})
             return {"result": "{0} profile doesn't exist.".format(self.profile)}
 
         self.tn.write("{0}\r\n".format(delete_profile_index).encode('utf-8'))
@@ -46,9 +46,9 @@ class DeleteProfile(BaseCommand):
         self.tn.write("Y\r\n".encode('utf-8'))
         result = {"result": "profile {0} was deleted.".format(self.profile)}
 
-        print '**********************************'
-        print result
-        print '**********************************'
+        print('**********************************')
+        print(result)
+        print('**********************************')
         if protocol == 'http':
             return result
         elif protcol == 'socket':

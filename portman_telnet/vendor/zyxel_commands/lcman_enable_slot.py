@@ -8,7 +8,7 @@ class LcmanEnableSlot(object):
 
     def run_command(self):
         self.tn.write("lcman enable {0}\r\n\r\n".format(self.slot).encode('utf-8'))
-        print '************************************'
-        print "enable slot {0}".format(self.slot)
-        print '************************************'
+        print('************************************')
+        print("enable slot {0}".format(self.slot))
+        print('************************************')
         return "enable slot {0}".format(self.slot)

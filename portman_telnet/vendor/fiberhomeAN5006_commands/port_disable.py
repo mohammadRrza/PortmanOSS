@@ -1,7 +1,7 @@
 import telnetlib
 import time
 import re
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class PortDisable(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'dslam_id', 'fiberhomeAN5006_q')
@@ -22,9 +22,9 @@ class PortDisable(BaseCommand):
         self.tn.write("exit\r\n")
 
         results = {"result": '\n'.join(output)}
-        print '==================================='
-        print results
-        print '==================================='
+        print('===================================')
+        print(results)
+        print('===================================')
 
         if protocol == 'http':
             return results

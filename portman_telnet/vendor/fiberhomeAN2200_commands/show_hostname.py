@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class ShowHostname(BaseCommand):
     __slot__ = ('tn', 'dslam_id', 'fiberhomeAN2200_q')
@@ -15,9 +15,9 @@ class ShowHostname(BaseCommand):
         hostname = data.split('>')[0]
         result = {"result": hostname}
 
-        print '==================================='
-        print result
-        print '==================================='
+        print('===================================')
+        print(result)
+        print('===================================')
 
         if protocol == 'http':
             return result

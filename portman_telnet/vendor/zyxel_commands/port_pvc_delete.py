@@ -11,7 +11,7 @@ class PortPvcDelete(object):
         for port in self.ports:
             self.tn.write("port pvc delete {0}-{1}-0/35\r\n\r\n".format(port['slot_number'], port['port_number']).encode('utf-8'))
             time.sleep(1)
-        print '-----------------------------------'
-        print "port pvc delete {0}-0/35".format(self.ports)
-        print '-----------------------------------'
+        print('-----------------------------------')
+        print("port pvc delete {0}-0/35".format(self.ports))
+        print('-----------------------------------')
         return dict(result="ports pvc was deleted", ports=self.ports)

@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class PortPvcDelete(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'fiberhomeAN2200_q', 'dslam_id')
@@ -27,9 +27,9 @@ class PortPvcDelete(BaseCommand):
             self.tn.write("{0}\r\n".format(self.get_pvc_number(port['slot_number'], port['port_number'])).encode('utf-8'))
             time.sleep(1)
         result = {"result": "{0} port pvc set.". self.port_indexes}
-        print '==================================='
-        print result
-        print '==================================='
+        print('===================================')
+        print(result)
+        print('===================================')
         if protocol == 'http':
             return result
         elif protocol == 'socket':

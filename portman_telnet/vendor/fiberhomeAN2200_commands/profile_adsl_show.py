@@ -1,7 +1,7 @@
 import telnetlib
 import time
 import re
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class ProfileADSLShow(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN2200_q', 'dslam_id')
@@ -73,5 +73,5 @@ class ProfileADSLShow(BaseCommand):
                             [item for row in rows[9].split('|') for item in row.split()]
                 profiles.append(profile)
             except Exception as ex:
-                print '=>>>>>>>>>>>>', ex
+                print('=>>>>>>>>>>>>', ex)
                 pass

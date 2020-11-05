@@ -1,7 +1,7 @@
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class ShowMacSlotPort(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'dslam_id', 'ports', 'fiberhomeAN2200_q')
@@ -36,14 +36,14 @@ class ShowMacSlotPort(BaseCommand):
                         "index": port['port_index']
                     })
                 except Exception as ex:
-                    print ex
+                    print(ex)
                     continue
 
         self.tn.write("exit\r\n".encode('utf-8'))
         results = {"result": results}
-        print '==================================='
-        print results
-        print '==================================='
+        print('===================================')
+        print(results)
+        print('===================================')
 
         if protocol == 'http':
             return results

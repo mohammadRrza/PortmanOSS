@@ -2,7 +2,7 @@ import telnetlib
 import time
 from socket import error as socket_error
 import re
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 
 class ShowTemperature(BaseCommand):
@@ -20,9 +20,9 @@ class ShowTemperature(BaseCommand):
         self.tn.write("exit\r\n")
 
         results = {'result': result}
-        print '==================================='
-        print results
-        print '==================================='
+        print('===================================')
+        print(results)
+        print('===================================')
 
         if protocol == 'http':
             return results

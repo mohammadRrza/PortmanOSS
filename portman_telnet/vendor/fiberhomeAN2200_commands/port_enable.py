@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class PortEnable(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'dslam_id', 'fiberhomeAN2200_q')
@@ -20,9 +20,9 @@ class PortEnable(BaseCommand):
             self.tn.write("{0}\r\n".format(port['port_number']).encode('utf-8'))
             time.sleep(1)
 
-        print '==================================='
-        print {"result": "ports is enabled."}
-        print '==================================='
+        print('===================================')
+        print({"result": "ports is enabled."})
+        print('===================================')
 
         result = {"result": "ports is enabled"}
         if protocol == 'http':

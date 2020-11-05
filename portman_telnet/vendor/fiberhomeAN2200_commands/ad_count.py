@@ -48,27 +48,27 @@ class ADCount(BaseCommand):
             index, match_obj, text = tn.expect(
                         ['[U|u]sername: ', '[L|l]ogin:', '[L|l]oginname:', '[P|p]assword:'])
 
-            print index, match_obj, text
+            print(index, match_obj, text)
             if index == 1:
-                print 'send login ...'
+                print('send login ...')
                 tn.write('an2100\r\n')
 
             data = tn.read_until('User Name:')
-            print 'here'
-            print '==>', data
+            print('here')
+            print('==>', data)
             tn.write((user + "\r\n").encode('utf-8'))
-            print 'user sent ...'
+            print('user sent ...')
             data = tn.read_until('Password:')
-            print '==>', data
+            print('==>', data)
             tn.write((password + "\r\n").encode('utf-8'))
-            print 'password sent ...'
+            print('password sent ...')
 
             data = tn.read_until('>')
-            print 'got to prompt ...', data
+            print('got to prompt ...', data)
             tn.write("showcard\r\n".encode('utf-8'))
             time.sleep(1)
             result = tn.read_until('>')
-            print result
+            print(result)
             results = result.split('\n')
             AD32 = 0
             AD32_Plus = 0
@@ -78,18 +78,18 @@ class ADCount(BaseCommand):
                     AD32_Plus += 1
                 elif 'AD32' in items[3]:
                     AD32 += 1
-            print '==================================='
-            print 'AD32: {0}, AD32+: {1}'.format(AD32, AD32_Plus)
+            print('===================================')
+            print('AD32: {0}, AD32+: {1}'.format(AD32, AD32_Plus))
             tn.write("exit\r\n\r\n")
             tn.close()
             return 'AD32 Count: {0}, AD32+ Count: {1}'.format(AD32, AD32_Plus)
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 self.run_command()

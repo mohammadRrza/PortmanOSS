@@ -17,7 +17,7 @@ class VlanShow(object):
         for line in result.split('\n')[2:len(result)-1]:
             items = line.split()
             vlans[items[0]] = items[-1]
-        print '********************************'
-        print vlans
-        print '********************************'
+        print('********************************')
+        print(vlans)
+        print('********************************')
         return {"result": vlans}

@@ -1,7 +1,7 @@
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class GetDSLAMBoard(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN2200_q', 'dslam_id')
@@ -11,10 +11,10 @@ class GetDSLAMBoard(BaseCommand):
         self.fiberhomeAN2200_q = fiberhomeAN2200_q
 
     def run_command(self, protocol):
-        print 'i here'
+        print('i here')
         self.tn.write(("showcard\r\n").encode('utf-8'))
         data = self.tn.read_until('>')
-        print data
+        print(data)
         if 'timeout' in data.lower():
             self.tn.close()
             raise ValueError('first please login session')
@@ -28,7 +28,7 @@ class GetDSLAMBoard(BaseCommand):
                 if '-' in card_type:
                     card_type = None
                 cards[card_number] = dict(card_number=card_number, card_type=card_type)
-        print cards
+        print(cards)
         time.sleep(1)
         self.tn.write(("version\r\n").encode('utf-8'))
         data = self.tn.read_until('>', 5)
@@ -37,10 +37,10 @@ class GetDSLAMBoard(BaseCommand):
             cards[card_number]['fw_version'] = fw_version
             cards[card_number]['hw_version'] = hw_version
 
-        result = {"result": cards.values()}
-        print '==================================='
-        print result
-        print '==================================='
+        result = {"result": list(cards.values())}
+        print('===================================')
+        print(result)
+        print('===================================')
         if protocol == 'http':
             return result
         elif protocol == 'socket':

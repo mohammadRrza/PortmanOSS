@@ -20,7 +20,7 @@ class ProfileADSLShow(object):
         lstProfile=re.findall(r'\d+\.\s\S*',result)
         for item in lstProfile:
             lstresult.append(item.split(' ')[-1].strip())
-        print '***********************************'
-        print {"result": lstresult}
-        print '***********************************'
+        print('***********************************')
+        print({"result": lstresult})
+        print('***********************************')
         return {"result": lstresult}

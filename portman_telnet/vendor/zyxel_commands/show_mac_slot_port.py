@@ -28,7 +28,7 @@ class ShowMacSlotPort(object):
                 "port": port
                 })
 
-        print '***********************'
-        print results
-        print '***********************'
+        print('***********************')
+        print(results)
+        print('***********************')
         return {'result': results}

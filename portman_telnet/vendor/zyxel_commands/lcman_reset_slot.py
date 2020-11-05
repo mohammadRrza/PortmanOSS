@@ -8,7 +8,7 @@ class LcmanResetSlot(object):
 
     def run_command(self):
         self.tn.write("lcman reset {0}\r\n\r\n".format(self.slot).encode('utf-8'))
-        print '*************************************'
-        print "reset slot {0}".format(self.slot)
-        print '*************************************'
+        print('*************************************')
+        print("reset slot {0}".format(self.slot))
+        print('*************************************')
         return "reset slot {0}".format(self.slot)

@@ -1,5 +1,5 @@
 import telnetlib
-from base_command import BaseCommand
+from .base_command import BaseCommand
 import time
 import re
 

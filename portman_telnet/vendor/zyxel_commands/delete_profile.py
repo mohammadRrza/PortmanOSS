@@ -8,7 +8,7 @@ class DeleteProfile(object):
 
     def run_command(self):
         self.tn.write("profile adsl delete {0}\r\n\r\n".format(self.__profile).encode('utf-8'))
-        print '***********************************************'
-        print "{0} profile adsl deleted".format(self.profile)
-        print '***********************************************'
+        print('***********************************************')
+        print("{0} profile adsl deleted".format(self.profile))
+        print('***********************************************')
         return {"result": "{0} profile adsl deleted".format(self.profile)}

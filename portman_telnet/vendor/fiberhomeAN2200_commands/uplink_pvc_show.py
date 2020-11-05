@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 class UpLinkPvcShow(BaseCommand):
     __slot__ = ('tn', 'dslam_id', 'fiberhomeAN2200_q', 'slot_number', 'port_indexes')
     def __init__(self, tn, params, fiberhomeAN2200_q=None):

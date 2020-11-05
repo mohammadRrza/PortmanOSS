@@ -5,7 +5,7 @@ from vendor.zyxel_telnet import ZyxelTelnet
 from vendor.fiberhome2200_telnet import FiberhomeAN2200Telnet
 from vendor.fiberhomeAN5006_telnet import FiberhomeAN5006Telnet
 from vendor.fiberhomeAN3300_telnet import FiberhomeAN3300Telnet
-import SocketServer
+import socketserver
 import threading
 import time
 from datetime import datetime
@@ -14,7 +14,7 @@ from multiprocessing import Manager
 
 
 # Threaded mix-in
-class AsyncJSONRPCServer(SocketServer.ThreadingMixIn, SimpleJSONRPCServer): pass
+class AsyncJSONRPCServer(socketserver.ThreadingMixIn, SimpleJSONRPCServer): pass
 
 class TelnetServer(object):
     def __init__(self, telnet_dict, request_q, fiberhomeAN2200_q, zyxel_q, fiberhomeAN5006_q, fiberhomeAN3300_q):
@@ -37,8 +37,8 @@ class TelnetServer(object):
 
     def socket_run_telnet_command(self, dslam_id, command, params):
         dslam_obj = DSLAM.objects.get(id=dslam_id)
-        if dslam_id not in self.telnet_dict.keys():
-            if dslam_obj.id not in self.telnet_dict.keys():
+        if dslam_id not in list(self.telnet_dict.keys()):
+            if dslam_obj.id not in list(self.telnet_dict.keys()):
                 self.telnet_dict[dslam_obj.id] = (None, None)
             if dslam_obj.dslam_type.id == 1:
                 telnet_server = ZyxelTelnet(self.telnet_dict,dslam_obj.get_info(), zyxel_q)
@@ -58,20 +58,20 @@ class TelnetServer(object):
         idle_dslams = []
         while(True):
             diff_time = time.time()
-            for key, (telnet_object, created_time) in self.telnet_dict.items():
+            for key, (telnet_object, created_time) in list(self.telnet_dict.items()):
                 if telnet_object:
                     secounds = diff_time - created_time
                     if (secounds // 60) > 10 and telnet_object.tn:
                         idle_dslams.append(key)
-                        print telnet_object
-                        print dir(telnet_object)
+                        print(telnet_object)
+                        print(dir(telnet_object))
                         telnet_object.tn.close()
 
             for key in idle_dslams:
                 try:
                     del self.telnet_dict[key]
                 except Exception as ex:
-                    print ex
+                    print(ex)
 
             time.sleep(700)
 
@@ -85,9 +85,9 @@ class PortmanRPC(object):
         self.fiberhomeAN3300_q = fiberhomeAN3300_q
 
     def telnet_run_command(self, dslam_id, command, params):
-        print '----------------------'
-        print dslam_id, command, params
-        print '----------------------'
+        print('----------------------')
+        print(dslam_id, command, params)
+        print('----------------------')
 
         if not command:
             return {'result': 'command does not exits'}
@@ -98,10 +98,10 @@ class PortmanRPC(object):
         try:
             dslam_obj = DSLAM.objects.get(id=dslam_id)
         except Exception as ex :
-            print ex
+            print(ex)
             return {'result': 'Invalid dslam_id'}
 
-        if not dslam_obj.id in self.telnet_dict.keys():
+        if not dslam_obj.id in list(self.telnet_dict.keys()):
             if dslam_obj.dslam_type.id == 1:
                 pass
             elif dslam_obj.dslam_type.id == 4:
@@ -127,17 +127,17 @@ class PortmanRPCStarter(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        print "Listening on port 7080..."
+        print("Listening on port 7080...")
         server = AsyncJSONRPCServer(('localhost', 7090), SimpleJSONRPCRequestHandler)
         server.register_introspection_functions()
         server.register_multicall_functions()
 
         server.register_instance(PortmanRPC(self.telnet_dict, self.fiberhomeAN2200_q, self.zyxel_q, self.fiberhomeAN5006_q, self.fiberhomeAN3300_q))
         try:
-            print 'Use Control-C to exit'
+            print('Use Control-C to exit')
             server.serve_forever()
         except KeyboardInterrupt:
-            print 'Exiting'
+            print('Exiting')
 
 def QueueServerClient(HOST, PORT, AUTHKEY):
     class QueueManager(SyncManager):
@@ -163,6 +163,7 @@ def register_client_queue():
     return request_q, fiberhomeAN2200_q, zyxel_q, fiberhomeAN5006_q, fiberhomeAN3300_q
 
 if __name__ == '__main__':
+    print(register_client_queue())
     request_q, fiberhomeAN2200_q, zyxel_q, fiberhomeAN5006_q, fiberhomeAN3300_q = register_client_queue()
     #manager = Manager()
     #telnet_dict = manager.dict()

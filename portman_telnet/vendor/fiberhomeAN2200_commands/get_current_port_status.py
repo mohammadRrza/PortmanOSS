@@ -3,7 +3,7 @@ import time
 import re
 import sys
 import os
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class GetCurrentPortStatus(BaseCommand):
     __slot__ = ('tn', 'dslam_id', 'slot_number', 'port_number', 'fiberhomeAN2200_q')
@@ -72,7 +72,7 @@ class GetCurrentPortStatus(BaseCommand):
                     break
 
                 if ':' in line:
-                    key, value = map(str.strip, line.split(':'))
+                    key, value = list(map(str.strip, line.split(':')))
                     if 'OP_State' in key:
                         op_status = value.strip()
                         if op_status == 'data':

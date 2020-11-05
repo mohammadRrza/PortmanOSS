@@ -3,7 +3,7 @@ import time
 import re
 import sys
 import os
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class GetPortsStatus(BaseCommand):
     __slot__ = ('tn', 'dslam_id', 'slots')
@@ -44,8 +44,8 @@ class GetPortsStatus(BaseCommand):
         self.tn.read_until('LINE >')
         time.sleep(1)
         data = []
-        for slot in xrange(1, self.slots + 1):
-            print("0-{0}\r\n".format(slot).encode('utf-8'))
+        for slot in range(1, self.slots + 1):
+            print(("0-{0}\r\n".format(slot).encode('utf-8')))
             self.tn.write("\r\n".encode('utf-8'))
             self.tn.write("showport\r\n".encode('utf-8'))
             time.sleep(1)
@@ -69,15 +69,15 @@ class GetPortsStatus(BaseCommand):
                 port_info['PORT_NAME'] = 'adsl{0}-{1}'.format(port_info['SLOT_NUMBER'], port_info['PORT_NUMBER'])
                 access_port_info[port_info['PORT_INDEX']] = port_info
             except Exception as ex:
-                print '?????????????????'
+                print('?????????????????')
                 time.sleep(1)
                 self.tn.write("\r\n".encode('utf-8'))
                 self.tn.write("\r\n".encode('utf-8'))
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(exc_type, fname, exc_tb.tb_lineno)
-                print lines
-                print '?????????????????'
+                print((exc_type, fname, exc_tb.tb_lineno))
+                print(lines)
+                print('?????????????????')
                 continue
 
             for line in lines[1:]:
@@ -85,7 +85,7 @@ class GetPortsStatus(BaseCommand):
                     break
                 try:
                     if ':' in line:
-                        key, value = map(str.strip, line.split(':'))
+                        key, value = list(map(str.strip, line.split(':')))
                         if 'OP_State' in key:
                             op_status = value.strip()
                             if op_status == 'data':
@@ -114,10 +114,10 @@ class GetPortsStatus(BaseCommand):
                             port_info['ADSL_CURR_DOWNSTREAM_RATE'] = downstream_att_rate.split()[0]
                             port_info['ADSL_CURR_UPSTREAM_RATE'] = upstream_att_rate.split()[0]
                 except Exception as ex:
-                    print ex
+                    print(ex)
                     continue
 
-        for slot in xrange(1, self.slots + 1):
+        for slot in range(1, self.slots + 1):
             self.tn.write("showportcfg\r\n".encode('utf-8'))
             time.sleep(1)
             self.tn.write("0-{0}\r\n".format(slot).encode('utf-8'))
@@ -133,13 +133,13 @@ class GetPortsStatus(BaseCommand):
             try:
                 slot_number = re.search("(\d+)---------------------------------------", line).groups()[0]
             except:
-                print line
+                print(line)
                 time.sleep(1)
                 self.tn.write("\r\n".encode('utf-8'))
                 self.tn.write("\r\n".encode('utf-8'))
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print exc_type, fname, exc_tb.tb_lineno
+                print(exc_type, fname, exc_tb.tb_lineno)
                 continue
 
             slot_number = re.search("(\d+)---------------------------------------", line).groups()[0]
@@ -159,4 +159,4 @@ class GetPortsStatus(BaseCommand):
         #print '-----------------------------------'
         #print access_port_info.values()
         #print '-----------------------------------'
-        self.queue.put(('update_port_status', self.dslam_id, access_port_info.values()))
+        self.queue.put(('update_port_status', self.dslam_id, list(access_port_info.values())))

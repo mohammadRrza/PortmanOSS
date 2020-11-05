@@ -1,7 +1,7 @@
 import telnetlib
 import re
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 
 class CreateVlan(BaseCommand):
     __slot__ = ('tn', 'fiberhomeAN2200_q', 'dslam_id', 'vlan_name', 'vlan_id', 'untagged_port')
@@ -33,9 +33,9 @@ class CreateVlan(BaseCommand):
             self.tn.write("n\r\n".encode('utf-8'))
             time.sleep(1)
             output = self.tn.read_until('>',5)
-            print '==================================='
-            print output
-            print '==================================='
+            print('===================================')
+            print(output)
+            print('===================================')
             result = ''
             self.tn.write("exit\r\n\r\n")
             self.tn.close()
@@ -54,5 +54,5 @@ class CreateVlan(BaseCommand):
                     result))
 
         except Exception as ex:
-            print ex
+            print(ex)
             return "error: {0} created valn".format(self.__vlan_name)

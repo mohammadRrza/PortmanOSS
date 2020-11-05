@@ -1,6 +1,6 @@
 import telnetlib
 import time
-from base_command import BaseCommand
+from .base_command import BaseCommand
 class PortDisable(BaseCommand):
     __slot__ = ('tn', 'port_indexes', 'fiberhomeAN2200_q', 'dslam_id')
     def __init__(self, tn, params, fiberhomeAN2200_q=None):
@@ -19,9 +19,9 @@ class PortDisable(BaseCommand):
             time.sleep(1)
 
         result = {"result": "port is disabled.".format(self.port_indexes)}
-        print '==================================='
-        print result
-        print '==================================='
+        print('===================================')
+        print(result)
+        print('===================================')
         if protocol == 'http':
             return result
         elif protocol == 'socket':

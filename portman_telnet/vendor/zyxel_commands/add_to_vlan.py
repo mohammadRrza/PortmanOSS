@@ -40,7 +40,7 @@ class AddToVlan(object):
         result = self.tn.read_until('end')
         if 'example' in result:
             return {"result" : "add to valn {1} give error".format(self.vid), "ports": self.ports}
-        print '*********************************'
-        print  "{0} added to vlan {1}".format(self.ports, self.vid)
-        print '*********************************'
+        print('*********************************')
+        print("{0} added to vlan {1}".format(self.ports, self.vid))
+        print('*********************************')
         return dict(result="added to vlan {0}".format(self.vid), ports=self.ports)
