@@ -770,8 +770,10 @@ class DSLAMBulkCommandResult(models.Model):
 
 class TelecomContractType(models.Model):
     title = models.CharField(max_length=256)
+
     def __str__(self):
         return self.title
+
 
 class EquipmentCategoryType(models.Model):
     title = models.CharField(max_length=256)
@@ -779,12 +781,14 @@ class EquipmentCategoryType(models.Model):
     def __str__(self):
         return self.title
 
+
 class EquipmentCategory(models.Model):
     title = models.CharField(max_length=256)
     equipment_category_type = models.ForeignKey(EquipmentCategoryType, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
+
 
 class ActiveEquipmentCategory(models.Model):
     line_card_status_description = models.CharField(max_length=1000)
@@ -852,3 +856,50 @@ class CraPrice(models.Model):
     infrastructure_price = models.IntegerField(null=True, blank=True, default=0)
     non_interurban_infrastructure_price = models.IntegerField(null=True, blank=True, default=0)
     non_urban_infrastructure_price = models.IntegerField(null=True, blank=True, default=0)
+
+
+class LocationType(models.Model):
+    title = models.CharField(max_length=256)
+
+
+class Location(models.Model):
+    title = models.CharField(max_length=256)
+    location_type = models.ForeignKey(LocationType, on_delete=models.CASCADE)
+
+
+class RouterType(models.Model):
+    title = models.CharField(max_length=256)
+
+
+class RouterBrand(models.Model):
+    title = models.CharField(max_length=256)
+    router_type = models.ForeignKey(RouterType, on_delete=models.CASCADE)
+
+
+class Router(models.Model):
+    router_type = models.ForeignKey(RouterType, on_delete=models.CASCADE)
+    router_brand = models.ForeignKey(RouterBrand, on_delete=models.CASCADE)
+    device_interfaceid = models.IntegerField(null=True, blank=True, default=0)
+    host_id = models.IntegerField(null=True, blank=True, default=0)
+    device_name = models.CharField(max_length=256, null=True, blank=True)
+    device_ip = models.CharField(max_length=256)
+    device_fqdn = models.CharField(max_length=256)
+
+
+class SwitchType(models.Model):
+    title = models.CharField(max_length=256)
+
+
+class SwitchBrand(models.Model):
+    title = models.CharField(max_length=256)
+    Switch_type = models.ForeignKey(SwitchType, on_delete=models.CASCADE)
+
+
+class Switch(models.Model):
+    Switch_type = models.ForeignKey(SwitchType, on_delete=models.CASCADE)
+    Switch_brand = models.ForeignKey(SwitchBrand, on_delete=models.CASCADE)
+    device_interfaceid = models.IntegerField(null=True, blank=True, default=0)
+    host_id = models.IntegerField(null=True, blank=True, default=0)
+    device_name = models.CharField(max_length=256, null=True, blank=True)
+    device_ip = models.CharField(max_length=256)
+    device_fqdn = models.CharField(max_length=256)

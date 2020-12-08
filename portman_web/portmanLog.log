@@ -242,3 +242,67 @@ django.db.utils.ProgrammingError: relation "dslam_capacitytype" does not exist
 LINE 1: SELECT COUNT(*) AS "__count" FROM "dslam_capacitytype"
                                           ^
 
+Internal Server Error: /admin/router/routerbrand/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedTable: relation "router_routerbrand" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "router_routerbrand"
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1693, in changelist_view
+    cl = self.get_changelist_instance(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/options.py", line 735, in get_changelist_instance
+    return ChangeList(
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/views/main.py", line 100, in __init__
+    self.get_results(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/views/main.py", line 235, in get_results
+    result_count = paginator.count
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/paginator.py", line 94, in count
+    return c()
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/query.py", line 411, in count
+    return self.query.get_count(using=self.db)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/sql/query.py", line 515, in get_count
+    number = obj.get_aggregation(using, ['__count'])['__count']
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/sql/query.py", line 500, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1156, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: relation "router_routerbrand" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "router_routerbrand"
+                                          ^
+

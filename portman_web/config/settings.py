@@ -50,7 +50,8 @@ INSTALLED_APPS = (
     'corsheaders',
     'users',
     'dslam',
-
+    'router',
+    'switch',
 )
 
 MIDDLEWARE = (
