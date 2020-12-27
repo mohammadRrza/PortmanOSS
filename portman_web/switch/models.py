@@ -10,10 +10,16 @@ from datetime import datetime
 class SwitchBrand(models.Model):
     title = models.CharField(max_length=256)
 
+    def __str__(self):
+        return self.title
+
 
 class SwitchType(models.Model):
     title = models.CharField(max_length=256)
     Switch_brand = models.ForeignKey(SwitchBrand, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
 
 
 class Switch(models.Model):
@@ -24,3 +30,6 @@ class Switch(models.Model):
     device_name = models.CharField(max_length=256, null=True, blank=True)
     device_ip = models.CharField(max_length=256)
     device_fqdn = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.device_name

@@ -7,15 +7,19 @@ import architect
 from datetime import datetime
 
 
-
-
 class RouterBrand(models.Model):
     title = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.title
 
 
 class RouterType(models.Model):
     title = models.CharField(max_length=256)
     router_brand = models.ForeignKey(RouterBrand, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
 
 
 class Router(models.Model):
@@ -26,3 +30,11 @@ class Router(models.Model):
     device_name = models.CharField(max_length=256, null=True, blank=True)
     device_ip = models.CharField(max_length=256)
     device_fqdn = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.device_name
+
+    def get_info(self):
+        return dict(
+            id=self.id, name=self.device_name, ip=self.device_ip, fqdn=self.device_fqdn
+        )

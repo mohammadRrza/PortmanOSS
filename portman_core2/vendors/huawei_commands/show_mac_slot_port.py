@@ -53,25 +53,13 @@ class ShowMacSlotPort(BaseCommand):
                 #tn.write(("display mac-address port 0/{0}/{1}\r\n".format(port_item['slot_number'], port_item['port_number'])).encode('utf-8'))
             tn.write('end\r\n')
             result = tn.read_until("end")
-            items = re.findall(r'(\w{4}-\w{4}-\w{4})\s+\S+\s+\d{1}\s/(\d{1,2})\s/(\d{1,2})\s+\d+\s+\d+\s+(\d+)',result)
-            for mac, slot, port, vlan_id in items:
-                results.append({
-                    "mac": mac,
-                    "vlan_id": vlan_id,
-                    "slot": slot,
-                    "port": port
-                    })
-
-            if not bool(results):
-                results.append({'result': "don't have any mac"})
-
             tn.write("quit\r\n")
             tn.write("y\r\n")
             tn.close()
             print('***********************')
             print(results)
             print('***********************')
-            return {'result': results}
+            return {'result': result}
         except (EOFError,socket_error) as e:
             print(e)
             self.retry += 1

@@ -1,4 +1,3 @@
-
 from vendors.huawei import Huawei
 from vendors.zyxel import Zyxel
 from vendors.zyxel1248 import Zyxel1248
@@ -14,8 +13,10 @@ import time
 import os
 import sys
 
+
 class Portman(object):
-    def __init__(self, queue=None, django_orm_queue=None, request_q=None, zyxel_q=None, zyxel1248_q=None, fiberhomeAN2200_q=None, fiberhomeAN5006_q=None, fiberhomeAN3300_q=None):
+    def __init__(self, queue=None, django_orm_queue=None, request_q=None, zyxel_q=None, zyxel1248_q=None,
+                 fiberhomeAN2200_q=None, fiberhomeAN5006_q=None, fiberhomeAN3300_q=None):
         self.request_q = request_q
         self.zyxel_q = zyxel_q
         self.zyxel1248_q = zyxel1248_q
@@ -47,31 +48,32 @@ class Portman(object):
         if slot_number:
             if port_number:
                 for dslam_id in dslams_id:
-                    ports[dslam_id] = DSLAMPort.objects.\
-                            filter(dslam_id=dslam_id, slot_number=slot_number, port_number=port_number).\
-                            values('slot_number', 'port_number', 'port_index')
+                    ports[dslam_id] = DSLAMPort.objects. \
+                        filter(dslam_id=dslam_id, slot_number=slot_number, port_number=port_number). \
+                        values('slot_number', 'port_number', 'port_index')
                 return ('port', ports)
             else:
-                return ('slot',(slot_number,))
+                return ('slot', (slot_number,))
 
         elif line_profile:
             for dslam_id in dslams_id:
-                ports[dslam_id] = DSLAMPort.objects.filter(dslam_id=dslam_id, line_profile=line_profile).\
-                        values('slot_number', 'port_number', 'port_index')
+                ports[dslam_id] = DSLAMPort.objects.filter(dslam_id=dslam_id, line_profile=line_profile). \
+                    values('slot_number', 'port_number', 'port_index')
             return ('port', ports)
 
         elif slot_number_from and port_number_from:
             for dslam_id in dslams_id:
-                port_objs =  DSLAMPort.objects.filter(dslam_id=dslam_id, slot_number__gte=slot_number_from, port_number__gte=port_number_from)
+                port_objs = DSLAMPort.objects.filter(dslam_id=dslam_id, slot_number__gte=slot_number_from,
+                                                     port_number__gte=port_number_from)
                 if slot_number_to and port_number_to:
                     port_objs = port_objs.filter(slot_number__lte=slot_number_to, port_number__lte=port_number_to)
                 ports[dslam_id] = port_objs.values('slot_number', 'port_number', 'port_index')
             return ('port', ports)
 
         elif slot_number_from:
-            slots = list(DSLAMPort.objects.filter(\
-                    dslam_id__in=dslams_id, slot_number__gte=slot_number_from\
-                    ).values_list('slot_number', flat=True).distinct().order_by('slot_number'))
+            slots = list(DSLAMPort.objects.filter( \
+                dslam_id__in=dslams_id, slot_number__gte=slot_number_from \
+                ).values_list('slot_number', flat=True).distinct().order_by('slot_number'))
 
             if slot_number_to:
                 slots = [slot for slot in slots if slot <= int(slot_number_to)]
@@ -111,7 +113,8 @@ class Portman(object):
                 dslams = dslams.filter(ip__icontains=ip)
         dslams_info = [dslam.get_info() for dslam in dslams]
 
-        dir_path = os.path.dirname(os.path.dirname(os.path.abspath('__file__')))+'/portman_web/media/bulk_command_result'
+        dir_path = os.path.dirname(
+            os.path.dirname(os.path.abspath('__file__'))) + '/portman_web/media/bulk_command_result'
         result_filepath = '{0}/{1}.log'.format(dir_path, datetime.now().strftime("%s"))
         success_filepath = '{0}/success-{1}.csv'.format(dir_path, datetime.now().strftime("%s"))
         error_filepath = '{0}/error-{1}.csv'.format(dir_path, datetime.now().strftime("%s"))
@@ -121,16 +124,17 @@ class Portman(object):
         dslam_class = self.__portman_factory.get_type(dslam_type.name)
         for command in commands:
             command_id = command.get('id')
-            command['command_template'] = DSLAMTypeCommand.objects.get(dslam_type=dslam_type, command__id=command_id).command_template
-        dslam_class.execute_bulk_command(dslams_info, commands, result_filepath, success_filepath, error_filepath, slot_ports)
+            command['command_template'] = DSLAMTypeCommand.objects.get(dslam_type=dslam_type,
+                                                                       command__id=command_id).command_template
+        dslam_class.execute_bulk_command(dslams_info, commands, result_filepath, success_filepath, error_filepath,
+                                         slot_ports)
 
         self.__django_orm_queue.put(("add_dslam_bulk_command_result",
-            task.title,
-            success_filepath,
-            error_filepath,
-            result_filepath,
-            task.commands))
-
+                                     task.title,
+                                     success_filepath,
+                                     error_filepath,
+                                     result_filepath,
+                                     task.commands))
 
     def set_port_index(self, task):
         dslam_id = task.dslam_data['id']
@@ -157,22 +161,28 @@ class Portman(object):
         if slot_number_from and port_number_from:
             if slot_number_to and port_number_to:
                 port_objs = port_objs.filter(
-                        slot_number__gte=slot_number_from,
-                        port_number__gte=port_number_from).filter(
-                        slot_number__lt=slot_number_to,
-                        port_number__lt=port_number_to
-                        )
+                    slot_number__gte=slot_number_from,
+                    port_number__gte=port_number_from).filter(
+                    slot_number__lt=slot_number_to,
+                    port_number__lt=port_number_to
+                )
             else:
                 port_objs = port_objs.filter(slot_number__gte=slot_number_from,
-                        port_number__gte=port_number_from)
+                                             port_number__gte=port_number_from)
 
-        task.params['port_indexes'] = list(port_objs.values('port_index','slot_number','port_number'))
+        task.params['port_indexes'] = list(port_objs.values('port_index', 'slot_number', 'port_number'))
 
-
+    def router_execute_command(self, task, is_queue=True, save_result=True):
+        router_class = self.__portman_factory.get_type(task.router_data['router_type'])
+        task_result = router_class.execute_command(
+            task.router_data,
+            task.command,
+            task.params
+        )
     def _execute_command(self, task, is_queue=True, save_result=True):
 
         dslam_class = self.__portman_factory.get_type(task.dslam_data['dslam_type'])
-        #return  dslam_class
+        # return  dslam_class
         if task.params.get('port_conditions'):
             self.set_port_index(task)
         task_result = dslam_class.execute_command(
@@ -189,124 +199,123 @@ class Portman(object):
                     if is_queue:
                         if save_result:
                             self.__django_orm_queue.put(("update_dslamport_command_result",
-                                dslam_id,
-                                task.params['port_indexes'],
-                                command,
-                                task_result,
-                                task.params.get('username'),
-                                ))
+                                                         dslam_id,
+                                                         task.params['port_indexes'],
+                                                         command,
+                                                         task_result,
+                                                         task.params.get('username'),
+                                                         ))
 
                         if task.command == "change admin status":
                             self.__django_orm_queue.put(("change_port_admin_status",
-                                         dslam_id,
-                                         task.params.get('port_indexes'),
-                                         task.params.get('admin_status')
-                                         ))
+                                                         dslam_id,
+                                                         task.params.get('port_indexes'),
+                                                         task.params.get('admin_status')
+                                                         ))
 
                         if task.command == "change lineprofile port":
                             if 'error' not in task_result.get('result'):
                                 self.__django_orm_queue.put(("change_port_line_profile",
-                                         dslam_id,
-                                         task.params.get('port_indexes'),
-                                         task.params.get('new_lineprofile')
-                                         ))
+                                                             dslam_id,
+                                                             task.params.get('port_indexes'),
+                                                             task.params.get('new_lineprofile')
+                                                             ))
 
                         if task.command == "add to vlan":
                             self.__django_orm_queue.put(("change_port_vlan",
-                                         dslam_id,
-                                         task.params.get('port_indexes'),
-                                         task.params.get('vlan_id')
-                                         ))
+                                                         dslam_id,
+                                                         task.params.get('port_indexes'),
+                                                         task.params.get('vlan_id')
+                                                         ))
 
                     else:
                         if save_result:
                             Transaction.update_dslamport_command_result(dslam_id,
-                                    task.params['port_indexes'],
-                                    command,
-                                    task_result,
-                                    task.params.get('username'),
-                                    )
+                                                                        task.params['port_indexes'],
+                                                                        command,
+                                                                        task_result,
+                                                                        task.params.get('username'),
+                                                                        )
 
                         if task.command == "change admin status":
                             Transaction.change_port_admin_status(
-                                         dslam_id,
-                                         task.params.get('port_indexes'),
-                                         task.params.get('admin_status')
-                                         )
+                                dslam_id,
+                                task.params.get('port_indexes'),
+                                task.params.get('admin_status')
+                            )
 
                         elif task.command in ("selt", "show mac slot port"):
                             Transaction.partial_update_port_status(
-                                         dslam_id,
-                                         task.command,
-                                         task.params.get('port_indexes'),
-                                         task_result
-                                         )
+                                dslam_id,
+                                task.command,
+                                task.params.get('port_indexes'),
+                                task_result
+                            )
 
                         elif task.command == "change lineprofile port":
                             if 'error' not in task_result.get('result'):
                                 Transaction.change_port_line_profile(
-                                         dslam_id,
-                                         task.params.get('port_indexes'),
-                                         task.params.get('new_lineprofile')
-                                         )
+                                    dslam_id,
+                                    task.params.get('port_indexes'),
+                                    task.params.get('new_lineprofile')
+                                )
 
                         elif task.command == "add to vlan":
                             Transaction.change_port_vlan(
-                                         dslam_id,
-                                         task.params.get('port_indexes'),
-                                         task.params.get('vlan_id')
-                                         )
+                                dslam_id,
+                                task.params.get('port_indexes'),
+                                task.params.get('vlan_id')
+                            )
 
                 else:
                     if is_queue:
                         if save_result:
                             self.__django_orm_queue.put(("update_dslam_command_result",
-                                dslam_id,
-                                command,
-                                task_result,
-                                task.params.get('username'),
-                                ))
+                                                         dslam_id,
+                                                         command,
+                                                         task_result,
+                                                         task.params.get('username'),
+                                                         ))
                         if task.command == "profile adsl show":
                             self.__django_orm_queue.put(("update_profile_adsl",
-                                         task_result.get('result')
-                                         ))
+                                                         task_result.get('result')
+                                                         ))
                         if task.command == "profile adsl set":
                             self.__django_orm_queue.put(("add_line_profile",
-                                         task.params,
-                                         ))
+                                                         task.params,
+                                                         ))
                         if task.command == "get dslam board":
-
                             self.__django_orm_queue.put(("update_dslam_board",
-                                         dslam_id,
-                                         task_result
-                                         ))
+                                                         dslam_id,
+                                                         task_result
+                                                         ))
 
                     else:
                         if save_result:
                             Transaction.update_dslam_command_result(
-                                    dslam_id,
-                                    command,
-                                    task_result,
-                                    task.params.get('username'),
-                                    )
+                                dslam_id,
+                                command,
+                                task_result,
+                                task.params.get('username'),
+                            )
 
                         if task.command == "profile adsl show":
                             Transaction.update_profile_adsl(
-                                         task_result.get('result')
-                                         )
+                                task_result.get('result')
+                            )
                         if task.command == "profile adsl set":
                             Transaction.add_line_profile(
-                                         task.params
-                                         )
+                                task.params
+                            )
         else:
             task_result = {"result": "No results was returned."}
             if save_result:
                 if task.params["type"] == 'dslamport':
-                        Transaction.update_dslamport_command_result(dslam_id, task.params['port_indexes'], command, task_result)
+                    Transaction.update_dslamport_command_result(dslam_id, task.params['port_indexes'], command,
+                                                                task_result)
                 else:
                     Transaction.update_dslam_command_result(dslam_id, command, task_result)
         return task_result
-
 
     def _reset_adminstatus(self, task):
         dslam_class = self.__portman_factory.get_type(task.dslam_data['dslam_type'])
@@ -341,31 +350,31 @@ class Portman(object):
         try:
             start = time.time()
             if task.dslam_data['dslam_type'] in ('fiberhomeAN2200', 'fiberhomeAN3300'):
-                #self.__django_orm_queue.put((
+                # self.__django_orm_queue.put((
                 #    "update_dslam_status",
                 #    task.dslam_data['id'],
                 #    dict(status="updating")
                 #    ))
                 ports_status = dslam_class.get_ports_status(task.dslam_data, self.request_q)
-                #task = DSLAMPortCommandTask(task.dslam_data, 'profile adsl show', {'is_queue':True, "type": "dslam" })
-                #self._execute_command(task, task.params.get('is_queue'), False)
-                task2 = DSLAMPortCommandTask(task.dslam_data, 'get dslam board', {'is_queue':True, "type": "dslam" })
+                # task = DSLAMPortCommandTask(task.dslam_data, 'profile adsl show', {'is_queue':True, "type": "dslam" })
+                # self._execute_command(task, task.params.get('is_queue'), False)
+                task2 = DSLAMPortCommandTask(task.dslam_data, 'get dslam board', {'is_queue': True, "type": "dslam"})
                 self._execute_command(task2, True, False)
             else:
                 self.__django_orm_queue.put((
                     "update_dslam_status",
                     task.dslam_data['id'],
                     dict(status="updating")
-                    ))
+                ))
                 result = dslam_class.get_port_index_mapping(task.dslam_data)
                 if 'dslam_events' in result:
                     dslam_id, event, msg = result['dslam_events']
-                    if event=='dslam_connection_error':
+                    if event == 'dslam_connection_error':
                         self.__django_orm_queue.put((
                             "update_dslam_status",
                             dslam_id,
                             dict(status="error")
-                            ))
+                        ))
                     self.__django_orm_queue.put(("dslam_events", dslam_id, event, msg))
                     self.__queue.put(task)
                 else:
@@ -386,8 +395,10 @@ class Portman(object):
                             port_status['PORT_NUMBER'] = port_number
                             ports_status.append(port_status)
                         self.__django_orm_queue.put(('update_port_status', task.dslam_data.get('id'), ports_status))
-                    task = DSLAMPortCommandTask(task.dslam_data, 'profile adsl show', {'is_queue':True, "type": "dslam" })
-                    task2 = DSLAMPortCommandTask(task.dslam_data, 'get dslam board', {'is_queue':True, "type": "dslam" })
+                    task = DSLAMPortCommandTask(task.dslam_data, 'profile adsl show',
+                                                {'is_queue': True, "type": "dslam"})
+                    task2 = DSLAMPortCommandTask(task.dslam_data, 'get dslam board',
+                                                 {'is_queue': True, "type": "dslam"})
                     self._execute_command(task, task.params.get('is_queue'), False)
                     self._execute_command(task2, task.params.get('is_queue'), False)
                     dslam_uptime, dslam_hostname = dslam_class.get_dslam_info(task.dslam_data)
@@ -395,14 +406,14 @@ class Portman(object):
                         "update_dslam_status",
                         task.dslam_data['id'],
                         dict(status='ready', uptime=dslam_uptime, hostname=dslam_hostname)
-                        ))
+                    ))
         except Exception as e:
             print(('Error on {0} : {1}'.format(task, e)))
             self.__django_orm_queue.put((
                 "update_dslam_status",
                 task.dslam_data['id'],
                 dict(status='error')
-                ))
+            ))
         return du
 
     def _resync(self, task):
@@ -415,11 +426,11 @@ class Portman(object):
                 "update_dslam_status",
                 task.dslam_data['id'],
                 dict(status="updating")
-                ))
+            ))
             ports_status = dslam_class.get_ports_status(task.dslam_data, self.request_q)
-            task = DSLAMPortCommandTask(task.dslam_data, 'profile adsl show', {'is_queue':True, "type": "dslam" })
+            task = DSLAMPortCommandTask(task.dslam_data, 'profile adsl show', {'is_queue': True, "type": "dslam"})
             self._execute_command(task, task.params.get('is_queue'), False)
-            task2 = DSLAMPortCommandTask(task.dslam_data, 'get dslam board', {'is_queue':True, "type": "dslam" })
+            task2 = DSLAMPortCommandTask(task.dslam_data, 'get dslam board', {'is_queue': True, "type": "dslam"})
             self._execute_command(task2, True, False)
 
             dslam_class.get_port_vpi_vci(task.dslam_data, self.request_q)
@@ -430,16 +441,16 @@ class Portman(object):
                         "update_dslam_status",
                         task.dslam_data['id'],
                         dict(status="updating")
-                        ))
+                    ))
                     ports_status = []
-                    for slot_number, port_number ,port_index, port_name in task.dslam_port_map:
+                    for slot_number, port_number, port_index, port_name in task.dslam_port_map:
 
                         port_results = dslam_class.get_current_port_status(
-                                    task.dslam_data, slot_number, port_number, port_index
-                                )
+                            task.dslam_data, slot_number, port_number, port_index
+                        )
 
                         if len(port_results['port_events']['port_event_items']) > 0:
-                            self.__django_orm_queue.put(('port_events' ,port_results['port_events']))
+                            self.__django_orm_queue.put(('port_events', port_results['port_events']))
 
                         port_status = port_results['port_current_status']
 
@@ -450,8 +461,10 @@ class Portman(object):
                         ports_status.append(port_status)
 
                     self.__django_orm_queue.put(('update_port_status', task.dslam_data.get('id'), ports_status))
-                    task = DSLAMPortCommandTask(task.dslam_data, 'profile adsl show', {'is_queue':True, "type": "dslam" })
-                    task2 = DSLAMPortCommandTask(task.dslam_data, 'get dslam board', {'is_queue':True, "type": "dslam" })
+                    task = DSLAMPortCommandTask(task.dslam_data, 'profile adsl show',
+                                                {'is_queue': True, "type": "dslam"})
+                    task2 = DSLAMPortCommandTask(task.dslam_data, 'get dslam board',
+                                                 {'is_queue': True, "type": "dslam"})
                     self._execute_command(task, task.params.get('is_queue'), False)
                     self._execute_command(task2, task.params.get('is_queue'), False)
                     info = dslam_class.get_port_vpi_vci(task.dslam_data)
@@ -462,7 +475,7 @@ class Portman(object):
                             "update_port_vpi_vci",
                             task.dslam_data['id'],
                             info.get('port_vpi_vci')
-                            ))
+                        ))
 
                 dslam_uptime, dslam_hostname = dslam_class.get_dslam_info(task.dslam_data)
                 self.__django_orm_queue.put((
@@ -476,7 +489,7 @@ class Portman(object):
                     "update_dslam_status",
                     task.dslam_data['id'],
                     dict(status='error')
-                    ))
+                ))
             finally:
-               du = time.time()-start
-               return du
+                du = time.time() - start
+                return du

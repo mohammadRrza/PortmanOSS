@@ -27,3 +27,7 @@ from dslam.models import DSLAMPortMac
 from dslam.models import DSLAMBoard
 from dslam.models import LineProfileExtraSettings
 from dslam.models import DSLAMTypeCommand
+
+
+#RouterModels
+from router.models import Router

@@ -5713,9 +5713,29 @@ class RunCommandByIPAPIView(views.APIView):
                     sid = fhresponse.json()
                     res = sid.split("\n\r")
                     return JsonResponse({'current_userProfile': userProfile, 'response': sid.split("\r\n")})
+                    # ---------------------------------------------------huawei---------------------------------------------------
+                    if (dslam_obj.dslam_type_id == 2):
+                        try:
+                            if (
+                                    command == 'show mac slot port' or command == 'show mac with port' or command == 'show mac'):
+                                command = 'show mac slot port'
+                            if not command:
+                                return Response({'result': 'Command does not exits'},
+                                                status=status.HTTP_400_BAD_REQUEST)
+                            result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+                            return JsonResponse({'response': result['result'].split('\r\n')[31].split()[2]})
+                        except Exception as ex:
+                            try:
+                                if ('There is not any MAC address record' in result['result']):
+                                    return JsonResponse({'response': 'There is not any MAC address record'})
+                                return JsonResponse({'response': result['result'].split('\r\n')})
+                            except Exception as ex:
+                                exc_type, exc_obj, exc_tb = sys.exc_info()
+                                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                                return JsonResponse({'result': str('an error occurred. please try again.{0}'.format(str(exc_tb.tb_lineno)))})
 
-                # ---------------------------------------------------zyxel---------------------------------------------------
-                description = 'Run Command {0} on DSLAM {1}'.format(
+                    # ---------------------------------------------------zyxel---------------------------------------------------
+                    description = 'Run Command {0} on DSLAM {1}'.format(
                     command,
                     dslam_obj.name,
                 )

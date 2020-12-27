@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -29,11 +28,11 @@ class User(AbstractUser):
         ).values_list('object_id', flat=True)
         return dslam_ids
 
-
     @property
     def allowed_telecom_centers(self):
         if self.type == "RESELLER":
-            identifier_keys = ResellerPort.objects.filter(reseller=self.reseller).values_list('identifier_key', flat=True)
+            identifier_keys = ResellerPort.objects.filter(reseller=self.reseller).values_list('identifier_key',
+                                                                                              flat=True)
             mdf_dslams = MDFDSLAM.objects.filter(identifier_key__in=identifier_keys)
             telecom_centers = mdf_dslams.distinct('telecom_center_id').values_list('telecom_center_id', flat=True)
             return telecom_centers
@@ -74,12 +73,12 @@ class User(AbstractUser):
         ).values_list('object_id', flat=True)
         return dslam_ids
 
-
     @property
     def allowed_dslams(self):
         if self.type == "RESELLER":
             if self.reseller.name == 'fanava':
-                identifier_keys = ResellerPort.objects.filter(reseller=self.reseller).values_list('identifier_key', flat=True)
+                identifier_keys = ResellerPort.objects.filter(reseller=self.reseller).values_list('identifier_key',
+                                                                                                  flat=True)
                 mdf_dslams = MDFDSLAM.objects.filter(identifier_key__in=identifier_keys)
                 dslams = mdf_dslams.distinct('dslam_id').values_list('dslam_id', flat=True)
             else:
@@ -130,20 +129,24 @@ class User(AbstractUser):
         denied_dslam_port = []
         if self.type == "RESELLER":
             if self.reseller.name == 'fanava':
-                identifier_keys = ResellerPort.objects.filter(reseller=self.reseller).values_list('identifier_key', flat=True)
-                mdf_dslams = MDFDSLAM.objects.extra(select={'dslam_slot':'slot_number', 'dslam_port':'port_number'}).filter(identifier_key__in=identifier_keys)
+                identifier_keys = ResellerPort.objects.filter(reseller=self.reseller).values_list('identifier_key',
+                                                                                                  flat=True)
+                mdf_dslams = MDFDSLAM.objects.extra(
+                    select={'dslam_slot': 'slot_number', 'dslam_port': 'port_number'}).filter(
+                    identifier_key__in=identifier_keys)
                 dslamports = mdf_dslams.values('dslam_id', 'dslam_slot', 'dslam_port')
             else:
-                dslamports = ResellerPort.objects.filter(reseller=self.reseller).values('dslam_id', 'dslam_slot', 'dslam_port')
+                dslamports = ResellerPort.objects.filter(reseller=self.reseller).values('dslam_id', 'dslam_slot',
+                                                                                        'dslam_port')
 
             dslam_port_ids = []
             for dslamport in dslamports:
                 try:
                     dslam_port_obj = DSLAMPort.objects.get(dslam__id=dslamport['dslam_id'],
-                                                       #slot_number=dslamport['slot_number'],
-                                                       #port_number=dslamport['port_number'])
-                                                       slot_number=dslamport['dslam_slot'],
-                                                       port_number=dslamport['dslam_port'])
+                                                           # slot_number=dslamport['slot_number'],
+                                                           # port_number=dslamport['port_number'])
+                                                           slot_number=dslamport['dslam_slot'],
+                                                           port_number=dslamport['dslam_port'])
                     dslam_port_ids.append(dslam_port_obj.pk)
                 except Exception as ex:
                     print(dslamport)
@@ -252,7 +255,7 @@ class User(AbstractUser):
             return True
         for user_permission_profile in self.userpermissionprofile_set.filter(is_active=True, action='allow'):
             if user_permission_profile.permission_profile.permissionprofilepermission_set.filter(
-                permission__name=permission_name
+                    permission__name=permission_name
             ).exists():
                 return True
         return False
@@ -273,11 +276,10 @@ class User(AbstractUser):
             return False
 
         if not allowed_telecom_centers[telecom_center_id].permission_profile.permissionprofilepermission_set.filter(
-            permission__codename=permission_name
+                permission__codename=permission_name
         ).exists():
             return False
         return True
-
 
     def has_permission_to_dslam(self, permission_name, dslam_id):
         if self.is_superuser:
@@ -290,12 +292,11 @@ class User(AbstractUser):
             else:
                 return False
 
-
         if dslam_id not in list(allowed_dslams.keys()):
             return False
 
         if not allowed_dslams[dslam_id].permission_profile.permissionprofilepermission_set.filter(
-            permission__codename=permission_name
+                permission__codename=permission_name
         ).exists():
             return False
         return True
@@ -306,7 +307,6 @@ class User(AbstractUser):
 
         allowed_ports = self.allowed_ports
 
-
         if self.type == "RESELLER":
             if port_id in allowed_ports:
                 return True
@@ -316,9 +316,8 @@ class User(AbstractUser):
         if port_id not in list(allowed_ports.keys()):
             return False
 
-
         if not allowed_ports[port_id].permission_profile.permissionprofilepermission_set.filter(
-            permission__codename=permission_name
+                permission__codename=permission_name
         ).exists():
             return False
         return True
@@ -333,7 +332,7 @@ class UserAuditLog(models.Model):
     ip = models.GenericIPAddressField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0}({1})'.format(self.username, self.action)
 
     class Meta:
@@ -349,25 +348,25 @@ class Permission(models.Model):
         verbose_name = 'permission'
         verbose_name_plural = 'permissions'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
 class PermissionProfile(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
 class PermissionProfilePermission(models.Model):
-    permission_profile = models.ForeignKey(PermissionProfile,on_delete=models.CASCADE)
+    permission_profile = models.ForeignKey(PermissionProfile, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('permission_profile', 'permission'),)
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0}({1})'.format(self.permission_profile.name, self.permission.title)
 
 
@@ -381,17 +380,17 @@ class UserPermissionProfile(models.Model):
     action = models.CharField(choices=ACTIONS, max_length=30, default='allow')
     is_active = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.username
 
 
 class UserPermissionProfileObject(models.Model):
     user_permission_profile = models.ForeignKey(UserPermissionProfile, on_delete=models.CASCADE)
     content_type = models.ForeignKey(
-            ContentType,
-            models.CASCADE,
-            verbose_name='content type',
-            related_name='user_permission_content_type', blank=True, null=True)
+        ContentType,
+        models.CASCADE,
+        verbose_name='content type',
+        related_name='user_permission_content_type', blank=True, null=True)
     object_id = models.IntegerField(blank=True, null=True)
 
     def as_json(self):
@@ -402,12 +401,14 @@ class UserPermissionProfileObject(models.Model):
         elif model_type == 'command':
             name = Command.objects.get(id=self.object_id).text
         return {
-                'id': self.id,
-                'user_permission_profile_id': self.user_permission_profile.id,
-                'model_type': self.content_type.model,
-                'object_id': self.object_id,
-                'object_name': name
-            }
+            'id': self.id,
+            'user_permission_profile_id': self.user_permission_profile.id,
+            'model_type': self.content_type.model,
+            'object_id': self.object_id,
+            'object_name': name
+        }
 
     class Meta:
         unique_together = (('user_permission_profile', 'content_type', 'object_id'),)
+
+

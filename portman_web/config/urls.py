@@ -8,6 +8,7 @@ import django
 
 from dslam.views import *
 from users.views import *
+from router.views import *
 from modem.views import GetModemInfoAPIView
 from adminplus.sites import AdminSitePlus
 from rest_framework_jwt.views import obtain_jwt_token
@@ -113,6 +114,7 @@ urlpatterns = [
     url(r'^api/v1/dslam/icmp/command/$', DSLAMRunICMPCommandView.as_view(), name='dslam-run-icmp-command'),
     url(r'^api/v1/dslam/bulk-command/$', BulkCommand.as_view(), name='bulk-command'),
     url(r'^api/v1/modem/getModemInfo/$', GetModemInfoAPIView.as_view(), name='getModemInfo'),
+    url(r'^api/v1/router/router-runCommand/$', RouterRunCommandAPIView.as_view(), name='router-runCommand'),
     url(r'^api/v1/quick-search/$', QuickSearchView.as_view(), name='quick-search'),
     url(r'^api/v1/', include(portman_router.urls)),
     url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': True }),

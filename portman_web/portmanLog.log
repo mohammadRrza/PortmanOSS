@@ -306,3 +306,15 @@ django.db.utils.ProgrammingError: relation "router_routerbrand" does not exist
 LINE 1: SELECT COUNT(*) AS "__count" FROM "router_routerbrand"
                                           ^
 
+Not Found: /favicon.ico
+Unauthorized: /api/v1/router/router-runCommand/
+Unauthorized: /api/v1/router/router-runCommand/
+Unauthorized: /api/v1/router/router-runCommand/
+Unauthorized: /api/v1/router/router-runCommand/
+Unauthorized: /api/v1/router/router-runCommand/
+Unauthorized: /api/v1/router/router-runCommand/
+Unauthorized: /api/v1/router/router-runCommand/
+Unauthorized: /api/v1/router/router-runCommand/
+Unauthorized: /api/v1/router/router-runCommand/
+Not Found: /favicon.ico
+Not Found: /favicon.ico
