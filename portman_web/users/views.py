@@ -127,7 +127,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-    @action(mmethods=['POST'],detail=True, permission_classes=[], authentication_classes=[])
+    @action(methods=['POST'],detail=True, permission_classes=[], authentication_classes=[])
     def login(self, request):
         """
         Login User
