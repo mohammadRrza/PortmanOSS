@@ -319,3 +319,714 @@ Unauthorized: /api/v1/router/router-runCommand/
 Not Found: /favicon.ico
 Not Found: /favicon.ico
 Not Found: /favicon.ico
+Internal Server Error: /users/get-token
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/jwt/algorithms.py", line 205, in prepare_key
+    key = load_pem_private_key(key, password=None, backend=default_backend())
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/cryptography/hazmat/primitives/serialization/base.py", line 18, in load_pem_private_key
+    return backend.load_pem_private_key(data, password)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/cryptography/hazmat/backends/openssl/backend.py", line 1243, in load_pem_private_key
+    return self._load_key(
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/cryptography/hazmat/backends/openssl/backend.py", line 1472, in _load_key
+    self._handle_key_loading_error()
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/cryptography/hazmat/backends/openssl/backend.py", line 1526, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework_jwt/views.py", line 57, in post
+    if serializer.is_valid():
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/serializers.py", line 220, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/serializers.py", line 422, in run_validation
+    value = self.validate(value)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework_jwt/serializers.py", line 60, in validate
+    'token': jwt_encode_handler(payload),
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework_jwt/utils.py", line 92, in jwt_encode_handler
+    return jwt.encode(
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/jwt/api_jwt.py", line 64, in encode
+    return super(PyJWT, self).encode(
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/jwt/api_jws.py", line 113, in encode
+    key = alg_obj.prepare_key(key)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/jwt/algorithms.py", line 207, in prepare_key
+    key = load_pem_public_key(key, backend=default_backend())
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/cryptography/hazmat/primitives/serialization/base.py", line 23, in load_pem_public_key
+    return backend.load_pem_public_key(data)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/cryptography/hazmat/backends/openssl/backend.py", line 1273, in load_pem_public_key
+    self._handle_key_loading_error()
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/cryptography/hazmat/backends/openssl/backend.py", line 1526, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/
+Not Found: /users
+Not Found: /lineprofile
+Bad Request: /api/v1/lineprofile/
+Bad Request: /api/v1/profile/
+Method Not Allowed: /api/v1/port-command/
+Bad Request: /api/v1/city/location/
+Not Found: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/deprecation.py", line 113, in __call__
+    response = self.process_request(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/middleware/common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to localhost:2080/api/v1/users/login/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+Method Not Allowed: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/rest_framework/mixins.py", line 82, in partial_update
+    return self.update(request, *args, **kwargs)
+TypeError: update() got an unexpected keyword argument 'partial'
+Not Found: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/Login/
+Method Not Allowed: /api/v1/users/Login/
+Method Not Allowed: /api/v1/users/changepassword/
+Method Not Allowed: /api/v1/users/login/
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Bad Request: /api/v1/dslam/
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 197, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 258, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 31, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 27, in _positive_int
+    if ret < 0 or (ret == 0 and strict):
+TypeError: '<' not supported between instances of 'str' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 26, in _positive_int
+    ret = int(cutoff)
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'builtin_function_or_method'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 197, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 258, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 31, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 197, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 258, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 31, in _positive_int
+    return max(ret, cutoff)
+TypeError: '>' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 197, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 258, in get_page_size
+    return _positive_int(
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/pagination.py", line 31, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Not Found: /
+Not Found: /router
+Not Found: /router
+Not Found: /dslam
+Not Found: /router
+Not Found: /router
+Not Found: /dslam
+Unauthorized: /api/v1/dslam/
+Not Found: /api/v1/roter/
+Unauthorized: /api/v1/router/

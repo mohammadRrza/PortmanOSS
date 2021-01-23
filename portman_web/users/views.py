@@ -1,3 +1,6 @@
+import os
+import sys
+
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -25,6 +28,7 @@ from dslam.views import LargeResultsSetPagination
 
 User = get_user_model()
 
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     Get users
@@ -40,7 +44,7 @@ class UserViewSet(viewsets.ModelViewSet):
             required: true
     """
     model = User
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = User.objects.all().order_by('-id')
     pagination_class = LargeResultsSetPagination
@@ -74,19 +78,18 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             new_user = serializer.save()
-            #add_audit_log(
+            # add_audit_log(
             #    request,
             #    'user',
             #    'create',
             #    object_id=new_user.pk,
             #    description='create user %s'%new_user.username,
-            #)
+            # )
             # save limit ips if exists
             new_user.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
     def update(self, request, pk):
         """
@@ -104,7 +107,7 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=['POST'],detail=True)
+    @action(methods=['POST'], detail=True)
     def changepassword(self, request, pk=None):
         """
         Change Password
@@ -126,8 +129,7 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-    @action(methods=['POST'],detail=True, permission_classes=[], authentication_classes=[])
+    @action(methods=['POST'], detail=True, permission_classes=[], authentication_classes=[])
     def login(self, request):
         """
         Login User
@@ -142,38 +144,45 @@ class UserViewSet(viewsets.ModelViewSet):
                 paramType: form
                 required: true
         """
-        data = request.data
-        username = data.get('username', '')
-        password = data.get('password', '')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
+        try:
+            data = request.data
+            username = data.get('username', '')
+            password = data.get('password', '')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
 
-                # create token
-                jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-                jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-                payload = jwt_payload_handler(user)
-                token = jwt_encode_handler(payload)
+                    # create token
+                    jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+                    jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+                    payload = jwt_payload_handler(user)
+                    token = jwt_encode_handler(payload)
 
-                response = serializer = UserSerializer(user).data
-                response['token'] = token
+                    response = serializer = UserSerializer(user).data
+                    response['token'] = token
 
-                return Response(response, status=status.HTTP_200_OK)
+                    return Response(response, status=status.HTTP_200_OK)
+                else:
+                    return Response({'msg': 'User is inactive'}, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response({'msg': 'User is inactive'}, status=status.HTTP_401_UNAUTHORIZED)
-        else:
-            return Response({'msg': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response({'msg': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def get_permission(self, request):
         user = request.user
         data = request.data
-        pp_list = UserPermissionProfile.objects.filter(user__username=user.username).values_list('permission_profile', flat=True)
-        permissions = PermissionProfilePermission.objects.filter(permission_profile__in=pp_list).values_list('permission__codename', flat=True)
+        pp_list = UserPermissionProfile.objects.filter(user__username=user.username).values_list('permission_profile',
+                                                                                                 flat=True)
+        permissions = PermissionProfilePermission.objects.filter(permission_profile__in=pp_list).values_list(
+            'permission__codename', flat=True)
         return Response({'permissions': permissions, 'user_type': user.type}, status=status.HTTP_200_OK)
 
-    @action(methods=['POST'],detail=False)
+    @action(methods=['POST'], detail=False)
     def logout(self, request):
         """
         Logout User
@@ -184,8 +193,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class UserAuditLogViewSet(mixins.ListModelMixin,
-        mixins.RetrieveModelMixin,
-        viewsets.GenericViewSet):
+                          mixins.RetrieveModelMixin,
+                          viewsets.GenericViewSet):
     serializer_class = UserAuditLogSerializer
     permission_classes = (IsAuthenticated,)
     pagination_class = LargeResultsSetPagination
@@ -197,10 +206,10 @@ class UserAuditLogViewSet(mixins.ListModelMixin,
         keywords = data.get('search_keywords')
         action = data.get('search_action')
         ip = data.get('search_ip')
-        username =  data.get('search_username')
-        start_date =  data.get('search_date_from')
-        end_date =  data.get('search_date_to')
-        sort_field =  data.get('sort_field')
+        username = data.get('search_username')
+        start_date = data.get('search_date_from')
+        end_date = data.get('search_date_to')
+        sort_field = data.get('sort_field')
 
         if keywords:
             keyword_params = keywords.split(',')
@@ -218,7 +227,7 @@ class UserAuditLogViewSet(mixins.ListModelMixin,
             queryset = queryset.filter(username=username)
 
         if start_date:
-            #for example start_date = 20120505 and end_date = 20120606
+            # for example start_date = 20120505 and end_date = 20120606
             year, month, day = start_date.split('/')
             start_date = JalaliDate(year, month, day).todate()
             if end_date:
@@ -229,27 +238,24 @@ class UserAuditLogViewSet(mixins.ListModelMixin,
 
             queryset = queryset.filter(created_at__gte=start_date, created_at__lt=end_date).order_by('created_at')
 
-
         if sort_field:
             queryset = queryset.order_by(sort_field)
 
         return queryset
 
-
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def actions(self, request):
-        data = tuple(enumerate(UserAuditLog.objects.values_list('action').order_by().distinct(),1))
-        data_dict = [{'id':key, 'text':value} for key, value in data]
+        data = tuple(enumerate(UserAuditLog.objects.values_list('action').order_by().distinct(), 1))
+        data_dict = [{'id': key, 'text': value} for key, value in data]
         return HttpResponse(json.dumps(data_dict), content_type='application/json; charset=UTF-8')
 
 
 class PermissionViewSet(mixins.ListModelMixin,
-        mixins.CreateModelMixin,
-        mixins.RetrieveModelMixin,
-        mixins.UpdateModelMixin,
-        mixins.DestroyModelMixin,
-        viewsets.GenericViewSet):
-
+                        mixins.CreateModelMixin,
+                        mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        mixins.DestroyModelMixin,
+                        viewsets.GenericViewSet):
     serializer_class = PermissionSerializer
     permission_classes = (IsAuthenticated,)
     pagination_class = LargeResultsSetPagination
@@ -263,27 +269,26 @@ class PermissionViewSet(mixins.ListModelMixin,
 
         return queryset
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def get_user_permissions(self, request):
         user = request.user
         data = request.query_params
         username = data.get('username')
         permissions = []
         if username:
-            pp_list = UserPermissionProfile.objects.filter(user__username=username).values_list('permission_profile', flat=True)
-            permissions = PermissionProfilePermission.objects.filter(permission_profile__in=pp_list).values_list('permission__codename', flat=True)
-        return Response({'results':permissions})
-
-
+            pp_list = UserPermissionProfile.objects.filter(user__username=username).values_list('permission_profile',
+                                                                                                flat=True)
+            permissions = PermissionProfilePermission.objects.filter(permission_profile__in=pp_list).values_list(
+                'permission__codename', flat=True)
+        return Response({'results': permissions})
 
 
 class PermissionProfileViewSet(mixins.ListModelMixin,
-        mixins.CreateModelMixin,
-        mixins.RetrieveModelMixin,
-        mixins.UpdateModelMixin,
-        mixins.DestroyModelMixin,
-        viewsets.GenericViewSet):
-
+                               mixins.CreateModelMixin,
+                               mixins.RetrieveModelMixin,
+                               mixins.UpdateModelMixin,
+                               mixins.DestroyModelMixin,
+                               viewsets.GenericViewSet):
     serializer_class = PermissionProfileSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -296,13 +301,13 @@ class PermissionProfileViewSet(mixins.ListModelMixin,
 
         return queryset
 
-class PermissionProfilePermissionViewSet(mixins.ListModelMixin,
-        mixins.CreateModelMixin,
-        mixins.RetrieveModelMixin,
-        mixins.UpdateModelMixin,
-        mixins.DestroyModelMixin,
-        viewsets.GenericViewSet):
 
+class PermissionProfilePermissionViewSet(mixins.ListModelMixin,
+                                         mixins.CreateModelMixin,
+                                         mixins.RetrieveModelMixin,
+                                         mixins.UpdateModelMixin,
+                                         mixins.DestroyModelMixin,
+                                         viewsets.GenericViewSet):
     serializer_class = PermissionProfilePermissionSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -311,7 +316,7 @@ class PermissionProfilePermissionViewSet(mixins.ListModelMixin,
         queryset = PermissionProfilePermission.objects.all()
         return queryset
 
-    @action(methods=['POST'],detail=False)
+    @action(methods=['POST'], detail=False)
     def delete_permission_profile(self, request):
         user = request.user
         data = request.data
@@ -325,7 +330,7 @@ class PermissionProfilePermissionViewSet(mixins.ListModelMixin,
         data = request.data
 
         permission_profile_obj, permission_profile_created = PermissionProfile.objects.get_or_create(
-                name=data.get('permission_profile_name'))
+            name=data.get('permission_profile_name'))
         if not permission_profile_created:
             return Response({'result': 'Permission Profile Name is exist !!!.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -337,8 +342,8 @@ class PermissionProfilePermissionViewSet(mixins.ListModelMixin,
             ppp.permission = permission_obj
             ppp.save()
 
-            #description = u'Create Permission Profile Name: {0}'.format(permission_profile_obj.name)
-            #add_audit_log(request, 'PermissionProfile', permission_profile_obj.id, 'Create Permission Profile', description)
+            # description = u'Create Permission Profile Name: {0}'.format(permission_profile_obj.name)
+            # add_audit_log(request, 'PermissionProfile', permission_profile_obj.id, 'Create Permission Profile', description)
 
         return Response('Permissions Profile created', status=status.HTTP_201_CREATED)
 
@@ -359,12 +364,11 @@ class PermissionProfilePermissionViewSet(mixins.ListModelMixin,
 
 
 class UserPermissionProfileViewSet(mixins.ListModelMixin,
-        mixins.CreateModelMixin,
-        mixins.RetrieveModelMixin,
-        mixins.UpdateModelMixin,
-        mixins.DestroyModelMixin,
-        viewsets.GenericViewSet):
-
+                                   mixins.CreateModelMixin,
+                                   mixins.RetrieveModelMixin,
+                                   mixins.UpdateModelMixin,
+                                   mixins.DestroyModelMixin,
+                                   viewsets.GenericViewSet):
     serializer_class = UserPermissionProfileSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -412,20 +416,21 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
 
         return Response('Permissions Profile User Updated', status=status.HTTP_204_NO_CONTENT)
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def objects(self, request, pk=None):
         user = request.user
         data = self.request.query_params
         upp_id = self.get_object().id
-        uppo_list = [item.as_json() for item in UserPermissionProfileObject.objects.filter(user_permission_profile__id=upp_id)]
+        uppo_list = [item.as_json() for item in
+                     UserPermissionProfileObject.objects.filter(user_permission_profile__id=upp_id)]
         return JsonResponse({'result': uppo_list})
 
     """
     Destroy a model instance.
     """
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         UserPermissionProfileObject.objects.filter(user_permission_profile=instance).delete()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-
