@@ -1,6 +1,5 @@
 import sys, os
 from datetime import time
-import kwargs as kwargs
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from netmiko.cisco_base_connection import CiscoSSHConnection

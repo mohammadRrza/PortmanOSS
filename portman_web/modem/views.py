@@ -1,6 +1,5 @@
 import sys, os
 from datetime import time
-import kwargs as kwargs
 from django.views.generic import View
 from netmiko.cisco_base_connection import CiscoSSHConnection
 from rest_framework import status, views, mixins, viewsets, permissions

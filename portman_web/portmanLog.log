@@ -318,3 +318,1452 @@ Unauthorized: /api/v1/router/router-runCommand/
 Unauthorized: /api/v1/router/router-runCommand/
 Not Found: /favicon.ico
 Not Found: /favicon.ico
+Not Found: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Not Found: /favicon.ico
+Not Found: /api/v1/users/login/
+Not Found: /
+Not Found: /api/v1/users/login
+Not Found: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Not Found: /static/rest_framework/css/bootstrap.min.css
+Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+Not Found: /static/rest_framework/css/default.css
+Not Found: /static/rest_framework/css/prettify.css
+Not Found: /static/rest_framework/js/ajax-form.js
+Not Found: /static/rest_framework/js/csrf.js
+Not Found: /static/rest_framework/js/bootstrap.min.js
+Not Found: /static/rest_framework/js/prettify-min.js
+Not Found: /static/rest_framework/js/default.js
+Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+Not Found: /static/rest_framework/js/ajax-form.js
+Not Found: /static/rest_framework/js/csrf.js
+Not Found: /static/rest_framework/js/bootstrap.min.js
+Not Found: /static/rest_framework/js/prettify-min.js
+Not Found: /static/rest_framework/js/default.js
+Not Found: /favicon.ico
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Not Found: /static/rest_framework/css/bootstrap.min.css
+Not Found: /static/rest_framework/css/bootstrap-tweaks.css
+Not Found: /static/rest_framework/css/default.css
+Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+Not Found: /static/rest_framework/css/prettify.css
+Not Found: /static/rest_framework/js/ajax-form.js
+Not Found: /static/rest_framework/js/csrf.js
+Not Found: /static/rest_framework/js/bootstrap.min.js
+Not Found: /static/rest_framework/js/prettify-min.js
+Not Found: /static/rest_framework/js/default.js
+Not Found: /static/rest_framework/js/jquery-3.5.1.min.js
+Not Found: /static/rest_framework/js/ajax-form.js
+Not Found: /static/rest_framework/js/csrf.js
+Not Found: /static/rest_framework/js/bootstrap.min.js
+Not Found: /static/rest_framework/js/prettify-min.js
+Not Found: /static/rest_framework/js/default.js
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Bad Request: /users/get-token
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Bad Request: /users/get-token
+Bad Request: /users/get-token
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Internal Server Error: /users/get-token
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/jwt/algorithms.py", line 205, in prepare_key
+    key = load_pem_private_key(key, password=None, backend=default_backend())
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py", line 16, in load_pem_private_key
+    return backend.load_pem_private_key(data, password)
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1085, in load_pem_private_key
+    return self._load_key(
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1315, in _load_key
+    self._handle_key_loading_error()
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1373, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/views.py", line 57, in post
+    if serializer.is_valid():
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 220, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 422, in run_validation
+    value = self.validate(value)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/serializers.py", line 60, in validate
+    'token': jwt_encode_handler(payload),
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/utils.py", line 92, in jwt_encode_handler
+    return jwt.encode(
+  File "/usr/lib/python3/dist-packages/jwt/api_jwt.py", line 64, in encode
+    return super(PyJWT, self).encode(
+  File "/usr/lib/python3/dist-packages/jwt/api_jws.py", line 113, in encode
+    key = alg_obj.prepare_key(key)
+  File "/usr/lib/python3/dist-packages/jwt/algorithms.py", line 207, in prepare_key
+    key = load_pem_public_key(key, backend=default_backend())
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py", line 20, in load_pem_public_key
+    return backend.load_pem_public_key(data)
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1115, in load_pem_public_key
+    self._handle_key_loading_error()
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1373, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+Internal Server Error: /users/get-token
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/jwt/algorithms.py", line 205, in prepare_key
+    key = load_pem_private_key(key, password=None, backend=default_backend())
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py", line 16, in load_pem_private_key
+    return backend.load_pem_private_key(data, password)
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1085, in load_pem_private_key
+    return self._load_key(
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1315, in _load_key
+    self._handle_key_loading_error()
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1373, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/views.py", line 57, in post
+    if serializer.is_valid():
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 220, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 422, in run_validation
+    value = self.validate(value)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/serializers.py", line 60, in validate
+    'token': jwt_encode_handler(payload),
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/utils.py", line 92, in jwt_encode_handler
+    return jwt.encode(
+  File "/usr/lib/python3/dist-packages/jwt/api_jwt.py", line 64, in encode
+    return super(PyJWT, self).encode(
+  File "/usr/lib/python3/dist-packages/jwt/api_jws.py", line 113, in encode
+    key = alg_obj.prepare_key(key)
+  File "/usr/lib/python3/dist-packages/jwt/algorithms.py", line 207, in prepare_key
+    key = load_pem_public_key(key, backend=default_backend())
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py", line 20, in load_pem_public_key
+    return backend.load_pem_public_key(data)
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1115, in load_pem_public_key
+    self._handle_key_loading_error()
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1373, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+Internal Server Error: /users/get-token
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/jwt/algorithms.py", line 205, in prepare_key
+    key = load_pem_private_key(key, password=None, backend=default_backend())
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py", line 16, in load_pem_private_key
+    return backend.load_pem_private_key(data, password)
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1085, in load_pem_private_key
+    return self._load_key(
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1315, in _load_key
+    self._handle_key_loading_error()
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1373, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/views.py", line 57, in post
+    if serializer.is_valid():
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 220, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 422, in run_validation
+    value = self.validate(value)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/serializers.py", line 60, in validate
+    'token': jwt_encode_handler(payload),
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/utils.py", line 92, in jwt_encode_handler
+    return jwt.encode(
+  File "/usr/lib/python3/dist-packages/jwt/api_jwt.py", line 64, in encode
+    return super(PyJWT, self).encode(
+  File "/usr/lib/python3/dist-packages/jwt/api_jws.py", line 113, in encode
+    key = alg_obj.prepare_key(key)
+  File "/usr/lib/python3/dist-packages/jwt/algorithms.py", line 207, in prepare_key
+    key = load_pem_public_key(key, backend=default_backend())
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py", line 20, in load_pem_public_key
+    return backend.load_pem_public_key(data)
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1115, in load_pem_public_key
+    self._handle_key_loading_error()
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1373, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+Internal Server Error: /users/get-token
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/jwt/algorithms.py", line 205, in prepare_key
+    key = load_pem_private_key(key, password=None, backend=default_backend())
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py", line 16, in load_pem_private_key
+    return backend.load_pem_private_key(data, password)
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1085, in load_pem_private_key
+    return self._load_key(
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1315, in _load_key
+    self._handle_key_loading_error()
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1373, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/views.py", line 57, in post
+    if serializer.is_valid():
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 220, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 422, in run_validation
+    value = self.validate(value)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/serializers.py", line 60, in validate
+    'token': jwt_encode_handler(payload),
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/utils.py", line 92, in jwt_encode_handler
+    return jwt.encode(
+  File "/usr/lib/python3/dist-packages/jwt/api_jwt.py", line 64, in encode
+    return super(PyJWT, self).encode(
+  File "/usr/lib/python3/dist-packages/jwt/api_jws.py", line 113, in encode
+    key = alg_obj.prepare_key(key)
+  File "/usr/lib/python3/dist-packages/jwt/algorithms.py", line 207, in prepare_key
+    key = load_pem_public_key(key, backend=default_backend())
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/primitives/serialization/base.py", line 20, in load_pem_public_key
+    return backend.load_pem_public_key(data)
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1115, in load_pem_public_key
+    self._handle_key_loading_error()
+  File "/usr/lib/python3/dist-packages/cryptography/hazmat/backends/openssl/backend.py", line 1373, in _handle_key_loading_error
+    raise ValueError("Could not deserialize key data.")
+ValueError: Could not deserialize key data.
+Unauthorized: /api/v1/users/login/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Internal Server Error: /api/v1/permission
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/deprecation.py", line 113, in __call__
+    response = self.process_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/middleware/common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 172.28.238.114:2080/api/v1/permission/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+Bad Request: /api/v1/permission/
+Unauthorized: /api/v1/reseller-port/
+Not Found: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Not Found: /api/v1/users/login/
+Method Not Allowed: /api/v1/users/login/
+Bad Request: /api/v1/users/
+Not Found: /api/v1/login/
+Method Not Allowed: /api/v1/users/login/
+Unauthorized: /api/v1/users/get_permission/
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Unauthorized: /api/v1/dslam/
+Not Found: /favicon.ico
+Internal Server Error: /api/v1/dslam-port/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam-port/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Unauthorized: /api/v1/dslam-port/
+Method Not Allowed: /api/v1/dslam-port/
+Method Not Allowed: /api/v1/dslam-port/
+Bad Request: /api/v1/dslam/
+Method Not Allowed: /api/v1/dslam-port/
+Method Not Allowed: /api/v1/dslam-port/
+Internal Server Error: /api/v1/dslam-port/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam-port/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Internal Server Error: /api/v1/dslam/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 40, in list
+    page = self.paginate_queryset(queryset)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/generics.py", line 171, in paginate_queryset
+    return self.paginator.paginate_queryset(queryset, self.request, view=self)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 196, in paginate_queryset
+    page_size = self.get_page_size(request)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 257, in get_page_size
+    return _positive_int(
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/pagination.py", line 30, in _positive_int
+    return min(ret, cutoff)
+TypeError: '<' not supported between instances of 'builtin_function_or_method' and 'int'
+Not Found: /api/v1/dslam/get_fifty_five_precntage/
+Internal Server Error: /api/v1/dslamport/command/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 1193, in post
+    result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 821, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 695, in _request
+    response = self._run_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 730, in _run_request
+    response = self.__transport.request(
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1153, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 413, in single_request
+    self.send_content(connection, request_body)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 476, in send_content
+    connection.endheaders()
+  File "/usr/lib/python3.8/http/client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.8/http/client.py", line 1010, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.8/http/client.py", line 950, in send
+    self.connect()
+  File "/usr/lib/python3.8/http/client.py", line 921, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+    raise err
+  File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+Not Found: /api/v1/dslam/get_fifty_five_precntage/
+Internal Server Error: /api/v1/dslamport/command/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 1193, in post
+    result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 821, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 695, in _request
+    response = self._run_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 730, in _run_request
+    response = self.__transport.request(
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1153, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 413, in single_request
+    self.send_content(connection, request_body)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 476, in send_content
+    connection.endheaders()
+  File "/usr/lib/python3.8/http/client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.8/http/client.py", line 1010, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.8/http/client.py", line 950, in send
+    self.connect()
+  File "/usr/lib/python3.8/http/client.py", line 921, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+    raise err
+  File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+Internal Server Error: /api/v1/dslamport/command/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 1193, in post
+    result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 821, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 695, in _request
+    response = self._run_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 730, in _run_request
+    response = self.__transport.request(
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1153, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 413, in single_request
+    self.send_content(connection, request_body)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 476, in send_content
+    connection.endheaders()
+  File "/usr/lib/python3.8/http/client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.8/http/client.py", line 1010, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.8/http/client.py", line 950, in send
+    self.connect()
+  File "/usr/lib/python3.8/http/client.py", line 921, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+    raise err
+  File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+Not Found: /api/v1/dslam/get_fifty_five_precntage/
+Internal Server Error: /api/v1/dslamport/command/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 1193, in post
+    result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 821, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 695, in _request
+    response = self._run_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 730, in _run_request
+    response = self.__transport.request(
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1153, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 413, in single_request
+    self.send_content(connection, request_body)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 476, in send_content
+    connection.endheaders()
+  File "/usr/lib/python3.8/http/client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.8/http/client.py", line 1010, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.8/http/client.py", line 950, in send
+    self.connect()
+  File "/usr/lib/python3.8/http/client.py", line 921, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+    raise err
+  File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+Internal Server Error: /api/v1/dslamport/command/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 1193, in post
+    result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 821, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 695, in _request
+    response = self._run_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 730, in _run_request
+    response = self.__transport.request(
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1153, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 413, in single_request
+    self.send_content(connection, request_body)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 476, in send_content
+    connection.endheaders()
+  File "/usr/lib/python3.8/http/client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.8/http/client.py", line 1010, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.8/http/client.py", line 950, in send
+    self.connect()
+  File "/usr/lib/python3.8/http/client.py", line 921, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+    raise err
+  File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+Internal Server Error: /api/v1/dslamport/command/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 1193, in post
+    result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 821, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 695, in _request
+    response = self._run_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 730, in _run_request
+    response = self.__transport.request(
+  File "/usr/lib/python3.8/xmlrpc/client.py", line 1153, in request
+    return self.single_request(host, handler, request_body, verbose)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 413, in single_request
+    self.send_content(connection, request_body)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 476, in send_content
+    connection.endheaders()
+  File "/usr/lib/python3.8/http/client.py", line 1250, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.8/http/client.py", line 1010, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.8/http/client.py", line 950, in send
+    self.connect()
+  File "/usr/lib/python3.8/http/client.py", line 921, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.8/socket.py", line 808, in create_connection
+    raise err
+  File "/usr/lib/python3.8/socket.py", line 796, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+Internal Server Error: /api/v1/dslamport/command/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 1193, in post
+    result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 821, in __call__
+    return self.__send(self.__name, args)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 696, in _request
+    check_for_errors(response)
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/jsonrpc.py", line 1453, in check_for_errors
+    raise ProtocolError((code, message))
+jsonrpclib.jsonrpc.ProtocolError: (-32603, 'Server error: File "/usr/lib/python3.8/logging/__init__.py", line 1172, in _open | PermissionError: [Errno 13] Permission denied: \'/opt/portmanv3/portman_core2/example.log\'\n')
+Unauthorized: /api/v1/users/get_permission/
+Not Found: /api/v1/dslam/get_dslams_packet_loss_count/
+Not Found: /api/v1/dslam/get_interface_traffic_input/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/users/get_permission/
+Not Found: /api/v1/dslam/get_fifty_five_precntage/
+Not Found: /api/v1/dslam/get_interface_traffic_input/
+Not Found: /api/v1/dslam/get_dslams_packet_loss_count/
+Not Found: /favicon.ico
+Internal Server Error: /users/get-token
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 219, in ensure_connection
+    self.connect()
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 200, in connect
+    self.connection = self.get_new_connection(conn_params)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/postgresql/base.py", line 187, in get_new_connection
+    connection = Database.connect(**conn_params)
+  File "/usr/local/lib/python3.8/dist-packages/psycopg2/__init__.py", line 127, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: could not connect to server: Connection refused
+	Is the server running on host "5.202.129.160" and accepting
+	TCP/IP connections on port 5432?
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/views.py", line 57, in post
+    if serializer.is_valid():
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 220, in is_valid
+    self._validated_data = self.run_validation(self.initial_data)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 422, in run_validation
+    value = self.validate(value)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework_jwt/serializers.py", line 50, in validate
+    user = authenticate(**credentials)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/auth/__init__.py", line 73, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/auth/backends.py", line 42, in authenticate
+    user = UserModel._default_manager.get_by_natural_key(username)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/auth/base_user.py", line 45, in get_by_natural_key
+    return self.get(**{self.model.USERNAME_FIELD: username})
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/query.py", line 425, in get
+    num = len(clone)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/query.py", line 269, in __len__
+    self._fetch_all()
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/query.py", line 1308, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/query.py", line 53, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/sql/compiler.py", line 1154, in execute_sql
+    cursor = self.connection.cursor()
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 259, in cursor
+    return self._cursor()
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 235, in _cursor
+    self.ensure_connection()
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 219, in ensure_connection
+    self.connect()
+  File "/usr/local/lib/python3.8/dist-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 219, in ensure_connection
+    self.connect()
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/base/base.py", line 200, in connect
+    self.connection = self.get_new_connection(conn_params)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/backends/postgresql/base.py", line 187, in get_new_connection
+    connection = Database.connect(**conn_params)
+  File "/usr/local/lib/python3.8/dist-packages/psycopg2/__init__.py", line 127, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+django.db.utils.OperationalError: could not connect to server: Connection refused
+	Is the server running on host "5.202.129.160" and accepting
+	TCP/IP connections on port 5432?
+
+Not Found: /favicon.ico

@@ -1,3 +1,4 @@
+
 """portman_web URL Configuration
 """
 from django.conf.urls import include, url
@@ -28,6 +29,7 @@ portman_router.register(r'permission', PermissionViewSet, basename='permission')
 portman_router.register(r'profile', PermissionProfileViewSet, basename='permission-profile')
 portman_router.register(r'permission-profile', PermissionProfilePermissionViewSet, basename='permission-profile-permission')
 portman_router.register(r'users/permission-profile', UserPermissionProfileViewSet, basename='user-permission-profile')
+portman_router.register(r'users', UserViewSet, basename='users')
 portman_router.register(r'users/auditlog', UserAuditLogViewSet, basename='user-audit-log')
 portman_router.register(r'mdfdslam', MDFDSLAMViewSet, basename='mdfdslam')
 portman_router.register(r'dslam/bulk-command/result', DSLAMBulkCommandResultViewSet, basename='dslam-bulk-command-result')
