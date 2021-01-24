@@ -178,3 +178,9 @@ Traceback (most recent call last):
     super(RouterSerializer, self).__init__(*args, **kwargs)
 TypeError: super(type, obj): obj must be an instance or subtype of type
 Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/router/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/router/
+Not Found: /favicon.ico
+Not Found: /api/v1/switch/
