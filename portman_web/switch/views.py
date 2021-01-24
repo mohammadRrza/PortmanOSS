@@ -37,7 +37,6 @@ class SwitchViewSet(mixins.ListModelMixin,
             print(self.request.user.type)
             _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port',
                        'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
-                       'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
             return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
     @action(methods=['GET'],detail=False)
