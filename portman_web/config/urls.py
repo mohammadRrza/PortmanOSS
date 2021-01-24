@@ -28,6 +28,7 @@ portman_router = routers.SimpleRouter()
 portman_router.register(r'permission', PermissionViewSet, basename='permission')
 portman_router.register(r'profile', PermissionProfileViewSet, basename='permission-profile')
 portman_router.register(r'permission-profile', PermissionProfilePermissionViewSet, basename='permission-profile-permission')
+portman_router.register(r'users', UserViewSet, basename='users')
 portman_router.register(r'users/permission-profile', UserPermissionProfileViewSet, basename='user-permission-profile')
 portman_router.register(r'users', UserViewSet, basename='users')
 portman_router.register(r'users/auditlog', UserAuditLogViewSet, basename='user-audit-log')
@@ -58,11 +59,12 @@ portman_router.register(r'city/location', CityLocationViewSet, basename='city-lo
 portman_router.register(r'city', CityViewSet, basename='city')
 portman_router.register(r'reseller-port', ResellerPortViewSet, basename='reseller-port')
 portman_router.register(r'terminal', TerminalViewSet, basename='terminal')
+portman_router.register(r'router', RouterViewSet, basename='router')
 
 urlpatterns = [
     url(r'^users/get-token', obtain_jwt_token),
     url(r'^apis-doc/v1/', schema_view),
-    #url(r'/', include('rest_framework_swagger.urls')),
+    url(r'/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/dslamport/register-port/$', RegisterPortAPIView.as_view(), name='register-port'),
     url(r'^api/v1/dslamport/run-command/$', RunCommandAPIView.as_view(), name='run-command'),
