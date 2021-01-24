@@ -59,7 +59,6 @@ class RouterViewSet(mixins.ListModelMixin,
     permission_classes = (IsAuthenticated, )
     serializer_class = RouterSerializer
     pagination_class = LargeResultsSetPagination
-
     def get_serializer(self, *args, **kwargs):
         if self.request.user.is_superuser:
             print((self.request.user.type))

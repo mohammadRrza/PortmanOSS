@@ -564,11 +564,11 @@ class DSLAMViewSet(mixins.ListModelMixin,
                        'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
             return DSLAMSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'],detail=True)
     def current(self, request):
         serializer = DSLAMSerializer(request.user, request=request)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    @action(methods=['GET'],detail=False)
     def get_queryset(self):
         queryset = self.queryset
         user = self.request.user

@@ -130,6 +130,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['POST'], detail=False, permission_classes=[], authentication_classes=[])
+
     def login(self, request):
         """
         Login User
@@ -144,6 +145,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 paramType: form
                 required: true
         """
+
         try:
             data = request.data
             username = data.get('username', '')
