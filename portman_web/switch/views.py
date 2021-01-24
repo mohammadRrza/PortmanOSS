@@ -27,15 +27,16 @@ class SwitchViewSet(mixins.ListModelMixin,
 
     def get_serializer(self, *args, **kwargs):
         if self.request.user.is_superuser:
-            print((self.request.user.type))
-            return RouterSerializer(request=self.request, *args, **kwargs)
+            print(self.request.user.type)
+            return SwitchSerializer(request=self.request, *args, **kwargs)
         elif self.request.user.type == 'SUPPORT':
-            print((self.request.user.type))
+            print(self.request.user.type)
             _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port']
             return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
         else:
-            print((self.request.user.type))
+            print(self.request.user.type)
             _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port',
+                       'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
                        'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
             return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
@@ -58,10 +59,10 @@ class SwitchViewSet(mixins.ListModelMixin,
         status = self.request.query_params.get('search_status', None)
         switch_type_id = self.request.query_params.get('search_type', None)
 
-        if router_type_id:
-            queryset = queryset.filter(router_type__id=switch_type_id)
+        if switch_type_id:
+            queryset = queryset.filter(switch_type__id=switch_type_id)
 
-        if router_name:
+        if switch_name:
             queryset = queryset.filter(device_name__istartswith=switch_name)
 
         if ip:
