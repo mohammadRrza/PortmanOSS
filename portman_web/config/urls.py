@@ -10,6 +10,7 @@ import django
 from dslam.views import *
 from users.views import *
 from router.views import *
+from switch.views import *
 from modem.views import GetModemInfoAPIView
 from adminplus.sites import AdminSitePlus
 from rest_framework_jwt.views import obtain_jwt_token
@@ -60,6 +61,7 @@ portman_router.register(r'city', CityViewSet, basename='city')
 portman_router.register(r'reseller-port', ResellerPortViewSet, basename='reseller-port')
 portman_router.register(r'terminal', TerminalViewSet, basename='terminal')
 portman_router.register(r'router', RouterViewSet, basename='router')
+portman_router.register(r'switch', SwitchViewSet, basename='switch')
 
 urlpatterns = [
     url(r'^users/get-token', obtain_jwt_token),

@@ -1,14 +1,13 @@
 import sys, os
 from datetime import time
-import kwargs as kwargs
 from django.views.generic import View
-from netmiko.cisco_base_connection import CiscoSSHConnection
 from rest_framework import status, views, mixins, viewsets, permissions
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from switch.serializers import SwitchSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
+from switch.models import Switch
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
