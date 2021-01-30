@@ -46,3 +46,5 @@ class RouterCommand(models.Model):
     router_command_description = models.CharField(max_length=256)
     router_command_text = models.CharField(max_length=256, verbose_name='name', unique=True)
     show_command = models.BooleanField(default=False, verbose_name='Show command in Router table')
+    def __str__(self):
+        return self.router_type
