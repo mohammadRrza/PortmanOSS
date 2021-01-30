@@ -42,7 +42,6 @@ class Router(models.Model):
 class RouterCommand(models.Model):
     router_brand = models.ForeignKey(RouterBrand, on_delete=models.CASCADE)
     router_type = models.ForeignKey(RouterType, on_delete=models.CASCADE)
-    router = models.ForeignKey(Router, on_delete=models.CASCADE)
     router_command_description = models.CharField(max_length=256)
     router_command_text = models.CharField(max_length=256, verbose_name='name', unique=True)
     show_command = models.BooleanField(default=False, verbose_name='Show command in Router table')
