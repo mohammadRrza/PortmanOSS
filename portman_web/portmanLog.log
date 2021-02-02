@@ -2339,3 +2339,4 @@ Traceback (most recent call last):
 NameError: name 'device_fqdn' is not defined
 Unauthorized: /api/v1/switch/
 Not Found: /favicon.ico
+Not Found: /favicon.ico
