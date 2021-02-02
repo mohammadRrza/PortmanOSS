@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'dslam',
     'router',
     'switch',
+    'contact',
 )
 
 MIDDLEWARE = (
