@@ -88,6 +88,7 @@ class RouterViewSet(mixins.ListModelMixin,
         ip_list = self.request.query_params.get('search_ip_list', None)
         city_id = self.request.query_params.get('search_city', None)
         telecom = self.request.query_params.get('search_telecom', None)
+        device_fqdn = self.request.query_params.get('search_fqdn', None)
         active = self.request.query_params.get('search_active', None)
         status = self.request.query_params.get('search_status', None)
         router_type_id = self.request.query_params.get('search_type', None)
