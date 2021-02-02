@@ -104,7 +104,8 @@ class RouterViewSet(mixins.ListModelMixin,
                 queryset = queryset.filter(device_ip__istartswith=device_ip)
             else:
                 queryset = queryset.filter(device_ip=device_ip)
-
+        if device_fqdn:
+            queryset = queryset.filter(device_fqdn__istartswith=device_fqdn)
         if ip_list:
             for ip in ip_list.split(','):
                 queryset = queryset.filter(device_ip__istartswith=ip)
