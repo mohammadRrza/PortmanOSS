@@ -18,4 +18,4 @@ class RouterSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name)
     class Meta:
         model = Router
-        fields = ['id', 'device_name', 'device_ip', 'device_fqdn']
+        fields = ['id', 'device_name', 'RouterType', 'device_ip', 'device_fqdn']
