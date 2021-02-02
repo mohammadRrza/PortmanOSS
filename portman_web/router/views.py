@@ -98,16 +98,16 @@ class RouterViewSet(mixins.ListModelMixin,
         if router_name:
             queryset = queryset.filter(device_name__istartswith=router_name)
 
-        if ip:
-            ip = ip.strip()
-            if len(ip.split('.')) != 4:
-                queryset = queryset.filter(ip__istartswith=ip)
+        if device_ip:
+            device_ip = device_ip.strip()
+            if len(device_ip.split('.')) != 4:
+                queryset = queryset.filter(device_ip__istartswith=device_ip)
             else:
-                queryset = queryset.filter(ip=ip)
+                queryset = queryset.filter(device_ip=device_ip)
 
         if ip_list:
             for ip in ip_list.split(','):
-                queryset = queryset.filter(ip__istartswith=ip)
+                queryset = queryset.filter(device_ip__istartswith=ip)
 
         if status:
             queryset = queryset.filter(status=status)
