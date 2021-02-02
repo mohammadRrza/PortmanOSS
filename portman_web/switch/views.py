@@ -50,13 +50,14 @@ class SwitchViewSet(mixins.ListModelMixin,
 
         sort_field = self.request.query_params.get('sort_field', None)
         switch_name = self.request.query_params.get('search_switch', None)
-        ip = self.request.query_params.get('search_ip', None)
+        device_ip = self.request.query_params.get('search_ip', None)
         ip_list = self.request.query_params.get('search_ip_list', None)
         city_id = self.request.query_params.get('search_city', None)
         telecom = self.request.query_params.get('search_telecom', None)
         active = self.request.query_params.get('search_active', None)
         status = self.request.query_params.get('search_status', None)
         switch_type_id = self.request.query_params.get('search_type', None)
+        device_fqdn = self.request.query_params.get('search_fqdn', None)
 
         if switch_type_id:
             queryset = queryset.filter(switch_type__id=switch_type_id)
@@ -64,13 +65,14 @@ class SwitchViewSet(mixins.ListModelMixin,
         if switch_name:
             queryset = queryset.filter(device_name__istartswith=switch_name)
 
-        if ip:
-            ip = ip.strip()
-            if len(ip.split('.')) != 4:
-                queryset = queryset.filter(ip__istartswith=ip)
+        if device_ip:
+            device_ip = device_ip.strip()
+            if len(device_ip.split('.')) != 4:
+                queryset = queryset.filter(device_ip__istartswith=device_ip)
             else:
-                queryset = queryset.filter(ip=ip)
-
+                queryset = queryset.filter(device_ip=device_ip)
+        if device_fqdn:
+            queryset = queryset.filter(device_fqdn__contains=device_fqdn)
         if ip_list:
             for ip in ip_list.split(','):
                 queryset = queryset.filter(ip__istartswith=ip)
