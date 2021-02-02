@@ -22,4 +22,4 @@ class Contact(models.Model):
     mobile_phone = models.CharField(max_length=256)
     contact_email = models.CharField(max_length=256)
     def __str__(self):
-        return self.contact_dslam.get('ip')
+        return self.contact_name
