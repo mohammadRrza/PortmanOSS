@@ -16,9 +16,10 @@ class ContactType(models.Model):
 
 class Contact(models.Model):
     contact_dslam = models.ForeignKey(DSLAM,db_index=True, on_delete=models.CASCADE)
+    contact_type = models.ForeignKey(ContactType,db_index=True, on_delete=models.CASCADE)
     contact_name = models.CharField(max_length=256)
     phone= models.CharField(max_length=256)
     mobile_phone = models.CharField(max_length=256)
     contact_email = models.CharField(max_length=256)
     def __str__(self):
-        return self.contact_dslam.name
+        return self.contact_dslam.get('ip')
