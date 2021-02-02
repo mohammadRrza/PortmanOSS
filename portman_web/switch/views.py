@@ -72,7 +72,7 @@ class SwitchViewSet(mixins.ListModelMixin,
             else:
                 queryset = queryset.filter(device_ip=device_ip)
         if device_fqdn:
-            queryset = queryset.filter(device_fqdn__contains=device_fqdn)
+            queryset = queryset.filter(device_fqdn__icontains=device_fqdn)
         if ip_list:
             for ip in ip_list.split(','):
                 queryset = queryset.filter(ip__istartswith=ip)
