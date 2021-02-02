@@ -84,7 +84,7 @@ class RouterViewSet(mixins.ListModelMixin,
 
         sort_field = self.request.query_params.get('sort_field', None)
         router_name = self.request.query_params.get('search_router', None)
-        ip = self.request.query_params.get('search_ip', None)
+        device_ip = self.request.query_params.get('search_ip', None)
         ip_list = self.request.query_params.get('search_ip_list', None)
         city_id = self.request.query_params.get('search_city', None)
         telecom = self.request.query_params.get('search_telecom', None)
