@@ -6919,11 +6919,311 @@ def get_ticket_detail_dana(ticket_guid, bearer):
     response_json = response.json()
     return response_json
 
-
 def get_user_info_from_ibs(username):
-    ibs_url = '172.28.179.154:1237'
-    req_data = "{'jsonrpc':'2.0','id':1,'method':'user.getUserInfo','params':{'count':'1','normal_username':'%s','remote_addr':'127.0.0.1','auth_type':'ADMIN','auth_name':'software','auth_pass':'$0ftw@r3'}}" % (
-        username)
-    response = requests.post(ibs_url, data=req_data, headers={"Content-Type": "application/json"})
-    sid = response.json()
-    return JsonResponse({'response': sid})
+
+        login_url = 'http://172.28.163.22:8280/authenticate/v1/requesttoken'
+        login_data = "{'Username':'oss','Password':'74e#$pRe;F'}"
+        response = requests.post(login_url, data=login_data, headers={"Content-Type": "application/json",
+                                                                      "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d"})
+        response_json = response.json()
+        getuserinfo_url = 'http://172.28.163.22:8280/ibs/v1/getuserinfo'
+        getuserinfo_data = '{"NormalUsername":%s}' % (str(username))
+        # return getuserinfo_data
+
+        userinfo_response = requests.post(getuserinfo_url, data=getuserinfo_data,
+                                          headers={"Content-Type": "application/json",
+                                                   "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d",
+                                                   "token": '' + response_json['token']})
+        userinfo_response_json = userinfo_response.json()
+        # return userinfo_response_json['error']
+        if (userinfo_response_json['error'] and 'does not exists' in userinfo_response_json['error']):
+            return userinfo_response_json['error']
+        for value in userinfo_response_json['result']:
+            return userinfo_response_json['result'][value]['attrs']['limit_mac']
+
+class DSLAMRunICMPCommandByFqdnView(views.APIView):
+
+    def get_permissions(self):
+        return (permissions.IsAuthenticated(),)
+
+    def post(self, request, format=None):
+        self.user = request.user
+        data = request.data
+        icmp_type = data.get('icmp_type')
+        params = data.get('params')
+        fqdn = request.data.get('fqdn')
+
+        if ('.z6' in fqdn):
+          try:
+           fqdn = fqdn.replace('.z6', '.Z6')
+           dslamObj = DSLAM.objects.get(fqdn=fqdn)
+           dslam_id = dslamObj.id
+
+          except ObjectDoesNotExist as ex:
+                try:
+                    if ('.Z6' in fqdn):
+                        fqdn = fqdn.replace('.Z6', '.z6')
+                    dslamObj = DSLAM.objects.get(fqdn=fqdn)
+                    dslam_id = dslamObj.id
+                    dslam_ip = dslamObj.ip
+                except Exception as ex:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                    mail_info = Mail()
+                    mail_info.from_addr = 'oss-problems@pishgaman.net'
+                    mail_info.to_addr = 'oss-problems@pishgaman.net'
+                    mail_info.msg_body = 'Error in RunCommandAPIViewin/Fiberhome2200 Line {0}.Error Is: {1}. fqdn = {2},card = {3}, port = {4}, command = {5}, subscriber = {6}. IP: {7}'.format(
+                        str(exc_tb.tb_lineno), str(ex), request.data.get('fqdn'),
+                        request.data.get('params').get('port_conditions').get('slot_number'),
+                        request.data.get('params').get('port_conditions').get('port_number'), command, subscriber, ip)
+                    mail_info.msg_subject = 'Error in RunCommandAPIView'
+                    Mail.Send_Mail(mail_info)
+                    return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
+
+
+        result = utility.run_icmp_command(dslam_id, icmp_type, params)
+
+        dslam_name = DSLAM.objects.get(id=dslam_id).name
+
+        description = u'Run {0} Command on DSLAM {1} with params: {2}'.format(icmp_type, dslam_name, params)
+        add_audit_log(request, 'DSLAMICMP', None, 'Run ICMP Command on DSLAM', description)
+
+        return Response({'result': result}, status=status.HTTP_201_CREATED)
+
+
+def get_device_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return Response({'result': ip}, status=status.HTTP_201_CREATED)
+
+
+class CheckNetworkBulkAvailability(views.APIView):
+    def get_permissions(self):
+        return (permissions.IsAuthenticated(),)
+
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            params = data.get('params')
+            dslam_obj = DSLAM.objects.get(id=74)
+            dslam_objs = DSLAM.objects.all().order_by('last_sync_duration', 'created_at', 'last_sync')
+            for dslam_obj in dslam_objs:
+                result = utility.run_icmp_command(dslam_obj.id, 'ping', params)
+                if (result['received'] == '0' and result['packet_loss'] == '100'):
+                    query = "INSERT INTO device_availability_icmp values('{0}','{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                        dslam_obj.ip,
+                        dslam_obj.fqdn,
+                        'DSLAM', result['received'], result['packet_loss'], 'time_Out')
+                elif (result['received'] == '4' and result['packet_loss'] == '0'):
+                    query = "INSERT INTO device_availability_icmp values('{0}','{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                        dslam_obj.ip,
+                        dslam_obj.fqdn,
+                        'DSLAM', result['received'], result['packet_loss'], 'accessible')
+                else:
+                    query = "INSERT INTO device_availability_icmp values('{0}','{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                        dslam_obj.ip,
+                        dslam_obj.fqdn,
+                        'DSLAM', result['received'], result['packet_loss'], 'unknown')
+
+                cursor = connection.cursor()
+                cursor.execute(query)
+            return Response({'result': "OK"}, status=status.HTTP_201_CREATED)
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex) + "  " + str(exc_tb.tb_lineno)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetHostsFromZabbixAPIView(views.APIView):
+    def post(self, request, format=None):
+        data = request.data
+        try:
+            zabbix_url = 'https://zabbix.pishgaman.net/api_jsonrpc.php'
+            zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "pQU5G88Xg44YbX2L"},"id": 1,"auth": null}'
+            response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+            login = response.json()
+            token = login['result']
+            zabbix_get_host_data = '{"jsonrpc": "2.0","method": "host.get","params": {"output": ["hostid","host"],"selectInterfaces": ["interfaceid","ip"]},"id": 125,"auth": "%s"}' % (
+                token)
+            host_response = requests.post(zabbix_url, data=zabbix_get_host_data,
+                                          headers={"Content-Type": "application/json"})
+            hosts = host_response.json()
+            # return JsonResponse({'hosts':hosts })
+
+            i = 1
+            device = ''
+            device_type = ''
+            for item in hosts['result']:
+                host = item['host']
+                try:
+                    if ('Germany' not in host):
+                        device_type = host.split('.')[-2]
+
+                    if ('dsl.' in host):
+                        device = 'Dslam'
+                    elif ('rou.' in host):
+                        device = 'Router'
+                    elif ('swi.' in host):
+                        device = 'Switch'
+
+                except Exception as ex:
+                    device_type = host
+                if ('dsl.' in host):
+                    device = 'Dslam'
+                elif ('rou.' in host):
+                    device = 'Router'
+                elif ('swi.' in host):
+                    device = 'Switch'
+
+                for val in item['interfaces']:
+                    ip = val['ip']
+                    interfaceid = val['interfaceid']
+
+                query = "INSERT INTO zabbix_hosts values('{0}','{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}')".format(
+                    int(item['hostid']),
+                    device_type,
+                    device_type, ip, item['host'], interfaceid, datetime.now(), device)
+
+                cursor = connection.cursor()
+                cursor.execute(query)
+
+            return JsonResponse({'hosts': host})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex) + "  " + str(host)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetItemsFromZabbixAPIView(views.APIView):
+    def post(self, request, format=None):
+        try:
+            zabbix_url = 'https://zabbix.pishgaman.net/api_jsonrpc.php'
+            zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "pQU5G88Xg44YbX2L"},"id": 1,"auth": null}'
+            response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+            login = response.json()
+            token = login['result']
+            zabbix_get_items_data = '{"jsonrpc": "2.0","method": "item.get","params": {"output": "extend","hostids": "11092","search": {},"sortfield": "name"},"id": 125,"auth": "%s"}' % (
+                token)
+            items_response = requests.post(zabbix_url, data=zabbix_get_items_data,
+                                           headers={"Content-Type": "application/json"})
+            items = items_response.json()
+            # for item in item['result']:
+
+            # query = "INSERT INTO zabbix_host_items VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18}, {19}, {20}, {21}, {22}, {23}, {24}, {25}, {26}, {27}, {28}, {29}, {30}, {31}, {32}, {33}, {34}, {35}, {36}, {37}, {38}, {39}, {40}, {41}, {42}, {43}, {44}, {45}, {46}, {47}, {48}, {49}, {50}, {51}, {52}, {53}, {54})";
+
+            # cursor = connection.cursor()
+            # cursor.execute(query)
+
+            return JsonResponse({'items': items['result']})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class DslamIcmpSnapshotCount(views.APIView):
+
+    def get(self, request, format=None):
+        try:
+            data = request.data
+            query = "select packet_loss, count(*) from dslam_dslamicmpsnapshot_y2020m12  where updated_at >= '2020-12-30 00:00:00'::timestamp  GROUP BY packet_loss";
+            cursor = connection.cursor()
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            return JsonResponse({'pck_loss': rows})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetInterfaceTrafficInput(views.APIView):
+    def get(self, request, format=None):
+        try:
+            GB = 8589934592
+            zabbix_url = 'https://zabbix.pishgaman.net/api_jsonrpc.php'
+            zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "pQU5G88Xg44YbX2L"},"id": 1,"auth": null}'
+            response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+            login = response.json()
+            token = login['result']
+            zabbix_get_item_data = '{"jsonrpc": "2.0","method": "item.get","params": {"output": "extend","hostids": "11861","filter": {"itemid": "404525"},"sortfield": "name"},"id": 125,"auth": "%s"}' % (
+                token)
+            item_response = requests.post(zabbix_url, data=zabbix_get_item_data,
+                                          headers={"Content-Type": "application/json"})
+            item = item_response.json()
+            # return JsonResponse({'item':item['result'][0]})
+            return JsonResponse({'lastvalue': round(int(item['result'][0].get('lastvalue')) / GB, 4),
+                                 'prevvalue': int(item['result'][0].get('prevvalue')) / GB,
+                                 'lastclock': int(item['result'][0].get('lastclock')) / GB,
+                                 'lastns': int(item['result'][0].get('lastns')) / GB})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ZabbixGetHistory(views.APIView):
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            zabbix_item_id = data.get('zabbix_item_id')
+            time_from = data.get('time_from')
+            time_till = data.get('time_till')
+            timestamp_from = time.mktime(datetime.strptime(time_from, "%Y/%m/%d").timetuple())
+            timestamp_till = time.mktime(datetime.strptime(time_till, "%Y/%m/%d").timetuple())
+            zabbix_url = 'https://zabbix.pishgaman.net/api_jsonrpc.php'
+            zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "pQU5G88Xg44YbX2L"},"id": 1,"auth": null}'
+            response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+            login = response.json()
+            token = login['result']
+            zabbix_get_history_data = '{"jsonrpc": "2.0","method": "history.get","params": {"output": "extend","itemids": "%s","time_from": %s,"time_till": %s},"id": 1,"auth": "%s"}' % (
+            "60288", int(timestamp_from), int(timestamp_till), token)
+            history_response = requests.post(zabbix_url, data=zabbix_get_history_data,
+                                             headers={"Content-Type": "application/json"})
+            history = history_response.json()
+            del_query = "DELETE FROM zabbix_history"
+            cursor = connection.cursor()
+            cursor.execute(del_query)
+
+            for val in history['result']:
+                query = "INSERT INTO zabbix_history VALUES ('{0}', '{1}', '{2}', '{3}')".format(val['itemid'],
+                                                                                                val['ns'], val['value'],
+                                                                                                val['clock'])
+                cursor = connection.cursor()
+                cursor.execute(query)
+
+            return JsonResponse({'item': history['result']})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetFiftyFivePercent(views.APIView):
+    def get(self, request, format=None):
+        try:
+            count_query = 'select count(*) from zabbix_history';
+            cursor = connection.cursor()
+            cursor.execute(count_query)
+            count = cursor.fetchall()
+            five_percent = (float(count[0][0]) * 5) / 100
+            query = 'SELECT * from(select *, ROW_NUMBER () OVER (order by "value" DESC) from zabbix_history) x WHERE ROW_NUMBER BETWEEN {0} AND {1}'.format(
+                str(five_percent - 1), str(five_percent));
+            cursor = connection.cursor()
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            return JsonResponse(
+                {'row': rows, 'five_percent': five_percent, 'Count': count[0][0], 'Losts': 8640 - int(count[0][0])})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
