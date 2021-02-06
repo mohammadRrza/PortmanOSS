@@ -29,7 +29,6 @@ class Contact(models.Model):
 
 class Order(models.Model):
     rastin_order_id = models.IntegerField(db_index=True, blank=True, null=True)
-    order_dslam = models.ForeignKey(DSLAM,db_index=True, on_delete=models.CASCADE)
     order_contact = models.ForeignKey(Contact,db_index=True, on_delete=models.CASCADE)
     ranjePhoneNumber = models.CharField(max_length=256)
     username = models.CharField(max_length=256)
