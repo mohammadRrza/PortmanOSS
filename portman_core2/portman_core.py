@@ -1,6 +1,6 @@
 import dj_bridge
 import logging
-from dj_bridge import DSLAM, Router
+from dj_bridge import DSLAM, Router,Switch
 from dj_bridge import DSLAMType
 from dj_bridge import TelecomCenter
 from dj_bridge import City
@@ -155,8 +155,14 @@ class PortmanRPC(object):
         task = RouterCommandTask(router.get_info(), command, params)
         is_queue = params.get('is_queue')
         if (is_queue == False):
-            return self.portman._execute_command(task, is_queue)
+            return self.portman._router_execute_command(task, is_queue)
 
+    def switch_run_command(self, switch_id, command, params):
+        switch = Switch.objects.get(id=switch_id)
+        task = SwitchommandTask(switch.get_info(), command, params)
+        is_queue = params.get('is_queue')
+        if (is_queue == False):
+            return self.portman._execute_command(task, is_queue)
 
 class PortmanRPCStarter(threading.Thread):
     def __init__(self, portman_runner):

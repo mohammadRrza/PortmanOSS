@@ -31,3 +31,7 @@ from dslam.models import DSLAMTypeCommand
 
 #RouterModels
 from router.models import Router
+
+
+#SwitchModels
+from switch.models import Switch
