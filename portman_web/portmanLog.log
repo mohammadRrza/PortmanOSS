@@ -2428,3 +2428,15 @@ Traceback (most recent call last):
 django.core.exceptions.ImproperlyConfigured: Field name `RouterType` is not valid for model `Router`.
 Not Found: /api/v1/users/permission-profile/
 Not Found: /api/v1/users/permission-profile/
+Not Found: /api/v1/dslam/get_dslams_packet_loss_count/
+Not Found: /api/v1/dslam/get_interface_traffic_input/
+Not Found: /api/v1/dslam/get_interface_traffic_input/
+Not Found: /api/v1/dslam/get_dslams_packet_loss_count/
+Unauthorized: /api/v1/dslam/get_interface_traffic_input/
+Not Found: /api/v1/users/permission-profile/
+Unauthorized: /api/v1/users/get_permission/
+Not Found: /api/v1/dslam/get_dslams_packet_loss_count/
+Not Found: /api/v1/dslam/get_interface_traffic_input/
+Not Found: /api/v1/dslam/get_interface_traffic_input/
+Not Found: /api/v1/dslam/get_dslams_packet_loss_count/
+Unauthorized: /api/v1/users/get_permission/

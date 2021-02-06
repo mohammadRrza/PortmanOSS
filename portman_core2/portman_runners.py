@@ -47,6 +47,17 @@ class RouterCommandTask(object):
         self.result = None
         self.error = None
 
+class SwitchCommandTask(object):
+
+    def __init__(self, switch_data, command, params):
+        self.switch_data = switch_data
+        self.command = command
+        self.params = params
+        self.created_at = time.time()
+        self.finished_at = None
+        self.result = None
+        self.error = None
+
 class DSLAMInitTask(object):
     """
     To initialize ports' status on a dslam (first operation after adding a dslam)
