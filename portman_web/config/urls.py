@@ -11,6 +11,8 @@ from dslam.views import *
 from users.views import *
 from router.views import *
 from switch.views import *
+from contact.views import *
+
 from modem.views import GetModemInfoAPIView
 from adminplus.sites import AdminSitePlus
 from rest_framework_jwt.views import obtain_jwt_token
@@ -62,6 +64,7 @@ portman_router.register(r'reseller-port', ResellerPortViewSet, basename='reselle
 portman_router.register(r'terminal', TerminalViewSet, basename='terminal')
 portman_router.register(r'router', RouterViewSet, basename='router')
 portman_router.register(r'switch', SwitchViewSet, basename='switch')
+portman_router.register(r'portmap', PortMapViewSet, basename='portmap')
 
 urlpatterns = [
     url(r'^users/get-token', obtain_jwt_token),
@@ -104,7 +107,6 @@ urlpatterns = [
     url(r'^api/v1/dslamport/bitstreamFreePort/$', BitstreamFreePortAPIView.as_view(), name='bitstreamFreePort'),
     url(r'^api/v1/dslamport/getDslamBackupByIdAPIView/$', GetDslamBackupByIdAPIView.as_view(), name='getDslamBackupByIdAPIView'),
     url(r'^api/v1/dslamport/updateProfile/$', UpdateProfileAPIView.as_view(), name='updateProfile'),
-    url(r'^api/v1/routerCommands/routerRunCommand/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
     url(r'^api/v1/dslamport/setTimeAllDslams/$', SetTimeAllDslamsAPIView.as_view(), name='setTimeAPIView'),
     url(r'^api/v1/dslamport/getPortDownstream/$', GetPortDownstreamAPIView.as_view(), name='getPortDownstreamAPIView'),
     url(r'^api/v1/dslamport/saveLineStats/$', SaveLineStatsAPIView.as_view(), name='saveLineStats'),
@@ -123,16 +125,26 @@ urlpatterns = [
     url(r'^api/v1/dslam/get_interface_traffic_input/$', GetInterfaceTrafficInput.as_view(), name='get_interface_traffic_input'),
     url(r'^api/v1/dslam/zabbix_get_history/$', ZabbixGetHistory.as_view(), name='zabbix_get_history'),
     url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
+    url(r'^api/v1/quick-search/$', QuickSearchView.as_view(), name='quick-search'),
 
     url(r'^api/v1/dslamport/ranjeNumber-Inquiry/$', RanjeNumberInquiryAPIView.as_view(), name='ranjeNumberInquiry'),
     url(r'^api/v1/dslamport/fetch-shaskam-inquiry/$', FetchShaskamInquiryAPIView.as_view(), name='fetchShaskamInquiry'),
     url(r'^api/v1/dslamport/set-shaskam-inquiry/$', SetShaskamInquiryAPIView.as_view(), name='setShaskamInquiry'),
     url(r'^api/v1/dslam/icmp/command/$', DSLAMRunICMPCommandView.as_view(), name='dslam-run-icmp-command'),
     url(r'^api/v1/dslam/icmp_by_fqdn/command/$', DSLAMRunICMPCommandByFqdnView.as_view(), name='icmp_by_fqdn'),
+    # Routers
+    # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
 
+    # Switches
+    url(r'^api/v1/switch/connect_handler_test/$', ConnectHandlerTest.as_view(), name='connect_handler_test'),
+    url(r'^api/v1/routerCommands/routerRunCommand/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
     url(r'^api/v1/dslam/bulk-command/$', BulkCommand.as_view(), name='bulk-command'),
-    url(r'^api/v1/quick-search/$', QuickSearchView.as_view(), name='quick-search'),
     url(r'^api/v1/', include(portman_router.urls)),
-    url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': True }),
+
+
+
+    url(r'^media/(?P<path>.*)$', django.views.static.serve,
+        {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+
 ]
 
