@@ -64,7 +64,7 @@ portman_router.register(r'reseller-port', ResellerPortViewSet, basename='reselle
 portman_router.register(r'terminal', TerminalViewSet, basename='terminal')
 portman_router.register(r'router', RouterViewSet, basename='router')
 portman_router.register(r'switch', SwitchViewSet, basename='switch')
-portman_router.register(r'portmap', PortMapViewSet, basename='portmap')
+portman_router.register(r'contact/portmap', PortMapViewSet, basename='portmap')
 
 urlpatterns = [
     url(r'^users/get-token', obtain_jwt_token),
