@@ -110,10 +110,10 @@ class SwitchViewSet(mixins.ListModelMixin,
 class ConnectHandlerTest(views.APIView):
     def get(self, request, format=None):
         try:
-         device = ConnectHandler(device_type='quanta_mesh2', ip ='172.19.144.44', username = 'taherabadi', password = 't@h3r68')
-         output = device.send_command("show running-config interface fastEthernet 0/0")
+         device = ConnectHandler(device_type='extreme_vdx', ip ='172.19.177.254', username = 'taherabadi', password = 't@h3r68')
+         output = device.send_command("show version")
          print(output)
-         return JsonResponse({'row': ''})
+         return JsonResponse({'row': output.split("\n")})
 
         except Exception as ex:
          exc_type, exc_obj, exc_tb = sys.exc_info()
