@@ -35,7 +35,7 @@ class Order(models.Model):
     slot_number = models.IntegerField(db_index=True, blank=True, null=True)
     port_number = models.IntegerField(db_index=True, blank=True, null=True)
     telco_row = models.IntegerField(db_index=True, blank=True, null=True)
-    port_Column = models.IntegerField(db_index=True, blank=True, null=True)
+    telco_column = models.IntegerField(db_index=True, blank=True, null=True)
     telco_connection = models.IntegerField(db_index=True, blank=True, null=True)
     fqdn = models.CharField(max_length=256)
     def __str__(self):
