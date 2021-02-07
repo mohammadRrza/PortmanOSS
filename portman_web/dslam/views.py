@@ -7225,5 +7225,33 @@ class GetFiftyFivePercent(views.APIView):
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class CheckPortConflict(views.APIView):
+
+    #def get_permissions(self):
+      #  return (permissions.IsAuthenticated(),)
+
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            fqdn = data.get('fqdn')
+            slot = data.get('slot')
+            port = data.get('port')
+            dslamObj = DSLAM.objects.get(fqdn=fqdn)
+            params = param2()
+            params.type = 'dslamport'
+            params.is_queue = False
+            params.fqdn = dslamObj.fqdn
+            params.command = ''
+            params.port_conditions = port_condition2()
+            params.port_conditions.slot_number = slot
+            params.port_conditions.port_number = port
+            params_json = json.dumps(params, default=lambda x: x.__dict__)
+            result = utility.dslam_port_run_command(dslamObj.pk, params.command, json.loads(params_json))
+            return JsonResponse({'row': json.loads(params_json)})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 

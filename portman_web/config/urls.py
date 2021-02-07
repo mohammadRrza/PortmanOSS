@@ -120,6 +120,7 @@ urlpatterns = [
     url(r'^api/v1/dslamport/check_network_bulk_availability/$', CheckNetworkBulkAvailability.as_view(), name='check_network_bulk_availability'),
     url(r'^api/v1/dslamport/get_hosts_from_zabbix/$', GetHostsFromZabbixAPIView.as_view(), name='get_hosts_from_zabbix'),
     url(r'^api/v1/dslam/get_items_from_zabbix/$', GetItemsFromZabbixAPIView.as_view(), name='get_items_from_zabbix'),
+    url(r'^api/v1/dslam/bulk-command/$', BulkCommand.as_view(), name='bulk-command'),
 
     url(r'^api/v1/dslam/get_dslams_packet_loss_count/$', DslamIcmpSnapshotCount.as_view(), name='get_dslams_packet_loss_count'),
     url(r'^api/v1/dslam/get_interface_traffic_input/$', GetInterfaceTrafficInput.as_view(), name='get_interface_traffic_input'),
@@ -132,13 +133,15 @@ urlpatterns = [
     url(r'^api/v1/dslamport/set-shaskam-inquiry/$', SetShaskamInquiryAPIView.as_view(), name='setShaskamInquiry'),
     url(r'^api/v1/dslam/icmp/command/$', DSLAMRunICMPCommandView.as_view(), name='dslam-run-icmp-command'),
     url(r'^api/v1/dslam/icmp_by_fqdn/command/$', DSLAMRunICMPCommandByFqdnView.as_view(), name='icmp_by_fqdn'),
+    url(r'^api/v1/dslamport/check_port_conflict/$', CheckPortConflict.as_view(),
+        name='check_port_conflict'),
+
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
+    url(r'^api/v1/routerCommands/routerRunCommand/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
 
     # Switches
     url(r'^api/v1/switch/connect_handler_test/$', ConnectHandlerTest.as_view(), name='connect_handler_test'),
-    url(r'^api/v1/routerCommands/routerRunCommand/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
-    url(r'^api/v1/dslam/bulk-command/$', BulkCommand.as_view(), name='bulk-command'),
     url(r'^api/v1/', include(portman_router.urls)),
 
 
