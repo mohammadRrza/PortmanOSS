@@ -8,6 +8,7 @@ from switch.serializers import SwitchSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from switch.models import Switch
+from netmiko import ConnectHandler
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
@@ -106,7 +107,17 @@ class SwitchViewSet(mixins.ListModelMixin,
 
         return queryset
 
+class ConnectHandlerTest(views.APIView):
+    def get(self, request, format=None):
+        try:
+         device = ConnectHandler(device_type='cisco_ios', ip ='172.19.144.44', username = 'taherabadi', password = 't@h3r68')
+         output = device.send_command("show running-config interface fastEthernet 0/0")
+         print(output)
+         return JsonResponse({'row': ''})
 
-
+        except Exception as ex:
+         exc_type, exc_obj, exc_tb = sys.exc_info()
+         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+         return JsonResponse({'row': str(ex)})
 
 

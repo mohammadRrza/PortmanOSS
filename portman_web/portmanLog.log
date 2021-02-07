@@ -178,3 +178,82 @@ Traceback (most recent call last):
     super(RouterSerializer, self).__init__(*args, **kwargs)
 TypeError: super(type, obj): obj must be an instance or subtype of type
 Unauthorized: /api/v1/users/get_permission/
+Bad Request: /api/v1/switch/connect_handler_test/
+Bad Request: /api/v1/switch/connect_handler_test/
+Unauthorized: /api/v1/switch/connect_handler_test/
+Unauthorized: /api/v1/switch/connect_handler_test/
+Unauthorized: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Method Not Allowed: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Method Not Allowed: /api/v1/dslamport/get_hosts_from_zabbix/
+Internal Server Error: /api/v1/dslamport/get_hosts_from_zabbix/
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/requests/models.py", line 379, in prepare_url
+    scheme, auth, host, port, path, query, fragment = parse_url(url)
+  File "/usr/lib/python3/dist-packages/urllib3/util/url.py", line 392, in parse_url
+    return six.raise_from(LocationParseError(source_url), None)
+  File "<string>", line 2, in raise_from
+urllib3.exceptions.LocationParseError: Failed to parse: https://zabbix.pishgaman.net/api_jsonrpc.php
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 7047, in post
+    response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+  File "/usr/lib/python3/dist-packages/requests/api.py", line 116, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/api.py", line 60, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 519, in request
+    prep = self.prepare_request(req)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 452, in prepare_request
+    p.prepare(
+  File "/usr/lib/python3/dist-packages/requests/models.py", line 313, in prepare
+    self.prepare_url(url, params)
+  File "/usr/lib/python3/dist-packages/requests/models.py", line 381, in prepare_url
+    raise InvalidURL(*e.args)
+requests.exceptions.InvalidURL: Failed to parse: https://zabbix.pishgaman.net/api_jsonrpc.php
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 7098, in post
+    return Response({'message': str(ex) + "  " + str(host)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+UnboundLocalError: local variable 'host' referenced before assignment
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/router/router-runCommand/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Not Found: /api/v1/switch/connect_handler_test/
+Method Not Allowed: /api/v1/routerCommands/routerRunCommand/
+Method Not Allowed: /api/v1/switch/connect_handler_test/
