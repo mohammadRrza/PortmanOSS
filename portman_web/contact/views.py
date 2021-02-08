@@ -64,10 +64,10 @@ class PortMapViewSet(mixins.ListModelMixin,
 
 
         if username:
-            queryset = queryset.filter(username=username)
+            queryset = queryset.filter(username__icontains=username)
 
         if ranjePhoneNumber:
-            queryset = queryset.filter(ranjePhoneNumber__istartswith=ranjePhoneNumber)
+            queryset = queryset.filter(ranjePhoneNumber__icontains=ranjePhoneNumber)
 
         if fqdn:
             queryset = queryset.filter(fqdn__icontains=fqdn)
