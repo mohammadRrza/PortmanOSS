@@ -2849,3 +2849,5 @@ Not Found: /api/v1/contact/portmap
 Not Found: /api/v1/contact/portmap/
 Not Found: /api/v1/contact/portmap/
 Not Found: /api/v1/contact/portmap
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/users/get_permission/
