@@ -12,7 +12,7 @@ from django_orm_cursor import DjangoORMCursor
 from portman_runners import PortInfoSyncTask, DSLAMInitTask, DSLAMBulkCommand, \
     DSLAMPortLineProfileChangeTask, DSLAMPortStatusInfoTask, \
     DSLAMPortResetAdminStatusInfoTask, DSLAMPortAdminStatusChangeTask, DSLAMPortCommandTask, \
-    RouterCommandTask
+    RouterCommandTask,SwitchCommandTask
 
 import multiprocessing
 from multiprocessing import Manager
@@ -159,10 +159,10 @@ class PortmanRPC(object):
 
     def switch_run_command(self, switch_id, command, params):
         switch = Switch.objects.get(id=switch_id)
-        task = SwitchommandTask(switch.get_info(), command, params)
+        task = SwitchCommandTask(switch.get_info(), command, params)
         is_queue = params.get('is_queue')
         if (is_queue == False):
-            return self.portman._execute_command(task, is_queue)
+            return self.portman._switch_execute_command(task, is_queue)
 
 class PortmanRPCStarter(threading.Thread):
     def __init__(self, portman_runner):

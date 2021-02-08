@@ -198,6 +198,31 @@ class Portman(object):
                                return "task.command"
 
 
+    def _switch_execute_command(self, task, is_queue=True, save_result=True):
+        router_class = self.__portman_factory.get_type(task.router_data['router_type'])
+        task_result = router_class.execute_command(
+            task.router_data,
+            task.command,
+            task.params
+        )
+        router_id = task.router_data['id']
+        command = task.command
+        if task_result:
+            if not isinstance(task_result, bool):
+                    if is_queue:
+                        if save_result:
+                            return ""
+                    else:
+                        if save_result:
+                                Transaction.update_dslamport_command_result(dslam_id,
+                                                                            task.params['port_indexes'],
+                                                                            command,
+                                                                            task_result,
+                                                                            task.params.get('username'),
+                                                                            )
+                        if task.command == "profile adsl show":
+                               return "task.command"
+
     def _execute_command(self, task, is_queue=True, save_result=True):
 
         dslam_class = self.__portman_factory.get_type(task.dslam_data['dslam_type'])
