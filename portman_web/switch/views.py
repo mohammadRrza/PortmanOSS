@@ -9,6 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from switch.models import Switch
 from netmiko import ConnectHandler
+from switch import utility
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
@@ -110,10 +111,13 @@ class SwitchViewSet(mixins.ListModelMixin,
 class ConnectHandlerTest(views.APIView):
     def get(self, request, format=None):
         try:
-         device = ConnectHandler(device_type='quanta_mesh2', ip ='172.19.144.44', username = 'taherabadi', password = 't@h3r68')
-         output = device.send_command("show running-config interface fastEthernet 0/0")
-         print(output)
-         return JsonResponse({'row': ''})
+         result = utility.switch_run_command(410, 'show dot1x', None)
+         return JsonResponse({'row': result})
+
+         device = ConnectHandler(device_type='extreme_vdx', ip ='172.19.177.254', username = 'taherabadi', password = 't@h3r68')
+         output = device.send_command("show dot1x")
+         print(result)
+         return JsonResponse({'row': output.split("\n")})
 
         except Exception as ex:
          exc_type, exc_obj, exc_tb = sys.exc_info()

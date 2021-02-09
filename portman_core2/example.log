@@ -196,3 +196,36 @@ INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "portman_core.py", line 138, in add_command | AttributeError: 'NoneType' object has no attribute 'values'
+>
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/jsonrpclib/SimpleJSONRPCServer.py", line 388, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 138, in add_command
+    busy_key = '-'.join([str(item) for item in list(params.values())])
+AttributeError: 'NoneType' object has no attribute 'values'
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "portman_core.py", line 162, in switch_run_command | NameError: name 'SwitchommandTask' is not defined
+>
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/jsonrpclib/SimpleJSONRPCServer.py", line 388, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 162, in switch_run_command
+    task = SwitchommandTask(switch.get_info(), command, params)
+NameError: name 'SwitchommandTask' is not defined
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "portman_core.py", line 162, in switch_run_command | NameError: name 'SwitchommandTask' is not defined
+>
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/jsonrpclib/SimpleJSONRPCServer.py", line 388, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 162, in switch_run_command
+    task = SwitchCommandTask(switch.get_info(), command, params)
+NameError: name 'SwitchommandTask' is not defined
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "portman_core.py", line 162, in switch_run_command | NameError: name 'SwitchommandTask' is not defined
+>
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/jsonrpclib/SimpleJSONRPCServer.py", line 388, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 162, in switch_run_command
+    task = SwitchCommandTask(switch.get_info(), command, params)
+NameError: name 'SwitchommandTask' is not defined
