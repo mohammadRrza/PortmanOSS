@@ -35,6 +35,8 @@ ALLOWED_HOSTS = ['172.28.238.114','5.202.129.160','localhost']
 # Application definition
 
 INSTALLED_APPS = (
+    'adminlte3',
+    'adminlte3_theme',
     #'django.contrib.admin',
     'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
