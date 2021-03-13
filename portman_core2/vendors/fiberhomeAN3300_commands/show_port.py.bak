@@ -1,0 +1,66 @@
+import telnetlib
+import time
+from socket import error as socket_error
+from command_base import BaseCommand
+import re
+
+class ShowPort(BaseCommand):
+    def __init__(self, params=None):
+        self.__HOST = None
+        self.__telnet_username = None
+        self.__telnet_password = None
+        self.__vlan_name = params.get('vlan_name')
+        self.__access_name = params.get('access_name','an3300')
+        self.port_conditions = params.get('port_conditions')
+
+    @property
+    def HOST(self):
+        return self.__HOST
+
+    @HOST.setter
+    def HOST(self, value):
+        self.__HOST = value
+
+    @property
+    def telnet_username(self):
+        return self.__telnet_username
+
+    @telnet_username.setter
+    def telnet_username(self, value):
+        self.__telnet_username = value
+
+    @property
+    def telnet_password(self):
+        return self.__telnet_password
+
+    @telnet_password.setter
+    def telnet_password(self, value):
+        self.__telnet_password = value
+
+
+    def run_command(self):
+        try:
+            tn = telnetlib.Telnet(self.__HOST)
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.read_until("Password:")     
+            tn.write('{0}\r\n'.format("admin"))
+            tn.write('{0}\r\n'.format(self.__access_name))
+	    tn.write("cd device\r\n")
+            tn.write("show port {0}:{1}\r\n\r\n".format(self.port_conditions['slot_number'],self.port_conditions['port_number']).encode('utf-8'))
+            time.sleep(0.5)
+            tn.write(("\r\n").encode('utf-8'))
+            tn.write(("end\r\n").encode('utf-8'))
+            result = tn.read_until("end")
+            tn.close()
+            return result
+
+        except (EOFError, socket_error) as e:
+            print e
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()
+
+        except Exception as e:
+            print e
+            return str(e)

@@ -495,3 +495,7 @@ Unauthorized: /api/v1/dslamport/check_port_conflict/
 Internal Server Error: /api/v1/dslamport/check_port_conflict/
 Internal Server Error: /api/v1/dslamport/check_port_conflict/
 Unauthorized: /api/v1/switch/connect_handler_test/
+Not Found: /favicon.ico
+Not Found: /logout/
+Not Found: /
+Not Found: /favicon.ico

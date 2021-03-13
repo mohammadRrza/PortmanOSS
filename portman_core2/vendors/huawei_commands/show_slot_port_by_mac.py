@@ -1,7 +1,7 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
 
@@ -101,7 +101,7 @@ class ShowSlotPortByMac(BaseCommand):
                     case = {item2[1]: item2[3].split('/')[1]}
                     macObj.append(case)
             for item3 in macObj:
-                for mac, card in item3.items():
+                for mac, card in list(item3.items()):
                     if mac == self.__mac:
                         slot = card
                         for x in range(50):

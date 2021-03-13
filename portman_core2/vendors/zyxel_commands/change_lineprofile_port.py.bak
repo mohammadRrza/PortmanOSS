@@ -1,8 +1,8 @@
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
-from create_profile import CreateProfile
+from .create_profile import CreateProfile
 import telnetlib
 import time
 from socket import error as socket_error
@@ -79,33 +79,33 @@ class ChangeLineProfilePort(BaseCommand):
                     raise Exception(error_indication)
                 else:
                     if error_status:
-	              error_desc = "error: {0} send to port {1}!!!. dslam dont have line profile {2}".format(error_status.prettyPrint(),port_item['port_index'], self.__lineprofile)
-		      if 'notWritable' in error_desc: 
-                       	try:
-				tn = telnetlib.Telnet(self.__HOST)
-				tn.write((self.__telnet_username + "\n").encode('utf-8'))
-				tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-				time.sleep(1)
-				tn.read_until("Password:")
-				for port_item in self.__port_indexes:
-					tn.write("port adsl set {0}-{1} {2} auto\r\n\r\n".format(port_item['slot_number'], port_item['port_number'],self.__lineprofile).encode('utf-8'))
-					time.sleep(1)
-				tn.write("end\r\n")
-				tn.write("exit\r\n")
-				tn.write("y\r\n")
-				tn.close()
-				print '******************************************'
-				print "port adsl set {0}-{1}".format(port_item['slot_number'], port_item['port_number'])
-				print '******************************************'
-				return dict(result="ports line profile changed to {0}".format(self.__lineprofile))
-			except (EOFError, socket_error) as e:
-				print e
-				self.retry += 1
-				if self.retry < 4:
-					return self.run_command()
-			except Exception as e:
-				print e
-				self.retry += 1
-				if self.retry < 4:
-					return self.run_command()
+                     error_desc = "error: {0} send to port {1}!!!. dslam dont have line profile {2}".format(error_status.prettyPrint(),port_item['port_index'], self.__lineprofile)
+                     if 'notWritable' in error_desc:
+                       	 try:
+                            tn = telnetlib.Telnet(self.__HOST)
+                            tn.write((self.__telnet_username + "\n").encode('utf-8'))
+                            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+                            time.sleep(1)
+                            tn.read_until("Password:")
+                            for port_item in self.__port_indexes:
+                                tn.write("port adsl set {0}-{1} {2} auto\r\n\r\n".format(port_item['slot_number'], port_item['port_number'],self.__lineprofile).encode('utf-8'))
+                                time.sleep(1)
+                            tn.write("end\r\n")
+                            tn.write("exit\r\n")
+                            tn.write("y\r\n")
+                            tn.close()
+                            print('******************************************')
+                            print("port adsl set {0}-{1}".format(port_item['slot_number'], port_item['port_number']))
+                            print('******************************************')
+                            return dict(result="ports line profile changed to {0}".format(self.__lineprofile))
+                         except (EOFError, socket_error) as e:
+                            print(e)
+                            self.retry += 1
+                            if self.retry < 4:
+                                return self.run_command()
+                         except Exception as e:
+                            print(e)
+                            self.retry += 1
+                            if self.retry < 4:
+                                return self.run_command()
         return {"result": "ports line profile changed to {0}".format(self.__lineprofile), "port_indexes": self.__port_indexes}

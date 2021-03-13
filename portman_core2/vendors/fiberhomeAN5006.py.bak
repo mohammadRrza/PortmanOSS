@@ -9,46 +9,24 @@ import telnetlib
 from easysnmp import Session
 import jsonrpclib
 import re
-from .command_factory import CommandFactory
-'''
-from zyxel_commands.selt import Selt
-from zyxel_commands.show_mac_slot_port import ShowMacSlotPort
-from zyxel_commands.lcman_show import LcmanShow
-from zyxel_commands.profile_adsl_show import ProfileADSLShow
-from zyxel_commands.create_profile import CreateProfile
-from zyxel_commands.delete_profile import DeleteProfile
-from zyxel_commands.lcman_disable_slot import LcmanDisableSlot
-from zyxel_commands.lcman_reset_slot import LcmanResetSlot
-from zyxel_commands.lcman_enable_slot import LcmanEnableSlot
-from zyxel_commands.lcman_show_slot import LcmanShowSlot
-from zyxel_commands.port_disable import PortDisable
-from zyxel_commands.port_enable import PortEnable
-from zyxel_commands.port_pvc_set import PortPvcSet
-from zyxel_commands.port_pvc_delete import PortPvcDelete
-from zyxel_commands.add_to_vlan import AddToVlan
-from zyxel_commands.create_vlan import CreateVlan
-from zyxel_commands.vlan_show import VlanShow
-from zyxel_commands.change_admin_status import ChangeAdminStatus
-from zyxel_commands.reset_admin_status import ResetAdminStatus
-from zyxel_commands.change_lineprofile_port import ChangeLineProfilePort
-from zyxel_commands.switch_mac_flush_all import SwitchMacFlushAll
-from zyxel_commands.get_dslam_board import GetDSLAMBoard
-from zyxel_commands.sys_snmp_setcommunity import SysSnmpSetCommunity
-from zyxel_commands.sys_snmp_getcommunity import SysSnmpGetCommunity
-from zyxel_commands.show_lineinfo import ShowLineInfo
-from zyxel_commands.show_linerate import ShowLineRate
-from zyxel_commands.show_linestat_port import ShowLineStatPort
-from zyxel_commands.show_linestat_slot import ShowLineStatSlot
-from zyxel_commands.show_performance import ShowPerformance
-from zyxel_commands.acl_maccount_set import AclMaccountSet
-'''
-
 from datetime import timedelta
+from .command_factory import CommandFactory
+from fiberhomeAN5006_commands.show_port import ShowPort
+from fiberhomeAN5006_commands.show_mac_by_port import ShowMacSlotPort
+from fiberhomeAN5006_commands.show_profiles import ShowProfiles
+from fiberhomeAN5006_commands.set_port_profiles import SetPortProfiles
+from fiberhomeAN5006_commands.selt_show import ShowSelt
 
 
 class FiberhomeAN5006(BaseDSLAM):
 
     command_factory = CommandFactory()
+    command_factory.register_type('show linerate', ShowPort)
+    command_factory.register_type('profile adsl show', ShowProfiles)
+    command_factory.register_type('setPortProfiles', SetPortProfiles)
+    command_factory.register_type('showSelt', ShowSelt)
+    command_factory.register_type('show mac by slot port', ShowMacSlotPort)
+
     '''
     command_factory.register_type('selt', Selt)
     command_factory.register_type('show mac slot port', ShowMacSlotPort)
@@ -100,15 +78,15 @@ class FiberhomeAN5006(BaseDSLAM):
         "1.3.6.1.2.1.31.1.1.1.6"      : "INCOMING_TRAFFIC"
     }
 
-    PORT_DETAILS_OID_TABLE_INVERSE = {v:k for k, v in PORT_DETAILS_OID_TABLE.items()}
+    PORT_DETAILS_OID_TABLE_INVERSE = {v:k for k, v in list(PORT_DETAILS_OID_TABLE.items())}
 
     PORT_ADMIN_STATUS = {1:"UNLOCK", 2:"LOCK", 3:"TESTING"}
-    PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in PORT_ADMIN_STATUS.items()}
+    PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in list(PORT_ADMIN_STATUS.items())}
 
     PORT_OPER_STATUS = {1:"SYNC", 2:"NO-SYNC", 3:"TESTING",
                         4:"UNKNOWN", 5:"DORMANT", 6:"NOT-PRESENT",
                         7:"LOWER-LAYER-DOWN", 65536:"NO-SYNC-GENERAL"}
-    PORT_OPER_STATUS_INVERSE = {v:k for k, v in PORT_OPER_STATUS.items()}
+    PORT_OPER_STATUS_INVERSE = {v:k for k, v in list(PORT_OPER_STATUS.items())}
 
     PORT_INDEX_TO_PORT_NAME_OID = '1.3.6.1.2.1.2.2.1.2'
     PORT_UPTIME_OID = '1.3.6.1.2.1.2.2.1.9'
@@ -216,7 +194,7 @@ class FiberhomeAN5006(BaseDSLAM):
         snmp_timeout = int(dslam_data.get('snmp_timeout', 5))
         port_event_items = []
         session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port,timeout=5, retries=1, version=2)
-        for oid, item_name in cls.PORT_DETAILS_OID_TABLE.items():
+        for oid, item_name in list(cls.PORT_DETAILS_OID_TABLE.items()):
             try:
                 var_bind = session.get(oid+".{0}".format(port_index))
             except Exception as ex:
@@ -368,7 +346,7 @@ class FiberhomeAN5006(BaseDSLAM):
                         ] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         du = time.time()-start
-        print('======================= Get Port Status Bulk Donw in %s'%du)
+        print(('======================= Get Port Status Bulk Donw in %s'%du))
         return ports_status
 
     @classmethod
@@ -542,11 +520,12 @@ class FiberhomeAN5006(BaseDSLAM):
         params['get_snmp_community'] = dslam_info['get_snmp_community']
         params['snmp_port'] = dslam_info['snmp_port']
         params['snmp_timeout'] = dslam_info['snmp_timeout']
-        c = jsonrpclib.Server('http://127.0.0.1:7090')
-        print('---------------------------')
-        print(dslam_info.get('id'), command, params)
-        print('---------------------------')
-        return c.telnet_run_command(dslam_info.get('id'), command, params)
+        command_class = cls.command_factory.get_type(command)(params)
+        command_class.HOST = dslam_info['ip']
+        command_class.telnet_username = dslam_info['telnet_username']
+        command_class.telnet_password = dslam_info['telnet_password']
+	command_class.port_conditions = params["port_conditions"]
+        return command_class.run_command()
 
     @classmethod
     def execute_bulk_command(cls, dslams_data, commands, result_filepath, success_filepath, error_filepath, slot_ports):
@@ -594,7 +573,7 @@ class FiberhomeAN5006(BaseDSLAM):
                                     template_tag_value.update({'slot_number': slot})
                                     tn.write(template_tag.format(**template_tag_value)+'\r\n\r\n'.encode('utf-8'))
                             except Exception as ex:
-                                print('run_commands (slot section) =>>>', ex)
+                                print(('run_commands (slot section) =>>>', ex))
                 else:
                     for port in slot_port_objs[dslam_id]:
                         for command in commands:
@@ -606,7 +585,7 @@ class FiberhomeAN5006(BaseDSLAM):
                                     tn.write((template_tag.format(**template_tag_value)+'\r\n\r\n').encode('utf-8'))
                                     time.sleep(1)
                             except Exception as ex:
-                                print('run_commands (port section) =>>>', ex)
+                                print(('run_commands (port section) =>>>', ex))
             else:
                 for command in commands:
                     if bool(command.get('params')):
@@ -618,7 +597,7 @@ class FiberhomeAN5006(BaseDSLAM):
                                 tn.write(command)
                                 time.sleep(1)
                         except Exception as ex:
-                            print('run_commands (dslam section) =>>>', ex)
+                            print(('run_commands (dslam section) =>>>', ex))
                     else:
                         tn.write(command.get('text')+'\r\n\r\n'.encode('utf-8'))
                     time.sleep(1)
@@ -634,6 +613,6 @@ class FiberhomeAN5006(BaseDSLAM):
         except Exception as ex:
             print('---------------------')
             print(ex)
-            print(HOST+','+user+','+password)
+            print((HOST+','+user+','+password))
             print('---------------------')
             return None

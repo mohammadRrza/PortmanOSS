@@ -1,56 +1,99 @@
 import telnetlib
 import time
 from socket import error as socket_error
+from command_base import BaseCommand
 import re
-tn = telnetlib.Telnet('192.168.51.138')
-tn.write(("wri\r\n").encode('utf-8'))
-tn.read_until("Password: ")
-tn.write(("an3300\r\n").encode('utf-8'))
-time.sleep(1)
 
-tn.write("admin\r\n")
-tn.write(("an3300\r\n").encode('utf-8'))
-time.sleep(1)
-tn.write("cd device\r\n")
-time.sleep(1)
+class GetDslamBoard(BaseCommand):
+    def __init__(self, params=None):
+        self.__HOST = None
+        self.__telnet_username = None
+        self.__telnet_password = None
+        self.__access_name = params.get('access_name','an2100')
+        self.__vlan_name = params.get('vlan_name')
+        self.__port_name = self.__clear_port_name(params['port_name'])
+        self.__untagged_port = params.get('untagged_port')
 
-tn.write("show slot \r\n")
-for item in range(4):
-    time.sleep(1)
-    tn.write("\r\n")
-tn.write("end\r\n")
-result=tn.read_until("end\r\n")
-cards = {}
-for item in re.findall('\d+\s+\w+\s+\w+\s+(?:\S+)?', result):
-    card_number, card_status, socket_status, card_type = item.split()
-    if card_status == 'up':
-        card_status = 'active'
-    else:
-        card_status = 'deactive'
-    cards[card_number] = dict(status=card_status, card_type=card_type, card_number=card_number)
-'''
-time.sleep(1)
-tn.write("show temperature_alarm_information \r\n")
-tn.write("end\r\n")
-result=tn.read_until("end\r\n")
-temperature = re.search("temperature:(\d+)", result).groups()[0]
-time.sleep(1)
-'''
-tn.write("show version \r\n")
-for item in range(4):
-    time.sleep(1)
-    tn.write("\r\n")
-tn.write("end\r\n")
-result = tn.read_until("end\r\n")
-for card_number, fw_version, hw_version in re.findall('(?P<card_number>\d+)\s+\S+\s+(?P<fw>V\s(?:\d+|\.)*)\s+(?P<hw>V\s(?:\d+|\.)*)', result):
-    cards[card_number]['fw_version'] = fw_version
-    cards[card_number]['hw_version'] = hw_version
+    @property
+    def HOST(self):
+        return self.__HOST
 
-for item in re.findall('(?P<card_number>\d+)\s+\S+\s+(?P<fw>R(?:\d+|\.)*)\s+(?P<hw>(\S)+)', result):
-    card_number, fw_version, hw_version = item[0:3]
-    cards[card_number]['fw_version'] = fw_version
-    cards[card_number]['hw_version'] = hw_version
-for key, value in cards.items():
-    print(key, value)
-tn.write("exit\r\n")
-tn.write("y\r\n")
+    @HOST.setter
+    def HOST(self, value):
+        self.__HOST = value
+
+    @property
+    def telnet_username(self):
+        return self.__telnet_username
+
+    @telnet_username.setter
+    def telnet_username(self, value):
+        self.__telnet_username = value
+
+    @property
+    def telnet_password(self):
+        return self.__telnet_password
+
+    @telnet_password.setter
+    def telnet_password(self, value):
+        self.__telnet_password = value
+
+    def __clear_port_name(self, port_name):
+        pattern = r'\d+(\s)?-(\s)?\d+'
+        st = re.search(pattern, port_name, re.M | re.DOTALL)
+        return st.group()
+
+    def process_telnet_option(self, tsocket, command, option):
+        from telnetlib import IAC, DO, DONT, WILL, WONT, SB, SE, TTYPE, NAWS, LINEMODE, ECHO
+        tsocket.sendall(IAC + WONT + LINEMODE)
+
+    def run_command(self):
+        try:
+            tn = telnetlib.Telnet(self.__HOST, timeout=5)
+            tn.set_option_negotiation_callback(self.process_telnet_option)
+
+            index, match_obj, text = tn.expect(
+                        ['[U|u]sername: ', '[L|l]ogin:', '[L|l]oginname:', '[P|p]assword:'])
+
+            print index, match_obj, text
+            if index == 1:
+                print 'send login ...'
+                tn.write('{0}\r\n'.format(self.__access_name))
+
+            data = tn.read_until('User Name:', 5)
+            print 'here'
+            print '==>', data
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            print 'user sent ...'
+            data = tn.read_until('Password:', 5)
+            print '==>', data
+            tn.write(( self.__telnet_password + "\r\n").encode('utf-8'))
+            print 'password sent ...'
+
+            data = tn.read_until('>', 5)
+            print 'got to prompt ...', data
+            tn.write("ip\r\n".encode('utf-8'))
+            time.sleep(1)
+            data = tn.read_until('>',5)
+            tn.write("addtovlan\r\n".encode('utf-8'))
+            data = tn.read_until('>',5)
+            print "got to prompt 2...", data
+            time.sleep(1)
+            tn.write(self.__vlan_name+"\r\n".encode('utf-8'))
+            time.sleep(1)
+            tn.write("0-"+self.__port_name+"\r\n".encode('utf-8'))
+            time.sleep(1)
+            tn.write(self.__untagged_port+"\r\n".encode('utf-8'))
+            time.sleep(1)
+            tn.write("n\r\n".encode('utf-8'))
+            time.sleep(1)
+            result = tn.read_until('>',5)
+            print '==================================='
+            print result
+            print '==================================='
+            tn.write("exit\r\n\r\n")
+            tn.close()
+            return "{0} deleted to valn {1}".format(self.__port_name, self.__vlan_name)
+        except Exception as e:
+            print e
+            return "error: {0} deleted to valn {1}".format(self.__port_name, self.__vlan_name)

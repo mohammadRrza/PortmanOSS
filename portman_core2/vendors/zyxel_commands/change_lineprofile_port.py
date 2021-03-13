@@ -95,7 +95,7 @@ class ChangeLineProfilePort(BaseCommand):
                             tn.write("y\r\n")
                             tn.close()
                             print('******************************************')
-                            print("port adsl set {0}-{1}".format(port_item['slot_number'], port_item['port_number']))
+                            print(("port adsl set {0}-{1}".format(port_item['slot_number'], port_item['port_number'])))
                             print('******************************************')
                             return dict(result="ports line profile changed to {0}".format(self.__lineprofile))
                          except (EOFError, socket_error) as e:

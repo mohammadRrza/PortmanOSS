@@ -1,10 +1,10 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
 
-class ShowLineRate(BaseCommand):
+class AdslProfileShow(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
@@ -44,21 +44,20 @@ class ShowLineRate(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
             tn.read_until("Password:")
-            for port_item in self.__port_indexes:
-                tn.write("show linerate {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
-                time.sleep(1)
-            tn.read_until("Communications Corp.")
+            tn.write(("adsl profile show\r\n").encode('utf-8'))
+            time.sleep(1)
             tn.write("end\r\n")
-            result = '\n'.join(tn.read_until('end').split('\n')[:-2])
+            result = tn.read_until("end")
+
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
             print('*******************************************')
-            print(("show linerate {0}".format(result)))
+            print("show linerate {0}".format(result))
             print('*******************************************')
             return {"result": result}
         except (EOFError, socket_error) as e:
