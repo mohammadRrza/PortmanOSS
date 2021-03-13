@@ -123,7 +123,7 @@ class VlanViewSet(mixins.ListModelMixin,
         add_audit_log(request, 'Vlan', serializer.data['id'], 'Create Vlan', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    @action(methods=['POST'],detail=False)
+    @action(methods=['POST'], detail=False)
     def assign_to_reseller(self, request):
         user = request.user
         data = request.data
@@ -160,7 +160,7 @@ class VlanViewSet(mixins.ListModelMixin,
         #    'reseller': reseller.id
         #    }, status=status.HTTP_201_CREATED, headers=headers)
 
-    @action(methods=['POST'],detail=False)
+    @action(methods=['POST'], detail=False)
     def assign_to_subscibers(self, request):
         data = request.data
         user = request.user
@@ -402,7 +402,7 @@ class LineProfileViewSet(mixins.ListModelMixin,
     permission_classes = (IsAuthenticated, HasAccessToDslam)
     serializer_class = LineProfileSerializer
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def assign_to_port(self, request):
         user = request.user
         data = request.data
@@ -564,11 +564,12 @@ class DSLAMViewSet(mixins.ListModelMixin,
                        'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
             return DSLAMSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def current(self, request):
         serializer = DSLAMSerializer(request.user, request=request)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    @action(methods=['GET'],detail=False)
+
+    @action(methods=['GET'], detail=False)
     def get_queryset(self):
         queryset = self.queryset
         user = self.request.user
@@ -667,7 +668,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         add_audit_log(request, 'DSLAM', instance.id, 'Delete DSLAM', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def get_dslam_names(self, request):
         data = request.query_params
         exclude_dslam_ids = data.get('exclude_dslam_id')
@@ -684,7 +685,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
                                                                                                           'search_name',
                                                                                                           'name')})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def getvlan(self, request, pk=None):
         user = request.user
         data = self.request.query_params
@@ -698,7 +699,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         return JsonResponse(
             {'vlans': vlans_json})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def vlan_usage_percentage(self, request, pk=None):
         user = request.user
         data = self.request.query_params
@@ -723,7 +724,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         return JsonResponse(
             {'values': []})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def scan(self, request, pk=None):
         dslam_id = self.get_object().id
         scan_type = self.request.query_params.get('type', None)
@@ -735,12 +736,12 @@ class DSLAMViewSet(mixins.ListModelMixin,
             return JsonResponse({'values': 'dslam ready to updating'})
         return JsonResponse({'values': 'error when dslam updating'})
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def count(self, request):
         dslam_count = DSLAM.objects.all().count()
         return Response({'dslam_count': dslam_count})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def dslamreport(self, request, pk=None):
         dslam_obj = self.get_object()
         dslam_info = dslam_obj.get_info()
@@ -771,7 +772,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             'dslam_availability': dslam_obj.get_dslam_availability}
         )
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def dslam_curr_temperature_report(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -792,7 +793,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             lst_line_card_values.append(int(obj_card_temp['CurValue']))
         return JsonResponse({'names': lst_line_cards, 'values': lst_line_card_values})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def dslam_range_temperature_report(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -839,7 +840,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
                         lst_line_card_values.append(int(card_temp['CurValue']))
         return JsonResponse({'names': lst_datetimes, 'values': lst_line_card_values})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def dslam_range_ping_report(self, request):
         user = request.user
         dslam_id = self.request.query_params.get('dslam_id', None)
@@ -904,7 +905,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         return JsonResponse(
             {'names': lst_datetimes, 'values': lst_avgping_values, 'dslamicmp_values': dslamicmp_values}, safe=False)
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def dslam_icmp_info(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -918,7 +919,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             ).get(created_at__gte=date_start, created_at__lt=date_end)
             return Response({'result': serialize('json', [dslam_snapshots, ])})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def dslam_current_icmp_result(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -930,7 +931,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
 
         return Response({'result': serialize('json', [dslamicmp_obj])})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def dslamslot(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -944,7 +945,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             json_data = json.dumps(results)
             return HttpResponse(json_data, content_type="application/json")
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def board(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -1508,7 +1509,7 @@ class CityViewSet(mixins.ListModelMixin,
     serializer_class = CitySerializer
     permission_classes = (IsAuthenticated,)
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def tree_view(self, request):
         q = '''select id,name as text, abbr, english_name ,parent_id from dslam_city order by id desc'''
         cursor = connection.cursor()
@@ -1527,7 +1528,7 @@ class CityViewSet(mixins.ListModelMixin,
         json_data = json.dumps(sorted(result, key=lambda k: k['id']))
         return HttpResponse(json_data, content_type="application/json")
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def table_view(self, request):
         q = '''select a.id,a.name,b.name from dslam_city a left join dslam_city b on a.parent_id = b.id order by a.id desc'''
         cursor = connection.cursor()
@@ -1726,7 +1727,7 @@ class TelecomCenterViewSet(mixins.ListModelMixin,
 
         return queryset
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def get_without_paging(self, request):
         telecom_objs = TelecomCenter.objects.all()
         data = request.query_params
@@ -2003,14 +2004,14 @@ class DSLAMPortViewSet(mixins.ListModelMixin,
 
         return queryset
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def mac_address(self, request, pk=None):
         user = request.user
         port_obj = self.get_object()
         port_macs = DSLAMPortMac.objects.filter(port=port_obj).values_list('mac_address', flat=True)
         return Response({'mac': port_macs})
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def report(self, request, pk=None):
         user = request.user
         port_obj = self.get_object()
@@ -2301,7 +2302,7 @@ class ResellerViewSet(mixins.ListModelMixin,
 
         return reseller_queryset
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def report(self, request, pk=None):
         user = request.user
         reseller_obj = self.get_object()
@@ -2620,7 +2621,7 @@ class CustomerPortViewSet(mixins.ListModelMixin,
         add_audit_log(request, 'Customer', serializer.data['id'], 'Create Customer', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def activeport(self, request):
         user = request.user
         data = request.data
@@ -2854,7 +2855,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
 
         return queryset
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def get_free_identifier(self, request):
         data = request.query_params
         telecom_id = data.get('telecom_id')
@@ -3018,7 +3019,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
 
         return Response({'result': 'Created mdf dslam'}, status=status.HTTP_201_CREATED)
 
-    @action(methods=['GET'],detail=True)
+    @action(methods=['GET'], detail=True)
     def download(self, request):
         def stream():
             buffer_ = StringIO.StringIO()
@@ -4533,10 +4534,10 @@ class PortAssignAPIView(views.APIView):
             customerObj.save()
             add_audit_log(request, '', None, 'Port Assign',
                           'Assign Port to {0} in {1} with {2} Was successful'.format(username, datetime.now(),
-                                                                                      identifier_key))
+                                                                                     identifier_key))
             return JsonResponse({'Result': 'Assign Port to {0} in {1} with {2} was successful'.format(username,
-                                                                                                       datetime.now(),
-                                                                                                       identifier_key)},
+                                                                                                      datetime.now(),
+                                                                                                      identifier_key)},
                                 status=status.HTTP_200_OK)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -4639,7 +4640,7 @@ class SetShaskamInquiryAPIView(views.APIView):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             add_audit_log(request,
                           'Set Shaskam Inquiry for Dsl ServiceId {0} in {1} was Failed,'.format(dsl_service_id,
-                                                                                                 datetime.now()), None,
+                                                                                                datetime.now()), None,
                           'SetShaskamInquiry', str(ex))
             # return JsonResponse({'result': str(ex),'Line': str(exc_tb.tb_lineno)})
             return JsonResponse({'result': str('an error occurred. please try again')})
@@ -5378,7 +5379,7 @@ class GetDslamBackupAPIView(views.APIView):
                     os.mkdir('{0}/{1}-{2}'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip))
                     with open(
                             '{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip,
-                                                              telecom_center, dslam_obj.ip), 'w')  as text_file:
+                                                             telecom_center, dslam_obj.ip), 'w')  as text_file:
                         text_file.write("Error: %s" % str(ex))
 
             return JsonResponse({'result': 'OK'}, status=status.HTTP_201_CREATED)
@@ -5423,7 +5424,7 @@ class SetTimeAllDslamsAPIView(views.APIView):
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                     os.mkdir('{0}/{1}-{2}'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip))
                     with open('{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/timeErrors', telecom_center, dslam_obj.ip,
-                                                                telecom_center, dslam_obj.ip), 'w')  as text_file:
+                                                               telecom_center, dslam_obj.ip), 'w')  as text_file:
                         text_file.write("Error: %s" % str(ex))
 
             return JsonResponse({'result': 'OK'}, status=status.HTTP_201_CREATED)
@@ -5503,53 +5504,125 @@ class FiberHomeCommandAPIView(views.APIView):
         return (permissions.IsAuthenticated(),)
 
     def post(self, request, format=None):
+        device_ip = get_device_ip(request)
+        data = request.data
+        command = data.get('command', None)
+        fqdn = request.data.get('fqdn')
+        dslamObj = DSLAM.objects.get(fqdn=fqdn)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
         try:
-            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-            if x_forwarded_for:
-                ip = x_forwarded_for.split(',')[0]
-            else:
-                ip = request.META.get('REMOTE_ADDR')
+            if command == 'show linerate' or command == 'showPort' or command == 'showport' or command == 'show port':
+                command = 'show linerate'
+            elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles':
+                command = 'profile adsl show'
+            elif (
+                    command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles'):
+                command = 'setPortProfiles'
+            elif command == 'selt show' or command == 'show selt' or command == 'selt' or command == 'showSelt':
+                command = 'showSelt'
 
-            user = request.user
-            data = request.data
-
-            s = []
-            command = data.get('command', None)
-            subscriber = data.get('subscriber')
-            fqdn = request.data.get('fqdn')
-            if ('.z6' in fqdn):
-                fqdn = fqdn.replace('.z6', '.Z6')
-            try:
-                dslamObj = DSLAM.objects.get(fqdn=fqdn)
-                dslam_id = dslamObj.id
-                dslam_ip = dslamObj.ip
-            except ObjectDoesNotExist as ex:
-                try:
-                    if ('.Z6' in fqdn):
-                        fqdn = fqdn.replace('.Z6', '.z6')
-                    dslamObj = DSLAM.objects.get(fqdn=fqdn)
-                    dslam_id = dslamObj.id
-                    dslam_ip = dslamObj.ip
-                except Exception as ex:
-                    exc_type, exc_obj, exc_tb = sys.exc_info()
-                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    mail_info = Mail()
-                    mail_info.from_addr = 'oss-problems@pishgaman.net'
-                    mail_info.to_addr = 'oss-problems@pishgaman.net'
-                    mail_info.msg_body = 'Error in RunCommandAPIViewin/Fiberhome2200 Line {0}.Error Is: {1}. fqdn = {2},card = {3}, port = {4}, command = {5}, subscriber = {6}. IP: {7}'.format(
-                        str(exc_tb.tb_lineno), str(ex), request.data.get('fqdn'),
-                        request.data.get('params').get('port_conditions').get('slot_number'),
-                        request.data.get('params').get('port_conditions').get('port_number'), command, subscriber, ip)
-                    mail_info.msg_subject = 'Error in RunCommandAPIView'
-                    Mail.Send_Mail(mail_info)
-                    return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
-
-            userProfile = ''  # DSLAMPort.objects.get(port_number = request.data.get('params').get('port_conditions').get('port_number'), slot_number = request.data.get('params').get('port_conditions').get('slot_number'), dslam_id = dslam_id).line_profile
-            params = data.get('params', None)
+            elif command == 'open port' or command == 'port enable':
+                command = 'port enable'
+            elif command == 'close port' or command == 'port disable':
+                command = 'port disable'
+            elif (command == 'show mac slot port' or command == 'showmacslotport'):
+                command = 'show mac by slot port'
+            elif (command == 'show port with mac' or command == 'show port mac'):
+                command = 'show port with mac'
+            elif (command == 'Show VLAN' or command == 'VLAN Show '):
+                command = 'Show VLAN'
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
-            return JsonResponse({'Error': result})
+            if (dslam_type == 1):  # zyxel
+                return JsonResponse({'Result': dslam_type})
+            elif (dslam_type == 2):  # huawei
+                return JsonResponse({'Result': dslam_type})
+            elif (dslam_type == 3):  # fiberhomeAN3300
+                if (command == 'show mac by slot port'):
+                    return JsonResponse({'Result': result})
+                elif (command == 'show linerate'):
+                    port_items = {}
+                    for item in result.split("\r\n"):
+                        if ('Port state' in item):
+                            if ('Down' in item):
+                                return JsonResponse({'Result': 'Port is Down.'})
+                        if ('DownStream rate' in item):
+                            port_stream_rate = [int(c) for c in item.split() if c.isdigit()]
+                            port_items['DownStream rate'] = port_stream_rate[0]
+                            port_items['UpStream rate'] = port_stream_rate[1]
+                        if 'DownStream Margin' in item:
+                            port_items['DownStream SNR'] = float(item.split()[3])
+                            port_items['UpStream SNR'] = float(item.split()[7])
 
+                            # return JsonResponse({'port_items':port_items,'Result': result.split("\r\n")})
+
+                    return JsonResponse({'result': port_items})
+                elif (command == 'profile adsl show'):
+                    return JsonResponse({'result': result.split("\r\n")})
+                elif (command == 'setPortProfiles'):
+                    if ('Unknown command' in result):
+                        return JsonResponse({'result': 'Unknown command. Please check the parameters.'})
+                    if ('not exist' in result):
+                        return JsonResponse(
+                            {'result': 'Profile {0} dose not exist.'.format(params.get('new_lineprofile'))})
+                    else:
+                        return JsonResponse(
+                            {'result': 'port profile has been changed to {0} .'.format(params.get('new_lineprofile'))})
+
+                    return JsonResponse({'result': result.split("\r\n")})
+
+                return JsonResponse({'Result': result})
+            elif (dslam_type == 4):  # fiberhomeAN2200
+                if (command == 'show mac by slot port'):
+                    return JsonResponse({'Result': result})
+                elif (command == 'show port with mac'):
+                    return JsonResponse({'Result': result})
+
+            elif (dslam_type == 5):  # fiberhomeAN5006
+                if (command == 'show mac by slot port'):
+                    # return JsonResponse({'Result': result})
+
+                    if ('there is no mac address learned' in result):
+                        return JsonResponse({'Result': 'there is no mac address in accordance with this port.'})
+                    else:
+                        return JsonResponse({'Result': result.split("\r\n")})
+                elif (command == 'show linerate'):
+                    port_list = []
+                    for item in result.split("\r\n"):
+                        if ('SNR margin' in item):
+                            port_list.append(item.replace("\t", "/"))
+                        if ('Actual Line bit rate' in item):
+                            port_list.append(item.replace("\t", "/"))
+                        if ('Attainable bit rate' in item):
+                            port_list.append(item.replace("\t", "/"))
+
+                    return JsonResponse({'response': port_list, 'DslamType': 'fiberhomeAN5006'})
+                elif (command == 'profile adsl show'):
+                    portrofiles_list = []
+                    for item in result.split("\r\n"):
+                        if ('name' in item):
+                            portrofiles_list.append(item.split(":")[1].replace(' ', ''))
+                    return JsonResponse({'response': portrofiles_list, 'DslamType': 'fiberhomeAN5006'})
+                elif (command == 'setPortProfiles'):
+                    if ('not profile named' in result):
+                        return JsonResponse(
+                            {'response': "there's not profile named {0}.".format(params.get('new_lineprofile')),
+                             'DslamType': 'fiberhomeAN5006'})
+                    elif ('Unknown command' in result):
+                        return JsonResponse({'response': "The Command is Unknown.Please Check the parameters.",
+                                             'DslamType': 'fiberhomeAN5006'})
+                    else:
+                        # return JsonResponse({ 'response': "Port profile has been changed to {0}.".format(params.get('new_lineprofile')) ,'DslamType': 'fiberhomeAN5006'})
+                        return JsonResponse({'response': result.split("\r\n"), 'DslamType': 'fiberhomeAN5006'})
+                elif (command == 'showSelt'):
+                    for item in result.split("\r\n"):
+                        if ('Loop length' in item):
+                            return JsonResponse({'Selt': item.split(',')[1].split()[2] + " " + "m"})
+
+                    return JsonResponse({'response': result.split("\r\n")})
+            elif (dslam_type == 7):  # zyxel1248
+                return JsonResponse({'Result': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -5732,13 +5805,14 @@ class RunCommandByIPAPIView(views.APIView):
                             except Exception as ex:
                                 exc_type, exc_obj, exc_tb = sys.exc_info()
                                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                                return JsonResponse({'result': str('an error occurred. please try again.{0}'.format(str(exc_tb.tb_lineno)))})
+                                return JsonResponse({'result': str(
+                                    'an error occurred. please try again.{0}'.format(str(exc_tb.tb_lineno)))})
 
                     # ---------------------------------------------------zyxel---------------------------------------------------
                     description = 'Run Command {0} on DSLAM {1}'.format(
-                    command,
-                    dslam_obj.name,
-                )
+                        command,
+                        dslam_obj.name,
+                    )
             except Exception as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -6833,7 +6907,7 @@ class AddTicketDanaAPIView(views.APIView):
         try:
             url = 'http://ticketing.pishgaman.net/api/v1/Token/GetToken'
             r_data = "{'username':'%s','password':'%s','secret':'%s'}" % (
-            data['username'], data['password'], 'F7409BC306790047040899006710AF2D93E6A317')
+                data['username'], data['password'], 'F7409BC306790047040899006710AF2D93E6A317')
             # return JsonResponse({'response':data})
 
             fhresponse = requests.post(url, data=r_data, headers={"Content-Type": "application/json"})
@@ -6843,10 +6917,10 @@ class AddTicketDanaAPIView(views.APIView):
                 url = "http://ticketing.pishgaman.net/api/v1/Ticket"
                 if (data['username'] == 'SLA'):
                     payload = "{'TemplateAttributeId':'e659e12c-0fac-49d2-b752-06a8d156cfa8','SaveMethod':'69e0b98b-185b-434f-be3b-d5d2f550a0ee','Status':'28cb76a6-d999-4ee3-887c-66792287453d','ApplicantId':'4b8e7077-d7f7-4137-a431-f9c3f14d24db','Title':'%s','DoneDate':null,'RecordColor':null,'LastResponseDate':null,'ITStaffId':null,'ProblemManagementId':null,'AssetId':null,'IsRemoved':null,'ITStaffGroupID':'b994c735-4b44-417c-af79-54d119efeb48','Type':null,'SatifacationRate':null,'InfluenceLevel':null,'GroupId':null,'Urgency':null,'DueDate':null,'Priority':null,'TicketBody':{'TicketBody':{'Body':'%s','IsPublic':true}}}" % (
-                    data['Title'].encode('utf-8'), data['Body'].encode('utf-8'))
+                        data['Title'].encode('utf-8'), data['Body'].encode('utf-8'))
                 elif (data['username'] == 'Complaint'):
                     payload = "{'TemplateAttributeId':'e659e12c-0fac-49d2-b752-06a8d156cfa8','SaveMethod':'69e0b98b-185b-434f-be3b-d5d2f550a0ee','Status':'28cb76a6-d999-4ee3-887c-66792287453d','ApplicantId':'bfc9a9cc-50ce-4d70-b5ee-d1f3b5d3163c','Title':'%s','DoneDate':null,'RecordColor':null,'LastResponseDate':null,'ITStaffId':null,'ProblemManagementId':null,'AssetId':null,'IsRemoved':null,'ITStaffGroupID':'3065480b-067e-436b-815c-93bc37b39f5e','Type':null,'SatifacationRate':null,'InfluenceLevel':null,'GroupId':null,'Urgency':null,'DueDate':null,'Priority':null,'TicketBody':{'TicketBody':{'Body':'%s','IsPublic':true}}}" % (
-                    data['Title'].encode('utf-8'), data['Body'].encode('utf-8'))
+                        data['Title'].encode('utf-8'), data['Body'].encode('utf-8'))
                 else:
                     return JsonResponse({'response': 'User Not Found.'})
 
@@ -6892,7 +6966,7 @@ class GetTicketDetailsDanaAPIView(views.APIView):
             ticket_id = data['ticket_id']
             token_url = 'http://ticketing.pishgaman.net/api/v1/Token/GetToken'
             r_data = "{'username':'%s','password':'%s','secret':'%s'}" % (
-            data['username'], data['password'], data['secret'])
+                data['username'], data['password'], data['secret'])
             r_response = requests.post(token_url, data=r_data, headers={"Content-Type": "application/json"})
             sid = r_response.json()
             if (sid['ResultMessageList'] == []):
@@ -6919,27 +6993,28 @@ def get_ticket_detail_dana(ticket_guid, bearer):
     response_json = response.json()
     return response_json
 
+
 def get_user_info_from_ibs(username):
+    login_url = 'http://172.28.163.22:8280/authenticate/v1/requesttoken'
+    login_data = "{'Username':'oss','Password':'74e#$pRe;F'}"
+    response = requests.post(login_url, data=login_data, headers={"Content-Type": "application/json",
+                                                                  "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d"})
+    response_json = response.json()
+    getuserinfo_url = 'http://172.28.163.22:8280/ibs/v1/getuserinfo'
+    getuserinfo_data = '{"NormalUsername":%s}' % (str(username))
+    # return getuserinfo_data
 
-        login_url = 'http://172.28.163.22:8280/authenticate/v1/requesttoken'
-        login_data = "{'Username':'oss','Password':'74e#$pRe;F'}"
-        response = requests.post(login_url, data=login_data, headers={"Content-Type": "application/json",
-                                                                      "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d"})
-        response_json = response.json()
-        getuserinfo_url = 'http://172.28.163.22:8280/ibs/v1/getuserinfo'
-        getuserinfo_data = '{"NormalUsername":%s}' % (str(username))
-        # return getuserinfo_data
+    userinfo_response = requests.post(getuserinfo_url, data=getuserinfo_data,
+                                      headers={"Content-Type": "application/json",
+                                               "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d",
+                                               "token": '' + response_json['token']})
+    userinfo_response_json = userinfo_response.json()
+    # return userinfo_response_json['error']
+    if (userinfo_response_json['error'] and 'does not exists' in userinfo_response_json['error']):
+        return userinfo_response_json['error']
+    for value in userinfo_response_json['result']:
+        return userinfo_response_json['result'][value]['attrs']['limit_mac']
 
-        userinfo_response = requests.post(getuserinfo_url, data=getuserinfo_data,
-                                          headers={"Content-Type": "application/json",
-                                                   "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d",
-                                                   "token": '' + response_json['token']})
-        userinfo_response_json = userinfo_response.json()
-        # return userinfo_response_json['error']
-        if (userinfo_response_json['error'] and 'does not exists' in userinfo_response_json['error']):
-            return userinfo_response_json['error']
-        for value in userinfo_response_json['result']:
-            return userinfo_response_json['result'][value]['attrs']['limit_mac']
 
 class DSLAMRunICMPCommandByFqdnView(views.APIView):
 
@@ -6954,12 +7029,12 @@ class DSLAMRunICMPCommandByFqdnView(views.APIView):
         fqdn = request.data.get('fqdn')
 
         if ('.z6' in fqdn):
-          try:
-           fqdn = fqdn.replace('.z6', '.Z6')
-           dslamObj = DSLAM.objects.get(fqdn=fqdn)
-           dslam_id = dslamObj.id
+            try:
+                fqdn = fqdn.replace('.z6', '.Z6')
+                dslamObj = DSLAM.objects.get(fqdn=fqdn)
+                dslam_id = dslamObj.id
 
-          except ObjectDoesNotExist as ex:
+            except ObjectDoesNotExist as ex:
                 try:
                     if ('.Z6' in fqdn):
                         fqdn = fqdn.replace('.Z6', '.z6')
@@ -6979,7 +7054,6 @@ class DSLAMRunICMPCommandByFqdnView(views.APIView):
                     mail_info.msg_subject = 'Error in RunCommandAPIView'
                     Mail.Send_Mail(mail_info)
                     return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
-
 
         result = utility.run_icmp_command(dslam_id, icmp_type, params)
 
@@ -7182,7 +7256,7 @@ class ZabbixGetHistory(views.APIView):
             login = response.json()
             token = login['result']
             zabbix_get_history_data = '{"jsonrpc": "2.0","method": "history.get","params": {"output": "extend","itemids": "%s","time_from": %s,"time_till": %s},"id": 1,"auth": "%s"}' % (
-            "60288", int(timestamp_from), int(timestamp_till), token)
+                "60288", int(timestamp_from), int(timestamp_till), token)
             history_response = requests.post(zabbix_url, data=zabbix_get_history_data,
                                              headers={"Content-Type": "application/json"})
             history = history_response.json()
@@ -7227,8 +7301,8 @@ class GetFiftyFivePercent(views.APIView):
 
 class CheckPortConflict(views.APIView):
 
-    #def get_permissions(self):
-      #  return (permissions.IsAuthenticated(),)
+    # def get_permissions(self):
+    #  return (permissions.IsAuthenticated(),)
 
     def post(self, request, format=None):
         try:
@@ -7252,6 +7326,3 @@ class CheckPortConflict(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
