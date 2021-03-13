@@ -4,7 +4,7 @@ from socket import error as socket_error
 from command_base import BaseCommand
 import re
 
-class ShowLineRate(BaseCommand):
+class ShowPort(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
@@ -44,30 +44,29 @@ class ShowLineRate(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
             tn.read_until("Password:")
-            for port_item in self.__port_indexes:
-                tn.write("show linerate {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
-                time.sleep(1)
-            tn.read_until("Communications Corp.")
+            tn.write("statistics adsl linerate {0}\r\n\r\n".format(self.__port_indexes[0]['port_number']).encode('utf-8'))
+            time.sleep(1)
             tn.write("end\r\n")
-            result = '\n'.join(tn.read_until('end').split('\n')[:-2])
+            result = tn.read_until("end")
+
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            print('*******************************************')
-            print("show linerate {0}".format(result))
-            print('*******************************************')
+            print '*******************************************'
+            print "show linerate {0}".format(result)
+            print '*******************************************'
             return {"result": result}
         except (EOFError, socket_error) as e:
-            print(e)
+            print e
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print(e)
+            print e
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

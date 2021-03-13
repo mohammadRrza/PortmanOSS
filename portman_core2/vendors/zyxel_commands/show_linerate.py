@@ -45,7 +45,7 @@ class ShowLineRate(BaseCommand):
     retry = 1
     def run_command(self):
         try:
-            print(self.__telnet_password)
+            print((self.__telnet_password))
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
@@ -72,7 +72,7 @@ class ShowLineRate(BaseCommand):
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(str(exc_tb.tb_lineno))
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
             if self.retry < 3:
