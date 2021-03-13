@@ -6,3 +6,453 @@ Unauthorized: /api/v1/dslam/
 Unauthorized: /api/v1/users/get_permission/
 Unauthorized: /api/v1/users/get_permission/
 Unauthorized: /api/v1/users/get_permission/
+Not Found: /favicon.ico
+Not Found: /
+Not Found: /
+Not Found: /logout/
+Not Found: /logout/
+Not Found: /logout/
+Not Found: /logout/
+Internal Server Error: /admin/logout/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/usr/local/lib/python3.8/dist-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/usr/local/lib/python3.8/dist-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 192, in render
+    return template.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 172, in render
+    return self._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/defaulttags.py", line 39, in render
+    output = self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/library.py", line 192, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/adminlte3_theme/templatetags/admin_menu.py", line 161, in menu_tag
+    return Menu.admin_apps(context, Menu.render(context))
+  File "/usr/local/lib/python3.8/dist-packages/adminlte3_theme/templatetags/admin_menu.py", line 103, in admin_apps
+    for app in context['available_apps']:
+  File "/usr/local/lib/python3.8/dist-packages/django/template/context.py", line 83, in __getitem__
+    raise KeyError(key)
+KeyError: 'available_apps'
+Internal Server Error: /admin/logout/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/usr/local/lib/python3.8/dist-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/usr/local/lib/python3.8/dist-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 192, in render
+    return template.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 172, in render
+    return self._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/defaulttags.py", line 39, in render
+    output = self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/library.py", line 192, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/adminlte3_theme/templatetags/admin_menu.py", line 161, in menu_tag
+    return Menu.admin_apps(context, Menu.render(context))
+  File "/usr/local/lib/python3.8/dist-packages/adminlte3_theme/templatetags/admin_menu.py", line 103, in admin_apps
+    for app in context['available_apps']:
+  File "/usr/local/lib/python3.8/dist-packages/django/template/context.py", line 83, in __getitem__
+    raise KeyError(key)
+KeyError: 'available_apps'
+Internal Server Error: /admin/logout/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/usr/local/lib/python3.8/dist-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/usr/local/lib/python3.8/dist-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 192, in render
+    return template.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 172, in render
+    return self._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/defaulttags.py", line 39, in render
+    output = self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/library.py", line 192, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/adminlte3_theme/templatetags/admin_menu.py", line 161, in menu_tag
+    return Menu.admin_apps(context, Menu.render(context))
+  File "/usr/local/lib/python3.8/dist-packages/adminlte3_theme/templatetags/admin_menu.py", line 103, in admin_apps
+    for app in context['available_apps']:
+  File "/usr/local/lib/python3.8/dist-packages/django/template/context.py", line 83, in __getitem__
+    raise KeyError(key)
+KeyError: 'available_apps'
+Not Found: /
+Not Found: /logout/
+Internal Server Error: /admin/logout/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 202, in _get_response
+    response = response.render()
+  File "/usr/local/lib/python3.8/dist-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/usr/local/lib/python3.8/dist-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 192, in render
+    return template.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 172, in render
+    return self._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/defaulttags.py", line 39, in render
+    output = self.nodelist.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/usr/local/lib/python3.8/dist-packages/django/template/library.py", line 192, in render
+    output = self.func(*resolved_args, **resolved_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/adminlte3_theme/templatetags/admin_menu.py", line 161, in menu_tag
+    return Menu.admin_apps(context, Menu.render(context))
+  File "/usr/local/lib/python3.8/dist-packages/adminlte3_theme/templatetags/admin_menu.py", line 103, in admin_apps
+    for app in context['available_apps']:
+  File "/usr/local/lib/python3.8/dist-packages/django/template/context.py", line 83, in __getitem__
+    raise KeyError(key)
+KeyError: 'available_apps'
+Not Found: /logout/
+Not Found: / logout/
+Unauthorized: /api/v1/contact/portmap/
+Unauthorized: /api/v1/contact/portmap/
+Unauthorized: /api/v1/contact/portmap/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/router/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/users/get_permission/
