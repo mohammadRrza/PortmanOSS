@@ -132,9 +132,6 @@ class PortmanRPC(object):
     def add_command(self, dslam_id, command, params):
         logging.basicConfig(filename='example.log', level=logging.DEBUG)
         logging.info('AddCommand')
-        print('------------------------')
-        print((dslam_id, command, params))
-        print('------------------------')
         busy_key = '-'.join([str(item) for item in list(params.values())])
 
         if self.portman_runner.check_dslam_port_busy(dslam_id, busy_key, command):

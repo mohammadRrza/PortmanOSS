@@ -209,10 +209,11 @@ class Portman(object):
         print("PPPPPPPPPPPPPPPPPPPPPPPPPP")
         switch_class = self.__portman_factory.get_type(task.switch_data['switch_type'])
         task_result = switch_class.execute_command(
-            task.router_data,
+            task.switch_data,
             task.command,
             task.params
         )
+
         switch_id = task.switch_data['id']
         command = task.command
         if task_result:
@@ -222,12 +223,7 @@ class Portman(object):
                         return ""
                 else:
                     if save_result:
-                        Transaction.update_dslamport_command_result(switch_id,
-                                                                    task.params['port_indexes'],
-                                                                    command,
-                                                                    task_result,
-                                                                    task.params.get('username'),
-                                                                    )
+                        return 'sdsdsdssd'
                     if task.command == "profile adsl show":
                         return "task.command"
 

@@ -499,3 +499,4 @@ Not Found: /favicon.ico
 Not Found: /logout/
 Not Found: /
 Not Found: /favicon.ico
+Unauthorized: /api/v1/router/router-runCommand/
