@@ -34,6 +34,12 @@ class Switch(models.Model):
     def __str__(self):
         return self.device_name
 
+    def get_info(self):
+        return dict(
+            id=self.host_id, name=self.device_name, ip=self.device_ip, fqdn=self.device_fqdn,
+            switch_type=self.Switch_type.title
+        )
+
 
 class SwitchCommand(models.Model):
     switch_brand = models.ForeignKey(SwitchBrand, on_delete=models.CASCADE)
@@ -41,5 +47,6 @@ class SwitchCommand(models.Model):
     switch_command_description = models.CharField(max_length=256)
     switch_command_text = models.CharField(max_length=256, verbose_name='name', unique=True)
     show_command = models.BooleanField(default=False, verbose_name='Show command in Switch table')
+
     def __str__(self):
         return self.switch_type

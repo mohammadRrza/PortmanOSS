@@ -11,19 +11,21 @@ from switch.models import Switch
 from netmiko import ConnectHandler
 from switch import utility
 
+
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
     page_size_query_param = 'page_size'
     max_page_size = max
 
+
 class SwitchViewSet(mixins.ListModelMixin,
-                   mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin,
-                   viewsets.GenericViewSet):
+                    mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet):
     queryset = Switch.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     serializer_class = SwitchSerializer
     pagination_class = LargeResultsSetPagination
 
@@ -41,7 +43,7 @@ class SwitchViewSet(mixins.ListModelMixin,
                        'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
             return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def current(self, request):
         serializer = SwitchSerializer(request.user, request=request)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -108,20 +110,26 @@ class SwitchViewSet(mixins.ListModelMixin,
 
         return queryset
 
+
 class ConnectHandlerTest(views.APIView):
     def get(self, request, format=None):
         try:
-         result = utility.switch_run_command(410, 'show dot1x', None)
-         return JsonResponse({'row': result})
+            data = request.data
+            params = data.get('params')
+            command = data.get('command')
+            print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            print(params)
+            print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            result = utility.switch_run_command(410, command, params)
+            return JsonResponse({'row': result})
 
-         device = ConnectHandler(device_type='extreme_vdx', ip ='172.19.177.254', username = 'taherabadi', password = 't@h3r68')
-         output = device.send_command("show dot1x")
-         print(result)
-         return JsonResponse({'row': output.split("\n")})
+            device = ConnectHandler(device_type='extreme_vdx', ip='172.19.177.254', username='taherabadi',
+                                    password='t@h3r68')
+            output = device.send_command("show dot1x")
+            print(result)
+            return JsonResponse({'row': output.split("z\n")})
 
         except Exception as ex:
-         exc_type, exc_obj, exc_tb = sys.exc_info()
-         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-         return JsonResponse({'row': str(ex)})
-
-
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex)})

@@ -4,6 +4,8 @@ from vendors.zyxel1248 import Zyxel1248
 from vendors.fiberhomeAN2200 import FiberhomeAN2200
 from vendors.fiberhomeAN3300 import FiberhomeAN3300
 from vendors.fiberhomeAN5006 import FiberhomeAN5006
+from switch_vendors.cisco_commands.switch_C2960 import C2960
+
 from portman_factory import PortmanFactory
 from django_orm_cursor import Transaction
 from portman_runners import DSLAMPortCommandTask
@@ -26,12 +28,16 @@ class Portman(object):
         self.__fiberhomeAN3300_q = fiberhomeAN3300_q
         self.__queue = queue
         self.__portman_factory = PortmanFactory()
+        # dslams
         self.__portman_factory.register_type('zyxel', Zyxel)
         self.__portman_factory.register_type('zyxel1248', Zyxel1248)
         self.__portman_factory.register_type('huawei', Huawei)
         self.__portman_factory.register_type('fiberhomeAN2200', FiberhomeAN2200)
         self.__portman_factory.register_type('fiberhomeAN3300', FiberhomeAN3300)
         self.__portman_factory.register_type('fiberhomeAN5006', FiberhomeAN5006)
+
+        # switches
+        self.__portman_factory.register_type('C2960', C2960)
 
     def __get_dslam_slot_port(self, slot_port_conditions, dslams_id):
         slot_number_from = slot_port_conditions.get('slot_number_from')
@@ -183,45 +189,43 @@ class Portman(object):
         command = task.command
         if task_result:
             if not isinstance(task_result, bool):
-                    if is_queue:
-                        if save_result:
-                            return ""
-                    else:
-                        if save_result:
-                                Transaction.update_dslamport_command_result(dslam_id,
-                                                                            task.params['port_indexes'],
-                                                                            command,
-                                                                            task_result,
-                                                                            task.params.get('username'),
-                                                                            )
-                        if task.command == "profile adsl show":
-                               return "task.command"
-
+                if is_queue:
+                    if save_result:
+                        return ""
+                else:
+                    if save_result:
+                        Transaction.update_dslamport_command_result(router_id,
+                                                                    task.params['port_indexes'],
+                                                                    command,
+                                                                    task_result,
+                                                                    task.params.get('username'),
+                                                                    )
+                    if task.command == "profile adsl show":
+                        return "task.command"
 
     def _switch_execute_command(self, task, is_queue=True, save_result=True):
-        router_class = self.__portman_factory.get_type(task.router_data['router_type'])
-        task_result = router_class.execute_command(
-            task.router_data,
+        print("PPPPPPPPPPPPPPPPPPPPPPPPPP")
+        print(task.switch_data['switch_type'])
+        print("PPPPPPPPPPPPPPPPPPPPPPPPPP")
+        switch_class = self.__portman_factory.get_type(task.switch_data['switch_type'])
+        task_result = switch_class.execute_command(
+            task.switch_data,
             task.command,
             task.params
         )
-        router_id = task.router_data['id']
+
+        switch_id = task.switch_data['id']
         command = task.command
         if task_result:
             if not isinstance(task_result, bool):
-                    if is_queue:
-                        if save_result:
-                            return ""
-                    else:
-                        if save_result:
-                                Transaction.update_dslamport_command_result(dslam_id,
-                                                                            task.params['port_indexes'],
-                                                                            command,
-                                                                            task_result,
-                                                                            task.params.get('username'),
-                                                                            )
-                        if task.command == "profile adsl show":
-                               return "task.command"
+                if is_queue:
+                    if save_result:
+                        return ""
+                else:
+                    if save_result:
+                        return task_result
+                    if task.command == "profile adsl show":
+                        return "task.command"
 
     def _execute_command(self, task, is_queue=True, save_result=True):
 
