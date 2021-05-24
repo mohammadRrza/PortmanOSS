@@ -861,3 +861,169 @@ django.db.utils.OperationalError: could not connect to server: Connection refuse
 	TCP/IP connections on port 5432?
 
 >>>>>>> a89686efd6205ce22720dd21ff7d87a21206679b
+Unauthorized: /api/v1/users/permission-profile/
+Unauthorized: /api/v1/users/get_permission/
+Not Found: /
+Not Found: /favicon.ico
+Internal Server Error: /admin/switch/switchcommand/add/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1653, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1534, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1584, in _changeform_view
+    self.log_addition(request, new_object, change_message)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 814, in log_addition
+    object_repr=str(object),
+TypeError: __str__ returned non-string (type SwitchType)
+Internal Server Error: /admin/switch/switchcommand/add/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1653, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1534, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1584, in _changeform_view
+    self.log_addition(request, new_object, change_message)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 814, in log_addition
+    object_repr=str(object),
+TypeError: __str__ returned non-string (type SwitchType)
+Internal Server Error: /admin/switch/switchcommand/add/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1653, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1534, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1584, in _changeform_view
+    self.log_addition(request, new_object, change_message)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 814, in log_addition
+    object_repr=str(object),
+TypeError: __str__ returned non-string (type SwitchType)
+Internal Server Error: /admin/switch/switchcommand/add/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1653, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1534, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1584, in _changeform_view
+    self.log_addition(request, new_object, change_message)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 814, in log_addition
+    object_repr=str(object),
+TypeError: __str__ returned non-string (type SwitchType)
+Internal Server Error: /admin/router/routercommand/add/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1653, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1534, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1584, in _changeform_view
+    self.log_addition(request, new_object, change_message)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 814, in log_addition
+    object_repr=str(object),
+TypeError: __str__ returned non-string (type RouterType)
+Internal Server Error: /admin/switch/switchcommand/add/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1653, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1534, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 1584, in _changeform_view
+    self.log_addition(request, new_object, change_message)
+  File "/usr/local/lib/python3.8/dist-packages/django/contrib/admin/options.py", line 814, in log_addition
+    object_repr=str(object),
+TypeError: __str__ returned non-string (type SwitchType)
