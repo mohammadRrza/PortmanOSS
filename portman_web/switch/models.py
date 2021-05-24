@@ -37,7 +37,7 @@ class Switch(models.Model):
     def get_info(self):
         return dict(
             id=self.host_id, name=self.device_name, ip=self.device_ip, fqdn=self.device_fqdn,
-            switch_type=self.Switch_type
+            switch_type=self.Switch_type.title
         )
 
 

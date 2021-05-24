@@ -4,7 +4,7 @@ from vendors.zyxel1248 import Zyxel1248
 from vendors.fiberhomeAN2200 import FiberhomeAN2200
 from vendors.fiberhomeAN3300 import FiberhomeAN3300
 from vendors.fiberhomeAN5006 import FiberhomeAN5006
-from switch_vendors.switch_C2960 import C2960
+from switch_vendors.cisco_commands.switch_C2960 import C2960
 
 from portman_factory import PortmanFactory
 from django_orm_cursor import Transaction
@@ -194,7 +194,7 @@ class Portman(object):
                         return ""
                 else:
                     if save_result:
-                        Transaction.update_dslamport_command_result(dslam_id,
+                        Transaction.update_dslamport_command_result(router_id,
                                                                     task.params['port_indexes'],
                                                                     command,
                                                                     task_result,
