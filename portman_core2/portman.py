@@ -223,7 +223,7 @@ class Portman(object):
                         return ""
                 else:
                     if save_result:
-                        return 'sdsdsdssd'
+                        return task_result
                     if task.command == "profile adsl show":
                         return "task.command"
 

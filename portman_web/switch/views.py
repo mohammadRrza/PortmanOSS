@@ -116,10 +116,11 @@ class ConnectHandlerTest(views.APIView):
         try:
             data = request.data
             params = data.get('params')
+            command = data.get('command')
             print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
             print(params)
             print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-            result = utility.switch_run_command(410, 'show dot1x', params)
+            result = utility.switch_run_command(410, command, params)
             return JsonResponse({'row': result})
 
             device = ConnectHandler(device_type='extreme_vdx', ip='172.19.177.254', username='taherabadi',
