@@ -49,4 +49,4 @@ class SwitchCommand(models.Model):
     show_command = models.BooleanField(default=False, verbose_name='Show command in Switch table')
 
     def __str__(self):
-        return self.switch_type
+        return self.switch_type.title
