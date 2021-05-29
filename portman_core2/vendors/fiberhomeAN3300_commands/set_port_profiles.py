@@ -4,14 +4,13 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
-
 class SetPortProfile(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name', 'an3300')
+        self.__access_name = params.get('access_name','an3300')
         self.port_conditions = params.get('port_conditions')
         self.__lineprofile = params.get('new_lineprofile')
 
@@ -39,18 +38,17 @@ class SetPortProfile(BaseCommand):
     def telnet_password(self, value):
         self.__telnet_password = value
 
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until("Password:")
+            tn.read_until("Password:")     
             tn.write('{0}\r\n'.format("admin"))
             tn.write('{0}\r\n'.format(self.__access_name))
             tn.write("cd profile\r\n")
-            tn.write("set port {0}:{1} attach dsl-profile {2} \r\n\r\n".format(self.port_conditions['slot_number'],
-                                                                               self.port_conditions['port_number'],
-                                                                               self.__lineprofile).encode('utf-8'))
+            tn.write("set port {0}:{1} attach dsl-profile {2} \r\n\r\n".format(self.port_conditions['slot_number'],self.port_conditions['port_number'],self.__lineprofile).encode('utf-8'))
             time.sleep(0.5)
             tn.write(("\r\n").encode('utf-8'))
             tn.write(("end\r\n").encode('utf-8'))

@@ -49,8 +49,8 @@ class ShowPort(BaseCommand):
             tn.write("cd device\r\n")
             tn.write("show port {0}:{1}\r\n\r\n".format(self.port_conditions['slot_number'],self.port_conditions['port_number']).encode('utf-8'))
             time.sleep(0.5)
-            tn.write("\r\n".encode('utf-8'))
-            tn.write("end\r\n".encode('utf-8'))
+            tn.write(("\r\n").encode('utf-8'))
+            tn.write(("end\r\n").encode('utf-8'))
             result = tn.read_until("end")
             tn.close()
             return result

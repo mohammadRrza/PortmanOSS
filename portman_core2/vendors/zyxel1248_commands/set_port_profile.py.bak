@@ -1,8 +1,9 @@
 import telnetlib
 import time
 from socket import error as socket_error
-from command_base import BaseCommand
+from .command_base import BaseCommand
 import re
+
 
 class SetProfile(BaseCommand):
     def __init__(self, params):
@@ -47,6 +48,7 @@ class SetProfile(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
@@ -54,27 +56,28 @@ class SetProfile(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
             tn.read_until("Password:")
-            tn.write("adsl profile map {0} {1} auto\r\n\r\n".format(self.__port_indexes[0]['port_number'],self.__lineprofile).encode('utf-8'))
+            tn.write("adsl profile map {0} {1} auto\r\n\r\n".format(self.__port_indexes[0]['port_number'],
+                                                                    self.__lineprofile).encode('utf-8'))
             tn.write("end\r\n")
             res = tn.read_until("end")
-	    if('does not exist' in res):
-	      result = 'Profile {0} does not exist.'.format(self.__lineprofile)
-	    else:
-	      result = 'Port Profile has been changed to {0}'.format(self.__lineprofile)
+            if ('does not exist' in res):
+                result = 'Profile {0} does not exist.'.format(self.__lineprofile)
+            else:
+                result = 'Port Profile has been changed to {0}'.format(self.__lineprofile)
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            print '*******************************************'
-            print "show linerate {0}".format(result)
-            print '*******************************************'
+            print('*******************************************')
+            print("show linerate {0}".format(result))
+            print('*******************************************')
             return {"result": result}
         except (EOFError, socket_error) as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print e
+            print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()

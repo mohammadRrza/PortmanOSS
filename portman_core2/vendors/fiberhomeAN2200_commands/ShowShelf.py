@@ -53,17 +53,17 @@ class ShowShelf(BaseCommand):
             index, match_obj, text = tn.expect(
                         ['[U|u]sername: ', '[L|l]ogin:', '[L|l]oginname:', '[P|p]assword:'])
 
-            print((index, match_obj, text))
+            print(index, match_obj, text)
             if index == 1:
                 print('send login ...')
                 tn.write('{0}\r\n'.format(self.__access_name))
             data = tn.read_until('User Name:', 5)
             print('here')
-            print(('==>', data))
+            print('==>', data)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             print('user sent ...')
             data = tn.read_until('Password:', 5)
-            print(('==>', data))
+            print('==>', data)
             tn.write(( self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
             tn.read_until('>', 5)

@@ -4,10 +4,10 @@ from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
-from switch.serializers import SwitchSerializer
+from switch.serializers import SwitchSerializer, SwitchCommandSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
-from switch.models import Switch
+from switch.models import Switch, SwitchCommand
 from netmiko import ConnectHandler
 from switch import utility
 
@@ -117,19 +117,43 @@ class ConnectHandlerTest(views.APIView):
             data = request.data
             params = data.get('params')
             command = data.get('command')
-            print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-            print(params)
-            print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
             result = utility.switch_run_command(410, command, params)
             return JsonResponse({'row': result})
 
-            device = ConnectHandler(device_type='extreme_vdx', ip='172.19.177.254', username='taherabadi',
-                                    password='t@h3r68')
-            output = device.send_command("show dot1x")
-            print(result)
-            return JsonResponse({'row': output.split("z\n")})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'row': str(ex)})
+
+
+class SwitchCommandViewSet(mixins.ListModelMixin,
+                           mixins.RetrieveModelMixin,
+                           viewsets.GenericViewSet):
+    serializer_class = SwitchCommandSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = SwitchCommand.objects.all()
+    paginate_by = None
+    paginate_by_param = None
+    paginator = None
+
+    def get_queryset(self):
+        user = self.request.user
+        SwitchCommands = self.queryset
+
+        switch_id = self.request.query_params.get('switch_id', None)
+        limit_row = self.request.query_params.get('limit_row', None)
+        switch_command_description = self.request.query_params.get('command_type', None)
+        switch_command_text = self.request.query_params.get('command_type', None)
+        try:
+            return SwitchCommands
+
+            if switch_type_id:
+                SwitchCommands = SwitchCommands.objects.get(switch_type_id=switch_type_id)
+            if limit_row:
+                SwitchCommands = SwitchCommands.filter(id=switch_id)[:int(limit_row)]
+            else:
+                SwitchCommands = SwitchCommands.filter(id=switch_id)
+            return SwitchCommands
+        except:
+            return []

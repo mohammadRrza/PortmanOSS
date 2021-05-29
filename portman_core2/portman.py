@@ -205,7 +205,7 @@ class Portman(object):
 
     def _switch_execute_command(self, task, is_queue=True, save_result=True):
         print("PPPPPPPPPPPPPPPPPPPPPPPPPP")
-        print(task.switch_data['switch_type'])
+        print((task.switch_data['switch_type']))
         print("PPPPPPPPPPPPPPPPPPPPPPPPPP")
         switch_class = self.__portman_factory.get_type(task.switch_data['switch_type'])
         task_result = switch_class.execute_command(

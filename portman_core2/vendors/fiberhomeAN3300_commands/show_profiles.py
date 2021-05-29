@@ -4,14 +4,13 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
-
 class ShowProfiles(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name', 'an3300')
+        self.__access_name = params.get('access_name','an3300')
         self.port_conditions = params.get('port_conditions')
 
     @property
@@ -38,6 +37,7 @@ class ShowProfiles(BaseCommand):
     def telnet_password(self, value):
         self.__telnet_password = value
 
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
@@ -46,11 +46,11 @@ class ShowProfiles(BaseCommand):
             tn.write('{0}\r\n'.format("admin"))
             tn.write('{0}\r\n'.format(self.__access_name))
             tn.write("cd profile\r\n")
-            tn.write("show all dsl-profile-name" + "\r\n")
+            tn.write("show all dsl-profile-name"+"\r\n")
             result1 = tn.read_until("--Press any key to continue Ctrl+c to stop--")
             tn.write("\r\n")
             result2 = tn.read_until("number")
-            result = result1 + result2
+            result = result1+result2
             tn.close()
             return result
 

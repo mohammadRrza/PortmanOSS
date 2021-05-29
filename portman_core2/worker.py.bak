@@ -80,7 +80,7 @@ class Worker(multiprocessing.Process):
                 #self._portman._change_adminstatus(task)
 
             elif isinstance(task, DSLAMPortCommandTask):
-                busy_key = '-'.join([str(item) for item in task.params.values()])
+                busy_key = '-'.join([str(item) for item in list(task.params.values())])
                 if not self.__check_dslam_port_busy(task.dslam_data['id'], busy_key, task.command):
                     self.__add_dslam_port_busy(task.dslam_data['id'], busy_key, task.command)
                     thread = Thread(target=self._portman._execute_command, args=(task,))

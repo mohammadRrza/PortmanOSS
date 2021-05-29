@@ -41,5 +41,5 @@ for item in re.findall('\d+\s+\d+\s+\d+\.\d+\s+\d+\.\d+\s+\d+\s+\d+', data):
     cards[card_number]['fw_version'] = fw_version
     cards[card_number]['hw_version'] = hw_version
 
-for key, values in list(cards.items()):
-    print((key, values))
+for key, values in cards.items():
+    print(key, values)

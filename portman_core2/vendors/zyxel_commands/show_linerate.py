@@ -56,14 +56,14 @@ class ShowLineRate(BaseCommand):
                 time.sleep(1)
             tn.read_until(b'Communications Corp.')
             tn.write(b'end\r\n')
-            result = tn.read_until(b'end').split(b'\n')[:-2]
+            result = tn.read_until(b'end')
             tn.write(b'exit\r\n')
             tn.write(b'y\r\n')
             tn.close()
             print('*******************************************')
             print(('show linerate {0}'.format(str(result))))
             print('*******************************************')
-            return {"result": str(result).replace("b'", "").split("\\r")}
+            return {"result": str(result)}
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

@@ -77,4 +77,4 @@ class PortStatusMonitoring(object):
                     self.last_outgoing_traffic = int(port_status['OUTGOING_TRAFFIC'])
                 if not dslam_data['dslam_type'] in ('fiberhomeAN2200', 'fiberhomeAN3300'):
                     time.sleep(3)
-        print('shutdown socket_id: ', socket_id)
+        print(('shutdown socket_id: ', socket_id))
