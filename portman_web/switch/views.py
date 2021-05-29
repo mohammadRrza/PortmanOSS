@@ -118,6 +118,9 @@ class SwitchRunCommandAPIView(views.APIView):
             params = data.get('params')
             command = data.get('command')
             result = utility.switch_run_command(410, command, params)
+            if command == 'show dot1x':
+                response = result.split("\n")
+                return JsonResponse({'response': response})
             return JsonResponse({'row': result})
 
 
