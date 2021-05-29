@@ -111,8 +111,8 @@ class SwitchViewSet(mixins.ListModelMixin,
         return queryset
 
 
-class ConnectHandlerTest(views.APIView):
-    def get(self, request, format=None):
+class SwitchRunCommandAPIView(views.APIView):
+    def post(self, request, format=None):
         try:
             data = request.data
             params = data.get('params')

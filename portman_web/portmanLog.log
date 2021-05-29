@@ -1018,3 +1018,5 @@ TypeError: 'SwitchCommand' object is not iterable
 Bad Request: /
 Bad Request: /favicon.ico
 Bad Request: /admin/
+Unauthorized: /api/v1/switch/swich_run_command/
+Method Not Allowed: /api/v1/switch/switch_run_command/
