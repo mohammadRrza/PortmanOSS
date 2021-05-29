@@ -7,13 +7,14 @@ from .fiberhomeAN3300_commands.show_port import ShowPort
 from .fiberhomeAN3300_commands.show_mac_with_port import ShowMacWithPort
 from .fiberhomeAN3300_commands.show_profiles import ShowProfiles
 from .fiberhomeAN3300_commands.set_port_profiles import SetPortProfile
-
+from .fiberhomeAN3300_commands.add_to_vlan import AddToVlan
 
 class FiberhomeAN3300(BaseDSLAM):
     command_factory = CommandFactory()
     command_factory.register_type('profile adsl show', ShowProfiles)
     command_factory.register_type('show mac by slot port', ShowMacWithPort)
     command_factory.register_type('setPortProfiles', SetPortProfile)
+    command_factory.register_type('add to vlan', AddToVlan)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))

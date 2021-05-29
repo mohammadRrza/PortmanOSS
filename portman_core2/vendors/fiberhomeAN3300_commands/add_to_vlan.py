@@ -4,7 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
-class ShowPort(BaseCommand):
+class AddToVlan(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
@@ -46,8 +46,8 @@ class ShowPort(BaseCommand):
             tn.read_until("Password:")     
             tn.write('{0}\r\n'.format("admin"))
             tn.write('{0}\r\n'.format(self.__access_name))
-            tn.write("cd device\r\n")
-            tn.write("show port {0}:{1}\r\n\r\n".format(self.port_conditions['slot_number'],self.port_conditions['port_number']).encode('utf-8'))
+            tn.write("cd vlan\r\n")
+            tn.write("show service vlan slot {0}\r\n\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(("\r\n").encode('utf-8'))
             tn.write(("end\r\n").encode('utf-8'))

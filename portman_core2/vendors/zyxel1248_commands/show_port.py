@@ -57,7 +57,7 @@ class ShowPort(BaseCommand):
             tn.write("y\r\n")
             tn.close()
             print('*******************************************')
-            print("show linerate {0}".format(result))
+            print(("show linerate {0}".format(result)))
             print('*******************************************')
             return {"result": result}
         except (EOFError, socket_error) as e:

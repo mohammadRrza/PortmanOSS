@@ -1,17 +1,16 @@
 import telnetlib
-import re
 import time
+from socket import error as socket_error
 from command_base import BaseCommand
+import re
 
-class CreateVlan(BaseCommand):
-    def __init__(self, params=None):
+class ShowPort(BaseCommand):
+    def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.__access_name = params.get('access_name','an2100')
-        self.__vlan_name = params.get('vlan_name')
-        self.__vlan_id = params.get('vlan_id')
-        self.__untagged_port = params.get('untagged_port')
+        self.__port_indexes = params.get('port_indexes')
 
     @property
     def HOST(self):
@@ -58,7 +57,6 @@ class CreateVlan(BaseCommand):
             if index == 1:
                 print 'send login ...'
                 tn.write('{0}\r\n'.format(self.__access_name))
-
             data = tn.read_until('User Name:', 5)
             print 'here'
             print '==>', data
@@ -68,35 +66,20 @@ class CreateVlan(BaseCommand):
             print '==>', data
             tn.write(( self.__telnet_password + "\r\n").encode('utf-8'))
             print 'password sent ...'
+            tn.read_until('>', 5)
+            tn.write("sc\r\n".encode('utf-8'))
+            res = tn.read_until('>')
 
-            data = tn.read_until('>', 5)
-            print 'got to prompt ...', data
-            tn.write("ip\r\n".encode('utf-8'))
             time.sleep(1)
-            data = tn.read_until('>',5)
-            tn.write("createvlan\r\n".encode('utf-8'))
-            data = tn.read_until('>',5)
-            print "got to prompt 2...", data
-            time.sleep(1)
-            tn.write(self.__vlan_name+"\r\n".encode('utf-8'))
-            time.sleep(1)
-            tn.write(self.__vlan_id+"\r\n".encode('utf-8'))
-            time.sleep(1)
-            tn.write("\r\n".encode('utf-8'))
-            time.sleep(1)
-            tn.write(self.__untagged_port+"\r\n".encode('utf-8'))
-            time.sleep(1)
-            tn.write("n\r\n".encode('utf-8'))
-            time.sleep(1)
-            tn.write("n\r\n".encode('utf-8'))
-            time.sleep(1)
-            result = tn.read_until('>',5)
-            print '==================================='
-            print result
-            print '==================================='
-            tn.write("exit\r\n\r\n")
-            tn.close()
-            return "{0} created valn".format(self.__vlan_name)
-        except Exception as ex:
-            print ex
-            return "error: {0} created valn".format(self.__vlan_name)
+
+            return dict(res=res.split('\n\r') , port_indexes=self.__port_indexes)
+        except (EOFError, socket_error) as e:
+            print e
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()
+        except Exception as e:
+            print e
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()

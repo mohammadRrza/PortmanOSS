@@ -28,16 +28,16 @@ SECRET_KEY = 'qepv7vyyu4-&un2-9opv6n&dwwi9p2nn14kh_dggzjyfu%on#n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.28.238.114','5.202.129.160','localhost']
-#ALLOWED_HOSTS = ['*']
 
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['172.28.238.114', '5.202.129.160', 'localhost', '127.0.0.1']
 
 # Application definition
 
 INSTALLED_APPS = (
     'adminlte3',
     'adminlte3_theme',
-    #'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',

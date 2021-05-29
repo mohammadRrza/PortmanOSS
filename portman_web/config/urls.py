@@ -64,6 +64,7 @@ portman_router.register(r'reseller-port', ResellerPortViewSet, basename='reselle
 portman_router.register(r'terminal', TerminalViewSet, basename='terminal')
 portman_router.register(r'router', RouterViewSet, basename='router')
 portman_router.register(r'switch', SwitchViewSet, basename='switch')
+portman_router.register(r'switch-command', SwitchCommandViewSet, basename='switch_command')
 portman_router.register(r'contact/portmap', PortMapViewSet, basename='portmap')
 
 urlpatterns = [
@@ -142,6 +143,7 @@ urlpatterns = [
 
     # Switches
     url(r'^api/v1/switch/connect_handler_test/$', ConnectHandlerTest.as_view(), name='connect_handler_test'),
+
     url(r'^api/v1/', include(portman_router.urls)),
 
 
