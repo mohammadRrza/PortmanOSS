@@ -168,8 +168,8 @@ class PortmanRPC(object):
         print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
         print(params)
         print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        is_queue = params.get('is_queue')
-        if (is_queue == False):
+        is_queue = False
+        if is_queue == False:
             return self.portman._switch_execute_command(task, is_queue)
 
 class PortmanRPCStarter(threading.Thread):
