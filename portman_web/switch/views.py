@@ -10,7 +10,7 @@ from rest_framework.decorators import action
 from switch.models import Switch, SwitchCommand
 from netmiko import ConnectHandler
 from switch import utility
-
+import json
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
@@ -119,7 +119,7 @@ class SwitchRunCommandAPIView(views.APIView):
             command = data.get('command')
             result = utility.switch_run_command(410, command, params)
             if command == 'show dot1x':
-                return JsonResponse({'response': result})
+                return JsonResponse({'response': json.load(result)})
             return JsonResponse({'row': result})
 
 
