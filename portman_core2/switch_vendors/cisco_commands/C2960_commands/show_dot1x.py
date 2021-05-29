@@ -16,7 +16,7 @@ class ShowDot1x(BaseCommand):
                                     username='taherabadi',
                                     password='t@h3r68')
             output = device.send_command("show dot1x")
-            return output.split("\n")
+            return output
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
