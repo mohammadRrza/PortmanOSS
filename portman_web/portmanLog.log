@@ -1551,3 +1551,16 @@ Bad Request: /
 Bad Request: /favicon.ico
 Bad Request: /admin/
 >>>>>>> a15ecce87b3a74290f343bb52124c52716926486
+Bad Request: /api/v1/switch/
+Internal Server Error: /api/v1/switch/switch_run_command
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/deprecation.py", line 113, in __call__
+    response = self.process_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/middleware/common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 172.28.238.114:2080/api/v1/switch/switch_run_command/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+Method Not Allowed: /api/v1/switch/switch_run_command/
