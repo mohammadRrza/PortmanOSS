@@ -142,7 +142,7 @@ urlpatterns = [
     url(r'^api/v1/routerCommands/routerRunCommand/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
 
     # Switches
-    url(r'^api/v1/switch/connect_handler_test/$', ConnectHandlerTest.as_view(), name='connect_handler_test'),
+    url(r'^api/v1/switch/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 
