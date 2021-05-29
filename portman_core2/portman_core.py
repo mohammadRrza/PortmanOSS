@@ -10,7 +10,7 @@ from portman_factory import PortmanFactory
 from django_orm_cursor import Transaction
 from portman_runners import DSLAMPortCommandTask
 from datetime import datetime
-from dj_bridge import DSLAM, DSLAMPort, DSLAMType, DSLAMTypeCommand
+from dj_bridge import DSLAM, DSLAMPort, DSLAMType, DSLAMTypeCommand, Switch, Router
 import time
 import os
 import sys
