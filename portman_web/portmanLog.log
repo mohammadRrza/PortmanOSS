@@ -1022,3 +1022,4 @@ Unauthorized: /api/v1/switch/swich_run_command/
 Method Not Allowed: /api/v1/switch/switch_run_command/
 Not Found: /favicon.ico
 Unauthorized: /api/v1/switch/switch_run_command/
+Unauthorized: /api/v1/switch/switch_run_command/
