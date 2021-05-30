@@ -121,7 +121,9 @@ class SwitchRunCommandAPIView(views.APIView):
             result = utility.switch_run_command(switch_id, command, params)
             if command == 'show dot1x':
                 return JsonResponse({'response': result})
-            return JsonResponse({'row': result})
+            if command == 'show ip dhcp snooping':
+                return JsonResponse({'response': result})
+            return JsonResponse({'response': result})
 
 
         except Exception as ex:
