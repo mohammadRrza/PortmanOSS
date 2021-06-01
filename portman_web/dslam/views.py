@@ -7340,7 +7340,7 @@ class LoadDslamPorts(views.APIView):
             del_query = 'DELETE from "portInfo"'
             cursor = connection.cursor()
             cursor.execute(del_query)
-            query = 'INSERT INTO "public"."portInfo"("Card", "Port", "dslam_id") select card.c, port.p,{0} from (select generate_series(1, 17) as c) card cross join (select generate_series({1}, {2}) as p) port'.format(dslam_id, slot_count, port_count)
+            query = 'INSERT INTO "public"."portInfo"("Card", "Port", "dslam_id") select card.c, port.p,{0} from (select generate_series(1, {1}) as c) card cross join (select generate_series(1, {2}) as p) port'.format(dslam_id, slot_count, port_count)
             cursor = connection.cursor()
             cursor.execute(query)
             fd = open('dslam/insert_dslam_port.sql', 'r')
