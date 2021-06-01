@@ -296,3 +296,6 @@ Internal Server Error: /api/v1/dslam/load_dslam_ports/
 Internal Server Error: /api/v1/dslam/load_dslam_ports/
 Internal Server Error: /api/v1/dslam/load_dslam_ports/
 >>>>>>> 5240996fddeea8dbf26fd7df27f725afe16d16d1
+Unauthorized: /api/v1/dslam/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/users/get_permission/
