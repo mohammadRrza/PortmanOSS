@@ -7326,3 +7326,35 @@ class CheckPortConflict(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class LoadDslamPorts(views.APIView):
+
+    def get(self, request, format=None):
+        try:
+            data = request.data
+            print(request)
+            dslam_id = request.query_params['dslam_id']
+            slot_count = request.query_params['slot_count']
+            port_count = request.query_params['port_count']
+            del_query = 'DELETE from "portInfo"'
+            cursor = connection.cursor()
+            cursor.execute(del_query)
+            query = 'INSERT INTO "public"."portInfo"("Card", "Port", "dslam_id") select card.c, port.p,{0} from (select generate_series(1, 17) as c) card cross join (select generate_series({1}, {2}) as p) port'.format(dslam_id, slot_count, port_count)
+            cursor = connection.cursor()
+            cursor.execute(query)
+            fd = open('dslam/insert_dslam_port.sql', 'r')
+            sqlFile = fd.read()
+            print(sqlFile)
+            fd.close()
+            insert_query = sqlFile;
+            cursor = connection.cursor()
+            cursor.execute(insert_query)
+            return JsonResponse({'row': port_count})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
