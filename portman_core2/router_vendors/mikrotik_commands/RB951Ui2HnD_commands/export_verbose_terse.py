@@ -1,4 +1,4 @@
-from netmiko import ConnectHandler
+import paramiko
 import sys, os
 from .command_base import BaseCommand
 import re
@@ -10,18 +10,17 @@ class ExportVerboseTerse(BaseCommand):
 
     def run_command(self):
         try:
-            device = {
-                'device_type': 'mikrotik_routeros',
-                'host': '172.28.32.134',
-                'username': 'admin',
-                'password': '4dFjjrSKqx2WsXfu',
-                'port': 22
-            }
-            connection = ConnectHandler(**device)
-            output = connection.send_command('export verbose terse')
-            return output
+            client = paramiko.SSHClient()
+            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            client.connect("172.28.32.134", username="admin", password="4dFjjrSKqx2WsXfu",allow_agent=False, look_for_keys=False)
+            stdin, stdout, stderr = client.exec_command('export verbose terse')
+            f = open("/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/Backups/172.28.32.134.txt", "w")
+            for line in stdout:
+                f.write(line.strip('\n'))
+                print(line.strip('\n'))
+            f.close()
+            client.close()
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return str(ex) + "  // " + str(exc_tb.tb_lineno)
