@@ -36,7 +36,8 @@ class Router(models.Model):
 
     def get_info(self):
         return dict(
-            id=self.id, name=self.device_name, ip=self.device_ip, fqdn=self.device_fqdn
+            id=self.id, name=self.device_name, ip=self.device_ip, fqdn=self.device_fqdn,
+            router_type=self.router_type.title
         )
 
 

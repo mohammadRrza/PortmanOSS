@@ -155,5 +155,5 @@ class RouterRunCommandAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return JsonResponse({'row': str(ex)})
+            return JsonResponse({'Error': str(ex), 'Line': str(exc_tb.tb_lineno)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
