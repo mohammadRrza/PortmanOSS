@@ -1039,3 +1039,9 @@ RuntimeError: You called this URL via POST, but the URL doesn't end in a slash a
 Internal Server Error: /api/v1/dslam/load_dslam_ports/
 Internal Server Error: /api/v1/dslam/load_dslam_ports/
 Internal Server Error: /api/v1/dslam/load_dslam_ports/
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Method Not Allowed: /api/v1/router/router-runCommand/
+Method Not Allowed: /api/v1/router/router-runCommand/
+Not Found: /api/v1/router/router-runCommand/
+Method Not Allowed: /api/v1/router/router-runCommand/

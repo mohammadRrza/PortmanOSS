@@ -150,5 +150,5 @@ if __name__ == '__main__':
       elif opt in ("-t", "--timeout"):
          ping_timeout = arg
     num_workers = int(ceil(multiprocessing.cpu_count()*2))
-    print('Creating {0} workers'.format(num_workers))
+    print(('Creating {0} workers'.format(num_workers)))
     Portman_Runner(num_workers, ping_timeout, ping_count)
