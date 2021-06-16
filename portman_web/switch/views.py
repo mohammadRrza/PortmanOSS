@@ -1,6 +1,4 @@
 import sys, os
-from datetime import time
-from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
@@ -8,9 +6,8 @@ from switch.serializers import SwitchSerializer, SwitchCommandSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from switch.models import Switch, SwitchCommand
-from netmiko import ConnectHandler
 from switch import utility
-
+import urllib.request
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
@@ -175,11 +172,10 @@ class GetBackupFilesNameAPIView(views.APIView):
             directory = '/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/Backups/'
             for filename in os.listdir(directory):
                 if filename.__contains__(fqdn):
-                    filenames.append(directory+filename)
+                    filenames.append(filename)
                 else:
                     continue
             return JsonResponse({'response': filenames})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
