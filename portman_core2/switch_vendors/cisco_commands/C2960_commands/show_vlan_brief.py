@@ -8,11 +8,13 @@ from .command_base import BaseCommand
 
 
 class ShowVlanBrief(BaseCommand):
-    def __init__(self, params):
-        self.__IP = '172.28.32.135'
+    def __init__(self, params=None):
+
+        self.__IP = params.get('switch_ip')
         self.__SSH_username = 'developer'
         self.__SSH_password = 'developer'
         self.__Command = 'show vlan brief'
+        self.__FQDN = params.get('switch_fqdn')
 
     def run_command(self):
         try:
@@ -22,7 +24,7 @@ class ShowVlanBrief(BaseCommand):
                            look_for_keys=False)
             stdin, stdout, stderr = client.exec_command(self.__Command)
             f = open("/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/vlan_brief_Backups/{0}_{1}.txt".format(
-                self.__IP, str(datetime.datetime)), "w")
+                self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
             for line in stdout:
                 f.write(line.strip('\n'))
             f.close()
