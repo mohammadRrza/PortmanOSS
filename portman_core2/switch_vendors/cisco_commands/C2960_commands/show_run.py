@@ -13,7 +13,7 @@ class ShowRun(BaseCommand):
         try:
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            client.connect("172.28.32.135", username="admin", password="4dFjjrSKqx2WsXfu", allow_agent=False, look_for_keys=False)
+            client.connect("172.28.32.135", username="developer", password="developer", allow_agent=False, look_for_keys=False)
             stdin, stdout, stderr = client.exec_command('show run')
             f = open("/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/Backups/172.28.32.135.txt", "w")
             for line in stdout:
