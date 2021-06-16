@@ -28,7 +28,7 @@ class ShowRun(BaseCommand):
                 f.write(line.strip('\n'))
             f.close()
             client.close()
-            return "Ok"
+            return "Backup File named Backups/{0}_{1}.txt has been created.".format(self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
