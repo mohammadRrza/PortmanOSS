@@ -1078,3 +1078,5 @@ Internal Server Error: /api/v1/router/routerRunCommand/
 Internal Server Error: /api/v1/router/routerRunCommand/
 Internal Server Error: /api/v1/router/routerRunCommand/
 Internal Server Error: /api/v1/router/routerRunCommand/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/switch/switch_run_command/
