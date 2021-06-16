@@ -158,8 +158,8 @@ class PortmanRPC(object):
     def router_run_command(self, router_id, command, params):
         router = Router.objects.get(id=router_id)
         task = RouterCommandTask(router.get_info(), command, params)
-        is_queue = params.get('is_queue')
-        if (is_queue == False):
+        is_queue = False
+        if is_queue == False:
             return self.portman._router_execute_command(task, is_queue)
 
     def switch_run_command(self, switch_id, command, params):

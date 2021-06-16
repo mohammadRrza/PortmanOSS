@@ -8,13 +8,13 @@ from worker import Worker
 import time
 import threading
 import sys, getopt
-import SocketServer
+import socketserver
 from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer, SimpleJSONRPCRequestHandler
-import Queue
+import queue
 from icmp import ICMP
 
 # Threaded mix-in
-class AsyncJSONRPCServer(SocketServer.ThreadingMixIn,SimpleJSONRPCServer): pass
+class AsyncJSONRPCServer(socketserver.ThreadingMixIn,SimpleJSONRPCServer): pass
 
 class PortmanRPC(object):
     icmp_objs = {}
@@ -27,7 +27,7 @@ class PortmanRPC(object):
         try:
             dslam_obj = DSLAM.objects.get(id=dslam_id)
         except Exception as ex :
-            print ex
+            print(ex)
             return {'result': 'Invalid dslam_id'}
 
         if icmp_type == 'ping':
@@ -60,17 +60,17 @@ class PortmanRPCStarter(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        print "Listening on port 7070..."
+        print("Listening on port 7070...")
         server = AsyncJSONRPCServer(('localhost', 7070), SimpleJSONRPCRequestHandler)
         server.register_introspection_functions()
         server.register_multicall_functions()
 
         server.register_instance(PortmanRPC())
         try:
-            print 'Use Control-C to exit'
+            print('Use Control-C to exit')
             server.serve_forever()
         except KeyboardInterrupt:
-            print 'Exiting'
+            print('Exiting')
 
 
 class Portman_Runner(object):
@@ -114,7 +114,7 @@ class Portman_Runner(object):
 
     def create_process(self):
         task = None
-        for item in xrange(self.num_workers):
+        for item in range(self.num_workers):
             worker = Worker(self.queue, self.django_orm_queue)
             worker.start()
 
@@ -124,7 +124,7 @@ class Portman_Runner(object):
             time.sleep(self.loop_interval)
 
     def resync_dslams(self):
-        print 'periodic dslam sync started ... '
+        print('periodic dslam sync started ... ')
         queryset = DSLAM.objects.all().order_by('status', 'created_at', 'last_sync')
         task = None
 
@@ -139,16 +139,16 @@ if __name__ == '__main__':
     try:
         opts, args = getopt.getopt(sys.argv[1:], "ht:c:", ["timeout=", "count="])
     except getopt.GetoptError:
-        print 'test.py -c <count> -t <timeout>'
+        print('test.py -c <count> -t <timeout>')
         sys.exit(2)
     for opt, arg in opts:
       if opt == '-h':
-         print 'test.py -c <count> -t <timeout>'
+         print('test.py -c <count> -t <timeout>')
          sys.exit()
       elif opt in ("-c", "--count"):
          ping_count = arg
       elif opt in ("-t", "--timeout"):
          ping_timeout = arg
     num_workers = int(ceil(multiprocessing.cpu_count()*2))
-    print 'Creating {0} workers'.format(num_workers)
+    print('Creating {0} workers'.format(num_workers))
     Portman_Runner(num_workers, ping_timeout, ping_count)

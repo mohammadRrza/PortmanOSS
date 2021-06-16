@@ -139,3 +139,21 @@ class RouterViewSet(mixins.ListModelMixin,
             queryset = queryset.order_by(sort_field)
 
         return queryset
+
+
+class RouterRunCommandAPIView(views.APIView):
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            router_id = data.get('router_id')
+            params = data.get('params')
+            command = data.get('command')
+            result = utility.router_run_command(router_id, command, params)
+            if command == 'export verbose terse':
+                return JsonResponse({'response': result})
+            return JsonResponse({'response': result})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'Error': str(ex), 'Line': str(exc_tb.tb_lineno)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

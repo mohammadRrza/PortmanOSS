@@ -45,9 +45,9 @@ class ICMP(object):
         try:
             ping_results = pingparser.parse(ping_output)
         except Exception as ex:
-            print '----------------------------------------'
-            print ex
-            print '----------------------------------------'
+            print('----------------------------------------')
+            print(ex)
+            print('----------------------------------------')
 
         try:
             if channel:
@@ -55,11 +55,11 @@ class ICMP(object):
                 thread.start()
                 return 'write on channel'
             else:
-                return dict(ping_results.items())
+                return dict(list(ping_results.items()))
         except Exception as ex:
-            print '++++++++++++++++++++++++++++'
-            print ex
-            print '++++++++++++++++++++++++++++'
+            print('++++++++++++++++++++++++++++')
+            print(ex)
+            print('++++++++++++++++++++++++++++')
             ping_results = ping_results
             self.__django_orm_queue.put(("create_dslam_event",
                 dslam_id,
@@ -75,7 +75,7 @@ class ICMP(object):
             ping_results['timestamp'] = calendar.timegm(datetime.today().timetuple())
             self.redis.publish(channel, json.dumps(ping_results))
             time.sleep(5)
-        print 'shutdown socket_id: ', socket_id
+        print('shutdown socket_id: ', socket_id)
 
     def ping(self, host, ping_count, ping_timeout):
         return subprocess.Popen(["/bin/ping", "-c" + str(ping_count), "-i" + str(ping_timeout), host,],

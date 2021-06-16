@@ -14,12 +14,15 @@ import socketserver
 from portman_vendors import PortmanVendors
 import threading
 from jsonrpclib.SimpleJSONRPCServer import SimpleJSONRPCServer, SimpleJSONRPCRequestHandler
+
+
 # Threaded mix-in
-class AsyncJSONRPCServer(socketserver.ThreadingMixIn,SimpleJSONRPCServer): pass
+class AsyncJSONRPCServer(socketserver.ThreadingMixIn, SimpleJSONRPCServer): pass
+
 
 class PortmanRPC(object):
     def __init__(self, django_orm_queue):
-        self.django_orm_queue =  django_orm_queue
+        self.django_orm_queue = django_orm_queue
 
     def general_update(self, dslam_id):
         try:
@@ -29,7 +32,8 @@ class PortmanRPC(object):
         portman_vendors = PortmanVendors(self.django_orm_queue)
         task = DSLAMStatus(dslam.get_info())
         portman_vendors._update_dslam_status(task)
-        return  {'result': 'DSLAM general update is doing !!!'}
+        return {'result': 'DSLAM general update is doing !!!'}
+
 
 class PortmanRPCStarter(threading.Thread):
     def __init__(self, django_orm_queue):
@@ -57,15 +61,15 @@ class Portman_Runner(object):
         # Keep All Django ORM Transaction
         self.django_orm_queue = multiprocessing.Queue()
 
-        #worker number
+        # worker number
         self.num_workers = num_workers
 
         self.shutdown = False
 
-        #loop interval for periodic
+        # loop interval for periodic
         self.loop_interval = 360
 
-        #keep all workers queue for use resync priodic, because we need add tasks at  next time
+        # keep all workers queue for use resync priodic, because we need add tasks at  next time
         self.queues = {}
 
         self.create_process()
@@ -74,7 +78,7 @@ class Portman_Runner(object):
 
         self.run_service()
 
-        #run priodic resync
+        # run priodic resync
         self.run()
 
     def run_service(self):
@@ -88,7 +92,7 @@ class Portman_Runner(object):
 
     def create_process(self):
         for item in range(self.num_workers):
-            worker = Worker(self.queue,self.django_orm_queue)
+            worker = Worker(self.queue, self.django_orm_queue)
             worker.start()
 
     def run(self):
@@ -99,14 +103,15 @@ class Portman_Runner(object):
     def resync_dslams(self):
         print('periodic dslam sync started ... ')
 
-        queryset = DSLAM.objects.filter(dslam_type__id=1).order_by('status','created_at','last_sync')
+        queryset = DSLAM.objects.filter(dslam_type__id=1).order_by('status', 'created_at', 'last_sync')
         task = None
 
-        for index,dslam in enumerate(queryset,1):
+        for index, dslam in enumerate(queryset, 1):
             task = DSLAMStatus(dslam.get_info())
             self.queue.put(task)
 
+
 if __name__ == '__main__':
-    num_workers = int(ceil(multiprocessing.cpu_count()*2))
+    num_workers = int(ceil(multiprocessing.cpu_count() * 2))
     print('Creating {0} workers'.format(num_workers))
     Portman_Runner(num_workers)

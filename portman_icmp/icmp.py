@@ -76,7 +76,7 @@ class ICMP(object):
             ping_results['timestamp'] = calendar.timegm(datetime.today().timetuple())
             self.redis.publish(channel, json.dumps(ping_results))
             time.sleep(5)
-        print('shutdown socket_id: ', socket_id)
+        print(('shutdown socket_id: ', socket_id))
 
     def ping(self, host, ping_count, ping_timeout):
         return subprocess.Popen(["/bin/ping", "-c" + str(ping_count), "-i" + str(ping_timeout), host,],
