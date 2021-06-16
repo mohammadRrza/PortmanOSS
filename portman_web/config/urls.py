@@ -144,6 +144,7 @@ urlpatterns = [
 
     # Switches
     url(r'^api/v1/switch/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),
+    url(r'^api/v1/switch/get_backup_files_name/$', GetBackupFilesNameAPIView.as_view(), name='get_backup_files_name'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 

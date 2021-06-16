@@ -162,3 +162,22 @@ class SwitchCommandViewSet(mixins.ListModelMixin,
             return SwitchCommands
         except:
             return []
+
+
+class GetBackupFilesNameAPIView(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            fqdn = request.data.get('fqdn')
+            filenames = []
+            directory = '/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/Backups/'
+            for filename in os.listdir(directory):
+                if filename.__contains__(fqdn):
+                    filenames.append(directory+filename)
+                else:
+                    continue
+            return JsonResponse({'response': filenames})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex)})
