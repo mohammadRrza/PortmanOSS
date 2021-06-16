@@ -43,7 +43,8 @@ class ICMP(object):
         ping_output = self.ping(host, ping_count, ping_timeout)
         ping_results = {}
         try:
-            ping_results = pingparser.parse(ping_output)
+            print(ping_output)
+            ping_results = pingparser.parse(ping_output.decode('utf-8'))
         except Exception as ex:
             print('----------------------------------------')
             print(ex)
