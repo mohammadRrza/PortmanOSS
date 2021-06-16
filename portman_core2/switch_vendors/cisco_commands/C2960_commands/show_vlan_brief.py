@@ -7,12 +7,12 @@ import paramiko
 from .command_base import BaseCommand
 
 
-class ShowRun(BaseCommand):
+class ShowVlanBrief(BaseCommand):
     def __init__(self, params):
         self.__IP = '172.28.32.135'
         self.__SSH_username = 'developer'
         self.__SSH_password = 'developer'
-        self.__Command = 'show run'
+        self.__Command = 'show vlan brief'
 
     def run_command(self):
         try:
@@ -20,7 +20,7 @@ class ShowRun(BaseCommand):
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, allow_agent=False,
                            look_for_keys=False)
-            stdin, stdout, stderr = client.exec_command('show run')
+            stdin, stdout, stderr = client.exec_command(self.__Command)
             f = open("/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/vlan_brief_Backups/{0}_{1}.txt".format(
                 self.__IP, str(datetime.datetime)), "w")
             for line in stdout:
