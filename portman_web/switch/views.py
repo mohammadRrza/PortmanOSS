@@ -168,7 +168,9 @@ class GetBackupFilesNameAPIView(views.APIView):
 
     def post(self, request, format=None):
         try:
-            fqdn = request.data.get('fqdn')
+            switch_id = request.data.get('switch_id')
+            switch_obj = Switch.objects.get(id=switch_id)
+            fqdn = switch_obj.device_fqdn
             filenames = []
             directory = '/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/Backups/'
             for filename in os.listdir(directory):
@@ -180,4 +182,4 @@ class GetBackupFilesNameAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return JsonResponse({'row': str(ex)})
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
