@@ -73,3 +73,7 @@ Unauthorized: /api/v1/switch/get_backup_files_name/
 Method Not Allowed: /api/v1/switch/get_backup_files_name/
 Unauthorized: /api/v1/switch/get_backup_files_name/
 >>>>>>> 7f250673d7f388c149dce86fb5fc9d4f100d6c28
+Unauthorized: /api/v1/switch/download_backup_file/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/switch/download_backup_file/
+Unauthorized: /api/v1/switch/download_backup_file/
