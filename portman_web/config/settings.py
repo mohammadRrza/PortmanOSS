@@ -28,6 +28,15 @@ SECRET_KEY = 'qepv7vyyu4-&un2-9opv6n&dwwi9p2nn14kh_dggzjyfu%on#n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# CELERY_RESULT_BACKENDcelery -A proj worker -l INFO
+CELERY_RESULT_BACKEND = 'django-cache'
+
+# CELERY_RESULT_BACKEND
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['172.28.238.114', '5.202.129.160', 'localhost', '127.0.0.1']
@@ -44,6 +53,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
     'rest_framework',
     'rest_framework_swagger',
     'architect',
@@ -177,7 +187,9 @@ ADMIN_TOOLS_MEDIA_URL = '/media/'
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, "admin/")
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'media'),)
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
-
+CELERY_BROKER_URL = 'pyamqp://guest@localhost//'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',

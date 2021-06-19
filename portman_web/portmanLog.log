@@ -1,4 +1,5 @@
 Unauthorized: /api/v1/switch/switch_run_command/
+<<<<<<< HEAD
 Unauthorized: /api/v1/switch-command/
 Unauthorized: /api/v1/switch-command/
 Unauthorized: /api/v1/switch/
@@ -6,3 +7,69 @@ Unauthorized: /api/v1/switch-command/
 Unauthorized: /api/v1/contact/portmap/
 Unauthorized: /api/v1/switch/
 Unauthorized: /api/v1/dslam/
+=======
+Unauthorized: /api/v1/switch/switch_run_command/
+Internal Server Error: /api/v1/dslam/load_dslam_ports/
+Method Not Allowed: /api/v1/dslam/load_dslam_ports/
+Internal Server Error: /api/v1/dslam/load_dslam_ports
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/deprecation.py", line 113, in __call__
+    response = self.process_request(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/middleware/common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to localhost:2080/api/v1/dslam/load_dslam_ports/?dslam_id=40&slot_count=10&port_count=10 (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+Internal Server Error: /api/v1/dslam/load_dslam_ports/
+Internal Server Error: /api/v1/dslam/load_dslam_ports/
+Internal Server Error: /api/v1/dslam/load_dslam_ports/
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Method Not Allowed: /api/v1/router/router-runCommand/
+Method Not Allowed: /api/v1/router/router-runCommand/
+Not Found: /api/v1/router/router-runCommand/
+Method Not Allowed: /api/v1/router/router-runCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Internal Server Error: /api/v1/router/routerRunCommand/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/switch/switch_run_command/
+Unauthorized: /api/v1/dslam/load_dslam_ports/
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Unauthorized: /api/v1/switch/get_backup_files_name/
+Method Not Allowed: /api/v1/switch/get_backup_files_name/
+Unauthorized: /api/v1/switch/get_backup_files_name/
+>>>>>>> 7f250673d7f388c149dce86fb5fc9d4f100d6c28
