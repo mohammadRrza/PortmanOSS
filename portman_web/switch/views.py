@@ -192,7 +192,7 @@ class DownloadBackupFileAPIView(views.APIView):
             download_backup_file = request.data.get('backup_file_name')
             directory = path+download_backup_file
             backup_file = open(directory, 'rb')
-            response = HttpResponse(FileWrapper(backup_file), content_type='application/text')
+            response = HttpResponse(FileWrapper(backup_file), content_type='text/plain; charset=UTF-8')
             response['Content-Disposition'] = 'attachment; filename="%s"' % download_backup_file
             return response
         except Exception as ex:
