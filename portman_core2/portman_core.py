@@ -14,13 +14,13 @@ from dj_bridge import DSLAM, DSLAMPort, DSLAMType, DSLAMTypeCommand, Switch, Rou
 import time
 import os
 import sys
-
+from tasks_queue import add
 from django_orm_cursor import DjangoORMCursor
 
 from portman_runners import PortInfoSyncTask, DSLAMInitTask, DSLAMBulkCommand, \
     DSLAMPortLineProfileChangeTask, DSLAMPortStatusInfoTask, \
     DSLAMPortResetAdminStatusInfoTask, DSLAMPortAdminStatusChangeTask, DSLAMPortCommandTask, \
-    RouterCommandTask,SwitchCommandTask
+    RouterCommandTask, SwitchCommandTask
 
 import multiprocessing
 from multiprocessing import Manager
@@ -172,6 +172,7 @@ class PortmanRPC(object):
         if is_queue == False:
             return self.portman._switch_execute_command(task, is_queue)
 
+
 class PortmanRPCStarter(threading.Thread):
     def __init__(self, portman_runner):
         threading.Thread.__init__(self)
@@ -241,9 +242,9 @@ class Portman_Runner(object):
         t = Thread(target=self.register_server_queue)
         t.start()
 
-        while (self.fiberhomeAN2200_q is None or \
-               self.zyxel_q is None or \
-               self.request_q is None or \
+        while (self.fiberhomeAN2200_q is None or
+               self.zyxel_q is None or
+               self.request_q is None or
                self.fiberhomeAN5006_q is None or self.fiberhomeAN3300_q is None):
             pass
 

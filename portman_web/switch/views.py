@@ -1,4 +1,6 @@
 import sys, os
+from wsgiref.util import FileWrapper
+
 from rest_framework import status, views, mixins, viewsets, permissions
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
@@ -7,7 +9,6 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from switch.models import Switch, SwitchCommand
 from switch import utility
-import urllib.request
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
@@ -161,6 +162,9 @@ class SwitchCommandViewSet(mixins.ListModelMixin,
             return []
 
 
+path = '/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/Backups/'
+
+
 class GetBackupFilesNameAPIView(views.APIView):
 
     def post(self, request, format=None):
@@ -169,13 +173,28 @@ class GetBackupFilesNameAPIView(views.APIView):
             switch_obj = Switch.objects.get(id=switch_id)
             fqdn = switch_obj.device_fqdn
             filenames = []
-            directory = '/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/Backups/'
+            directory = path
             for filename in os.listdir(directory):
                 if filename.__contains__(fqdn):
                     filenames.append(filename)
                 else:
                     continue
             return JsonResponse({'response': filenames})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class DownloadBackupFileAPIView(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            download_backup_file = request.data.get('backup_file_name')
+            directory = path+download_backup_file
+            backup_file = open(directory, 'rb')
+            response = HttpResponse(FileWrapper(backup_file), content_type='application/zip')
+            response['Content-Disposition'] = 'attachment; filename="%s"' % download_backup_file
+            return response
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
