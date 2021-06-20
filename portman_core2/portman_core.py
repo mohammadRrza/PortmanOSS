@@ -10,6 +10,7 @@ from portman_factory import PortmanFactory
 from django_orm_cursor import Transaction
 from portman_runners import DSLAMPortCommandTask
 from datetime import datetime
+from get_back_ups import GetbackUp
 from dj_bridge import DSLAM, DSLAMPort, DSLAMType, DSLAMTypeCommand, Switch, Router
 import time
 import os
@@ -421,6 +422,8 @@ class Portman_Runner(object):
 
 
 if __name__ == '__main__':
-    num_workers = int(ceil(multiprocessing.cpu_count() * 4))
+    """num_workers = int(ceil(multiprocessing.cpu_count() * 4))
     print(('Creating {0} workers'.format(num_workers)))
-    Portman_Runner(num_workers)
+    Portman_Runner(num_workers)"""
+    back_up = GetbackUp()
+    back_up.run_command()
