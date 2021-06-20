@@ -33,7 +33,6 @@ class Switch(models.Model):
     SSH_username = models.CharField(max_length=256)
     SSH_password = models.CharField(max_length=256)
 
-
     def __str__(self):
         return self.device_name
 
