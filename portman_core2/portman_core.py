@@ -165,9 +165,6 @@ class PortmanRPC(object):
     def switch_run_command(self, switch_id, command, params):
         switch = Switch.objects.get(id=switch_id)
         task = SwitchCommandTask(switch.get_info(), command, params)
-        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print(params)
-        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
         is_queue = False
         if is_queue == False:
             return self.portman._switch_execute_command(task, is_queue)

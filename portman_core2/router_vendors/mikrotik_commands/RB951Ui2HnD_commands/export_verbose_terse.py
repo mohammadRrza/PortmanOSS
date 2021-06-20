@@ -1,3 +1,5 @@
+import datetime
+
 import paramiko
 import sys, os
 from .command_base import BaseCommand
@@ -18,7 +20,8 @@ class ExportVerboseTerse(BaseCommand):
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, allow_agent=False, look_for_keys=False)
             stdin, stdout, stderr = client.exec_command(self.__Command)
-            f = open("/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/Backups/172.28.32.134.txt", "w")
+            f = open("/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/Backups/{0}_{1}.txt".format(
+                self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
             for line in stdout:
                 f.write(line.strip('\n'))
             f.close()

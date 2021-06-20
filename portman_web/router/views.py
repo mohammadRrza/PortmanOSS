@@ -4,19 +4,20 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
 from router import utility
-from router.models import Router,RouterCommand
+from router.models import Router, RouterCommand
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from router.serializers import RouterSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
-from router.serializers import RouterSerializer,RouterCommandSerializer
+from router.serializers import RouterSerializer, RouterCommandSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
     page_size_query_param = 'page_size'
     max_page_size = max
+
 
 class RouterRunCommandAPIView(views.APIView):
     def get_permissions(self):
@@ -51,15 +52,16 @@ class RouterRunCommandAPIView(views.APIView):
 
 
 class RouterViewSet(mixins.ListModelMixin,
-                   mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin,
-                   viewsets.GenericViewSet):
+                    mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    viewsets.GenericViewSet):
     queryset = Router.objects.all()
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
     serializer_class = RouterSerializer
     pagination_class = LargeResultsSetPagination
+
     def get_serializer(self, *args, **kwargs):
         if self.request.user.is_superuser:
             print((self.request.user.type))
@@ -74,7 +76,7 @@ class RouterViewSet(mixins.ListModelMixin,
                        'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
             return RouterSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
-    @action(methods=['GET'],detail=False)
+    @action(methods=['GET'], detail=False)
     def current(self, request):
         serializer = RouterSerializer(request.user, request=request)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -150,13 +152,15 @@ class RouterRunCommandAPIView(views.APIView):
             params = data.get('params')
             command = data.get('command')
             result = utility.router_run_command(router_id, command, params)
-            if command == 'export verbose terse':
+            if command == 'get Backup':
                 return JsonResponse({'response': result})
             return JsonResponse({'response': result})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return JsonResponse({'Error': str(ex), 'Line': str(exc_tb.tb_lineno)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'Error': str(ex), 'Line': str(exc_tb.tb_lineno)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class RouterCommandViewSet(mixins.ListModelMixin,
                            mixins.RetrieveModelMixin,
@@ -188,3 +192,25 @@ class RouterCommandViewSet(mixins.ListModelMixin,
             return RouterCommands
         except:
             return []
+
+
+path = '/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/Backups/'
+
+
+class GetRouterBackupFilesNameAPIView(views.APIView):
+    def post(self, request, format=None):
+        try:
+            router_id = request.data.get('router_id')
+            router_obj = Router.objects.get(id=router_id)
+            fqdn = router_obj.device_fqdn
+            filenames = []
+            directory = path
+            for filename in os.listdir(directory):
+                if filename.__contains__(fqdn):
+                    filenames.append(filename)
+                else:
+                    continue
+            return JsonResponse({'response': filenames})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
