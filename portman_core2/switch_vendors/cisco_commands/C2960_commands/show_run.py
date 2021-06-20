@@ -9,9 +9,10 @@ from .command_base import BaseCommand
 
 class ShowRun(BaseCommand):
     def __init__(self, params):
+        print(params)
         self.__IP = params.get('switch_ip')
-        self.__SSH_username = 'developer'
-        self.__SSH_password = 'developer'
+        self.__SSH_username = params.get('SSH_username')
+        self.__SSH_password = params.get('SSH_password')
         self.__Command = 'show run'
         self.__FQDN = params.get('switch_fqdn')
 

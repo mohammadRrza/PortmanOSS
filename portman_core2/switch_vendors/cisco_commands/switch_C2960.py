@@ -19,10 +19,13 @@ class C2960:
 
     @classmethod
     def execute_command(cls, switch_data, command, params):
+        print(switch_data)
         params['switch_id'] = switch_data['id']
         params['switch_name'] = switch_data['name']
         params['switch_ip'] = switch_data['ip']
         params['switch_fqdn'] = switch_data['fqdn']
         params['switch_type'] = switch_data['switch_type']
+        params['SSH_username'] = switch_data['SSH_username']
+        params['SSH_password'] = switch_data['SSH_password']
         command_class = cls.command_factory.get_type(command)(params)
         return command_class.run_command()
