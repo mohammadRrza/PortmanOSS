@@ -214,3 +214,17 @@ class GetRouterBackupFilesNameAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class DownloadRouterBackupFileAPIViewAPIView(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            download_backup_file = request.data.get('backup_file_name')
+            directory = path + download_backup_file
+            f = open(directory, "r")
+            print(directory)
+            return JsonResponse({'response': f.read()})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
