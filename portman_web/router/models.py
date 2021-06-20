@@ -30,6 +30,8 @@ class Router(models.Model):
     device_name = models.CharField(max_length=256, null=True, blank=True)
     device_ip = models.CharField(max_length=256)
     device_fqdn = models.CharField(max_length=256)
+    SSH_username = models.CharField(max_length=256)
+    SSH_password = models.CharField(max_length=256)
 
     def __str__(self):
         return self.device_name
@@ -37,7 +39,7 @@ class Router(models.Model):
     def get_info(self):
         return dict(
             id=self.id, name=self.device_name, ip=self.device_ip, fqdn=self.device_fqdn,
-            router_type=self.router_type.title
+            router_type=self.router_type.title, SSH_username=self.SSH_username, SSH_password=self.SSH_password
         )
 
 
