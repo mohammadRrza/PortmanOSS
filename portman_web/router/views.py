@@ -216,7 +216,7 @@ class GetRouterBackupFilesNameAPIView(views.APIView):
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
 
 
-class DownloadRouterBackupFileAPIViewAPIView(views.APIView):
+class DownloadRouterBackupFileAPIView(views.APIView):
 
     def post(self, request, format=None):
         try:
