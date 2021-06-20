@@ -4,12 +4,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
 from router import utility
-from router.models import Router
+from router.models import Router,RouterCommand
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from router.serializers import RouterSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
+from router.serializers import RouterSerializer,RouterCommandSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -157,3 +158,33 @@ class RouterRunCommandAPIView(views.APIView):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'Error': str(ex), 'Line': str(exc_tb.tb_lineno)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class RouterCommandViewSet(mixins.ListModelMixin,
+                           mixins.RetrieveModelMixin,
+                           viewsets.GenericViewSet):
+    serializer_class = RouterCommandSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = RouterCommand.objects.all()
+    paginate_by = None
+    paginate_by_param = None
+    paginator = None
+
+    def get_queryset(self):
+        user = self.request.user
+        RouterCommands = self.queryset
+
+        router_id = self.request.query_params.get('router_id', None)
+        limit_row = self.request.query_params.get('limit_row', None)
+        router_command_description = self.request.query_params.get('command_type', None)
+        router_command_text = self.request.query_params.get('command_type', None)
+        try:
+            return RouterCommands
+
+            if router_type_id:
+                RouterCommands = RouterCommands.objects.get(router_type_id=router_type_id)
+            if limit_row:
+                RouterCommands = RouterCommands.filter(id=switch_id)[:int(limit_row)]
+            else:
+                RouterCommands = RouterCommands.filter(id=router_id)
+            return RouterCommands
+        except:
+            return []

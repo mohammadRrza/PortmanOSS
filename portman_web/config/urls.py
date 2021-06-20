@@ -65,6 +65,7 @@ portman_router.register(r'terminal', TerminalViewSet, basename='terminal')
 portman_router.register(r'router', RouterViewSet, basename='router')
 portman_router.register(r'switch', SwitchViewSet, basename='switch')
 portman_router.register(r'switch-command', SwitchCommandViewSet, basename='switch_command')
+portman_router.register(r'router-command', RouterCommandViewSet, basename='router_command')
 portman_router.register(r'contact/portmap', PortMapViewSet, basename='portmap')
 
 urlpatterns = [
