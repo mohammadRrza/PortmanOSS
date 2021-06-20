@@ -194,16 +194,9 @@ class DownloadBackupFileAPIView(views.APIView):
         try:
             download_backup_file = request.data.get('backup_file_name')
             directory = path+download_backup_file
-<<<<<<< HEAD
-            backup_file = open(directory, 'rb')
-            response = HttpResponse(FileWrapper(backup_file), content_type='text/plain; charset=UTF-8')
-            response['Content-Disposition'] = 'attachment; filename="%s"' % download_backup_file
-            return response
-=======
             f = open(directory, "r")
             print(directory)
             return JsonResponse({'response': f.read()})
->>>>>>> 80388e504f655f1d045cec50dc212e92550895e9
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
