@@ -506,3 +506,5 @@ Unauthorized: /api/v1/switch/get_backup_error_file/
 Unauthorized: /api/v1/switch/get_backup_error_file/
 Unauthorized: /api/v1/switch/get_backup_error_file/
 Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
