@@ -422,8 +422,8 @@ class Portman_Runner(object):
 
 
 if __name__ == '__main__':
-    """num_workers = int(ceil(multiprocessing.cpu_count() * 4))
+    '''num_workers = int(ceil(multiprocessing.cpu_count() * 4))
     print(('Creating {0} workers'.format(num_workers)))
-    Portman_Runner(num_workers)"""
+    Portman_Runner(num_workers)'''
     back_up = GetbackUp()
     back_up.run_command()

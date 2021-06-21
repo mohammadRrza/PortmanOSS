@@ -1193,3 +1193,24 @@ Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
+Method Not Allowed: /api/v1/router/routerRunCommand/
+Method Not Allowed: /api/v1/router/routerRunCommand/
+Method Not Allowed: /api/v1/router/routerRunCommand/
+Method Not Allowed: /api/v1/router-command/routerRunCommand/
+Method Not Allowed: /api/v1/router-command/routerRunCommand/
+Method Not Allowed: /api/v1/router-command/routerRunCommand/
+Method Not Allowed: /api/v1/router-command/routerRunCommand/
+Not Found: /api/v1/router-command/routerRunCommand/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
