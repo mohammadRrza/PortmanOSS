@@ -1,3 +1,508 @@
-Method Not Allowed: /api/v1/router/download_backup_file/
-Method Not Allowed: /api/v1/router/download_backup_file/
-Method Not Allowed: /api/v1/router/download_backup_file/
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/router/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/router/views.py", line 77, in get_serializer
+    return RouterSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/router/serializers.py", line 18, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Internal Server Error: /api/v1/switch/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 42, in list
+    serializer = self.get_serializer(page, many=True)
+  File "/opt/portmanv3/portman_web/switch/views.py", line 45, in get_serializer
+    return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 121, in __new__
+    return cls.many_init(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 146, in many_init
+    child_serializer = cls(*args, **kwargs)
+  File "/opt/portmanv3/portman_web/switch/serializers.py", line 19, in __init__
+    self.fields.pop(field_name)
+  File "/usr/lib/python3.8/_collections_abc.py", line 795, in pop
+    value = self[key]
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
+    return self.fields[key]
+KeyError: 'telnet_password'
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Unauthorized: /api/v1/switch/get_backup_error_file/
