@@ -217,3 +217,15 @@ class GetBackupErrorFilesNameAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class GetBackupErrorTextNameAPIView(views.APIView):
+    def post(self, request, format=None):
+        try:
+            backup_file_name = request.data.get('backup_file_name')
+            directory = path+backup_file_name
+            f = open(directory, "r")
+            return JsonResponse({'response': f.read()})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})

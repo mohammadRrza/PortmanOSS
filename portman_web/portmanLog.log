@@ -1214,3 +1214,4 @@ Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
+Unauthorized: /api/v1/switch/get_backup_error_text/

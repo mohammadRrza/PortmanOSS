@@ -154,6 +154,8 @@ urlpatterns = [
     url(r'^api/v1/switch/download_backup_file/$', DownloadBackupFileAPIView.as_view(), name='download_backup_file'),
     url(r'^api/v1/switch/get_backup_error_file/$', GetBackupErrorFilesNameAPIView.as_view(),
         name='get_backup_error_file'),
+    url(r'^api/v1/switch/get_backup_error_text/$', GetBackupErrorTextNameAPIView.as_view(),
+        name='get_backup_error_file'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 
