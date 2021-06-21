@@ -1,1 +1,0 @@
-Bad authentication type; allowed types: ['publickey']  // 41
