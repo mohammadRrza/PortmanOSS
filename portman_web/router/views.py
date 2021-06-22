@@ -68,12 +68,11 @@ class RouterViewSet(mixins.ListModelMixin,
             return RouterSerializer(request=self.request, *args, **kwargs)
         elif self.request.user.type == 'SUPPORT':
             print((self.request.user.type))
-            _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port']
+            _fields = ['id', 'device_name', 'device_ip', 'device_fqdn']
             return RouterSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
         else:
             print((self.request.user.type))
-            _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port',
-                       'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
+            _fields = ['id', 'device_name', 'device_ip', 'device_fqdn']
             return RouterSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
     @action(methods=['GET'], detail=False)
@@ -178,15 +177,14 @@ class RouterCommandViewSet(mixins.ListModelMixin,
 
         router_id = self.request.query_params.get('router_id', None)
         limit_row = self.request.query_params.get('limit_row', None)
+        router_type_id = self.request.query_params.get('limit_row', None)
         router_command_description = self.request.query_params.get('command_type', None)
         router_command_text = self.request.query_params.get('command_type', None)
         try:
-            return RouterCommands
-
             if router_type_id:
                 RouterCommands = RouterCommands.objects.get(router_type_id=router_type_id)
             if limit_row:
-                RouterCommands = RouterCommands.filter(id=switch_id)[:int(limit_row)]
+                RouterCommands = RouterCommands.filter(id=router_id)[:int(limit_row)]
             else:
                 RouterCommands = RouterCommands.filter(id=router_id)
             return RouterCommands

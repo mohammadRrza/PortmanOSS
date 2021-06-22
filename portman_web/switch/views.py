@@ -36,12 +36,12 @@ class SwitchViewSet(mixins.ListModelMixin,
             return SwitchSerializer(request=self.request, *args, **kwargs)
         elif self.request.user.type == 'SUPPORT':
             print(self.request.user.type)
-            _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port']
+            _fields = ['id', 'device_name', 'device_ip', 'device_fqdn']
             return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
         else:
             print(self.request.user.type)
-            _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port',
-                       'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
+            _fields = ['id', 'device_name', 'device_ip', 'device_fqdn']
+
             return SwitchSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
     @action(methods=['GET'], detail=False)
@@ -211,6 +211,12 @@ class GetBackupErrorFilesNameAPIView(views.APIView):
             for filename in os.listdir(directory):
                 if filename.__contains__('Error'):
                     filenames.append(filename)
+                else:
+                    continue
+            directory2 = "/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/Backups/"
+            for filename2 in os.listdir(directory2):
+                if filename2.__contains__('Error'):
+                    filenames.append(filename2)
                 else:
                     continue
             return JsonResponse({'response': filenames})
