@@ -68,12 +68,12 @@ class RouterViewSet(mixins.ListModelMixin,
             return RouterSerializer(request=self.request, *args, **kwargs)
         elif self.request.user.type == 'SUPPORT':
             print((self.request.user.type))
-            _fields = ['id', 'device_name', 'device_ip', 'device_fqdn']
-            return RouterSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+            '''_fields = ['id', 'device_name', 'device_ip', 'device_fqdn']'''
+            return RouterSerializer(request=self.request, *args, **kwargs)
         else:
             print((self.request.user.type))
-            _fields = ['id', 'device_name', 'device_ip', 'device_fqdn']
-            return RouterSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+            '''_fields = ['id', 'device_name', 'device_ip', 'device_fqdn']'''
+            return RouterSerializer(request=self.request, *args, **kwargs)
 
     @action(methods=['GET'], detail=False)
     def current(self, request):
