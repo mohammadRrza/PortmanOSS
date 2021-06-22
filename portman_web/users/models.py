@@ -9,6 +9,7 @@ from django.contrib.postgres.fields import ArrayField
 class User(AbstractUser):
     USER_TYPES = (
         ('ADMIN', 'Admin'),
+        ('SUPERVISOR', 'Supervisor'),
         ('SUPPORT', 'Support'),
         ('RESELLER', 'Reseller'),
     )

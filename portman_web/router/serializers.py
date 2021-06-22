@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from khayyam import JalaliDatetime
 from datetime import datetime
-from router.models import Router,RouterCommand
+from router.models import Router, RouterCommand
 
 class RouterSerializer(serializers.ModelSerializer):
     def __init__(self, *args, **kwargs):
