@@ -147,19 +147,17 @@ class SwitchCommandViewSet(mixins.ListModelMixin,
         user = self.request.user
         SwitchCommands = self.queryset
 
-        switch_id = self.request.query_params.get('switch_id', None)
         limit_row = self.request.query_params.get('limit_row', None)
+        switch_type_id = self.request.query_params.get('switch_type_id', None)
         switch_command_description = self.request.query_params.get('command_type', None)
         switch_command_text = self.request.query_params.get('command_type', None)
         try:
-            return SwitchCommands
-
             if switch_type_id:
-                SwitchCommands = SwitchCommands.objects.get(switch_type_id=switch_type_id)
+                SwitchCommands = SwitchCommands.filter(switch_type_id=switch_type_id)
             if limit_row:
-                SwitchCommands = SwitchCommands.filter(id=switch_id)[:int(limit_row)]
+                SwitchCommands = SwitchCommands.filter(switch_type_id=switch_type_id)[:int(limit_row)]
             else:
-                SwitchCommands = SwitchCommands.filter(id=switch_id)
+                SwitchCommands = SwitchCommands.filter(switch_type_id=switch_type_id)
             return SwitchCommands
         except:
             return []

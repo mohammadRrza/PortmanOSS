@@ -175,18 +175,17 @@ class RouterCommandViewSet(mixins.ListModelMixin,
         user = self.request.user
         RouterCommands = self.queryset
 
-        router_id = self.request.query_params.get('router_id', None)
         limit_row = self.request.query_params.get('limit_row', None)
-        router_type_id = self.request.query_params.get('limit_row', None)
+        router_type_id = self.request.query_params.get('router_type_id', None)
         router_command_description = self.request.query_params.get('command_type', None)
         router_command_text = self.request.query_params.get('command_type', None)
         try:
             if router_type_id:
-                RouterCommands = RouterCommands.objects.get(router_type_id=router_type_id)
+                RouterCommands = RouterCommands.filter(router_type_id=router_type_id)
             if limit_row:
-                RouterCommands = RouterCommands.filter(id=router_id)[:int(limit_row)]
+                RouterCommands = RouterCommands.filter(router_type_id=router_type_id)[:int(limit_row)]
             else:
-                RouterCommands = RouterCommands.filter(id=router_id)
+                RouterCommands = RouterCommands.filter(router_type_id=router_type_id)
             return RouterCommands
         except:
             return []
