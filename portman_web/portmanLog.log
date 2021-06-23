@@ -1303,3 +1303,6 @@ Unauthorized: /api/v1/switch/get_backup_error_file/
 Method Not Allowed: /api/v1/switch-command/
 Unauthorized: /api/v1/switch/get_backup_error_file/
 Method Not Allowed: /api/v1/switch/get_backup_error_file/
+Method Not Allowed: /api/v1/switch-command/switch_run_command/
+Not Found: /api/v1/switch-command/switch_run_command/
+Not Found: /api/v1/api/v1/switch/switch_run_command/
