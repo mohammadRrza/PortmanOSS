@@ -1301,3 +1301,5 @@ Bad Request: /api/v1/switch/
 Bad Request: /api/v1/switch/
 Unauthorized: /api/v1/switch/get_backup_error_file/
 Method Not Allowed: /api/v1/switch-command/
+Unauthorized: /api/v1/switch/get_backup_error_file/
+Method Not Allowed: /api/v1/switch/get_backup_error_file/

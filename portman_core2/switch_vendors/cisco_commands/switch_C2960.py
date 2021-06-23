@@ -11,7 +11,7 @@ class C2960:
     command_factory.register_type('show dot1x', ShowDot1x)
     command_factory.register_type('show ip dhcp snooping', ShowIpDhcpSnooping)
     command_factory.register_type('show inventory', ShowInventory)
-    command_factory.register_type('show run', ShowRun)
+    command_factory.register_type('Get BackUp', ShowRun)
     command_factory.register_type('show vlan brief', ShowVlanBrief)
 
     def __init__(self):
