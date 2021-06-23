@@ -234,8 +234,7 @@ class GetRouterBackupErrorFilesNameAPIView(views.APIView):
             directory = path
             for filename in os.listdir(directory):
                 if filename.__contains__('Error'):
-                    f = open(directory, "r")
-                    filenames.append(filename+'__'+f.read())
+                    filenames.append(filename)
                 else:
                     continue
             return JsonResponse({'response': filenames})
