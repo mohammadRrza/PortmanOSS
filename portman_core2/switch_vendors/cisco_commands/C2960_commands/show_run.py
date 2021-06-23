@@ -11,6 +11,7 @@ class ShowRun(BaseCommand):
     def __init__(self, params):
         self.__IP = params.get('switch_ip')
         self.__SSH_username = params.get('SSH_username')
+        self.__SSH_password = params.get('SSH_password')
         self.__SSH_port = params.get('SSH_port', 1001)
         self.__Command = 'show run'
         self.__FQDN = params.get('switch_fqdn')
