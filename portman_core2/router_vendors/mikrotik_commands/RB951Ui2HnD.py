@@ -20,6 +20,7 @@ class RB951Ui2HnD:
         params['SSH_username'] = router_data['SSH_username']
         params['SSH_password'] = router_data['SSH_password']
         params['SSH_port'] = router_data['SSH_port']
+        params['SSH_timeout'] = router_data['SSH_timeout']
 
         command_class = cls.command_factory.get_type(command)(params)
         return command_class.run_command()
