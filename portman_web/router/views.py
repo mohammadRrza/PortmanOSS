@@ -220,7 +220,6 @@ class DownloadRouterBackupFileAPIView(views.APIView):
             download_backup_file = request.data.get('backup_file_name')
             directory = path + download_backup_file
             f = open(directory, "r")
-            print(directory)
             return JsonResponse({'response': f.read()})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -235,7 +234,8 @@ class GetRouterBackupErrorFilesNameAPIView(views.APIView):
             directory = path
             for filename in os.listdir(directory):
                 if filename.__contains__('Error'):
-                    filenames.append(filename)
+                    f = open(directory, "r")
+                    filenames.append(filename+'__'+f.read())
                 else:
                     continue
             return JsonResponse({'response': filenames})
