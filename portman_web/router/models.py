@@ -32,6 +32,7 @@ class Router(models.Model):
     device_fqdn = models.CharField(max_length=256)
     SSH_username = models.CharField(max_length=256)
     SSH_password = models.CharField(max_length=256)
+    SSH_port = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return self.device_name
