@@ -28,5 +28,7 @@ class C2960:
         params['SSH_username'] = switch_data['SSH_username']
         params['SSH_password'] = switch_data['SSH_password']
         params['SSH_port'] = switch_data['SSH_port']
+        params['SSH_timeout'] = switch_data['SSH_timeout']
+
         command_class = cls.command_factory.get_type(command)(params)
         return command_class.run_command()
