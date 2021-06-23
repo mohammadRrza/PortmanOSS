@@ -40,7 +40,7 @@ class Switch(models.Model):
     def get_info(self):
         return dict(
             id=self.host_id, name=self.device_name, ip=self.device_ip, fqdn=self.device_fqdn,
-            switch_type=self.Switch_type.title, SSH_username=self.SSH_username, SSH_password=self.SSH_password
+            switch_type=self.Switch_type.title, SSH_username=self.SSH_username, SSH_password=self.SSH_password, SSH_port=self.SSH_port
         )
 
 
