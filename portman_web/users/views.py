@@ -5,7 +5,7 @@ from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
-
+import requests
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 
@@ -148,6 +148,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
         try:
             data = request.data
+            session = requests.session()
+            session.verify = False
             username = data.get('username', '')
             password = data.get('password', '')
             user = authenticate(username=username, password=password)
