@@ -1448,3 +1448,4 @@ Traceback (most recent call last):
   File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/sql/query.py", line 1156, in build_lookup
     raise FieldError('Related Field got invalid lookup: {}'.format(lookup_name))
 django.core.exceptions.FieldError: Related Field got invalid lookup: icontains
+Not Found: /
