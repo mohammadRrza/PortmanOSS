@@ -5,7 +5,7 @@ from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
-import requests
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 
@@ -18,6 +18,7 @@ from django.conf import settings
 
 from users.serializers import *
 from users.models import UserAuditLog
+from dslam.mail import Mail
 
 from django.http import JsonResponse, HttpResponse
 import simplejson as json
@@ -148,8 +149,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
         try:
             data = request.data
-            session = requests.session()
-            session.verify = False
             username = data.get('username', '')
             password = data.get('password', '')
             user = authenticate(username=username, password=password)
@@ -438,3 +437,22 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
         UserPermissionProfileObject.objects.filter(user_permission_profile=instance).delete()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class SendResetPasswordLink(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            user_mail = request.data.get('email')
+            mail_info = Mail()
+            mail_info.from_addr = 'oss-problems@pishgaman.net'
+            mail_info.to_addr = user_mail
+            mail_info.msg_body = 'eeeeeeeeeeeessssssssssssss'
+            mail_info.msg_subject = 'Reset Your OSS Password'
+            Mail.Send_Mail(mail_info)
+            return JsonResponse(
+                {'row': "ddddd"})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return Response({'message': str(ex)+ "  // " + str(exc_tb.tb_lineno)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

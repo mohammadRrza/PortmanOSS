@@ -1,35 +1,4 @@
+Unauthorized: /api/v1/users/
+Unauthorized: /api/v1/users/
 Method Not Allowed: /api/v1/users/login/
 Not Found: /favicon.ico
-Not Found: /favicon.ico
-Not Found: /
-Not Found: /
-Not Found: /favicon.ico
-Unauthorized: /api/v1/users/login/
-Unauthorized: /api/v1/users/login/
-Forbidden: /api/v1/dslamport/events/
-Forbidden: /api/v1/dslam/events/
-Method Not Allowed: /api/v1/users/login/
-Not Found: /favicon.ico
-Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
-Method Not Allowed: /api/v1/users/login/
-Not Found: /favicon.ico
-Method Not Allowed: /api/v1/users/login/
-Not Found: /favicon.ico
-Method Not Allowed: /api/v1/users/login/
-Not Found: /robots.txt
-Not Found: /favicon.ico
-Unauthorized: /api/v1/users/login/
-Method Not Allowed: /api/v1/users/login/
-Not Found: /favicon.ico
-Unauthorized: /api/v1/switch/
-Unauthorized: /api/v1/router/
-Unauthorized: /api/v1/telecom-center/
-Unauthorized: /api/v1/dslam/
-Unauthorized: /api/v1/router/
-Unauthorized: /api/v1/users/login/
-Unauthorized: /api/v1/users/login/
-Unauthorized: /api/v1/users/login/
-Unauthorized: /api/v1/users/get_permission/
-Unauthorized: /api/v1/dslam/
-Unauthorized: /api/v1/dslam/
-Unauthorized: /api/v1/dslam/
