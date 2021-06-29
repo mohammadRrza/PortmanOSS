@@ -1452,3 +1452,15 @@ Not Found: /
 Internal Server Error: /api/v1/user/send_reset_password_link/
 Internal Server Error: /api/v1/user/send_reset_password_link/
 Internal Server Error: /api/v1/user/send_reset_password_link/
+Unauthorized: /api/v1/user/send_reset_password_link/
+Unauthorized: /api/v1/user/send_reset_password_link/
+Unauthorized: /api/v1/user/send_reset_password_link/
+Unauthorized: /api/v1/user/send_reset_password_link/
+Unauthorized: /api/v1/users/send_reset_password_link/
+Unauthorized: /api/v1/users/send_reset_password_link/
+Unauthorized: /api/v1/users/send_reset_password_link/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/send_reset_password_link/
+Method Not Allowed: /api/v1/users/send_reset_password_link/
+Method Not Allowed: /api/v1/users/send_reset_password_link/
+Method Not Allowed: /api/v1/users/send_reset_password_link/
