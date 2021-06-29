@@ -21,3 +21,15 @@ Not Found: /favicon.ico
 Unauthorized: /api/v1/users/login/
 Method Not Allowed: /api/v1/users/login/
 Not Found: /favicon.ico
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/telecom-center/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
