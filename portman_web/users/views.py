@@ -182,7 +182,7 @@ class UserViewSet(viewsets.ModelViewSet):
             mail_info.from_addr = 'oss-problems@pishgaman.net'
             mail_info.to_addr = user_mail
             mail_info.msg_body = 'eeeeeeeeeeeessssssssssssss'
-            mail_info.msg_subject = 'Reset Your OSS Password'
+            mail_info.msg_subject = 'Reset Your OSS Passwd'
             Mail.Send_Mail(mail_info)
             return JsonResponse(
                 {'row': "ddddd"})
