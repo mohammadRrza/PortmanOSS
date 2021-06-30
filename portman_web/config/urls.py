@@ -73,7 +73,6 @@ urlpatterns = [
     url(r'^apis-doc/v1/', schema_view),
     url(r'/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^admin/', admin.site.urls),
-    url(r'^api/v1/user/send_reset_password_link/$', SendResetPasswordLink.as_view(), name='send_reset_password_link'),
     url(r'^api/v1/dslamport/register-port/$', RegisterPortAPIView.as_view(), name='register-port'),
     url(r'^api/v1/dslamport/run-command/$', RunCommandAPIView.as_view(), name='run-command'),
     url(r'^api/v1/dslamport/port-status-report/$', PortStatusReportView.as_view(), name='port-status-report'),

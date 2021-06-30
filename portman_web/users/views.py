@@ -131,7 +131,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['POST'], detail=False, permission_classes=[], authentication_classes=[])
-
     def login(self, request):
         """
         Login User
@@ -174,6 +173,23 @@ class UserViewSet(viewsets.ModelViewSet):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+    @action(methods=['POST'], detail=False, permission_classes=[], authentication_classes=[])
+    def SendResetPasswordLink(self, request):
+        try:
+            user_mail = request.data.get('email')
+            mail_info = Mail()
+            mail_info.from_addr = 'oss-problems@pishgaman.net'
+            mail_info.to_addr = user_mail
+            mail_info.msg_body = 'eeeeeeeeeeeessssssssssssss'
+            mail_info.msg_subject = 'Reset Your OSS Password'
+            Mail.Send_Mail(mail_info)
+            return JsonResponse(
+                {'row': "ddddd"})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return Response({'message': str(ex) + "  // " + str(exc_tb.tb_lineno)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(methods=['GET'], detail=False)
     def get_permission(self, request):
@@ -437,22 +453,3 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
         UserPermissionProfileObject.objects.filter(user_permission_profile=instance).delete()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class SendResetPasswordLink(views.APIView):
-
-    def post(self, request, format=None):
-        try:
-            user_mail = request.data.get('email')
-            mail_info = Mail()
-            mail_info.from_addr = 'oss-problems@pishgaman.net'
-            mail_info.to_addr = user_mail
-            mail_info.msg_body = 'eeeeeeeeeeeessssssssssssss'
-            mail_info.msg_subject = 'Reset Your OSS Password'
-            Mail.Send_Mail(mail_info)
-            return JsonResponse(
-                {'row': "ddddd"})
-        except Exception as ex:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            return Response({'message': str(ex)+ "  // " + str(exc_tb.tb_lineno)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
