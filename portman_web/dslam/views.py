@@ -7345,9 +7345,8 @@ class LoadDslamPorts(views.APIView):
             cursor.execute(query)
             fd = open('dslam/insert_dslam_port.sql', 'r')
             sqlFile = fd.read()
-            print(sqlFile)
             fd.close()
-            insert_query = sqlFile;
+            insert_query = sqlFile
             cursor = connection.cursor()
             cursor.execute(insert_query)
             return JsonResponse({'row': port_count})
@@ -7356,5 +7355,28 @@ class LoadDslamPorts(views.APIView):
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class GetDslamPorts(views.APIView):
 
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            dslam_id = data.get('dslam_id')
+            slot = data.get('slot_number')
+            port = data.get('port_number')
+            dslamObj = DSLAM.objects.get(id=dslam_id)
+            params = param2()
+            params.type = 'dslamport'
+            params.is_queue = False
+            params.fqdn = dslamObj.fqdn
+            params.command = 'lcman show'
+            params.port_conditions = port_condition2()
+            params.port_conditions.slot_number = slot
+            params.port_conditions.port_number = port
+            params_json = json.dumps(params, default=lambda x: x.__dict__)
+            result = utility.dslam_port_run_command(dslamObj.pk, params.command, json.loads(params_json))
+            return JsonResponse({'row': result})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

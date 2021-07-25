@@ -571,6 +571,7 @@ class Zyxel(BaseDSLAM):
         command_class.HOST = dslam_info['ip']
         command_class.telnet_username = dslam_info['telnet_username']
         command_class.telnet_password = dslam_info['telnet_password']
+        print(command_class.run_command())
         return command_class.run_command()
 
     @classmethod

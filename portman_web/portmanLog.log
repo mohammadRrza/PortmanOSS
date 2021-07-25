@@ -1464,3 +1464,25 @@ Unauthorized: /api/v1/users/send_reset_password_link/
 Method Not Allowed: /api/v1/users/send_reset_password_link/
 Method Not Allowed: /api/v1/users/send_reset_password_link/
 Method Not Allowed: /api/v1/users/send_reset_password_link/
+Internal Server Error: /api/v1/dslamport/get_port_count/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Not Found: /favicon.ico
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/

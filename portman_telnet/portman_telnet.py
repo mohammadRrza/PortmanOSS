@@ -163,7 +163,6 @@ def register_client_queue():
     return request_q, fiberhomeAN2200_q, zyxel_q, fiberhomeAN5006_q, fiberhomeAN3300_q
 
 if __name__ == '__main__':
-    print(register_client_queue())
     request_q, fiberhomeAN2200_q, zyxel_q, fiberhomeAN5006_q, fiberhomeAN3300_q = register_client_queue()
     #manager = Manager()
     #telnet_dict = manager.dict()
