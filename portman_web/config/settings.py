@@ -41,10 +41,10 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['172.28.238.114', '5.202.129.160', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['172.28.238.114', '5.202.129.160', 'localhost', '127.0.0.1', 'portman.pishgaman.net']
 
 # Application definition
-SECURE_SSL_REDIRECT = False
+SECURE_SSL_REDIRECT = True
 INSTALLED_APPS = (
     'adminlte3',
     'adminlte3_theme',
