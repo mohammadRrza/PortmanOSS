@@ -12,6 +12,8 @@ class User(AbstractUser):
         ('SUPERVISOR', 'Supervisor'),
         ('SUPPORT', 'Support'),
         ('RESELLER', 'Reseller'),
+        ('DIRECTRESELLER', 'DirectReseller'),
+
     )
     type = models.CharField(max_length=20, choices=USER_TYPES, default='ADMIN')
     tel = models.CharField(max_length=15, blank=True, null=True)

@@ -16,6 +16,8 @@ import os
 from datetime import timedelta
 import posixpath
 
+from django.conf.global_settings import SECURE_SSL_REDIRECT
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -42,7 +44,7 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 ALLOWED_HOSTS = ['172.28.238.114', '5.202.129.160', 'localhost', '127.0.0.1']
 
 # Application definition
-
+SECURE_SSL_REDIRECT = False
 INSTALLED_APPS = (
     'adminlte3',
     'adminlte3_theme',

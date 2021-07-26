@@ -43,9 +43,7 @@ class Portman(object):
         self.__portman_factory.register_type('4948', C2960)
         self.__portman_factory.register_type('C3850', C2960)
         self.__portman_factory.register_type('C4500x', C2960)
-        self.__portman_factory.register_type('CCR1036', C2960)
         self.__portman_factory.register_type('ASR1002x', C2960)
-        self.__portman_factory.register_type('CCR1009', C2960)
         self.__portman_factory.register_type('C3750', C2960)
 
         # routers
@@ -76,6 +74,8 @@ class Portman(object):
         self.__portman_factory.register_type('RB1100AH', RB951Ui2HnD)
         self.__portman_factory.register_type('HexRB750', RB951Ui2HnD)
         self.__portman_factory.register_type('RB450', RB951Ui2HnD)
+        self.__portman_factory.register_type('CCR1036', RB951Ui2HnD)
+
 
     def __get_dslam_slot_port(self, slot_port_conditions, dslams_id):
         slot_number_from = slot_port_conditions.get('slot_number_from')
@@ -217,10 +217,8 @@ class Portman(object):
         task.params['port_indexes'] = list(port_objs.values('port_index', 'slot_number', 'port_number'))
 
     def _router_execute_command(self, task, is_queue=True, save_result=True):
-        print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR")
-        print((task.router_data))
-        print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR")
         router_class = self.__portman_factory.get_type(task.router_data['router_type'])
+        print(router_class)
         task_result = router_class.execute_command(
             task.router_data,
             task.command,
@@ -264,6 +262,10 @@ class Portman(object):
     def _execute_command(self, task, is_queue=True, save_result=True):
 
         dslam_class = self.__portman_factory.get_type(task.dslam_data['dslam_type'])
+        print(task.dslam_data)
+        print(task.command)
+        print(task.params)
+
         # return  dslam_class
         if task.params.get('port_conditions'):
             self.set_port_index(task)
@@ -275,6 +277,7 @@ class Portman(object):
 
         dslam_id = task.dslam_data['id']
         command = task.command
+        print(task_result)
         if task_result:
             if not isinstance(task_result, bool):
                 if task.params["type"] == 'dslamport':

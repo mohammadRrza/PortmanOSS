@@ -60,7 +60,9 @@ class PortEnable(BaseCommand):
             print('******************************************')
             return dict(result="ports was enabled", port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
+            print('77777777777777777777777777777777777777777777777777')
             print(e)
+            print('77777777777777777777777777777777777777777777777777')
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
