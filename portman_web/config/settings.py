@@ -49,7 +49,6 @@ INSTALLED_APPS = (
     'adminlte3',
     'adminlte3_theme',
     # 'django.contrib.admin',
-    'werkzeug_debugger_runserver',
     'django.contrib.staticfiles',
     'django_extensions',
     'django.contrib.admin.apps.SimpleAdminConfig',
