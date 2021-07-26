@@ -69,6 +69,8 @@ INSTALLED_APPS = (
     'router',
     'switch',
     'contact',
+    'sslserver',
+
 )
 
 MIDDLEWARE = (
