@@ -20,15 +20,16 @@ class GetbackUp():
                                    allow_agent=False,
                                    look_for_keys=False)
                     stdin, stdout, stderr = client.exec_command('show run')
-                    f = open("~/backup/{0}_{1}.txt".format(
+                    f = open("/home/mrtbadboy/backup/{0}_{1}.txt".format(
                         SwitchObj.device_fqdn, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                     for line in stdout:
                         f.write(line.strip('\n'))
                     f.close()
                     client.close()
                 except Exception as ex:
+                    print(str(ex)+" "+"30")
                     exc_type, exc_obj, exc_tb = sys.exc_info()
-                    f = open("~/backup/Error_{0}_{1}.txt".format(
+                    f = open("/home/mrtbadboy/backup/Error_{0}_{1}.txt".format(
                         SwitchObj.device_fqdn, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                     f.write(str(ex) + "  // " + str(exc_tb.tb_lineno))
                     f.close()
@@ -42,15 +43,16 @@ class GetbackUp():
                                    allow_agent=False,
                                    look_for_keys=False)
                     stdin, stdout, stderr = client.exec_command('export verbose terse')
-                    f = open("~/backup/{0}_{1}.txt".format(
+                    f = open("/home/mrtbadboy/backup/{0}_{1}.txt".format(
                         RouterObj.device_fqdn, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                     for line in stdout:
                         f.write(line.strip('\n'))
                     f.close()
                     client.close()
                 except Exception as ex:
+                    print(str(ex)+" "+"54")
                     exc_type, exc_obj, exc_tb = sys.exc_info()
-                    f = open("~/backup/Error_{0}_{1}.txt".format(
+                    f = open("/home/mrtbadboy/backup/Error_{0}_{1}.txt".format(
                         RouterObj.device_fqdn, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                     f.write(str(ex) + "  // " + str(exc_tb.tb_lineno))
                     f.close()
