@@ -17,6 +17,7 @@ class GetbackUp():
             for SwitchObj in SwitchObjs:
                 try:
                     client.connect(SwitchObj.device_ip, username=SwitchObj.SSH_username, password=SwitchObj.SSH_password,
+                                   port=1001, timeout=10,
                                    allow_agent=False,
                                    look_for_keys=False)
                     stdin, stdout, stderr = client.exec_command('show run')
@@ -40,6 +41,7 @@ class GetbackUp():
                 try:
                     '''print(RouterObj.device_ip+'  ' + RouterObj.SSH_username+' ' + RouterObj.SSH_password)'''
                     client.connect(RouterObj.device_ip, username=RouterObj.SSH_username, password=RouterObj.SSH_password,
+                                   port=1001, timeout=10,
                                    allow_agent=False,
                                    look_for_keys=False)
                     stdin, stdout, stderr = client.exec_command('export verbose terse')
