@@ -163,7 +163,7 @@ class SwitchCommandViewSet(mixins.ListModelMixin,
             return []
 
 
-path = '/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/Backups/'
+path = '/home/taher/backup/cisco_switches/'
 
 
 class GetBackupFilesNameAPIView(views.APIView):

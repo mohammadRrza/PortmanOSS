@@ -191,7 +191,7 @@ class RouterCommandViewSet(mixins.ListModelMixin,
             return []
 
 
-path = '/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/Backups/'
+path = '/home/taher/mikrotik_routers/backup/'
 
 
 class GetRouterBackupFilesNameAPIView(views.APIView):
