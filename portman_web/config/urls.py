@@ -149,7 +149,7 @@ urlpatterns = [
     url(r'^api/v1/router/get_router_backup_error_file/$', GetRouterBackupErrorFilesNameAPIView.as_view(),
         name='get_router_backup_error_file'),
     url(r'^api/v1/router-command/read_router_backup_error_files_name/$', ReadRouterBackupErrorFilesNameAPIView.as_view(),
-        name='routerRunCommand'),
+        name='read_router_backup_error_files_name'),
 
     # Switches
     url(r'^api/v1/switch/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),
@@ -159,6 +159,8 @@ urlpatterns = [
         name='get_backup_error_file'),
     url(r'^api/v1/switch/get_backup_error_text/$', GetBackupErrorTextNameAPIView.as_view(),
         name='get_backup_error_file'),
+    url(r'^api/v1/switch/read_switch_backup_error_files_name/$', ReadSwitchBackupErrorFilesNameAPIView.as_view(),
+        name='read_switch_backup_error_files_name'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 

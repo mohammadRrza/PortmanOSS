@@ -1488,3 +1488,5 @@ Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Not Found: /api/v1/router-comm/read_router_backup_error_files_name/
 Method Not Allowed: /api/v1/router-command/read_router_backup_error_files_name/
+Not Found: /favicon.ico
+Not Found: /static/rest_framework/img/grid.png
