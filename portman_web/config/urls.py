@@ -148,6 +148,8 @@ urlpatterns = [
     url(r'^api/v1/router/download_router_backup_file/$', DownloadRouterBackupFileAPIView.as_view(), name='download_router_backup_file'),
     url(r'^api/v1/router/get_router_backup_error_file/$', GetRouterBackupErrorFilesNameAPIView.as_view(),
         name='get_router_backup_error_file'),
+    url(r'^api/v1/router-command/read_router_backup_error_files_name/$', ReadRouterBackupErrorFilesNameAPIView.as_view(),
+        name='routerRunCommand'),
 
     # Switches
     url(r'^api/v1/switch/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),

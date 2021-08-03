@@ -191,7 +191,7 @@ class RouterCommandViewSet(mixins.ListModelMixin,
             return []
 
 
-path = '/home/taher/mikrotik_routers/backup/'
+path = '/home/taher/backup/mikrotik_routers/'
 
 
 class GetRouterBackupFilesNameAPIView(views.APIView):
@@ -241,5 +241,28 @@ class GetRouterBackupErrorFilesNameAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class ReadRouterBackupErrorFilesNameAPIView(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            filenames = []
+            directory = path
+            backup_errors_file = open(path+'backup_errors.txt', 'w')
+            for filename in os.listdir(directory):
+                if filename.__contains__('Error'):
+                    f = open(directory+filename, "r")
+                    backup_errors_file.write(filename+'     '+f.read()+'\n')
+                    f.close()
+                else:
+                    continue
+            backup_errors_file.close()
+            return JsonResponse({'response': filenames})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
 
 
