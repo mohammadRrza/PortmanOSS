@@ -191,7 +191,7 @@ class RouterCommandViewSet(mixins.ListModelMixin,
             return []
 
 
-path = '/home/mrtbadboy/backup/mikrotik_routers/'
+path = '/home/taher/backup/mikrotik_routers/'
 
 
 class GetRouterBackupFilesNameAPIView(views.APIView):
