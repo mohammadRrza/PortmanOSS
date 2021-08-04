@@ -239,6 +239,8 @@ class ReadSwitchBackupErrorFilesNameAPIView(views.APIView):
 
     def post(self, request, format=None):
         try:
+            if os.path.exists(path + 'switch_backup_errors.txt'):
+                os.remove(path + 'switch_backup_errors.txt')
             filenames = []
             directory = path
             backup_errors_file = open(path+'switch_backup_errors.txt', 'w')
