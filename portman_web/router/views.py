@@ -249,7 +249,7 @@ class ReadRouterBackupErrorFilesNameAPIView(views.APIView):
         try:
             filenames = []
             directory = path
-            backup_errors_file = open(path+'backup_errors.txt', 'w')
+            backup_errors_file = open(path+'router_backup_errors.txt', 'w')
             for filename in os.listdir(directory):
                 if filename.__contains__('Error'):
                     f = open(directory+filename, "r")
