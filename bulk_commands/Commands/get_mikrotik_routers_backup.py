@@ -28,13 +28,14 @@ class GetMikrotikbackUp():
                                    allow_agent=False,
                                    look_for_keys=False)
                     stdin, stdout, stderr = client.exec_command('export verbose terse')
+                    client.close()
                     f = open("/home/taher/backup/mikrotik_routers/{0}_{1}.txt".format(
                         RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                     stdin.flush()
                     for line in stdout:
                         f.write(line.strip('\n'))
                     f.close()
-                    client.close()
+
                 except Exception as ex:
                     print(str(ex)+" "+"35_mik")
                     exc_type, exc_obj, exc_tb = sys.exc_info()
