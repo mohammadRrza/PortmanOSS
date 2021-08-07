@@ -24,7 +24,7 @@ class ShowRun(BaseCommand):
             client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False,
                            look_for_keys=False)
             stdin, stdout, stderr = client.exec_command('show run')
-            f = open("/opt/portmanv3/portman_core2/switch_vendors/cisco_commands/Backups/{0}_{1}.txt".format(
+            f = open("/home/taher/backup/cisco_switches/{0}_{1}.txt".format(
                 self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
             for line in stdout:
                 f.write(line.strip('\n'))
