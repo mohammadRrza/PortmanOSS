@@ -22,13 +22,13 @@ class ExportVerboseTerse(BaseCommand):
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False, look_for_keys=False)
             stdin, stdout, stderr = client.exec_command(self.__Command)
-            f = open("/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/Backups/{0}_{1}.txt".format(
+            f = open("/home/taher/backup/mikrotik_routers/{0}_{1}.txt".format(
                 self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
             for line in stdout:
                 f.write(line.strip('\n'))
             f.close()
             client.close()
-            return "Ok"
+            return "Backup File named Backups/{0}_{1}.txt has been created.".format(self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return str(ex) + "  // " + str(exc_tb.tb_lineno)
