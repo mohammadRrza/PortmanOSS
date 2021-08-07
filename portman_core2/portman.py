@@ -57,6 +57,7 @@ class Portman(object):
         self.__portman_factory.register_type('RB3011UiAS', RB951Ui2HnD)
         self.__portman_factory.register_type('RB2011', RB951Ui2HnD)
         self.__portman_factory.register_type('RB750R2', RB951Ui2HnD)
+        self.__portman_factory.register_type('CCR1009', RB951Ui2HnD)
         self.__portman_factory.register_type('750Gr3hEX', RB951Ui2HnD)
         self.__portman_factory.register_type('RB1100Ahx2', RB951Ui2HnD)
         self.__portman_factory.register_type('RB750Gr3', RB951Ui2HnD)
