@@ -8,6 +8,9 @@ from .fiberhomeAN3300_commands.show_mac_with_port import ShowMacWithPort
 from .fiberhomeAN3300_commands.show_profiles import ShowProfiles
 from .fiberhomeAN3300_commands.set_port_profiles import SetPortProfile
 from .fiberhomeAN3300_commands.add_to_vlan import AddToVlan
+from .fiberhomeAN3300_commands.show_service import ShowService
+from .fiberhomeAN3300_commands.show_shelf import ShowShelf
+
 
 class FiberhomeAN3300(BaseDSLAM):
     command_factory = CommandFactory()
@@ -15,6 +18,8 @@ class FiberhomeAN3300(BaseDSLAM):
     command_factory.register_type('show mac by slot port', ShowMacWithPort)
     command_factory.register_type('setPortProfiles', SetPortProfile)
     command_factory.register_type('add to vlan', AddToVlan)
+    command_factory.register_type('show service', ShowService)
+    command_factory.register_type('Show Shelf', ShowShelf)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))

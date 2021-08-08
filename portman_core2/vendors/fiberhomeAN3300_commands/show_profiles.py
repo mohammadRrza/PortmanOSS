@@ -43,16 +43,16 @@ class ShowProfiles(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write('{0}\r\n'.format("admin"))
-            tn.write('{0}\r\n'.format(self.__access_name))
-            tn.write("cd profile\r\n")
-            tn.write("show all dsl-profile-name"+"\r\n")
-            result1 = tn.read_until("--Press any key to continue Ctrl+c to stop--")
-            tn.write("\r\n")
-            result2 = tn.read_until("number")
+            tn.write('{0}\r\n'.format("admin").encode('utf-8'))
+            tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            tn.write(b"cd profile\r\n")
+            tn.write(b"show all dsl-profile-name\r\n")
+            result1 = tn.read_until(b"--Press any key to continue Ctrl+c to stop--")
+            tn.write(b"\r\n")
+            result2 = tn.read_until(b"number")
             result = result1+result2
             tn.close()
-            return result
+            return str(result)
 
         except (EOFError, socket_error) as e:
             print(e)

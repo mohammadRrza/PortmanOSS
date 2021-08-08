@@ -5501,7 +5501,7 @@ class GetPortInfoByIdAPIView(views.APIView):
 class FiberHomeCommandAPIView(views.APIView):
 
     def get_permissions(self):
-        return (permissions.IsAuthenticated(),)
+        return permissions.IsAuthenticated(),
 
     def post(self, request, format=None):
         device_ip = get_device_ip(request)
@@ -5516,8 +5516,7 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show linerate'
             elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles':
                 command = 'profile adsl show'
-            elif (
-                    command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles'):
+            elif command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles':
                 command = 'setPortProfiles'
             elif command == 'selt show' or command == 'show selt' or command == 'selt' or command == 'showSelt':
                 command = 'showSelt'
@@ -5526,28 +5525,32 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'port enable'
             elif command == 'close port' or command == 'port disable':
                 command = 'port disable'
-            elif (command == 'show mac slot port' or command == 'showmacslotport'):
+            elif command == 'show mac slot port' or command == 'showmacslotport':
                 command = 'show mac by slot port'
-            elif (command == 'show port with mac' or command == 'show port mac'):
+            elif command == 'show port with mac' or command == 'show port mac':
                 command = 'show port with mac'
-            elif (command == 'Show VLAN' or command == 'VLAN Show '):
+            elif command == 'Show VLAN' or command == 'VLAN Show ':
                 command = 'Show VLAN'
+            elif command == 'Show Service' or command == 'show service':
+                command = 'show service'
+            elif command == 'Show Shelf' or command == 'show shelf':
+                command = 'Show Shelf'
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
-            if (dslam_type == 1):  # zyxel
+            if dslam_type == 1:  # zyxel
                 return JsonResponse({'Result': dslam_type})
-            elif (dslam_type == 2):  # huawei
+            elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})
-            elif (dslam_type == 3):  # fiberhomeAN3300
-                if (command == 'show mac by slot port'):
+            elif dslam_type == 3:  # fiberhomeAN3300
+                if command == 'show mac by slot port':
                     return JsonResponse({'Result': result})
-                elif (command == 'show linerate'):
+                elif command == 'show linerate':
                     port_items = {}
                     for item in result.split("\r\n"):
-                        if ('Port state' in item):
+                        if 'Port state' in item:
                             if ('Down' in item):
                                 return JsonResponse({'Result': 'Port is Down.'})
-                        if ('DownStream rate' in item):
+                        if 'DownStream rate' in item:
                             port_stream_rate = [int(c) for c in item.split() if c.isdigit()]
                             port_items['DownStream rate'] = port_stream_rate[0]
                             port_items['UpStream rate'] = port_stream_rate[1]
@@ -5558,12 +5561,12 @@ class FiberHomeCommandAPIView(views.APIView):
                             # return JsonResponse({'port_items':port_items,'Result': result.split("\r\n")})
 
                     return JsonResponse({'result': port_items})
-                elif (command == 'profile adsl show'):
-                    return JsonResponse({'result': result.split("\r\n")})
-                elif (command == 'setPortProfiles'):
-                    if ('Unknown command' in result):
+                elif command == 'profile adsl show':
+                    return JsonResponse({'result': result.split("\\r\\n")})
+                elif command == 'setPortProfiles':
+                    if 'Unknown command' in result:
                         return JsonResponse({'result': 'Unknown command. Please check the parameters.'})
-                    if ('not exist' in result):
+                    if 'not exist' in result:
                         return JsonResponse(
                             {'result': 'Profile {0} dose not exist.'.format(params.get('new_lineprofile'))})
                     else:
@@ -5571,6 +5574,12 @@ class FiberHomeCommandAPIView(views.APIView):
                             {'result': 'port profile has been changed to {0} .'.format(params.get('new_lineprofile'))})
 
                     return JsonResponse({'result': result.split("\r\n")})
+                elif command == 'show service':
+                    return JsonResponse({'result': result.split("\\r\\n")})
+                elif command == 'Show Shelf':
+                    result = result.split("\\r\\n")
+                    result = [re.sub(r'--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}[-\d\w]', val)]
+                    return JsonResponse({'result': result})
 
                 return JsonResponse({'Result': result})
             elif (dslam_type == 4):  # fiberhomeAN2200
@@ -7377,6 +7386,6 @@ class GetDslamPorts(views.APIView):
             return JsonResponse({'row': result})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return str(ex) + "  // " + str(exc_tb.tb_lineno)
 
