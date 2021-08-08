@@ -13,7 +13,7 @@ class GetMikrotikbackUp():
     def run_command(self):
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            query = "select * from zabbix_hosts where device_brand = 'mikrotik' and device_type = 'router_board' and device_ip <> '172.20.25.4'"
+            query = "select * from zabbix_hosts where device_brand = 'mikrotik' and device_type = 'router_board'"
             cursor = connection.cursor()
             cursor.execute(query)
             RouterObjs = cursor.fetchall()
