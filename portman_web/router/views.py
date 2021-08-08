@@ -1,3 +1,4 @@
+import datetime
 import sys, os
 from datetime import time
 from django.core.exceptions import ObjectDoesNotExist
@@ -253,7 +254,7 @@ class ReadRouterBackupErrorFilesNameAPIView(views.APIView):
             directory = path
             backup_errors_file = open(path+'router_backup_errors.txt', 'w')
             for filename in os.listdir(directory):
-                if filename.__contains__('Error'):
+                if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date())):
                     f = open(directory+filename, "r")
                     backup_errors_file.write(filename+'     '+f.read()+'\n')
                     f.close()
