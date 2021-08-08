@@ -21,3 +21,9 @@ Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Unauthorized: /api/v1/switch/get_backup_error_file/
 Unauthorized: /api/v1/telecom-center/
+Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
