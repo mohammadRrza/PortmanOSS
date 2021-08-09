@@ -5371,7 +5371,7 @@ class GetDslamBackupAPIView(views.APIView):
                     result = utility.dslam_port_run_command(dslam_obj.pk, 'get config', json.loads(params))
                     os.mkdir('{0}/{1}-{2}'.format('/opt/PortMan/backs', telecom_center, dslam_obj.ip))
                     with open('{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/backs', telecom_center, dslam_obj.ip,
-                                                               telecom_center, dslam_obj.ip), 'w')  as text_file:
+                                                               telecom_center, dslam_obj.ip), 'w') as text_file:
                         text_file.write("backUp Text: %s" % result['results'])
                 except Exception as ex:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -5379,7 +5379,7 @@ class GetDslamBackupAPIView(views.APIView):
                     os.mkdir('{0}/{1}-{2}'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip))
                     with open(
                             '{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip,
-                                                             telecom_center, dslam_obj.ip), 'w')  as text_file:
+                                                             telecom_center, dslam_obj.ip), 'w') as text_file:
                         text_file.write("Error: %s" % str(ex))
 
             return JsonResponse({'result': 'OK'}, status=status.HTTP_201_CREATED)
@@ -5424,7 +5424,7 @@ class SetTimeAllDslamsAPIView(views.APIView):
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                     os.mkdir('{0}/{1}-{2}'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip))
                     with open('{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/timeErrors', telecom_center, dslam_obj.ip,
-                                                               telecom_center, dslam_obj.ip), 'w')  as text_file:
+                                                               telecom_center, dslam_obj.ip), 'w') as text_file:
                         text_file.write("Error: %s" % str(ex))
 
             return JsonResponse({'result': 'OK'}, status=status.HTTP_201_CREATED)
@@ -5512,7 +5512,7 @@ class FiberHomeCommandAPIView(views.APIView):
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
         try:
-            if command == 'show linerate' or command == 'showPort' or command == 'showport' or command == 'show port':
+            if command == 'show linerate':
                 command = 'show linerate'
             elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles':
                 command = 'profile adsl show'
@@ -5535,6 +5535,18 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show service'
             elif command == 'Show Shelf' or command == 'show shelf':
                 command = 'Show Shelf'
+            elif command == 'showPort' or command == 'showport' or command == 'show port':
+                command = 'show port'
+            elif command == 'port reset' or command == 'reset port':
+                command = 'port reset'
+            elif command == 'save config':
+                command = 'save config'
+            elif command == 'ip show' or command == 'show ip' or command == 'IP Show':
+                command = 'IP Show'
+            elif command == 'show snmp community' or command == 'sys snmp show' or command == 'snmp show':
+                command = 'show snmp community'
+            elif command == 'show time' or command == 'show uptime' or command == 'Show UpTime':
+                command = 'show time'
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  # zyxel
@@ -5543,12 +5555,13 @@ class FiberHomeCommandAPIView(views.APIView):
                 return JsonResponse({'Result': dslam_type})
             elif dslam_type == 3:  # fiberhomeAN3300
                 if command == 'show mac by slot port':
-                    return JsonResponse({'Result': result})
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
                 elif command == 'show linerate':
                     port_items = {}
                     for item in result.split("\r\n"):
                         if 'Port state' in item:
-                            if ('Down' in item):
+                            if 'Down' in item:
                                 return JsonResponse({'Result': 'Port is Down.'})
                         if 'DownStream rate' in item:
                             port_stream_rate = [int(c) for c in item.split() if c.isdigit()]
@@ -5585,57 +5598,84 @@ class FiberHomeCommandAPIView(views.APIView):
                     result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                               re.search(r'\s{4,}[-\d\w]', val)]
                     return JsonResponse({'result': result})
+                elif command == 'show port':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if
+                              re.search(r'\s{4,}[-\d\w:]|-{5,}', val)]
+                    return JsonResponse({'result': result})
+                elif command == 'port disable':
+                    return JsonResponse({'result': result})
+                elif command == 'port enable':
+                    return JsonResponse({'result': result})
+                elif command == 'port reset':
+                    return JsonResponse({'result': result})
+                elif command == 'save config':
+                    return JsonResponse({'result': result})
+                elif command == 'Show VLAN':
+                    return JsonResponse({'result': result})
+                elif command == 'IP Show':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'\s+:', val)]
+                    return JsonResponse({'result': result})
+                elif command == 'show snmp community':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'Community', val)]
+                    return JsonResponse({'result': result})
+                elif command == 'show time':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'(is :|Start)', val)]
+                    return JsonResponse({'result': result})
 
                 return JsonResponse({'Result': result})
-            elif (dslam_type == 4):  # fiberhomeAN2200
-                if (command == 'show mac by slot port'):
+            elif dslam_type == 4:  # fiberhomeAN2200
+                if command == 'show mac by slot port':
                     return JsonResponse({'Result': result})
-                elif (command == 'show port with mac'):
+                elif command == 'show port with mac':
                     return JsonResponse({'Result': result})
 
-            elif (dslam_type == 5):  # fiberhomeAN5006
-                if (command == 'show mac by slot port'):
+            elif dslam_type == 5:  # fiberhomeAN5006
+                if command == 'show mac by slot port':
                     # return JsonResponse({'Result': result})
 
-                    if ('there is no mac address learned' in result):
+                    if 'there is no mac address learned' in result:
                         return JsonResponse({'Result': 'there is no mac address in accordance with this port.'})
                     else:
                         return JsonResponse({'Result': result.split("\r\n")})
-                elif (command == 'show linerate'):
+                elif command == 'show linerate':
                     port_list = []
                     for item in result.split("\r\n"):
-                        if ('SNR margin' in item):
+                        if 'SNR margin' in item:
                             port_list.append(item.replace("\t", "/"))
-                        if ('Actual Line bit rate' in item):
+                        if 'Actual Line bit rate' in item:
                             port_list.append(item.replace("\t", "/"))
-                        if ('Attainable bit rate' in item):
+                        if 'Attainable bit rate' in item:
                             port_list.append(item.replace("\t", "/"))
 
                     return JsonResponse({'response': port_list, 'DslamType': 'fiberhomeAN5006'})
-                elif (command == 'profile adsl show'):
+                elif command == 'profile adsl show':
                     portrofiles_list = []
                     for item in result.split("\r\n"):
-                        if ('name' in item):
+                        if 'name' in item:
                             portrofiles_list.append(item.split(":")[1].replace(' ', ''))
                     return JsonResponse({'response': portrofiles_list, 'DslamType': 'fiberhomeAN5006'})
-                elif (command == 'setPortProfiles'):
-                    if ('not profile named' in result):
+                elif command == 'setPortProfiles':
+                    if 'not profile named' in result:
                         return JsonResponse(
                             {'response': "there's not profile named {0}.".format(params.get('new_lineprofile')),
                              'DslamType': 'fiberhomeAN5006'})
-                    elif ('Unknown command' in result):
+                    elif 'Unknown command' in result:
                         return JsonResponse({'response': "The Command is Unknown.Please Check the parameters.",
                                              'DslamType': 'fiberhomeAN5006'})
                     else:
                         # return JsonResponse({ 'response': "Port profile has been changed to {0}.".format(params.get('new_lineprofile')) ,'DslamType': 'fiberhomeAN5006'})
                         return JsonResponse({'response': result.split("\r\n"), 'DslamType': 'fiberhomeAN5006'})
-                elif (command == 'showSelt'):
+                elif command == 'showSelt':
                     for item in result.split("\r\n"):
-                        if ('Loop length' in item):
+                        if 'Loop length' in item:
                             return JsonResponse({'Selt': item.split(',')[1].split()[2] + " " + "m"})
 
                     return JsonResponse({'response': result.split("\r\n")})
-            elif (dslam_type == 7):  # zyxel1248
+            elif dslam_type == 7:  # zyxel1248
                 return JsonResponse({'Result': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -5645,7 +5685,7 @@ class FiberHomeCommandAPIView(views.APIView):
 
 class RunCommandByIPAPIView(views.APIView):
     def get_permissions(self):
-        return (permissions.IsAuthenticated(),)
+        return permissions.IsAuthenticated(),
 
     def post(self, request, format=None):
         try:
@@ -7354,7 +7394,8 @@ class LoadDslamPorts(views.APIView):
             del_query = 'DELETE from "portInfo"'
             cursor = connection.cursor()
             cursor.execute(del_query)
-            query = 'INSERT INTO "public"."portInfo"("Card", "Port", "dslam_id") select card.c, port.p,{0} from (select generate_series(1, {1}) as c) card cross join (select generate_series(1, {2}) as p) port'.format(dslam_id, slot_count, port_count)
+            query = 'INSERT INTO "public"."portInfo"("Card", "Port", "dslam_id") select card.c, port.p,{0} from (select generate_series(1, {1}) as c) card cross join (select generate_series(1, {2}) as p) port'.format(
+                dslam_id, slot_count, port_count)
             cursor = connection.cursor()
             cursor.execute(query)
             fd = open('dslam/insert_dslam_port.sql', 'r')
@@ -7368,6 +7409,7 @@ class LoadDslamPorts(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class GetDslamPorts(views.APIView):
 
@@ -7393,4 +7435,3 @@ class GetDslamPorts(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return str(ex) + "  // " + str(exc_tb.tb_lineno)
-

@@ -10,6 +10,15 @@ from .fiberhomeAN3300_commands.set_port_profiles import SetPortProfile
 from .fiberhomeAN3300_commands.add_to_vlan import AddToVlan
 from .fiberhomeAN3300_commands.show_service import ShowService
 from .fiberhomeAN3300_commands.show_shelf import ShowShelf
+from .fiberhomeAN3300_commands.show_port import ShowPort
+from .fiberhomeAN3300_commands.close_port import ClosePort
+from .fiberhomeAN3300_commands.open_port import OpenPort
+from .fiberhomeAN3300_commands.reset_port import ResetPort
+from .fiberhomeAN3300_commands.save_config import SaveConfig
+from .fiberhomeAN3300_commands.show_pvc_vlan import ShowVLAN
+from .fiberhomeAN3300_commands.ip_show import IPShow
+from .fiberhomeAN3300_commands.sys_snmp_show import SnmpShow
+from .fiberhomeAN3300_commands.show_time import ShowUpTime
 
 
 class FiberhomeAN3300(BaseDSLAM):
@@ -20,6 +29,15 @@ class FiberhomeAN3300(BaseDSLAM):
     command_factory.register_type('add to vlan', AddToVlan)
     command_factory.register_type('show service', ShowService)
     command_factory.register_type('Show Shelf', ShowShelf)
+    command_factory.register_type('show port', ShowPort)
+    command_factory.register_type('port disable', ClosePort)
+    command_factory.register_type('port enable', OpenPort)
+    command_factory.register_type('port reset', ResetPort)
+    command_factory.register_type('save config', SaveConfig)
+    command_factory.register_type('Show VLAN', ShowVLAN)
+    command_factory.register_type('IP Show', IPShow)
+    command_factory.register_type('show snmp community', SnmpShow)
+    command_factory.register_type('show time', ShowUpTime)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))

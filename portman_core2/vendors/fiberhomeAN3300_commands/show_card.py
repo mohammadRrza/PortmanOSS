@@ -5,13 +5,13 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowPort(BaseCommand):
+class ShowCard(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name', 'an3300')
+        self.__access_name = params.get('access_name','an3300')
         self.port_conditions = params.get('port_conditions')
 
     @property
@@ -46,11 +46,10 @@ class ShowPort(BaseCommand):
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             tn.read_until(b"Password:")
-            tn.write(b'admin\r\n')
+            tn.write('{0}\r\n'.format("admin").encode('utf-8'))
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
             tn.write(b"cd device\r\n")
-            tn.write("show port {0}:{1}\r\n\r\n".format(self.port_conditions['slot_number'],
-                                                        self.port_conditions['port_number']).encode('utf-8'))
+            tn.write("show port {0}:{1}\r\n\r\n".format(self.port_conditions['slot_number'],self.port_conditions['port_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
