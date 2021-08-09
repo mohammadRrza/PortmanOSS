@@ -5562,7 +5562,10 @@ class FiberHomeCommandAPIView(views.APIView):
 
                     return JsonResponse({'result': port_items})
                 elif command == 'profile adsl show':
-                    return JsonResponse({'result': result.split("\\r\\n")})
+                    result = result.split("\\r\\n")
+                    result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
+                              re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
+                    return JsonResponse({'result': result})
                 elif command == 'setPortProfiles':
                     if 'Unknown command' in result:
                         return JsonResponse({'result': 'Unknown command. Please check the parameters.'})
@@ -5575,10 +5578,12 @@ class FiberHomeCommandAPIView(views.APIView):
 
                     return JsonResponse({'result': result.split("\r\n")})
                 elif command == 'show service':
-                    return JsonResponse({'result': result.split("\\r\\n")})
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'Service', val)]
                 elif command == 'Show Shelf':
                     result = result.split("\\r\\n")
-                    result = [re.sub(r'--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}[-\d\w]', val)]
+                    result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
+                              re.search(r'\s{4,}[-\d\w]', val)]
                     return JsonResponse({'result': result})
 
                 return JsonResponse({'Result': result})
