@@ -166,7 +166,7 @@ class SwitchCommandViewSet(mixins.ListModelMixin,
 
 
 home = str(Path.home())
-path = home+'/backup/cisco_switches/'
+path = '/home/taher/backup/cisco_switches/'
 
 
 class GetBackupFilesNameAPIView(views.APIView):

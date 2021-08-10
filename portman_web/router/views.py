@@ -195,7 +195,7 @@ class RouterCommandViewSet(mixins.ListModelMixin,
 
 
 home = str(Path.home())
-path = home+'/backup/mikrotik_routers/'
+path = '/home/taher/backup/cisco_switches/'
 
 class GetRouterBackupFilesNameAPIView(views.APIView):
     def post(self, request, format=None):
