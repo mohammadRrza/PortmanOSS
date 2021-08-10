@@ -33,3 +33,14 @@ Forbidden: /api/v1/dslam/events/
 Forbidden: /api/v1/dslamport/events/
 Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
 Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
+Unauthorized: /api/v1/router-command/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/get_interface_traffic_input/
+Unauthorized: /api/v1/dslam/get_dslams_packet_loss_count/
+Unauthorized: /api/v1/dslam/events/
+Unauthorized: /api/v1/dslamport/events/
