@@ -11,7 +11,7 @@ class GetCiscoSwitchbackUp():
         pass
 
     def run_command(self):
-        home = str(Path.home())
+        home = "/home/taher"#str(Path.home())
         print("=============================================")
         print("Switch Backup Process has been started...")
         print("=============================================")
