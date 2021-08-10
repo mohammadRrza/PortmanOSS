@@ -19,10 +19,12 @@ class GetMikrotikbackUp():
         cursor = connection.cursor()
         cursor.execute(query)
         RouterObjs = cursor.fetchall()
+        num = 0
         for RouterObj in RouterObjs:
             try:
+                num = num+1
                 print("=============================================")
-                print(RouterObj[2])
+                print(str(num)+'. '+RouterObj[2])
                 print("=============================================")
                 client.connect(RouterObj[2], username='mik-backup',
                                password='eS7*XiMmyeeU',
@@ -30,14 +32,14 @@ class GetMikrotikbackUp():
                                allow_agent=False,
                                look_for_keys=False)
                 stdin, stdout, stderr = client.exec_command('export verbose terse')
-                client.close()
+
                 f = open(home+"/backup/mikrotik_routers/{0}_{1}.txt".format(
                     RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
-                stdin.flush()
+
                 for line in stdout:
                     f.write(line.strip('\n'))
                 f.close()
-
+                client.close()
             except Exception as ex:
                 print(str(ex) + " " + "35_mik")
                 exc_type, exc_obj, exc_tb = sys.exc_info()

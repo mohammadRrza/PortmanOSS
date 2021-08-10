@@ -34,13 +34,13 @@ class GetCiscoSwitchbackUp():
                                allow_agent=False,
                                look_for_keys=False)
                 stdin, stdout, stderr = client.exec_command('show run')
-                client.close()
                 f = open(home+"/backup/cisco_switches/{0}_{1}.txt".format(
                     SwitchObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                 stdin.flush()
                 for line in stdout:
                     f.write(line.strip('\n'))
                 f.close()
+                client.close()
 
             except Exception as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
