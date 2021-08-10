@@ -5,7 +5,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowProfiles(BaseCommand):
+class ShowMac(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
@@ -43,20 +43,11 @@ class ShowProfiles(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
+            tn.write(b"cd device\r\n")
+            tn.write("show linecard fdb interface {0}/ 1-64\r\n\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
-            tn.write(b"cd qos\r\n")
-            time.sleep(0.1)
-            tn.write(b"show rate-limit profile all\r\n")
             tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"end\r\n")
+            tn.write("end\r\n".encode('utf-8'))
             result = tn.read_until(b"end")
             tn.close()
             return str(result)
@@ -69,4 +60,4 @@ class ShowProfiles(BaseCommand):
 
         except Exception as e:
             print(e)
-            return str(e)
+            return "error"

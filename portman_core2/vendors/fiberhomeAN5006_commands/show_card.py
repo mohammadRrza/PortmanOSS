@@ -5,7 +5,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowProfiles(BaseCommand):
+class ShowCard(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
@@ -45,17 +45,18 @@ class ShowProfiles(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             tn.read_until(b"Password:")
             time.sleep(0.5)
-            tn.write(b"cd qos\r\n")
+            tn.write(b"cd service\r\n")
             time.sleep(0.1)
-            tn.write(b"show rate-limit profile all\r\n")
+            tn.write("telnet Slot {0}".format(self.port_conditions['slot_number']).encode('utf-8'))
             tn.write(b"\r\n")
             time.sleep(0.1)
-            tn.write(b"\r\n")
+            tn.write(b"cd dsp\r\n")
             time.sleep(0.1)
             tn.write(b"\r\n")
             time.sleep(0.1)
-            tn.write(b"\r\n")
+            tn.write(b"show all port state\r\n")
             time.sleep(0.1)
+            tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()

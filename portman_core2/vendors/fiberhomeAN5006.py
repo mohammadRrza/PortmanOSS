@@ -16,6 +16,10 @@ from .fiberhomeAN5006_commands.show_mac_by_port import ShowMacSlotPort
 from .fiberhomeAN5006_commands.show_profiles import ShowProfiles
 from .fiberhomeAN5006_commands.set_port_profiles import SetPortProfiles
 from .fiberhomeAN5006_commands.selt_show import ShowSelt
+from .fiberhomeAN5006_commands.show_shelf import ShowShelf
+from .fiberhomeAN5006_commands.show_card import ShowCard
+from .fiberhomeAN5006_commands.show_mac import ShowMac
+from .fiberhomeAN5006_commands.save_config import SaveConfig
 
 
 class FiberhomeAN5006(BaseDSLAM):
@@ -25,6 +29,10 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('setPortProfiles', SetPortProfiles)
     command_factory.register_type('showSelt', ShowSelt)
     command_factory.register_type('show mac by slot port', ShowMacSlotPort)
+    command_factory.register_type('Show Shelf', ShowShelf)
+    command_factory.register_type('Show Card', ShowCard)
+    command_factory.register_type('show mac', ShowMac)
+    command_factory.register_type('save config', SaveConfig)
 
     '''
     command_factory.register_type('selt', Selt)

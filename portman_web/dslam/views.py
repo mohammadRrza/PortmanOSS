@@ -5512,7 +5512,7 @@ class FiberHomeCommandAPIView(views.APIView):
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
         try:
-            if command == 'show linerate':
+            if command == 'show linerate' or command == 'showPort' or command == 'show port':
                 command = 'show linerate'
             elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles':
                 command = 'profile adsl show'
@@ -5535,8 +5535,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show service'
             elif command == 'Show Shelf' or command == 'show shelf':
                 command = 'Show Shelf'
-            elif command == 'showPort' or command == 'showport' or command == 'show port':
-                command = 'show port'
+            elif command == 'Show Card' or command == 'show card':
+                command = 'Show Card'
             elif command == 'port reset' or command == 'reset port':
                 command = 'port reset'
             elif command == 'save config':
@@ -5547,6 +5547,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show snmp community'
             elif command == 'show time' or command == 'show uptime' or command == 'Show UpTime':
                 command = 'show time'
+            elif command == 'show mac' or command == 'Show MAC':
+                command = 'show mac'
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  # zyxel
@@ -5558,22 +5560,8 @@ class FiberHomeCommandAPIView(views.APIView):
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
                 elif command == 'show linerate':
-                    port_items = {}
-                    for item in result.split("\r\n"):
-                        if 'Port state' in item:
-                            if 'Down' in item:
-                                return JsonResponse({'Result': 'Port is Down.'})
-                        if 'DownStream rate' in item:
-                            port_stream_rate = [int(c) for c in item.split() if c.isdigit()]
-                            port_items['DownStream rate'] = port_stream_rate[0]
-                            port_items['UpStream rate'] = port_stream_rate[1]
-                        if 'DownStream Margin' in item:
-                            port_items['DownStream SNR'] = float(item.split()[3])
-                            port_items['UpStream SNR'] = float(item.split()[7])
-
-                            # return JsonResponse({'port_items':port_items,'Result': result.split("\r\n")})
-
-                    return JsonResponse({'result': port_items})
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'\s{4,}[-\d\w:]|-{5,}', val)]
                 elif command == 'profile adsl show':
                     result = result.split("\\r\\n")
                     result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
@@ -5597,12 +5585,6 @@ class FiberHomeCommandAPIView(views.APIView):
                     result = result.split("\\r\\n")
                     result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                               re.search(r'\s{4,}[-\d\w]', val)]
-                    return JsonResponse({'result': result})
-                elif command == 'show port':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if
-                              re.search(r'\s{4,}[-\d\w:]|-{5,}', val)]
-                    return JsonResponse({'result': result})
                 elif command == 'port disable':
                     return JsonResponse({'result': result})
                 elif command == 'port enable':
@@ -5616,16 +5598,12 @@ class FiberHomeCommandAPIView(views.APIView):
                 elif command == 'IP Show':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'\s+:', val)]
-                    return JsonResponse({'result': result})
                 elif command == 'show snmp community':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'Community', val)]
-                    return JsonResponse({'result': result})
                 elif command == 'show time':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'(is :|Start)', val)]
-                    return JsonResponse({'result': result})
-
                 return JsonResponse({'Result': result})
             elif dslam_type == 4:  # fiberhomeAN2200
                 if command == 'show mac by slot port':
@@ -5642,22 +5620,14 @@ class FiberHomeCommandAPIView(views.APIView):
                     else:
                         return JsonResponse({'Result': result.split("\r\n")})
                 elif command == 'show linerate':
-                    port_list = []
-                    for item in result.split("\r\n"):
-                        if 'SNR margin' in item:
-                            port_list.append(item.replace("\t", "/"))
-                        if 'Actual Line bit rate' in item:
-                            port_list.append(item.replace("\t", "/"))
-                        if 'Attainable bit rate' in item:
-                            port_list.append(item.replace("\t", "/"))
-
-                    return JsonResponse({'response': port_list, 'DslamType': 'fiberhomeAN5006'})
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r':\s|Line', val)]
+                    return JsonResponse({'result': result})
                 elif command == 'profile adsl show':
-                    portrofiles_list = []
-                    for item in result.split("\r\n"):
-                        if 'name' in item:
-                            portrofiles_list.append(item.split(":")[1].replace(' ', ''))
-                    return JsonResponse({'response': portrofiles_list, 'DslamType': 'fiberhomeAN5006'})
+                    result = result.split("\\r\\n")
+                    result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
+                              re.search(r':\s|[*]{6,}', val)]
+                    return JsonResponse({'result': result})
                 elif command == 'setPortProfiles':
                     if 'not profile named' in result:
                         return JsonResponse(
@@ -5675,6 +5645,18 @@ class FiberHomeCommandAPIView(views.APIView):
                             return JsonResponse({'Selt': item.split(',')[1].split()[2] + " " + "m"})
 
                     return JsonResponse({'response': result.split("\r\n")})
+                elif command == 'Show Shelf':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-+', val)]
+                    return JsonResponse({'result': result})
+                elif command == 'Show Card':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'Line', val)]
+                    return JsonResponse({'result': result})
+                elif command == 'show mac':
+                    return JsonResponse({'response': result.split("\\r\\n")})
+                elif command == 'save config':
+                    return JsonResponse({'response': result.split("\\r\\n")})
             elif dslam_type == 7:  # zyxel1248
                 return JsonResponse({'Result': dslam_type})
         except Exception as ex:

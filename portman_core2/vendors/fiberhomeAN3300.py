@@ -29,7 +29,7 @@ class FiberhomeAN3300(BaseDSLAM):
     command_factory.register_type('add to vlan', AddToVlan)
     command_factory.register_type('show service', ShowService)
     command_factory.register_type('Show Shelf', ShowShelf)
-    command_factory.register_type('show port', ShowPort)
+    command_factory.register_type('show linerate', ShowPort)
     command_factory.register_type('port disable', ClosePort)
     command_factory.register_type('port enable', OpenPort)
     command_factory.register_type('port reset', ResetPort)

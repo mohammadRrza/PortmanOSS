@@ -43,17 +43,17 @@ class ShowPort(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until("Password:")
-            tn.write("cd service\r\n")
+            tn.read_until(b"Password:")
+            tn.write(b"cd service\r\n")
             tn.write("telnet Slot {0}\r\n\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(1)
-            tn.write("cd dsp\r\n")
+            tn.write(b"cd dsp\r\n")
             tn.write("show port status {0}\r\n\r\n".format(self.port_conditions['port_number']).encode('utf-8'))
             tn.write("\r\n".encode('utf-8'))
             tn.write("end\r\n".encode('utf-8'))
-            result = tn.read_until("end")
+            result = tn.read_until(b"end")
             tn.close()
-            return result
+            return str(result)
 
         except (EOFError, socket_error) as e:
             print(e)
