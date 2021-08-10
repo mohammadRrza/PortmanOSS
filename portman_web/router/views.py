@@ -1,6 +1,8 @@
 import datetime
 import sys, os
 from datetime import time
+from pathlib import Path
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
@@ -192,8 +194,8 @@ class RouterCommandViewSet(mixins.ListModelMixin,
             return []
 
 
+home = str(Path.home())
 path = '/home/taher/backup/mikrotik_routers/'
-
 
 class GetRouterBackupFilesNameAPIView(views.APIView):
     def post(self, request, format=None):

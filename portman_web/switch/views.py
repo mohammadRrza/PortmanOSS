@@ -1,6 +1,8 @@
+import datetime
 import sys, os
+from pathlib import Path
 from wsgiref.util import FileWrapper
-
+from datetime import time
 from rest_framework import status, views, mixins, viewsets, permissions
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
@@ -163,6 +165,7 @@ class SwitchCommandViewSet(mixins.ListModelMixin,
             return []
 
 
+home = str(Path.home())
 path = '/home/taher/backup/cisco_switches/'
 
 
@@ -236,18 +239,19 @@ class GetBackupErrorTextNameAPIView(views.APIView):
 
 
 class ReadSwitchBackupErrorFilesNameAPIView(views.APIView):
-
     def post(self, request, format=None):
         try:
             if os.path.exists(path + 'switch_backup_errors.txt'):
                 os.remove(path + 'switch_backup_errors.txt')
             filenames = []
             directory = path
-            backup_errors_file = open(path+'switch_backup_errors.txt', 'w')
+            backup_errors_file = open(path + 'switch_backup_errors.txt', 'w')
             for filename in os.listdir(directory):
-                if filename.__contains__('Error'):
-                    f = open(directory+filename, "r")
-                    backup_errors_file.write(filename+'     '+f.read()+'\n')
+                if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date())):
+                    f = open(directory + filename, "r")
+                    err_text = filename + "   " + "|" + "   " + f.read()
+                    backup_errors_file.write(filename + '     ' + f.read() + '\n')
+                    filenames.append(err_text)
                     f.close()
                 else:
                     continue
@@ -256,3 +260,4 @@ class ReadSwitchBackupErrorFilesNameAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
