@@ -27,3 +27,9 @@ Unauthorized: /api/v1/switch/
 Unauthorized: /api/v1/router/
 Unauthorized: /api/v1/dslam/
 Unauthorized: /api/v1/users/get_permission/
+Forbidden: /api/v1/dslam/events/
+Forbidden: /api/v1/dslamport/events/
+Forbidden: /api/v1/dslam/events/
+Forbidden: /api/v1/dslamport/events/
+Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
+Internal Server Error: /api/v1/dslam/get_interface_traffic_input/

@@ -256,7 +256,7 @@ class ReadRouterBackupErrorFilesNameAPIView(views.APIView):
             for filename in os.listdir(directory):
                 if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date())):
                     f = open(directory+filename, "r")
-                    err_text = filename+'     '+f.read()
+                    err_text = filename+"   "+"|"+"   "+f.read()
                     backup_errors_file.write(filename+'     '+f.read()+'\n')
                     filenames.append(err_text)
                     f.close()
