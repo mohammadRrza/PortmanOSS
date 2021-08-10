@@ -1492,3 +1492,4 @@ Not Found: /favicon.ico
 Not Found: /static/rest_framework/img/grid.png
 Unauthorized: /api/v1/router-command/read_router_backup_error_files_name/
 Unauthorized: /api/v1/router-command/read_router_backup_error_files_name/
+Method Not Allowed: /api/v1/router-command/read_switch_backup_error_files_name/
