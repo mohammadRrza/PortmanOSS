@@ -203,10 +203,11 @@ class GetRouterBackupFilesNameAPIView(views.APIView):
             router_id = request.data.get('router_id')
             router_obj = Router.objects.get(id=router_id)
             fqdn = router_obj.device_fqdn
+            ip = router_obj.device_ip
             filenames = []
             directory = path
             for filename in os.listdir(directory):
-                if filename.__contains__(fqdn):
+                if filename.__contains__(fqdn) or filename.__contains__(ip):
                     filenames.append(filename)
                 else:
                     continue

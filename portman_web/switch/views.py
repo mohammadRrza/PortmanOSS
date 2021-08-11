@@ -176,10 +176,11 @@ class GetBackupFilesNameAPIView(views.APIView):
             switch_id = request.data.get('switch_id')
             switch_obj = Switch.objects.get(id=switch_id)
             fqdn = switch_obj.device_fqdn
+            ip = switch_obj.device_ip
             filenames = []
             directory = path
             for filename in os.listdir(directory):
-                if filename.__contains__(fqdn):
+                if filename.__contains__(fqdn) or filename.__contains__(ip):
                     filenames.append(filename)
                 else:
                     continue
