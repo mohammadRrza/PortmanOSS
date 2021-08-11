@@ -1,0 +1,3 @@
+Forbidden: /api/v1/dslamport/events/
+Forbidden: /api/v1/dslam/events/
+Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
