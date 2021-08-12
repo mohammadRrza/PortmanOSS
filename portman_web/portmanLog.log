@@ -31,3 +31,10 @@ Unauthorized: /api/v1/router/
 Unauthorized: /api/v1/router/
 Unauthorized: /api/v1/router/
 Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/download_router_backup_file/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
