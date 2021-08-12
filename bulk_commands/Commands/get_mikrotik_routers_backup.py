@@ -36,7 +36,7 @@ class GetMikrotikbackUp():
                 f = open(home+"/backup/mikrotik_routers/{0}_{1}.txt".format(
                     RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
 
-                for line in stdout:
+                for line in iter(lambda: stdout.readline(8196), ""):
                     f.write(line.strip('\n'))
                 f.close()
                 client.close()
