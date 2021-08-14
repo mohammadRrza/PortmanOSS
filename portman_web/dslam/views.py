@@ -5529,7 +5529,7 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show mac by slot port'
             elif command == 'show port with mac' or command == 'show port mac':
                 command = 'show port with mac'
-            elif command == 'Show VLAN' or command == 'VLAN Show ':
+            elif command == 'Show VLAN' or command == 'VLAN Show':
                 command = 'Show VLAN'
             elif command == 'Show Service' or command == 'show service':
                 command = 'show service'
@@ -5549,6 +5549,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show time'
             elif command == 'show mac' or command == 'Show MAC':
                 command = 'show mac'
+            elif command == 'show temp' or command == 'Show Temp' or command == 'Show Temperature':
+                command = 'show temp'
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  # zyxel
@@ -5604,6 +5606,9 @@ class FiberHomeCommandAPIView(views.APIView):
                 elif command == 'show time':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'(is :|Start)', val)]
+                if command == 'show mac':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
                 return JsonResponse({'Result': result})
             elif dslam_type == 4:  # fiberhomeAN2200
                 if command == 'show mac by slot port':
@@ -5656,6 +5661,18 @@ class FiberHomeCommandAPIView(views.APIView):
                 elif command == 'show mac':
                     return JsonResponse({'response': result.split("\\r\\n")})
                 elif command == 'save config':
+                    return JsonResponse({'response': result.split("\\r\\n")})
+                elif command == 'Show VLAN':
+                    return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
+                elif command == 'show time':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r':\s|Now', val)]
+                    return JsonResponse({'result': result})
+                elif command == 'show temp':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r':\s', val)]
+                    return JsonResponse({'result': result})
+                elif command == 'selt start':
                     return JsonResponse({'response': result.split("\\r\\n")})
             elif dslam_type == 7:  # zyxel1248
                 return JsonResponse({'Result': dslam_type})
