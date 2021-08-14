@@ -203,10 +203,11 @@ class GetRouterBackupFilesNameAPIView(views.APIView):
             router_id = request.data.get('router_id')
             router_obj = Router.objects.get(id=router_id)
             fqdn = router_obj.device_fqdn
+            ip = router_obj.device_ip
             filenames = []
             directory = path
             for filename in os.listdir(directory):
-                if filename.__contains__(fqdn):
+                if filename.__contains__(fqdn) or filename.__contains__(ip):
                     filenames.append(filename)
                 else:
                     continue
@@ -256,7 +257,7 @@ class ReadRouterBackupErrorFilesNameAPIView(views.APIView):
             directory = path
             backup_errors_file = open(path+'router_backup_errors.txt', 'w')
             for filename in os.listdir(directory):
-                if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date())):
+                if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
                     f = open(directory+filename, "r")
                     err_text = filename+"   "+"|"+"   "+f.read()
                     backup_errors_file.write(filename+'     '+f.read()+'\n')

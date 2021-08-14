@@ -176,10 +176,11 @@ class GetBackupFilesNameAPIView(views.APIView):
             switch_id = request.data.get('switch_id')
             switch_obj = Switch.objects.get(id=switch_id)
             fqdn = switch_obj.device_fqdn
+            ip = switch_obj.device_ip
             filenames = []
             directory = path
             for filename in os.listdir(directory):
-                if filename.__contains__(fqdn):
+                if filename.__contains__(fqdn) or filename.__contains__(ip):
                     filenames.append(filename)
                 else:
                     continue
@@ -247,7 +248,7 @@ class ReadSwitchBackupErrorFilesNameAPIView(views.APIView):
             directory = path
             backup_errors_file = open(path + 'switch_backup_errors.txt', 'w')
             for filename in os.listdir(directory):
-                if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date())):
+                if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
                     f = open(directory + filename, "r")
                     err_text = filename + "   " + "|" + "   " + f.read()
                     backup_errors_file.write(filename + '     ' + f.read() + '\n')

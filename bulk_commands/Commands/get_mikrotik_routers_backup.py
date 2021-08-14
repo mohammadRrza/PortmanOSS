@@ -5,14 +5,15 @@ import paramiko
 from django.db import connection
 from django.http import JsonResponse
 from pathlib import Path
-
+import time
 
 class GetMikrotikbackUp():
     def __init__(self):
         pass
 
     def run_command(self):
-        home = "/home/taher"#str(Path.home())
+        home = "/home/mrtbadboy"#str(Path.home())
+        endtime = time.time() + 10
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         query = "select * from zabbix_hosts where device_brand = 'mikrotik' and device_type = 'router_board'"
@@ -35,8 +36,12 @@ class GetMikrotikbackUp():
 
                 f = open(home+"/backup/mikrotik_routers/{0}_{1}.txt".format(
                     RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
-
-                for line in stdout:
+                while not stdout.channel.eof_received:
+                    time.sleep(1)
+                    if time.time() > endtime:
+                        stdout.channel.close()
+                        break
+                for line in iter(lambda: stdout.readline(2048), ""):
                     f.write(line.strip('\n'))
                 f.close()
                 client.close()
