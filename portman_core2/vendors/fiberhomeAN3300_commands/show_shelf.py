@@ -42,7 +42,6 @@ class ShowShelf(BaseCommand):
 
     def run_command(self):
         try:
-            print("test")
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))

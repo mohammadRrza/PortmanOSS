@@ -3,8 +3,6 @@ from vendors.base import BaseDSLAM
 import telnetlib
 import jsonrpclib
 from .command_factory import CommandFactory
-from .fiberhomeAN2200_commands.ShowCard import ShowCard
-from .fiberhomeAN2200_commands.Version import Version
 from .fiberhomeAN2200_commands.ShowShelf import ShowShelf
 from .fiberhomeAN2200_commands.ShowCard import ShowCard
 from .fiberhomeAN2200_commands.Version import Version
@@ -12,12 +10,10 @@ from .fiberhomeAN2200_commands.show_port import ShowPort
 from .fiberhomeAN2200_commands.show_mac_by_port import ShowMacBySlotPort
 from .fiberhomeAN2200_commands.show_port_by_mac import ShowSlotPortByMac
 from .fiberhomeAN2200_commands.add_to_vlan import AddToVlan
+from .fiberhomeAN2200_commands.show_mac import ShowMac
 
 
 class FiberhomeAN2200(BaseDSLAM):
-    command_factory = CommandFactory()
-    command_factory.register_type('Show Card', ShowCard)
-    command_factory.register_type('Version', Version)
     command_factory = CommandFactory()
     command_factory.register_type('Show Card', ShowCard)
     command_factory.register_type('Version', Version)
@@ -25,6 +21,8 @@ class FiberhomeAN2200(BaseDSLAM):
     command_factory.register_type('show mac by slot port', ShowMacBySlotPort)
     command_factory.register_type('show port with mac', ShowSlotPortByMac)
     command_factory.register_type('add to vlan', AddToVlan)
+    command_factory.register_type('Show Shelf', ShowShelf)
+    command_factory.register_type('show mac', ShowMac)
 
     EVENT = {'dslam_connection_error':'DSLAM Connection Error', 'no_such_object':'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()),list(EVENT.keys()))))

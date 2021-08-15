@@ -1528,3 +1528,4 @@ Unauthorized: /api/v1/router-command/read_router_backup_error_files_name/
 Unauthorized: /api/v1/router-command/read_router_backup_error_files_name/
 Method Not Allowed: /api/v1/router-command/read_switch_backup_error_files_name/
 >>>>>>> a26ad516fe168ce1abe69c5b0cfe68a75d108bb2
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/

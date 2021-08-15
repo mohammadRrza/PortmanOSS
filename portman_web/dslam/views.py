@@ -5551,6 +5551,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show mac'
             elif command == 'show temp' or command == 'Show Temp' or command == 'Show Temperature':
                 command = 'show temp'
+            elif command == 'version' or command == 'Version' or command == 'Show version':
+                command = 'Version'
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  # zyxel
@@ -5600,6 +5602,11 @@ class FiberHomeCommandAPIView(views.APIView):
                 elif command == 'IP Show':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'\s+:', val)]
+                    d = {}
+                    for b in result:
+                        i = b.split(': ')
+                        d[i[0].strip()] = i[1]
+                    result = d
                 elif command == 'show snmp community':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'Community', val)]
@@ -5615,6 +5622,17 @@ class FiberHomeCommandAPIView(views.APIView):
                     return JsonResponse({'Result': result})
                 elif command == 'show port with mac':
                     return JsonResponse({'Result': result})
+                elif command == 'Version':
+                    result = [val for val in result["res"] if re.search(r'\s{4,}|SHELF|Agent|--+', val)]
+                elif command == 'Show Shelf':
+                    result = [val for val in result["res"] if re.search(r'\s{4,}|SHELF|Polling|Current|--+', val)]
+                elif command == 'Show Card':
+                    result = [val for val in result["res"] if re.search(r'\s{4,}|--+', val)]
+                elif command == 'show mac':
+                    result = [re.sub(r'\\t', '    ', val) for val in result['res'] if
+                              re.search(r'\s{4,}|\d{2}|MAC|--+', val)]
+
+                return JsonResponse({'Result': result})
 
             elif dslam_type == 5:  # fiberhomeAN5006
                 if command == 'show mac by slot port':
