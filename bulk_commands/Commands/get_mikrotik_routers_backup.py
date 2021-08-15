@@ -31,7 +31,8 @@ class GetMikrotikbackUp():
                                password='eS7*XiMmyeeU',
                                port=1001, timeout=10,
                                allow_agent=False,
-                               look_for_keys=False)
+                               look_for_keys=False,
+                               banner_timeout=200)
                 stdin, stdout, stderr = client.exec_command('export verbose terse')
 
                 f = open(home+"/backup/mikrotik_routers/{0}_{1}.txt".format(
