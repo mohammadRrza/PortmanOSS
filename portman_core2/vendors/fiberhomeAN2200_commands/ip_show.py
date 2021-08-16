@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -5,7 +7,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowPort(BaseCommand):
+class IPShow(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
@@ -54,29 +56,19 @@ class ShowPort(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST, timeout=5)
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
-            tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
-            data = tn.read_until(b'User Name:')
-            print('here')
-            print('==>', data)
+            tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             print('user sent ...')
-            data = tn.read_until(b'Password:')
-            print('==>', data)
+            data = tn.read_until(b"Password:")
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
-            tn.write(b"line\r\n")
-            tn.write(b"sp\r\n")
-            tn.read_until(b'(xx-xx)')
-            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
-            tn.read_until(b'(default is 1~32)')
-            tn.write("{0} \r\n".format(self.port_conditions['port_number']).encode('utf-8'))
+            tn.write(b"snmp\r\n")
             time.sleep(0.5)
-            tn.write(b"\r\n")
-            tn.write(b"finish")
-            res = tn.read_until(b'finish')
-            tn.close()
-            time.sleep(1)
+            tn.write(b"showip\r\n")
+            time.sleep(0.5)
+            tn.write(b"end\r\n")
+            res = tn.read_until(b'end')
 
             return dict(res=str(res).split("\\n\\r"), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
@@ -85,7 +77,10 @@ class ShowPort(BaseCommand):
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()

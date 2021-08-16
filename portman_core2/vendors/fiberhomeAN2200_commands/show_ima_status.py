@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -5,7 +7,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowPort(BaseCommand):
+class ShowVLAN(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
@@ -13,6 +15,7 @@ class ShowPort(BaseCommand):
         self.__access_name = params.get('access_name', 'an2100')
         self.__port_indexes = params.get('port_indexes')
         self.port_conditions = params.get('port_conditions')
+        self.__vlan_name = params.get('vlan_name')
 
     @property
     def HOST(self):
@@ -64,19 +67,19 @@ class ShowPort(BaseCommand):
             print('==>', data)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
-            tn.write(b"line\r\n")
-            tn.write(b"sp\r\n")
-            tn.read_until(b'(xx-xx)')
-            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
-            tn.read_until(b'(default is 1~32)')
-            tn.write("{0} \r\n".format(self.port_conditions['port_number']).encode('utf-8'))
+            tn.write(b"ima\r\n")
+            tn.write(b"sls\r\n")
+            tn.read_until(b'(xx-xx):')
+            tn.write("{0}\r\n".format())
+            time.sleep(0.5)
+            tn.read_until(b'(xx,xx~xx)     :')
+            tn.write("{0}\r\n".format(self.__vlan_name['vlan_id']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"\r\n")
-            tn.write(b"finish")
-            res = tn.read_until(b'finish')
+            tn.write(b"end")
+            res = tn.read_until(b'end')
             tn.close()
-            time.sleep(1)
 
             return dict(res=str(res).split("\\n\\r"), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
@@ -85,7 +88,10 @@ class ShowPort(BaseCommand):
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()

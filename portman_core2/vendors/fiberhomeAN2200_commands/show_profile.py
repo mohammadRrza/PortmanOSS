@@ -5,7 +5,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowPort(BaseCommand):
+class ShowProfiles(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
@@ -65,18 +65,17 @@ class ShowPort(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
             tn.write(b"line\r\n")
-            tn.write(b"sp\r\n")
+            tn.write(b"cfgport\r\n")
             tn.read_until(b'(xx-xx)')
             tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.read_until(b'(default is 1~32)')
-            tn.write("{0} \r\n".format(self.port_conditions['port_number']).encode('utf-8'))
+            tn.write("{0}\r\n".format(self.port_conditions['port_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"\r\n")
-            tn.write(b"finish")
-            res = tn.read_until(b'finish')
+            tn.write(b"end")
+            res = tn.read_until(b'end')
             tn.close()
-            time.sleep(1)
 
             return dict(res=str(res).split("\\n\\r"), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:

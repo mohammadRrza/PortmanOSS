@@ -5,7 +5,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowPort(BaseCommand):
+class ResetPort(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
@@ -65,7 +65,15 @@ class ShowPort(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
             tn.write(b"line\r\n")
-            tn.write(b"sp\r\n")
+            tn.write(b"cp\r\n")
+            tn.read_until(b'(xx-xx)')
+            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+            time.sleep(0.5)
+            tn.read_until(b'(default is 1~32)')
+            tn.write("{0} \r\n".format(self.port_conditions['port_number']).encode('utf-8'))
+            time.sleep(0.5)
+            tn.write(b"\r\n")
+            tn.write(b"op\r\n")
             tn.read_until(b'(xx-xx)')
             tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
