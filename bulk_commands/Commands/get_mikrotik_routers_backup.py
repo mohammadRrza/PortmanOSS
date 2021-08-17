@@ -25,7 +25,7 @@ class GetMikrotikbackUp():
             try:
                 num = num+1
                 print("=============================================")
-                print(str(num)+'. '+RouterObj[2])
+                print(str(num)+'. '+RouterObj[2]+' '+RouterObj[3])
                 print("=============================================")
                 client.connect(RouterObj[2], username='mik-backup',
                                password='eS7*XiMmyeeU',
@@ -35,8 +35,8 @@ class GetMikrotikbackUp():
                                banner_timeout=200)
                 stdin, stdout, stderr = client.exec_command('export verbose terse')
 
-                f = open(home+"/backup/mikrotik_routers/{0}_{1}.txt".format(
-                    RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
+                f = open(home+"/backup/mikrotik_routers/{0}_{1}_{2}.txt".format(
+                    RouterObj[3], RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                 while not stdout.channel.eof_received:
                     time.sleep(1)
                     if time.time() > endtime:
@@ -49,8 +49,8 @@ class GetMikrotikbackUp():
             except Exception as ex:
                 print(str(ex) + " " + "35_mik")
                 exc_type, exc_obj, exc_tb = sys.exc_info()
-                f = open(home+"/backup/mikrotik_routers/Error_{0}_{1}.txt".format(
-                    RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
+                f = open(home+"/backup/mikrotik_routers/Error_{0}_{1}_{2}.txt".format(
+                    RouterObj[3], RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                 f.write(str(ex) + "  // " + str(exc_tb.tb_lineno))
                 f.close()
                 client.close()

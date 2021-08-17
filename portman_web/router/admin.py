@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from router.models import RouterBrand, RouterType, Router, RouterCommand
-
+from router.models import RouterBrand, RouterType, Router, RouterCommand, RouterGroup
 
 class RouterAdmin(admin.ModelAdmin):
     list_per_page = 10
@@ -37,5 +36,6 @@ class RouterCommandAdmin(admin.ModelAdmin):
 
 admin.site.register(RouterBrand)
 admin.site.register(RouterType)
+admin.site.register(RouterGroup)
 admin.site.register(Router, RouterAdmin)
 admin.site.register(RouterCommand, RouterCommandAdmin)
