@@ -12,7 +12,7 @@ class GetMikrotikbackUp():
         pass
 
     def run_command(self):
-        home = "/home/mrtbadboy"#str(Path.home())
+        home = "/home/taher"#str(Path.home())
         endtime = time.time() + 10
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
