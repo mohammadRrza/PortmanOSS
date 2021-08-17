@@ -22,6 +22,9 @@ from .fiberhomeAN2200_commands.show_pvc import ShowPVC
 from .fiberhomeAN2200_commands.ip_show import IPShow
 from .fiberhomeAN2200_commands.acl_maccount_show import ACLMaccountShow
 from .fiberhomeAN2200_commands.switch_port_show import SwitchPortShow
+from .fiberhomeAN2200_commands.set_profile import SetProfile
+from .fiberhomeAN2200_commands.show_profile_by_port import ShowProfileByPort
+from .fiberhomeAN2200_commands.set_profile_range import SetProfileRange
 
 
 class FiberhomeAN2200(BaseDSLAM):
@@ -45,6 +48,9 @@ class FiberhomeAN2200(BaseDSLAM):
     command_factory.register_type('IP Show', IPShow)
     command_factory.register_type('show mac limit', ACLMaccountShow)
     command_factory.register_type('switch port show', SwitchPortShow)
+    command_factory.register_type('setPortProfiles', SetProfile)
+    command_factory.register_type('show profile by port', ShowProfileByPort)
+    command_factory.register_type('setPortProfilesRange', SetProfileRange)
 
     EVENT = {'dslam_connection_error':'DSLAM Connection Error', 'no_such_object':'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()),list(EVENT.keys()))))

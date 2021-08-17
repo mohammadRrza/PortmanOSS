@@ -7,15 +7,14 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowVLAN(BaseCommand):
+class SetProfileRange(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.__access_name = params.get('access_name', 'an2100')
-        self.__port_indexes = params.get('port_indexes')
         self.port_conditions = params.get('port_conditions')
-        self.__vlan_name = params.get('vlan_name')
+        self.new_lineprofile = params.get('new_lineprofile')
 
     @property
     def HOST(self):
@@ -50,6 +49,11 @@ class ShowVLAN(BaseCommand):
         from telnetlib import IAC, DO, DONT, WILL, WONT, SB, SE, TTYPE, NAWS, LINEMODE, ECHO
         tsocket.sendall(IAC + WONT + LINEMODE)
 
+    def get_dict_key(self, dict, prf):
+        for key, value in dict.items():
+            if str(value) == str(prf):
+                return key
+
     retry = 1
 
     def run_command(self):
@@ -67,21 +71,53 @@ class ShowVLAN(BaseCommand):
             print('==>', data)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
-            time.sleep(0.5)
-            tn.write(b"ima\r\n")
-            tn.write(b"sls\r\n")
-            tn.read_until(b'(xx-xx):')
-            tn.write("{0}\r\n".format())
-            time.sleep(0.5)
-            tn.read_until(b'(xx,xx~xx)     :')
-            tn.write("{0}\r\n".format(self.__vlan_name['vlan_id']).encode('utf-8'))
-            time.sleep(0.5)
+            tn.write(b"line\r\n")
+            tn.write(b"cfgport\r\n")
+            tn.read_until(b'(xx-xx)')
+            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+            time.sleep(0.2)
+            tn.read_until(b'(default is 1~32)')
+            tn.write("{0}~{1}\r\n".format(self.port_conditions['start_port'], self.port_conditions['end_port']).encode('utf-8'))
+            time.sleep(0.2)
             tn.write(b"\r\n")
             tn.write(b"end")
             res = tn.read_until(b'end')
+            result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s', val)]
+            d = {}
+            for b in result:
+                i = b.split(')')
+                d[i[0].replace('( ', '')] = i[1]
+            result = d
+            time.sleep(0.5)
+            tn.write("{0}\r\n".format(self.get_dict_key(result, self.new_lineprofile)).encode('utf-8'))
+            time.sleep(0.5)
+            tn.read_until(b'Please input the sequence of profile:')
+            tn.write("{0}\r\n".format(self.get_dict_key(result, self.new_lineprofile)).encode('utf-8'))
+            time.sleep(0.5)
+
+            tn.write(b"cp\r\n")
+            tn.read_until(b'(xx-xx)')
+            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+            time.sleep(0.5)
+            tn.read_until(b'(default is 1~32)')
+            tn.write("{0}~{1}\r\n".format(self.port_conditions['start_port'], self.port_conditions['end_port']).encode('utf-8'))
+            time.sleep(0.5)
+            tn.write(b"\r\n")
+            tn.read_until(b'OK.')
+            tn.write(b"op\r\n")
+            tn.read_until(b'(xx-xx)')
+            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+            time.sleep(0.5)
+            tn.read_until(b'(default is 1~32)')
+            tn.write("{0}~{1}\r\n".format(self.port_conditions['start_port'], self.port_conditions['end_port']).encode('utf-8'))
+            time.sleep(0.5)
+            tn.write(b"\r\n")
+            tn.read_until(b'finished.')
+            tn.write(b"finish")
+            res = tn.read_until(b'finish')
             tn.close()
 
-            return dict(res=str(res).split("\\n\\r"), port_indexes=self.__port_indexes)
+            return "Profiles range set successfully"
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

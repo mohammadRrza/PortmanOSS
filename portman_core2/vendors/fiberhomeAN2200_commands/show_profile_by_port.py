@@ -5,13 +5,12 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowProfiles(BaseCommand):
+class ShowProfileByPort(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.__access_name = params.get('access_name', 'an2100')
-        self.__port_indexes = params.get('port_indexes')
         self.port_conditions = params.get('port_conditions')
 
     @property
@@ -55,35 +54,27 @@ class ShowProfiles(BaseCommand):
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
-            data = tn.read_until(b'User Name:')
+            data = tn.read_until(b'User Name:', 5)
             print('here')
             print('==>', data)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             print('user sent ...')
-            data = tn.read_until(b'Password:')
+            data = tn.read_until(b'Password:', 5)
             print('==>', data)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
             tn.write(b"line\r\n")
-            tn.write(b"cfgport\r\n")
-            tn.read_until(b'(xx-xx)')
+            tn.write(b"sc \r\n")
+            tn.read_until(b'(xx-xx):', 5)
             tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
-            tn.read_until(b'(default is 1~32)')
-            tn.write("{0}\r\n".format(self.port_conditions['port_number']).encode('utf-8'))
-            time.sleep(0.5)
-            tn.write(b"\r\n")
-            tn.write(b"end")
+            tn.write(b"end\r\n")
             res = tn.read_until(b'end')
-            tn.close()
+            res = [val for val in str(res).split("\\n\\r") if re.search(r'\s{4,}|--+', val)]
+            res = re.findall(r'\d+(?:k|m)\d+(?:k|m).prf',
+                             [val for val in res if f" {self.port_conditions['port_number']}  " in val][0])
 
-            result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s', val)]
-            d = {}
-            for b in result:
-                i = b.split(')')
-                d[i[0].replace('( ', '')] = i[1]
-            result = d
-            return result
+            return f"Profile assigned to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: {res[0]}"
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

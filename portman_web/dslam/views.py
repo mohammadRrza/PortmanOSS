@@ -5559,6 +5559,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show mac limit'
             elif command == 'switch port show' or command == 'Switch Port Show':
                 command = 'switch port show'
+            elif command == 'show profile by port' or command == 'showProfile by port':
+                command = 'show profile by port'
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  ################################### zyxel ###################################
@@ -5574,9 +5576,11 @@ class FiberHomeCommandAPIView(views.APIView):
                     result = [val for val in result if re.search(r'\s{4,}[-\d\w:]|-{5,}', val)]
                 elif command == 'profile adsl show':
                     result = result.split("\\r\\n")
-                    result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
-                              re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
-                    return JsonResponse({'result': result})
+                    result = [val for val in result if re.search(r'\s{4,}', val)][1:]
+                    temp_res = []
+                    for i in result:
+                        temp_res += i.split()
+                    return JsonResponse({'result': temp_res})
                 elif command == 'setPortProfiles':
                     if 'Unknown command' in result:
                         return JsonResponse({'result': 'Unknown command. Please check the parameters.'})
@@ -5646,12 +5650,7 @@ class FiberHomeCommandAPIView(views.APIView):
                 elif command == 'port reset':
                     return JsonResponse({'Result': result})
                 elif command == 'profile adsl show':
-                    result = [val for val in result['res'] if re.search(r'\W\s', val)]
-                    d = {}
-                    for b in result:
-                        i = b.split(')')
-                        d[i[0].replace('( ', '')] = i[1]
-                    result = d
+                    return JsonResponse({'Result': result})
                 elif command == 'Show VLAN':
                     return JsonResponse({'Result': result})
                 elif command == 'save config':
@@ -5671,6 +5670,12 @@ class FiberHomeCommandAPIView(views.APIView):
                     return JsonResponse({'Result': result})
                 elif command == 'switch port show':
                     result = [val for val in result['res'] if re.search(r'\s{4,}|--+|Bridge', val)]
+                elif command == 'setPortProfiles':
+                    return JsonResponse({'Result': result})
+                elif command == 'show profile by port':
+                    return JsonResponse({'Result': result})
+                elif command == 'setPortProfiles':
+                    return JsonResponse({'Result': result})
 
                 return JsonResponse({'Result': result})
 
