@@ -46,6 +46,13 @@ class Router(models.Model):
         )
 
 
+class RouterGroup(models.Model):
+    router_brand = models.ForeignKey(RouterBrand, on_delete=models.CASCADE)
+    title = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.title
+
 class RouterCommand(models.Model):
     router_brand = models.ForeignKey(RouterBrand, on_delete=models.CASCADE)
     router_type = models.ForeignKey(RouterType, on_delete=models.CASCADE)
