@@ -195,7 +195,7 @@ class RouterCommandViewSet(mixins.ListModelMixin,
 
 
 home = str(Path.home())
-path = '/home/mrtbadboy/backup/mikrotik_routers/'
+path = '/home/taher/backup/mikrotik_routers/'
 
 
 class GetRouterBackupFilesNameAPIView(views.APIView):
@@ -237,13 +237,11 @@ class GetRouterBackupFilesNameAPIView2(views.APIView):
                 # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
                 if filename.__contains__(fqdn) or filename.__contains__(ip):
                     fileobj.file_name = filename
-                    print(filename)
                     if 'Error' in filename:
                         fileobj.file_date = filename.split('_')[2].split('.')[0]
                     else:
                         fileobj.file_date = filename.split('_')[1].split('.')[0]
                     filenames.append(fileobj)
-                    print(fileobj.file_date)
                 else:
                     continue
             return JsonResponse({'response': json.dumps(filenames, default=lambda o: o.__dict__,
