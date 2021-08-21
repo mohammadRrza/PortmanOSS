@@ -143,7 +143,9 @@ urlpatterns = [
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
     url(r'^api/v1/router-command/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
-    url(r'^api/v1/router/get_router_backup_files_name/$', GetRouterBackupFilesNameAPIView2.as_view(),
+    url(r'^api/v1/router/get_router_backup_files_name/$', GetRouterBackupFilesNameAPIView.as_view(),
+        name='get_backup_files_name'),
+    url(r'^api/v1/router/get_router_backup_files_name2/$', GetRouterBackupFilesNameAPIView2.as_view(),
         name='get_backup_files_name'),
     url(r'^api/v1/router/download_router_backup_file/$', DownloadRouterBackupFileAPIView.as_view(), name='download_router_backup_file'),
     url(r'^api/v1/router/get_router_backup_error_file/$', GetRouterBackupErrorFilesNameAPIView.as_view(),
