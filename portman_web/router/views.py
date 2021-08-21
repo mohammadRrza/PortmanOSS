@@ -239,7 +239,7 @@ class GetRouterBackupFilesNameAPIView2(views.APIView):
                     fileobj.file_name = filename
                     print(filename)
                     if 'Error' in filename:
-                        fileobj.file_date = filename.split('_')[2].split('.')[1]
+                        fileobj.file_date = filename.split('_')[2].split('.')[0]
                     else:
                         fileobj.file_date = filename.split('_')[1].split('.')[0]
                     filenames.append(fileobj)
