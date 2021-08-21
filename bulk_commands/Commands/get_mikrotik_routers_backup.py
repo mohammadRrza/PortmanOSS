@@ -35,7 +35,7 @@ class GetMikrotikbackUp():
                                banner_timeout=200)
                 stdin, stdout, stderr = client.exec_command('export verbose terse')
 
-                f = open(home+"/backup/mikrotik_routers/{0}_{1}_{2}.txt".format(
+                f = open(home+"/backup/mikrotik_routers/{0}@{1}_{2}.txt".format(
                     RouterObj[3], RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                 while not stdout.channel.eof_received:
                     time.sleep(1)
@@ -49,7 +49,7 @@ class GetMikrotikbackUp():
             except Exception as ex:
                 print(str(ex) + " " + "35_mik")
                 exc_type, exc_obj, exc_tb = sys.exc_info()
-                f = open(home+"/backup/mikrotik_routers/Error_{0}_{1}_{2}.txt".format(
+                f = open(home+"/backup/mikrotik_routers/Error_{0}@{1}_{2}.txt".format(
                     RouterObj[3], RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                 f.write(str(ex) + "  // " + str(exc_tb.tb_lineno))
                 f.close()

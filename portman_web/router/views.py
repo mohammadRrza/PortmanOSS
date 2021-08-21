@@ -2,7 +2,7 @@ import datetime
 import sys, os
 from datetime import time
 from pathlib import Path
-
+import json
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
@@ -195,7 +195,8 @@ class RouterCommandViewSet(mixins.ListModelMixin,
 
 
 home = str(Path.home())
-path = '/home/taher/backup/mikrotik_routers/'
+path = '/home/mrtbadboy/backup/mikrotik_routers/'
+
 
 class GetRouterBackupFilesNameAPIView(views.APIView):
     def post(self, request, format=None):
@@ -207,11 +208,46 @@ class GetRouterBackupFilesNameAPIView(views.APIView):
             filenames = []
             directory = path
             for filename in os.listdir(directory):
+                # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
                 if filename.__contains__(fqdn) or filename.__contains__(ip):
                     filenames.append(filename)
                 else:
                     continue
             return JsonResponse({'response': filenames})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class File:
+    file_name = ''
+    file_date = datetime.datetime.now().date()
+
+class GetRouterBackupFilesNameAPIView2(views.APIView):
+    def post(self, request, format=None):
+        try:
+            router_id = request.data.get('router_id')
+            router_obj = Router.objects.get(id=router_id)
+            fqdn = router_obj.device_fqdn
+            ip = router_obj.device_ip
+            filenames = []
+            directory = path
+            fileobj = File()
+            for filename in os.listdir(directory):
+                # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
+                if filename.__contains__(fqdn) or filename.__contains__(ip):
+                    fileobj.file_name = filename
+                    print(filename)
+                    if 'Error' in filename:
+                        fileobj.file_date = filename.split('_')[2].split('.')[0]
+                    else:
+                        fileobj.file_date = filename.split('_')[1].split('.')[0]
+                    filenames.append(fileobj)
+                    print(fileobj.file_date)
+                else:
+                    continue
+            return JsonResponse({'response': json.dumps(filenames, default=lambda o: o.__dict__,
+            sort_keys=True, indent=4)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
@@ -255,12 +291,13 @@ class ReadRouterBackupErrorFilesNameAPIView(views.APIView):
                 os.remove(path + 'router_backup_errors.txt')
             filenames = []
             directory = path
-            backup_errors_file = open(path+'router_backup_errors.txt', 'w')
+            backup_errors_file = open(path + 'router_backup_errors.txt', 'w')
             for filename in os.listdir(directory):
-                if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
-                    f = open(directory+filename, "r")
-                    err_text = filename+"   "+"|"+"   "+f.read()
-                    backup_errors_file.write(filename+'     '+f.read()+'\n')
+                if filename.__contains__('Error') and filename.__contains__(
+                        str(datetime.datetime.now().date() - datetime.timedelta(1))):
+                    f = open(directory + filename, "r")
+                    err_text = filename + "   " + "|" + "   " + f.read()
+                    backup_errors_file.write(filename + '     ' + f.read() + '\n')
                     filenames.append(err_text)
                     f.close()
                 else:
@@ -270,7 +307,3 @@ class ReadRouterBackupErrorFilesNameAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
-
-
-
-
