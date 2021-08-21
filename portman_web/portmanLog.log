@@ -1127,3 +1127,32 @@ Not Found: /static/admin-lte/dist/js/adminlte.min.js
 Not Found: /static/admin-lte/dist/js/demo.js
 Not Found: /
 >>>>>>> bed75979233d1a54abeaafc17941b9e5e3eb3ab1
+Unauthorized: /api/v1/router/download_router_backup_file/
+Unauthorized: /api/v1/router/download_router_backup_file/
+Unauthorized: /api/v1/dslam-port/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/get_router_backup_files_name/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/get_interface_traffic_input/
+Unauthorized: /api/v1/dslamport/events/
+Unauthorized: /api/v1/dslam/get_dslams_packet_loss_count/
+Unauthorized: /api/v1/dslam/events/
+Unauthorized: /api/v1/telecom-center/
+Unauthorized: /api/v1/contact/portmap/
+Unauthorized: /api/v1/telecom-center/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/telecom-center/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
