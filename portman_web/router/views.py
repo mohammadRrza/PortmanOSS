@@ -221,7 +221,7 @@ class GetRouterBackupFilesNameAPIView(views.APIView):
 
 class File:
     file_name = ''
-    file_date = datetime.datetime.now().date()
+    file_date = ''
 
 class GetRouterBackupFilesNameAPIView2(views.APIView):
     def post(self, request, format=None):
@@ -231,20 +231,25 @@ class GetRouterBackupFilesNameAPIView2(views.APIView):
             fqdn = router_obj.device_fqdn
             ip = router_obj.device_ip
             filenames = []
+            filenames_error = []
+            total = []
             directory = path
-            fileobj = File()
             for filename in os.listdir(directory):
+                fileobj = File()
                 # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
-                if filename.__contains__(fqdn) or filename.__contains__(ip):
-                    fileobj.file_name = filename
-                    if 'Error' in filename:
+                if 'Error' in filename:
+                    if filename.__contains__(fqdn) or filename.__contains__(ip):
+                        fileobj.file_name = filename
                         fileobj.file_date = filename.split('_')[2].split('.')[0]
-                    else:
-                        fileobj.file_date = filename.split('_')[1].split('.')[0]
-                    filenames.append(fileobj)
+                        filenames_error.append(fileobj)
+                        total.append(filenames_error)
                 else:
-                    continue
-            return JsonResponse({'response': json.dumps(filenames, default=lambda o: o.__dict__,
+                    if filename.__contains__(fqdn) or filename.__contains__(ip):
+                        fileobj.file_name = filename
+                        fileobj.file_date = filename.split('_')[1].split('.')[0]
+                        filenames.append(fileobj)
+                        total.append(filenames)
+            return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
             sort_keys=True, indent=4)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
