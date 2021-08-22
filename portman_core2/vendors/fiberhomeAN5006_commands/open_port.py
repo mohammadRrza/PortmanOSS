@@ -5,12 +5,13 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowMac(BaseCommand):
+class OpenPort(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
+        self.__lineprofile = params.get('new_lineprofile')
 
     @property
     def HOST(self):
@@ -43,13 +44,13 @@ class ShowMac(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.read_until(b"Password:")
             tn.write(b"cd device\r\n")
-            tn.write("show linecard fdb interface {0}/ 1-64\r\n\r\n".format(self.port_conditions['slot_number']).encode(
-                'utf-8'))
+            tn.write("set interface {0}/{1} enable".format(self.port_conditions['slot_number'],
+                                                           self.port_conditions['port_number']).encode('utf-8'))
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
-            print('test')
             tn.close()
             return str(result)
 
@@ -61,4 +62,4 @@ class ShowMac(BaseCommand):
 
         except Exception as e:
             print(e)
-            return "error"
+            return str(e)

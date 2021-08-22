@@ -5,11 +5,13 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowMac(BaseCommand):
+class ShowAllVLANs(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
+        self.__vlan_name = params.get('vlan_name')
+        self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
 
     @property
@@ -43,13 +45,20 @@ class ShowMac(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"cd device\r\n")
-            tn.write("show linecard fdb interface {0}/ 1-64\r\n\r\n".format(self.port_conditions['slot_number']).encode(
-                'utf-8'))
+            tn.read_until(b"Password:")
+            tn.write(b'admin\r\n')
+            tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            tn.write(b"cd vlan\r\n")
+            tn.write(b"show pvc vlan\r\n\r\n")
+            time.sleep(1)
             tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            print("test")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
-            print('test')
             tn.close()
             return str(result)
 
@@ -61,4 +70,4 @@ class ShowMac(BaseCommand):
 
         except Exception as e:
             print(e)
-            return "error"
+            return str(e)

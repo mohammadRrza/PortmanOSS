@@ -7,7 +7,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowVLAN(BaseCommand):
+class ShowAllVLANs(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
@@ -77,7 +77,7 @@ class ShowVLAN(BaseCommand):
             tn.write(b"2\r\n")
             time.sleep(0.5)
             tn.read_until(b'(xx,xx~xx)     :')
-            tn.write("{0}\r\n".format(self.__vlan_name['vlan_id']).encode('utf-8'))
+            tn.write(b"\r\n")
             time.sleep(0.5)
             tn.write(b"\r\n")
             tn.write(b"end")

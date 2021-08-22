@@ -24,6 +24,8 @@ from .fiberhomeAN5006_commands.show_pvc_vlan import ShowVLAN
 from .fiberhomeAN5006_commands.show_time import ShowUpTime
 from .fiberhomeAN5006_commands.show_temp import ShowTemperature
 from .fiberhomeAN5006_commands.selt_start import StartSelt
+from .fiberhomeAN5006_commands.close_port import ClosePort
+from .fiberhomeAN5006_commands.open_port import OpenPort
 
 
 class FiberhomeAN5006(BaseDSLAM):
@@ -41,6 +43,8 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('show time', ShowUpTime)
     command_factory.register_type('show temp', ShowTemperature)
     command_factory.register_type('selt start', StartSelt)
+    command_factory.register_type('port disable', ClosePort)
+    command_factory.register_type('port enable', OpenPort)
 
     '''
     command_factory.register_type('selt', Selt)

@@ -45,10 +45,18 @@ class ShowService(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
+            tn.read_until(b"User>")
             tn.write(b'admin\r\n')
+            tn.read_until(b"Password:")
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
             time.sleep(0.5)
+            # tn.write(b'end')
+            # err1 = tn.read_until(b"end")
+            # print(err1)
+            # if "Bad Password..." in str(err1):
+            #     return "DSLAM Password is Wrong"
+            tn.write(b"\r\n")
+            tn.read_until(b"#")
             tn.write(b"cd service\r\n")
             tn.write(b"show service\r\n\r\n")
             time.sleep(0.5)
@@ -56,7 +64,10 @@ class ShowService(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()
-            return str(result)
+
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'Service', val)]
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)

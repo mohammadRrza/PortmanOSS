@@ -20,6 +20,7 @@ from .fiberhomeAN3300_commands.ip_show import IPShow
 from .fiberhomeAN3300_commands.sys_snmp_show import SnmpShow
 from .fiberhomeAN3300_commands.show_time import ShowUpTime
 from .fiberhomeAN3300_commands.show_mac import ShowMac
+from .fiberhomeAN3300_commands.show_all_pvc_vlan import ShowAllVLANs
 
 
 class FiberhomeAN3300(BaseDSLAM):
@@ -40,6 +41,7 @@ class FiberhomeAN3300(BaseDSLAM):
     command_factory.register_type('show snmp community', SnmpShow)
     command_factory.register_type('show time', ShowUpTime)
     command_factory.register_type('show mac', ShowMac)
+    command_factory.register_type('Show All VLANs', ShowAllVLANs)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))
