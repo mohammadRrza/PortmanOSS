@@ -43,17 +43,31 @@ class ShowPort(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
+            tn.write(b"end\r\n")
+            err1 = tn.read_until(b"end")
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.read_until(b"#")
             tn.write(b"cd service\r\n")
             tn.write("telnet Slot {0}\r\n\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-            time.sleep(1)
+            time.sleep(2)
+            tn.write(b"end\r\n")
+            err1 = tn.read_until(b"end")
+            print(err1)
+            if "not availible." in str(err1):
+                return "The Card number maybe unavailable or does not exist."
+            if "Invalid slot number!" in str(err1):
+                return "Card number is out of range."
             tn.write(b"cd dsp\r\n")
             tn.write("show port status {0}\r\n\r\n".format(self.port_conditions['port_number']).encode('utf-8'))
-            tn.write("\r\n".encode('utf-8'))
             tn.write("end\r\n".encode('utf-8'))
             result = tn.read_until(b"end")
+            if "status:" not in str(result):
+                return "Port number is out of range."
             tn.close()
-            return str(result)
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r':\s|Line', val)]
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)

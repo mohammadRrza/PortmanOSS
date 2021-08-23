@@ -5690,14 +5690,7 @@ class FiberHomeCommandAPIView(views.APIView):
                         return JsonResponse({'Result': 'there is no mac address in accordance with this port.'})
                     else:
                         return JsonResponse({'Result': result.split("\r\n")})
-                elif command == 'show linerate':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r':\s|Line', val)]
-                    return JsonResponse({'result': result})
                 elif command == 'profile adsl show':
-                    result = result.split("\\r\\n")
-                    result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
-                              re.search(r':\s|[*]{6,}', val)]
                     return JsonResponse({'result': result})
                 elif command == 'setPortProfiles':
                     if 'not profile named' in result:
@@ -5716,34 +5709,19 @@ class FiberHomeCommandAPIView(views.APIView):
                             return JsonResponse({'Selt': item.split(',')[1].split()[2] + " " + "m"})
 
                     return JsonResponse({'response': result.split("\r\n")})
-                elif command == 'Show Shelf':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-+', val)]
-                    return JsonResponse({'result': result})
-                elif command == 'Show Card':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r'Line', val)]
-                    return JsonResponse({'result': result})
                 elif command == 'show mac':
                     return JsonResponse({'response': result.split("\\r\\n")})
                 elif command == 'save config':
                     return JsonResponse({'response': result.split("\\r\\n")})
                 elif command == 'Show VLAN':
                     return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
-                elif command == 'show time':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r':\s|Now', val)]
-                    return JsonResponse({'result': result})
-                elif command == 'show temp':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r':\s', val)]
-                    return JsonResponse({'result': result})
                 elif command == 'selt start':
                     return JsonResponse({'response': result.split("\\r\\n")})
                 elif command == 'port enable':
                     return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
                 elif command == 'port disable':
                     return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
+                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
             elif dslam_type == 7:  # zyxel1248
                 return JsonResponse({'Result': dslam_type})
         except Exception as ex:
