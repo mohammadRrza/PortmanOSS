@@ -1721,3 +1721,4 @@ AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse`
 Unauthorized: /api/v1/router/get_router_backup_files_name/
 >>>>>>> c1cb61b5d9950c1faec31aeb22f26dcfd44c19be
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/

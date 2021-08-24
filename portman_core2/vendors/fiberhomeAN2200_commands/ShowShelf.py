@@ -53,24 +53,29 @@ class ShowShelf(BaseCommand):
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
-            data = tn.read_until(b'User Name:', 5)
-            print('here')
-            print('==>', data)
+            err1 = tn.read_until(b"correct")
+            if "incorrect" in str(err1):
+                return "access name is wrong!"
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            err2 = tn.read_until(b"Password:", 2)
+            if "Invalid User Name" in str(err2):
+                return "User Name is wrong."
             print('user sent ...')
-            data = tn.read_until(b'Password:', 5)
-            print('==>', data)
-            tn.write(( self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err3 = tn.read_until(b"OK!", 2)
+            if "Invalid Password" in str(err3):
+                return "Password is wrong."
             print('password sent ...')
             time.sleep(1)
             tn.write("sc\r\n".encode('utf-8'))
             time.sleep(1)
             tn.write("end\r\n".encode('utf-8'))
             res = tn.read_until(b'end')
+            tn.close()
+            result = str(res).split("\\n\\r")
+            result = [val for val in result if re.search(r'\s{4,}|SHELF|Polling|Current|--+', val)]
 
-            time.sleep(1)
-
-            return dict(res=str(res).split("\\n\\r"), port_indexes=self.__port_indexes)
+            return dict(res=result, port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

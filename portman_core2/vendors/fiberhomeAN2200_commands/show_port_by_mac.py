@@ -4,15 +4,15 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ShowSlotPortByMac(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__access_name = params.get('access_name','an2100')
+        self.__access_name = params.get('access_name', 'an2100')
         self.port_conditions = params.get('port_conditions')
         self.__mac = params.get('mac')
-
 
     @property
     def HOST(self):
@@ -38,18 +38,19 @@ class ShowSlotPortByMac(BaseCommand):
     def telnet_password(self, value):
         self.__telnet_password = value
 
-
     def process_telnet_option(self, tsocket, command, option):
         from telnetlib import IAC, DO, DONT, WILL, WONT, SB, SE, TTYPE, NAWS, LINEMODE, ECHO
         tsocket.sendall(IAC + WONT + LINEMODE)
+
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST, timeout=5)
             tn.set_option_negotiation_callback(self.process_telnet_option)
 
             index, match_obj, text = tn.expect(
-                        ['[U|u]sername: ', '[L|l]ogin:', '[L|l]oginname:', '[P|p]assword:'])
+                ['[U|u]sername: ', '[L|l]ogin:', '[L|l]oginname:', '[P|p]assword:'])
 
             print(index, match_obj, text)
             if index == 1:
@@ -62,28 +63,28 @@ class ShowSlotPortByMac(BaseCommand):
             print('user sent ...')
             data = tn.read_until('Password:', 5)
             print('==>', data)
-            tn.write(( self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
             tn.read_until('>', 5)
             tn.write("ip\r\n".encode('utf-8'))
             for x in range(20):
-             tn.read_until('>', 5)
-             tn.write("showmac\r\n".encode('utf-8'))
-             time.sleep(0.5)
-             tn.write("0-{0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-             time.sleep(2)
-             tn.write("end\r\n".encode('utf-8'))
-             res = tn.read_until('end')
-            if(self.__mac in res):
-                i=0
+                tn.read_until('>', 5)
+                tn.write("showmac\r\n".encode('utf-8'))
+                time.sleep(0.5)
+                tn.write("0-{0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+                time.sleep(2)
+                tn.write("end\r\n".encode('utf-8'))
+                res = tn.read_until('end')
+            if self.__mac in res:
+                i = 0
                 result = res.split('\n\r')
                 for item in result:
-                    if(self.__mac in item ):
-                        return "{0}---{1}".format(item.split()[1],result[i-3])
-                    i+=1
+                    if self.__mac in item:
+                        return "{0}---{1}".format(item.split()[1], result[i - 3])
+                    i += 1
 
             return res.split('\n\r')
-     
+
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

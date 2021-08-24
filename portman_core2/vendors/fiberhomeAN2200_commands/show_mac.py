@@ -55,27 +55,29 @@ class ShowMac(BaseCommand):
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
-            data = tn.read_until(b'User Name:', 5)
+            data = tn.read_until(b'User Name:')
             print('here')
             print('==>', data)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             print('user sent ...')
-            data = tn.read_until(b'Password:', 5)
+            data = tn.read_until(b'Password:')
             print('==>', data)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print('password sent ...')
             tn.write(b"ip\r\n")
             tn.write(b"sm \r\n")
-            tn.read_until(b' :', 5)
+            tn.read_until(b' :')
             tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-            time.sleep(0.5)
+            time.sleep(1)
             tn.write(b"exit\r\n")
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
+            print(res)
+            result = str(res).split("\\n\\r")
+            result = [re.sub(r'\\t', '    ', val) for val in result if
+                      re.search(r'\s{4,}|\d{2}|MAC|--+', val)]
 
-            time.sleep(1)
-
-            return dict(res=str(res).split("\\n\\r"), port_indexes=self.__port_indexes)
+            return dict(res=result, port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

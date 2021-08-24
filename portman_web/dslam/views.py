@@ -5633,15 +5633,6 @@ class FiberHomeCommandAPIView(views.APIView):
                     return JsonResponse({'Result': result})
                 elif command == 'show port with mac':
                     return JsonResponse({'Result': result})
-                elif command == 'Version':
-                    result = [val for val in result["res"] if re.search(r'\s{4,}|SHELF|Agent|--+', val)]
-                elif command == 'Show Shelf':
-                    result = [val for val in result["res"] if re.search(r'\s{4,}|SHELF|Polling|Current|--+', val)]
-                elif command == 'Show Card':
-                    result = [val for val in result["res"] if re.search(r'\s{4,}|--+', val)]
-                elif command == 'show mac':
-                    result = [re.sub(r'\\t', '    ', val) for val in result['res'] if
-                              re.search(r'\s{4,}|\d{2}|MAC|--+', val)]
                 elif command == 'show linerate':
                     result = [val for val in result["res"] if re.search(r'\s+:|--+', val)]
                 elif command == 'port enable':
