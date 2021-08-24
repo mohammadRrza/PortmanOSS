@@ -1,0 +1,8 @@
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/router/
+Forbidden: /api/v1/dslam/events/
+Forbidden: /api/v1/dslamport/events/
+Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
