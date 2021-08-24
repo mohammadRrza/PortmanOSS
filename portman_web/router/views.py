@@ -238,13 +238,13 @@ class GetRouterBackupFilesNameAPIView2(views.APIView):
                 fileobj = File()
                 # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
                 if 'Error' in filename:
-                    if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__('@'):
+                    if filename.__contains__(fqdn) and filename.__contains__('@'):
                         fileobj.file_name = filename
                         fileobj.file_date = filename.split('_')[2].split('.')[0]
                         filenames_error.append(fileobj)
                         total.append(filenames_error)
                 else:
-                    if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__('@'):
+                    if filename.__contains__(fqdn) and filename.__contains__('@'):
                         fileobj.file_name = filename
                         fileobj.file_date = filename.split('_')[1].split('.')[0]
                         filenames.append(fileobj)
