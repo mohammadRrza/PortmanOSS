@@ -51,9 +51,8 @@ class ShowLineRate(BaseCommand):
             print("OK ")
             print(self.__telnet_password)
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write(self.__telnet_username + "\r\n").encode('utf-8')
-            tn.write(self.__telnet_password + "\r\n").encode('utf-8')
-            time.sleep(1)
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             print("OK ")
             tn.read_until(b'Password:')
             for port_item in self.__port_indexes:

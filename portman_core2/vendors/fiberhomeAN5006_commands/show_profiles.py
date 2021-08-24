@@ -51,6 +51,7 @@ class ShowProfiles(BaseCommand):
             tn.write(b"cd qos\r\n")
             time.sleep(0.1)
             tn.write(b"show rate-limit profile all\r\n")
+            time.sleep(1)
             tn.write(b"\r\n")
             time.sleep(0.1)
             tn.write(b"\r\n")
@@ -58,13 +59,17 @@ class ShowProfiles(BaseCommand):
             tn.write(b"\r\n")
             time.sleep(0.1)
             tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"end\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"end")
+            print("test")
             result = tn.read_until(b"end")
+            print(result)
             tn.close()
             result = str(result).split("\\r\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
-                      re.search(r':\s|[*]{6,}', val)]
+            # result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
+            #           re.search(r'name :\s', val)]
             return result
 
         except (EOFError, socket_error) as e:

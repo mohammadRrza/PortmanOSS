@@ -5566,7 +5566,7 @@ class FiberHomeCommandAPIView(views.APIView):
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  ################################### zyxel ###################################
-                return JsonResponse({'Result': dslam_type})
+                return JsonResponse({'Result': result})
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
@@ -5681,8 +5681,6 @@ class FiberHomeCommandAPIView(views.APIView):
                         return JsonResponse({'Result': 'there is no mac address in accordance with this port.'})
                     else:
                         return JsonResponse({'Result': result.split("\r\n")})
-                elif command == 'profile adsl show':
-                    return JsonResponse({'result': result})
                 elif command == 'setPortProfiles':
                     if 'not profile named' in result:
                         return JsonResponse(
