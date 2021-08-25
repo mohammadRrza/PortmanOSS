@@ -6,6 +6,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ShowLineRate(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -43,16 +44,21 @@ class ShowLineRate(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
+        print("test")
         try:
-            print((self.__telnet_password))
+            print("OK ")
+            print(self.__telnet_password)
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            time.sleep(1)
+            print("OK ")
             tn.read_until(b'Password:')
             for port_item in self.__port_indexes:
-                tn.write("show linerate {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
+                tn.write(
+                    "show linerate {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode(
+                        'utf-8'))
                 time.sleep(1)
             tn.read_until(b'Communications Corp.')
             tn.write(b'end\r\n')

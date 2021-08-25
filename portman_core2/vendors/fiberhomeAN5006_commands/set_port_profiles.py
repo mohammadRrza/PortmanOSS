@@ -44,16 +44,17 @@ class SetPortProfiles(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until("Password:")
-            tn.write("cd qos\r\n")
+            tn.read_until(b"Password:")
+            tn.write(b"cd qos\r\n")
             tn.write("attach rate-limit profile name {0} interface {1}/{2}".format(self.__lineprofile,
                                                                                    self.port_conditions['slot_number'],
-                                                                                   self.port_conditions['port_number']))
-            tn.write("\r\n".encode('utf-8'))
-            tn.write("end\r\n".encode('utf-8'))
-            result = tn.read_until("end")
+                                                                                   self.port_conditions[
+                                                                                       'port_number']).encode('utf-8'))
+            tn.write(b"\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end")
             tn.close()
-            return result
+            return str(result)
 
         except (EOFError, socket_error) as e:
             print(e)
