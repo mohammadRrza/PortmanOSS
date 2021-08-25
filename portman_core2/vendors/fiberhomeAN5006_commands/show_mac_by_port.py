@@ -43,14 +43,16 @@ class ShowMacSlotPort(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write("cd device\r\n")
+            tn.write(b"cd device\r\n")
             tn.write("show linecard fdb interface {0}/{1}\r\n\r\n".format(self.port_conditions['slot_number'],
                                                                           self.port_conditions['port_number']).encode(
                 'utf-8'))
+            time.sleep(0.5)
+            tn.write(b"\r\n")
             tn.write("end\r\n".encode('utf-8'))
-            result = tn.read_until("end")
+            result = tn.read_until(b"end")
             tn.close()
-            return result
+            return str(result)
 
         except (EOFError, socket_error) as e:
             print(e)
