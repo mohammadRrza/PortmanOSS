@@ -7650,6 +7650,7 @@ class DslamCommandsV2APIView(views.APIView):
                 return JsonResponse({'Result': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                print(command)
                 if command == 'show mac by slot port':
                     # return JsonResponse({'Result': result})
 

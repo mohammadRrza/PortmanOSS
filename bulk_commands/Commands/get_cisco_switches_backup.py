@@ -5,12 +5,20 @@ import paramiko
 from django.db import connection
 from django.http import JsonResponse
 from pathlib import Path
+from Commands.mail import Mail
 
 class GetCiscoSwitchbackUp():
     def __init__(self):
         pass
 
     def run_command(self):
+        mail = Mail()
+        mail.from_addr = 'oss-problems@pishgaman.net'
+        mail.to_addr = 'oss-problems@pishgaman.net'
+        mail.msg_subject = 'Get Device Backups'
+        mail.msg_body = 'Cisco Switch Backup Process has been started at {0}'.format(
+            str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
+        Mail.Send_Mail(mail)
         home = "/home/taher"#str(Path.home())
         print("=============================================")
         print("Switch Backup Process has been started...")
