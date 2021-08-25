@@ -4,13 +4,14 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ShowPort(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name','an3300')
+        self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
 
     @property
@@ -37,23 +38,25 @@ class ShowPort(BaseCommand):
     def telnet_password(self, value):
         self.__telnet_password = value
 
+    retry = 1
 
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until("Password:")     
-            tn.write('{0}\r\n'.format("admin"))
-            tn.write('{0}\r\n'.format(self.__access_name))
-            tn.write("cd device\r\n")
-            tn.write("show port {0}:{1}\r\n\r\n".format(self.port_conditions['slot_number'],self.port_conditions['port_number']).encode('utf-8'))
+            tn.read_until(b"Password:")
+            tn.write(b'admin\r\n')
+            tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            tn.write(b"cd device\r\n")
+            tn.write("show port {0}:{1}\r\n\r\n".format(self.port_conditions['slot_number'],
+                                                        self.port_conditions['port_number']).encode('utf-8'))
             time.sleep(0.5)
-            tn.write(("\r\n").encode('utf-8'))
-            tn.write(("end\r\n").encode('utf-8'))
-            result = tn.read_until("end")
+            tn.write(b"\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end")
             tn.close()
-            return result
+            return str(result)
 
         except (EOFError, socket_error) as e:
             print(e)
