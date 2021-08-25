@@ -6,3 +6,48 @@ Unauthorized: /api/v1/router/
 Forbidden: /api/v1/dslam/events/
 Forbidden: /api/v1/dslamport/events/
 Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
+Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
+Not Found: /api/v1/users/permission-profile/undefined/objects/
+Not Found: /api/v1/users/permission-profile/undefined/objects/
+Not Found: /api/v1/users/permission-profile/undefined/objects/
+Not Found: /api/v1/users/permission-profile/171/objects/
+Not Found: /api/v1/users/permission-profile/166/objects/
+Not Found: /api/v1/users/permission-profile/169/objects/
+Not Found: /api/v1/users/permission-profile/170/objects/
+Not Found: /api/v1/users/permission-profile/169/objects/
+Not Found: /api/v1/users/permission-profile/169/objects/
+Internal Server Error: /api/v1/users/permission-profile/60/objects/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/users/views.py", line 443, in objects
+    uppo_list = [item.as_json() for item in
+  File "/opt/portmanv3/portman_web/users/views.py", line 443, in <listcomp>
+    uppo_list = [item.as_json() for item in
+  File "/opt/portmanv3/portman_web/users/models.py", line 403, in as_json
+    name = DSLAM.objects.get(id=self.object_id).name
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/query.py", line 429, in get
+    raise self.model.DoesNotExist(
+dslam.models.DSLAM.DoesNotExist: DSLAM matching query does not exist.
+Not Found: /api/v1/users/permission-profile/169/objects/
+Not Found: /api/v1/users/permission-profile/168/objects/
+Not Found: /api/v1/users/permission-profile/166/objects/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
