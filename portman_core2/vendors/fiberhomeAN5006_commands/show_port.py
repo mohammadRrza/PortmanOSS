@@ -69,7 +69,7 @@ class ShowPort(BaseCommand):
                 i = b.split(': ', 1)
                 d[i[0].strip()] = i[1].replace("\\t", "    ")
             result = d
-            return result
+            return str(result)
 
         except (EOFError, socket_error) as e:
             print(e)
