@@ -43,7 +43,9 @@ class StartSelt(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
+            err1 = tn.read_until(b"#", 1)
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd service\r\n")
             tn.write("telnet Slot {0}".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)

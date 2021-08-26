@@ -46,7 +46,6 @@ class ShowShelf(BaseCommand):
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
-            time.sleep(0.5)
             tn.write(b"cd device\r\n")
             time.sleep(0.1)
             tn.write(b"show card status\r\n")

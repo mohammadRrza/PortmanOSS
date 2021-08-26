@@ -5700,8 +5700,6 @@ class FiberHomeCommandAPIView(views.APIView):
                     return JsonResponse({'response': result.split("\r\n")})
                 elif command == 'show mac':
                     return JsonResponse({'response': result.split("\\r\\n")})
-                elif command == 'save config':
-                    return JsonResponse({'response': result.split("\\r\\n")})
                 elif command == 'Show VLAN':
                     return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
                 elif command == 'selt start':

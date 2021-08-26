@@ -51,7 +51,9 @@ class SaveConfig(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()
-            return str(result)
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'OK', val)]
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)

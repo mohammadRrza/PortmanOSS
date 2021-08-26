@@ -43,11 +43,9 @@ class ShowProfiles(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"end\r\n")
-            err1 = tn.read_until(b"end")
+            err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.read_until(b"#")
             tn.write(b"cd qos\r\n")
             time.sleep(0.1)
             tn.write(b"show rate-limit profile all\r\n")
@@ -63,13 +61,12 @@ class ShowProfiles(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"\r\n")
             tn.write(b"end")
-            print("test")
             result = tn.read_until(b"end")
-            print(result)
             tn.close()
             result = str(result).split("\\r\\n")
-            # result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
-            #           re.search(r'name :\s', val)]
+            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
+                      re.search(r'name:\s', val)]
+            result = [val.replace("name: ", '').strip() for val in result]
             return result
 
         except (EOFError, socket_error) as e:

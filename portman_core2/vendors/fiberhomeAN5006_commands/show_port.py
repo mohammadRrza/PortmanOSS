@@ -54,7 +54,6 @@ class ShowPort(BaseCommand):
             time.sleep(1)
             tn.write("end\r\n".encode('utf-8'))
             result = tn.read_until(b"end")
-            print(result)
             if "unreached" in str(result):
                 return "The Card number maybe unavailable or does not exist."
             if "Invalid slot number!" in str(result):
