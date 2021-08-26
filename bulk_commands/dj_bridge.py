@@ -30,7 +30,6 @@ from dslam.models import DSLAMTypeCommand
 
 
 
-
 #RouterModels
 from router.models import Router
 
