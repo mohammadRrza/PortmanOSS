@@ -44,16 +44,41 @@ class ShowMac(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"admin\r\n")
-            tn.write(b"an3300\r\n")
+            tn.write(b"end\r\n")
+            err1 = tn.read_until(b"end")
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.read_until(b"User>")
+            tn.write(b'admin\r\n')
+            tn.read_until(b"Password:")
+            tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            time.sleep(0.5)
+            err1 = tn.read_until(b"#", 1)
+            if "Bad Password..." in str(err1):
+                return "DSLAM Password is wrong!"
             tn.write(b"cd fdb\r\n")
             tn.write("sh fdb slot {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-            time.sleep(0.5)
+            time.sleep(3)
+            print("test")
             tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "Invaild Slot." in str(result):
+                return "The Card number maybe unavailable or does not exist."
+            if "Can not get the fdb information." in str(result):
+                return "This Card is not connected."
+            result = str(result).split("\\r\\n")
+            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
+                      re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
             tn.close()
-            return str(result)
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)
