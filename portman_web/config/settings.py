@@ -28,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'qepv7vyyu4-&un2-9opv6n&dwwi9p2nn14kh_dggzjyfu%on#n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # CELERY_RESULT_BACKENDcelery -A proj worker -l INFO
 CELERY_RESULT_BACKEND = 'django-cache'
