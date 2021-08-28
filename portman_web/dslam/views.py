@@ -5582,23 +5582,8 @@ class FiberHomeCommandAPIView(views.APIView):
                     else:
                         return JsonResponse(
                             {'result': 'port profile has been changed to {0} .'.format(params.get('new_lineprofile'))})
-                elif command == 'Show VLAN':
-                    return JsonResponse({'result': result.split('\\r\\n')})
-                elif command == 'IP Show':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r'\s+:', val)]
-                    d = {}
-                    for b in result:
-                        i = b.split(': ')
-                        d[i[0].strip()] = i[1]
-                    result = d
-                elif command == 'show snmp community':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r'Community', val)]
-                elif command == 'show time':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r'(is :|Start)', val)]
                 return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
+
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
                 if command == 'show mac by slot port':
                     return JsonResponse({'Result': result})
