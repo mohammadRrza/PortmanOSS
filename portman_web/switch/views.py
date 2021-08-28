@@ -1,4 +1,5 @@
 import datetime
+import json
 import sys, os
 from pathlib import Path
 from wsgiref.util import FileWrapper
@@ -190,12 +191,50 @@ class GetBackupFilesNameAPIView(views.APIView):
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
 
 
+class File:
+    file_name = ''
+    file_date = ''
+
+
+class GetSwitchBackupFilesNameAPIView(views.APIView):
+    def post(self, request, format=None):
+        try:
+            switch_id = request.data.get('switch_id')
+            switch_obj = Switch.objects.get(id=switch_id)
+            fqdn = switch_obj.device_fqdn
+            ip = switch_obj.device_ip
+            filenames = []
+            filenames_error = []
+            total = []
+            directory = path
+            for filename in os.listdir(directory):
+                fileobj = File()
+                # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
+                if 'Error' in filename:
+                    if filename.__contains__(fqdn) and filename.__contains__('@'):
+                        fileobj.file_name = filename
+                        fileobj.file_date = filename.split('_')[2].split('.')[0]
+                        filenames_error.append(fileobj)
+                        total.append(filenames_error)
+                else:
+                    if filename.__contains__(fqdn) and filename.__contains__('@'):
+                        fileobj.file_name = filename
+                        fileobj.file_date = filename.split('_')[1].split('.')[0]
+                        filenames.append(fileobj)
+                        total.append(filenames)
+            return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
+                                                        sort_keys=True, indent=4)})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
 class DownloadBackupFileAPIView(views.APIView):
 
     def post(self, request, format=None):
         try:
             download_backup_file = request.data.get('backup_file_name')
-            directory = path+download_backup_file
+            directory = path + download_backup_file
             f = open(directory, "r")
             print(directory)
             return JsonResponse({'response': f.read()})
@@ -231,7 +270,7 @@ class GetBackupErrorTextNameAPIView(views.APIView):
     def post(self, request, format=None):
         try:
             backup_file_name = request.data.get('backup_file_name')
-            directory = path+backup_file_name
+            directory = path + backup_file_name
             f = open(directory, "r")
             return JsonResponse({'response': f.read()})
         except Exception as ex:
@@ -248,7 +287,8 @@ class ReadSwitchBackupErrorFilesNameAPIView(views.APIView):
             directory = path
             backup_errors_file = open(path + 'switch_backup_errors.txt', 'w')
             for filename in os.listdir(directory):
-                if filename.__contains__('Error') and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
+                if filename.__contains__('Error') and filename.__contains__(
+                        str(datetime.datetime.now().date() - datetime.timedelta(1))):
                     f = open(directory + filename, "r")
                     err_text = filename + "   " + "|" + "   " + f.read()
                     backup_errors_file.write(filename + '     ' + f.read() + '\n')
@@ -261,4 +301,3 @@ class ReadSwitchBackupErrorFilesNameAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
-

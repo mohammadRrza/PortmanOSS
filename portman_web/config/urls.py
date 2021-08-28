@@ -156,7 +156,7 @@ urlpatterns = [
 
     # Switches
     url(r'^api/v1/switch/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),
-    url(r'^api/v1/switch/get_backup_files_name/$', GetBackupFilesNameAPIView.as_view(), name='get_backup_files_name'),
+    url(r'^api/v1/switch/get_switch_backup_files_name/$', GetSwitchBackupFilesNameAPIView.as_view(), name='get_switch_backup_files_name'),
     url(r'^api/v1/switch/download_backup_file/$', DownloadBackupFileAPIView.as_view(), name='download_backup_file'),
     url(r'^api/v1/switch/get_backup_error_file/$', GetBackupErrorFilesNameAPIView.as_view(),
         name='get_backup_error_file'),
