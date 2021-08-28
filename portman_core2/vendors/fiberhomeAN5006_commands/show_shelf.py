@@ -10,7 +10,6 @@ class ShowShelf(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.port_conditions = params.get('port_conditions')
 
     @property
     def HOST(self):
