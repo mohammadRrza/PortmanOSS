@@ -63,7 +63,6 @@ class OpenPort(BaseCommand):
             if "Invalid User Name" in str(err2):
                 return "User Name is wrong."
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            print(self.__telnet_password)
             err3 = tn.read_until(b"OK!", 1)
             if "Invalid Password" in str(err3):
                 return "Password is wrong."

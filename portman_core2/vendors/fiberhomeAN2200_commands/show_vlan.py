@@ -58,16 +58,18 @@ class ShowVLAN(BaseCommand):
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
-            data = tn.read_until(b'User Name:')
-            print('here')
-            print('==>', data)
+            err1 = tn.read_until(b"correct")
+            if "incorrect" in str(err1):
+                return "Access name is wrong!"
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            print('user sent ...')
-            data = tn.read_until(b'Password:')
-            print('==>', data)
+            err2 = tn.read_until(b"Password:", 1)
+            if "Invalid User Name" in str(err2):
+                return "User Name is wrong."
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err3 = tn.read_until(b"OK!", 1)
+            if "Invalid Password" in str(err3):
+                return "Password is wrong."
             print('password sent ...')
-            time.sleep(0.5)
             tn.write(b"ip\r\n")
             tn.write(b"sv\r\n")
             temp = tn.read_until(b'IP')
@@ -84,7 +86,7 @@ class ShowVLAN(BaseCommand):
             res = tn.read_until(b'end')
             tn.close()
             if "No specified vlan" in str(res):
-                return "No specified vlan"
+                return "No specified vlan. Please try another vlan."
 
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\s+:', val)]
             d = {}

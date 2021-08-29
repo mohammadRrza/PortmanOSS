@@ -5589,18 +5589,6 @@ class FiberHomeCommandAPIView(views.APIView):
                     return JsonResponse({'Result': result})
                 elif command == 'show port with mac':
                     return JsonResponse({'Result': result})
-                elif command == 'profile adsl show':
-                    return JsonResponse({'Result': result})
-                elif command == 'Show VLAN':
-                    return JsonResponse({'Result': result})
-                elif command == 'Show All VLANs':
-                    return JsonResponse({'Result': result})
-                elif command == 'save config':
-                    return JsonResponse({'Result': result})
-                elif command == 'show time':
-                    result = [val for val in result['res'] if re.search(r'Current|running', val)]
-                elif command == 'show pvc':
-                    return JsonResponse({'Result': result})
                 elif command == 'IP Show':
                     result = [val for val in result['res'] if re.search(r'\s+:\s', val)]
                     d = {}
