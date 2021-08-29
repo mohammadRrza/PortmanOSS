@@ -46,6 +46,14 @@ class Switch(models.Model):
         )
 
 
+class SwitchGroup(models.Model):
+    switch_brand = models.ForeignKey(SwitchBrand, on_delete=models.CASCADE)
+    title = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.title
+
+
 class SwitchCommand(models.Model):
     switch_brand = models.ForeignKey(SwitchBrand, on_delete=models.CASCADE)
     switch_type = models.ForeignKey(SwitchType, on_delete=models.CASCADE)

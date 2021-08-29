@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from switch.models import SwitchBrand, SwitchType, Switch,SwitchCommand
+from switch.models import SwitchBrand, SwitchType, Switch, SwitchCommand, SwitchGroup
 
 
 class SwitchAdmin(admin.ModelAdmin):
@@ -23,4 +23,5 @@ admin.site.register(SwitchBrand)
 admin.site.register(SwitchType)
 admin.site.register(Switch, SwitchAdmin)
 admin.site.register(SwitchCommand)
+admin.site.register(SwitchGroup)
 

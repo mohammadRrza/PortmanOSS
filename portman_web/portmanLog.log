@@ -1722,6 +1722,77 @@ Unauthorized: /api/v1/router/get_router_backup_files_name/
 >>>>>>> c1cb61b5d9950c1faec31aeb22f26dcfd44c19be
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+<<<<<<< HEAD
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+=======
+Not Found: /favicon.ico
+Internal Server Error: /admin/switch/switchgroup/add/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column "switch_brand_id" of relation "switch_switchgroup" does not exist
+LINE 1: INSERT INTO "switch_switchgroup" ("switch_brand_id", "title"...
+                                          ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/options.py", line 614, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/sites.py", line 233, in inner
+    return view(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1653, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1534, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1580, in _changeform_view
+    self.save_model(request, new_object, form, not add)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1093, in save_model
+    obj.save()
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/base.py", line 753, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/base.py", line 790, in save_base
+    updated = self._save_table(
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/base.py", line 895, in _save_table
+    results = self._do_insert(cls._base_manager, using, fields, returning_fields, raw)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/base.py", line 933, in _do_insert
+    return manager._insert(
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/query.py", line 1254, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1397, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/mrtbadboy/PycharmProjects/PortmanV3/venv/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column "switch_brand_id" of relation "switch_switchgroup" does not exist
+LINE 1: INSERT INTO "switch_switchgroup" ("switch_brand_id", "title"...
+                                          ^
+
+Not Found: /favicon.ico
+>>>>>>> 5918992b7370b39b7f0d09856258265ad497a122
