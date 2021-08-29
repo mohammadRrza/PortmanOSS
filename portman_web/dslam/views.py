@@ -5566,7 +5566,7 @@ class FiberHomeCommandAPIView(views.APIView):
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  ################################### zyxel ###################################
-                return JsonResponse({'Result': result})
+                return JsonResponse({'Result': dslam_type})
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
@@ -5588,14 +5588,6 @@ class FiberHomeCommandAPIView(views.APIView):
                 if command == 'show mac by slot port':
                     return JsonResponse({'Result': result})
                 elif command == 'show port with mac':
-                    return JsonResponse({'Result': result})
-                elif command == 'show linerate':
-                    result = [val for val in result["res"] if re.search(r'\s+:|--+', val)]
-                elif command == 'port enable':
-                    return JsonResponse({'Result': result})
-                elif command == 'port disable':
-                    return JsonResponse({'Result': result})
-                elif command == 'port reset':
                     return JsonResponse({'Result': result})
                 elif command == 'profile adsl show':
                     return JsonResponse({'Result': result})
