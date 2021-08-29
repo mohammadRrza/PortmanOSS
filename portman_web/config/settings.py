@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     'dslam',
     'router',
     'switch',
+    'radio',
     'contact',
     'sslserver',
 
