@@ -1865,3 +1865,9 @@ LINE 1: INSERT INTO "switch_switchgroup" ("switch_brand_id", "title"...
 
 Not Found: /favicon.ico
 >>>>>>> 5918992b7370b39b7f0d09856258265ad497a122
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/switch/
