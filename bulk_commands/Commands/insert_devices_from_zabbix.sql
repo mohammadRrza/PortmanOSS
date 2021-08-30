@@ -20,10 +20,10 @@ INSERT INTO "public"."router_router"("device_interfaceid", "host_id", "device_na
 
 
 -------------------------radio-------------------------------------------------
- ALTER SEQUENCE radio_radio_id_seq RESTART WITH 444;
+ ALTER SEQUENCE radio_radio_id_seq RESTART WITH 123;
  DELETE from radio_radio;
  INSERT INTO "public"."radio_radio"( "device_interfaceid", "host_id", "device_name", "device_ip", "device_fqdn", "radio_brand_id", "radio_type_id", "SSH_password", "SSH_username", "SSH_port", "SSH_timeout")
- SELECT DISTINCT 3 as device_interfaceid,zabbix_hosts.host_id,'' as device_name,zabbix_hosts.device_ip,zabbix_hosts.device_fqdn, radio_radiogroup.radio_brand_id,radio_radiogroup."id",'Yq*teoyg&fb@'as SSH_password,'backup-noc' as SSH_username, 22 as SSH_port, 5 as SSH_timeout from zabbix_hosts
+ SELECT DISTINCT 3 as device_interfaceid,zabbix_hosts.host_id,'' as device_name,zabbix_hosts.device_ip,zabbix_hosts.device_fqdn, radio_radiogroup.radio_brand_id,radio_radiogroup."id",'eS7*XiMmyeeU'as SSH_password,'mik-backup' as SSH_username, 22 as SSH_port, 5 as SSH_timeout from zabbix_hosts
   LEFT JOIN radio_radiogroup on radio_radiogroup.title = zabbix_hosts.device_type
 	where radio_radiogroup.title is not NULL and device_fqdn not like '%OLD%'	ORDER BY zabbix_hosts.device_ip;
 -------------------------radio-------------------------------------------------

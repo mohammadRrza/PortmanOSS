@@ -20,7 +20,7 @@ class ZabbixHosts:
             response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
             login = response.json()
             token = login['result']
-            select_query = "DELETE from zabbix_hosts;SELECT * FROM zabbix_hostgroups";
+            select_query = "DELETE from zabbix_hosts;SELECT * FROM zabbix_hostgroups"
             cursor = connection.cursor()
             cursor.execute(select_query)
             rows = cursor.fetchall()
