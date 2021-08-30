@@ -59,6 +59,7 @@ class ShowProfiles(BaseCommand):
                 return "DSLAM Password is wrong!"
             tn.write(b"cd profile\r\n")
             tn.write(b"show all dsl-profile-name\r\n")
+            time.sleep(0.5)
             result1 = tn.read_until(b"--Press any key to continue Ctrl+c to stop--")
             tn.write(b"\r\n")
             result2 = tn.read_until(b"number")

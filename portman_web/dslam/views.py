@@ -5573,15 +5573,6 @@ class FiberHomeCommandAPIView(views.APIView):
                 if command == 'show mac by slot port':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
-                elif command == 'setPortProfiles':
-                    if 'Unknown command' in result:
-                        return JsonResponse({'result': 'Unknown command. Please check the parameters.'})
-                    if 'not exist' in result:
-                        return JsonResponse(
-                            {'result': 'Profile {0} dose not exist.'.format(params.get('new_lineprofile'))})
-                    else:
-                        return JsonResponse(
-                            {'result': 'port profile has been changed to {0} .'.format(params.get('new_lineprofile'))})
                 return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
