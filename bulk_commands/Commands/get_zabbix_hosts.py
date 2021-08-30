@@ -15,6 +15,7 @@ class ZabbixHosts:
 
     def get_zabbix_hosts(self):
         try:
+            i=0
             zabbix_url = 'https://monitoring1.pishgaman.net/api_jsonrpc.php'
             zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "ASXRQKD78kykRLT"},"id": 1,"auth": null}'
             response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
