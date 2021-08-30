@@ -7,7 +7,7 @@ from Commands.get_mikrotik_radio_backup import GetMikrotikRadiobackUp
 if __name__ == '__main__':
     '''back_up = GetbackUp()
     print('Backup process is started.')
-    back_up.run_command()
+    back_up.run_command()'''
     zabbix_hosts = ZabbixHosts()
     zabbix_hosts.get_zabbix_hosts()
     radio_backup = GetMikrotikRadiobackUp()
@@ -17,7 +17,5 @@ if __name__ == '__main__':
     mikrotik_routers_backup = GetMikrotikbackUp()
     mikrotik_routers_backup.run_command()
     get_vlan_brief = GetVlanBrief()
-    get_vlan_brief.run_command()'''
-    radio_backup = GetMikrotikRadiobackUp()
-    radio_backup.run_command()
+    get_vlan_brief.run_command()
 
