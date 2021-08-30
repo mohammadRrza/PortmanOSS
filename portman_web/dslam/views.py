@@ -5585,27 +5585,6 @@ class FiberHomeCommandAPIView(views.APIView):
                 return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
-                if command == 'show mac by slot port':
-                    return JsonResponse({'Result': result})
-                elif command == 'show port with mac':
-                    return JsonResponse({'Result': result})
-                elif command == 'IP Show':
-                    result = [val for val in result['res'] if re.search(r'\s+:\s', val)]
-                    d = {}
-                    for b in result:
-                        i = b.split(': ')
-                        d[i[0].strip()] = i[1]
-                    result = d
-                elif command == 'show mac limit':
-                    return JsonResponse({'Result': result})
-                elif command == 'switch port show':
-                    result = [val for val in result['res'] if re.search(r'\s{4,}|--+|Bridge', val)]
-                elif command == 'setPortProfiles':
-                    return JsonResponse({'Result': result})
-                elif command == 'show profile by port':
-                    return JsonResponse({'Result': result})
-                elif command == 'setPortProfiles':
-                    return JsonResponse({'Result': result})
 
                 return JsonResponse({'Result': result})
 

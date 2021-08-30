@@ -88,11 +88,52 @@ class ShowPort(BaseCommand):
                 return "Timeout! Please try again."
             if "The port is" in str(res):
                 return f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32"
+            if "handshake" in str(res):
+                return "Port is Down"
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s+:|--+', val)]
             tn.close()
 
-            return result
+            res = {'current_userProfile': "",
+                   'dslamName/cammandName': "",
+                   'date': "",
+                   'slot/port': str(self.port_conditions['slot_number']) + '-' + str(self.port_conditions['port_number']),
+                   # 'OP_State' : res[4].split(":")[1],
+                   # 'Standard' : res[5].split(":")[1],
+                   # 'Latency' : res[6].split(":")[1],
+                   'noisemarginDown': result[4].split(":")[1].split("/")[0].strip(),
+                   'noisemarginUp': result[4].split(":")[1].split("/")[1].split(" ")[0],
+                   'payloadrateDown': result[5].split(":")[1].split("/")[0].strip(),
+                   'payloadrateUp': result[5].split(":")[1].split("/")[1].split(" ")[0],
+                   'attenuationDown': result[6].split(":")[1].split("/")[0].strip(),
+                   'attenuationUp': result[6].split(":")[1].split("/")[1].split(" ")[0],
+                   # 'Tx power(D/U)' : res[10].split(":")[1].split("/")[0],
+                   # 'Tx power(D/U)' : res[10].split(":")[1].split("/")[1].split(" ")[0],
+                   # 'Remote vendor ID' : res[11].split(":")[1],
+                   # 'Power management state' : res[12].split(":")[1],
+                   # 'Remote vendor version ID' : res[13].split(":")[1],
+                   # 'Loss of power(D)' : res[14].split(":")[1].split("/")[0],
+                   # 'Loss of power(U)' : res[14].split(":")[1].split("/")[1].split(" ")[0],
+                   # 'Loss of signal(D)' : res[15].split(":")[1].split("/")[0],
+                   # 'Loss of signal(U)' : res[15].split(":")[1].split("/")[1].split(" ")[0],
+                   # 'Error seconds(D)' : res[16].split(":")[1].split("/")[0],
+                   # 'Error seconds(U)' : res[16].split(":")[1].split("/")[1].split(" ")[0],
+                   # 'Loss by HEC collision(D)' : res[17].split(":")[1].split("/")[0],
+                   # 'Loss by HEC collision(U)' : res[17].split(":")[1].split("/")[1].split(" ")[0],
+                   # 'Forward correct(D)' : res[18].split(":")[1].split("/")[0],
+                   # 'Forward correct(U)' : res[18].split(":")[1].split("/")[1],
+                   # 'Uncorrect(D)' : res[19].split(":")[1].split("/")[0],
+                   # 'Uncorrect(U)' : res[19].split(":")[1].split("/")[1],
+                   'attainablerateDown': result[18].split(":")[1].split("/")[0].strip(),
+                   'attainablerateUp': result[18].split(":")[1].split("/")[1].split(" ")[0],
+                   'actualrateDown': "",
+                   'actualrateUp': "",
+
+                   # 'Interleaved Delay(D) ' : res[21].split(":")[1].split("/")[0],
+                   # 'Interleaved Delay(U) ' : res[21].split(":")[1].split("/")[1],
+                   # 'Remote loss of link' : res[22].split(":")[1],
+                   }
+            return res
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
