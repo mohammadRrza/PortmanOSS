@@ -149,22 +149,22 @@ class RadioCommandViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         user = self.request.user
-        RouterCommands = self.queryset
+        queryset = self.queryset
 
         limit_row = self.request.query_params.get('limit_row', None)
-        router_type_id = self.request.query_params.get('router_type_id', None)
+        radio_type_id = self.request.query_params.get('radio_type_id', None)
         router_command_description = self.request.query_params.get('command_type', None)
         router_command_text = self.request.query_params.get('command_type', None)
         try:
-            if router_type_id:
-                RouterCommands = RouterCommands.filter(router_type_id=router_type_id)
+            if radio_type_id:
+                queryset = queryset.filter(radio_type=radio_type_id)
             if limit_row:
-                RouterCommands = RouterCommands.filter(router_type_id=router_type_id)[:int(limit_row)]
+                queryset = queryset.filter(radio_type=radio_type_id)[:int(limit_row)]
             else:
-                RouterCommands = RouterCommands.filter(router_type_id=router_type_id)
-            return RouterCommands
+                queryset = queryset.filter(radio_type=radio_type_id)
+            return queryset
         except:
-            return []
+            return queryset
 
 
 home = str(Path.home())
