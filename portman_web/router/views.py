@@ -223,6 +223,7 @@ class File:
     file_name = ''
     file_date = ''
 
+
 class GetRouterBackupFilesNameAPIView2(views.APIView):
     def post(self, request, format=None):
         try:
@@ -257,7 +258,7 @@ class GetRouterBackupFilesNameAPIView2(views.APIView):
                                 filenames.append(fileobj)
                                 total.append(filenames)
             return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
-            sort_keys=True, indent=4)})
+                                                        sort_keys=True, indent=4)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
