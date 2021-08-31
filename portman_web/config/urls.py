@@ -69,6 +69,7 @@ portman_router.register(r'switch-command', SwitchCommandViewSet, basename='switc
 portman_router.register(r'router-command', RouterCommandViewSet, basename='router_command')
 portman_router.register(r'contact/portmap', PortMapViewSet, basename='portmap')
 portman_router.register(r'radio', RadioViewSet, basename='radio')
+portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
 
 urlpatterns = [
     url(r'^users/get-token', obtain_jwt_token),
