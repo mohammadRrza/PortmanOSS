@@ -157,11 +157,11 @@ class RadioCommandViewSet(mixins.ListModelMixin,
         router_command_text = self.request.query_params.get('command_type', None)
         try:
             if radio_type_id:
-                queryset = queryset.filter(radio_type_id=radio_type_id)
+                queryset = queryset.filter(radio_type=radio_type_id)
             if limit_row:
-                queryset = queryset.filter(radio_type_id=radio_type_id)[:int(limit_row)]
+                queryset = queryset.filter(radio_type=radio_type_id)[:int(limit_row)]
             else:
-                queryset = queryset.filter(radio_type_id=radio_type_id)
+                queryset = queryset.filter(radio_type=radio_type_id)
             return queryset
         except:
             return queryset
