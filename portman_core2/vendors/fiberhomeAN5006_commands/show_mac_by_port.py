@@ -43,16 +43,43 @@ class ShowMacSlotPort(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err1 = tn.read_until(b"#", 1)
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd device\r\n")
-            tn.write("show linecard fdb interface {0}/{1}\r\n\r\n".format(self.port_conditions['slot_number'],
-                                                                          self.port_conditions['port_number']).encode(
+            tn.write("show linecard fdb interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
+                                                                      self.port_conditions['port_number']).encode(
                 'utf-8'))
-            time.sleep(0.5)
+            err2 = tn.read_until(b"-----", 1)
+            if "Unknown command." in str(err2):
+                tn.write("show mac-address interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
+                                                                         self.port_conditions['port_number']).encode(
+                    'utf-8'))
+                tn.write(b"\r\n")
+                tn.write(b"end\r\n")
+                result = tn.read_until(b"end")
+                if "invalid interface" in str(result):
+                    str_res = ["There is one of the following problems:", "This card is not configured",
+                               "Card number is out of range.", "Port number is out of range."]
+                    return str_res
+                if "total: 0." in str(result):
+                    return f"No MAC address is assigned to port '{self.port_conditions['port_number']}'"
+                tn.close()
+                result = str(result).split("\\r\\n")
+                result = [val for val in result if re.search(r'\s{3,}|--{4,}|:|learning', val)]
+                return result
             tn.write(b"\r\n")
-            tn.write("end\r\n".encode('utf-8'))
+            tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "invalid interface" in str(result):
+                str_res = ["There is one of the following problems:", "This card is not configured",
+                           "Card number is out of range.", "Port number is out of range."]
+                return str_res
+            if "total: 0." in str(result):
+                return f"No MAC address is assigned to port '{self.port_conditions['port_number']}'"
             tn.close()
-            return str(result)
+            result = str(result).split("\\r\\n")
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)

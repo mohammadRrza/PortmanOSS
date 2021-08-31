@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -5,12 +7,13 @@ from .command_base import BaseCommand
 import re
 
 
-class StartSelt(BaseCommand):
+class ShowPVCByPort(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
+        self.__lineprofile = params.get('new_lineprofile')
 
     @property
     def HOST(self):
@@ -46,32 +49,20 @@ class StartSelt(BaseCommand):
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.write(b"cd service\r\n")
-            tn.write("telnet Slot {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-            time.sleep(2)
-            tn.write(b"\r\n")
-            tn.write(b"end\r\n")
-            err2 = tn.read_until(b"end")
-            if "unreached" in str(err2):
-                return f"The Card '{self.port_conditions['slot_number']}' maybe unavailable or does not exist."
-            if "Invalid slot number!" in str(err2):
-                return f"Card '{self.port_conditions['slot_number']}' is out of range."
-            tn.write(b"ddd\r\n")
-            tn.write(b"set global io current\r\n")
-            time.sleep(0.1)
-            tn.write(b"exit\r\n")
-            tn.write(b"cd dsp\r\n")
-
-            tn.write("selt start {0}\r\n".format(self.port_conditions['port_number']).encode('utf-8'))
-            time.sleep(0.2)
+            tn.write(b"cd dsl\r\n")
+            tn.write("show pvc profile attach interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
+                                                                            self.port_conditions['port_number']).encode(
+                'utf-8'))
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "SlotNoPortConvertObjIndex" in str(result):
+                return "The Card number maybe unavailable or does not exist."
+            elif "ifStr" in str(result):
+                return "Card number or Port number is out of range."
             tn.close()
-            if "Invalid port No." in str(result):
-                return f"Invalid port number '{self.port_conditions['port_number']}'"
-            if "started" in str(result):
-                return "Selt successfully started"
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'\s{3,}', val)]
             return result
 
         except (EOFError, socket_error) as e:
@@ -81,5 +72,6 @@ class StartSelt(BaseCommand):
                 return self.run_command()
 
         except Exception as e:
-            print(e)
-            return str(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return str(exc_tb.tb_lineno)

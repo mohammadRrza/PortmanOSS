@@ -5516,10 +5516,14 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show linerate'
             elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles' or command == 'show profiles':
                 command = 'profile adsl show'
+            elif command == 'show profile by port' or command == 'Show Profile By Port':
+                command = 'show profile by port'
             elif command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles':
                 command = 'setPortProfiles'
             elif command == 'selt show' or command == 'show selt' or command == 'selt' or command == 'showSelt':
                 command = 'showSelt'
+            elif command == 'selt start' or command == 'Selt Start' or command == 'start selt' or command == 'startSelt':
+                command = 'selt start'
 
             elif command == 'open port' or command == 'port enable':
                 command = 'port enable'
@@ -5557,6 +5561,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'Version'
             elif command == 'show pvc' or command == 'Show PVC' or command == 'ShowPVC':
                 command = 'show pvc'
+            elif command == 'show pvc by port' or command == 'Show PVC By Port' or command == 'show pvc by port':
+                command = 'show pvc by port'
             elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit':
                 command = 'show mac limit'
             elif command == 'switch port show' or command == 'Switch Port Show':
@@ -5580,38 +5586,11 @@ class FiberHomeCommandAPIView(views.APIView):
                 return JsonResponse({'Result': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                if command == 'show mac by slot port':
-                    # return JsonResponse({'Result': result})
-
-                    if 'there is no mac address learned' in result:
-                        return JsonResponse({'Result': 'there is no mac address in accordance with this port.'})
-                    else:
-                        return JsonResponse({'Result': result.split("\r\n")})
-                elif command == 'setPortProfiles':
-                    if 'not profile named' in result:
-                        return JsonResponse(
-                            {'response': "there's not profile named {0}.".format(params.get('new_lineprofile')),
-                             'DslamType': 'fiberhomeAN5006'})
-                    elif 'Unknown command' in result:
-                        return JsonResponse({'response': "The Command is Unknown.Please Check the parameters.",
-                                             'DslamType': 'fiberhomeAN5006'})
-                    else:
-                        # return JsonResponse({ 'response': "Port profile has been changed to {0}.".format(params.get('new_lineprofile')) ,'DslamType': 'fiberhomeAN5006'})
-                        return JsonResponse({'response': result.split("\r\n"), 'DslamType': 'fiberhomeAN5006'})
-                elif command == 'showSelt':
-                    for item in result.split("\r\n"):
-                        if 'Loop length' in item:
-                            return JsonResponse({'Selt': item.split(',')[1].split()[2] + " " + "m"})
-
-                    return JsonResponse({'response': result.split("\r\n")})
-                elif command == 'show mac':
-                    return JsonResponse({'response': result.split("\\r\\n")})
-                elif command == 'Show VLAN':
+                if command == 'Show VLAN':
                     return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
-                elif command == 'selt start':
-                    return JsonResponse({'response': result.split("\\r\\n")})
                 return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
-            elif dslam_type == 7:  # zyxel1248
+
+            elif dslam_type == 7:  ########################### zyxel1248 ##########################
                 return JsonResponse({'Result': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
