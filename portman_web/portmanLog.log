@@ -1722,6 +1722,11 @@ Unauthorized: /api/v1/router/get_router_backup_files_name/
 >>>>>>> c1cb61b5d9950c1faec31aeb22f26dcfd44c19be
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+<<<<<<< HEAD
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+=======
 Not Found: /favicon.ico
 Internal Server Error: /admin/switch/switchgroup/add/
 Traceback (most recent call last):
@@ -1790,3 +1795,5 @@ LINE 1: INSERT INTO "switch_switchgroup" ("switch_brand_id", "title"...
                                           ^
 
 Not Found: /favicon.ico
+>>>>>>> 5918992b7370b39b7f0d09856258265ad497a122
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/

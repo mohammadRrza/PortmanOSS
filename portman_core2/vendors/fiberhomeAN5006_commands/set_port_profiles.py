@@ -44,7 +44,9 @@ class SetPortProfiles(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
+            err1 = tn.read_until(b"#", 1)
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd qos\r\n")
             tn.write("attach rate-limit profile name {0} interface {1}/{2}".format(self.__lineprofile,
                                                                                    self.port_conditions['slot_number'],
@@ -53,8 +55,11 @@ class SetPortProfiles(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            print(result)
+            if "not profile named" in str(result):
+                return f"there's not profile named '{self.__lineprofile}'"
             tn.close()
-            return str(result)
+            return f"Port profile has been changed to '{self.__lineprofile}'"
 
         except (EOFError, socket_error) as e:
             print(e)

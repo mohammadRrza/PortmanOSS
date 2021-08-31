@@ -57,20 +57,31 @@ class IPShow(BaseCommand):
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            err1 = tn.read_until(b"correct")
+            if "incorrect" in str(err1):
+                return "Access name is wrong!"
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            print('user sent ...')
-            data = tn.read_until(b"Password:")
+            err2 = tn.read_until(b"Password:", 1)
+            if "Invalid User Name" in str(err2):
+                return "User Name is wrong."
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err3 = tn.read_until(b"OK!", 1)
+            if "Invalid Password" in str(err3):
+                return "Password is wrong."
             print('password sent ...')
-            time.sleep(0.5)
             tn.write(b"snmp\r\n")
-            time.sleep(0.5)
             tn.write(b"showip\r\n")
             time.sleep(0.5)
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
+            result = [val for val in str(res).split("\\n\\r") if re.search(r'\s+:\s', val)]
+            d = {}
+            for b in result:
+                i = b.split(': ')
+                d[i[0].strip()] = i[1]
+            result = d
 
-            return dict(res=str(res).split("\\n\\r"), port_indexes=self.__port_indexes)
+            return result
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

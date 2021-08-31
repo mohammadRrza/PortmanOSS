@@ -43,15 +43,18 @@ class SaveConfig(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
-            time.sleep(0.5)
+            err1 = tn.read_until(b"#", 1)
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"save configuration\r\n")
             tn.write(b"\r\n")
             time.sleep(0.1)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()
-            return str(result)
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'OK', val)]
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)

@@ -4,13 +4,14 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ShowProfiles(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name','an3300')
+        self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
 
     @property
@@ -37,22 +38,39 @@ class ShowProfiles(BaseCommand):
     def telnet_password(self, value):
         self.__telnet_password = value
 
+    retry = 1
 
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write('{0}\r\n'.format("admin").encode('utf-8'))
+            tn.write(b"end\r\n")
+            err1 = tn.read_until(b"end")
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.read_until(b"User>")
+            tn.write(b'admin\r\n')
+            tn.read_until(b"Password:")
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            time.sleep(0.5)
+            err1 = tn.read_until(b"#", 1)
+            if "Bad Password..." in str(err1):
+                return "DSLAM Password is wrong!"
             tn.write(b"cd profile\r\n")
             tn.write(b"show all dsl-profile-name\r\n")
+            time.sleep(0.5)
             result1 = tn.read_until(b"--Press any key to continue Ctrl+c to stop--")
             tn.write(b"\r\n")
             result2 = tn.read_until(b"number")
-            result = result1+result2
+            result = result1 + result2
             tn.close()
-            return str(result)
+            result = str(result).split("\\r\\n")
+            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}', val)][1:]
+            temp_res = []
+            for i in result:
+                temp_res += i.split()
+            return temp_res
 
         except (EOFError, socket_error) as e:
             print(e)
