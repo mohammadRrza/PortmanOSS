@@ -67,6 +67,7 @@ portman_router.register(r'switch', SwitchViewSet, basename='switch')
 portman_router.register(r'switch-command', SwitchCommandViewSet, basename='switch_command')
 portman_router.register(r'router-command', RouterCommandViewSet, basename='router_command')
 portman_router.register(r'contact/portmap', PortMapViewSet, basename='portmap')
+portman_router.register(r'radio', RadioViewSet, basename='radio')
 
 urlpatterns = [
     url(r'^users/get-token', obtain_jwt_token),
@@ -167,7 +168,8 @@ urlpatterns = [
 
     url(r'^api/v1/', include(portman_router.urls)),
 
-
+    # Radio
+    url(r'^api/v1/radio/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),
 
     url(r'^media/(?P<path>.*)$', django.views.static.serve,
         {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
