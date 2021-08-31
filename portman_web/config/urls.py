@@ -12,6 +12,7 @@ from users.views import *
 from router.views import *
 from switch.views import *
 from contact.views import *
+from radio.views import *
 
 from modem.views import GetModemInfoAPIView
 from adminplus.sites import AdminSitePlus
@@ -169,7 +170,6 @@ urlpatterns = [
     url(r'^api/v1/', include(portman_router.urls)),
 
     # Radio
-    url(r'^api/v1/radio/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),
 
     url(r'^media/(?P<path>.*)$', django.views.static.serve,
         {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
