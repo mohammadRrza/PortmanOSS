@@ -2276,3 +2276,8 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 148, in __getitem__
     return self.fields[key]
 KeyError: 'telnet_password'
+Not Found: /api/v1/radio-command/
+Not Found: /api/v1/radio-command/
+Not Found: /api/v1/radio-command/
+Not Found: /api/v1/radio-command/
+Not Found: /api/v1/radio-command/
