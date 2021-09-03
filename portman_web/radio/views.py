@@ -196,13 +196,13 @@ class GetRadioBackupFilesNameAPIView(views.APIView):
                 if 'Error' in filename:
                     if filename.__contains__(fqdn) and filename.__contains__('@'):
                         fileobj.file_name = filename
-                        fileobj.file_date = filename.split('@')[1].split('.')[0]
+                        fileobj.file_date = filename.split('@')[1].split('_')[1].split('_')[0]
                         filenames_error.append(fileobj)
                         total.append(filenames_error)
                 else:
                     if filename.__contains__(fqdn) and filename.__contains__('@'):
                         fileobj.file_name = filename
-                        fileobj.file_date = filename.split('@')[1].split('.')[0]
+                        fileobj.file_date = filename..split('@')[1].split('_')[1].split('_')[0]
                         filenames.append(fileobj)
                         total.append(filenames)
             return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
