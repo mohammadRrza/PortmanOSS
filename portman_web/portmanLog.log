@@ -2283,3 +2283,17 @@ Not Found: /api/v1/radio-command/
 Not Found: /api/v1/radio-command/
 Not Found: /api/v1/radio-command/
 Not Found: /api/v1/radio-command/
+Not Found: /api/v1/radio-command/radio_type_id=1&limit_row=30/
+Unauthorized: /api/v1/switch-command/
+Unauthorized: /api/v1/radio-command/
+Unauthorized: /api/v1/radio-command/
+Unauthorized: /api/v1/radio-command/
+Unauthorized: /api/v1/radio-command/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
+Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
+Unauthorized: /api/v1/radio/get_radio_backup_files_name/
