@@ -170,7 +170,7 @@ class RadioCommandViewSet(mixins.ListModelMixin,
 
 
 home = str(Path.home())
-path = '/home/taher/backup/mikrotik_routers/'
+path = '/home/taher/backup/mikrotik_radios/'
 
 class File:
     file_name = ''
