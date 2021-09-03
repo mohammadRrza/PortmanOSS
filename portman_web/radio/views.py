@@ -172,34 +172,12 @@ class RadioCommandViewSet(mixins.ListModelMixin,
 home = str(Path.home())
 path = '/home/taher/backup/mikrotik_routers/'
 
-
-class GetRadioBackupFilesNameAPIView(views.APIView):
-    def post(self, request, format=None):
-        try:
-            radio_id = request.data.get('radio_id')
-            radio_obj = Radio.objects.get(id=radio_id)
-            fqdn = radio_obj.device_fqdn
-            ip = radio_obj.device_ip
-            filenames = []
-            directory = path
-            for filename in os.listdir(directory):
-                # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
-                if filename.__contains__(fqdn) or filename.__contains__(ip):
-                    filenames.append(filename)
-                else:
-                    continue
-            return JsonResponse({'response': filenames})
-        except Exception as ex:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
-
-
 class File:
     file_name = ''
     file_date = ''
 
 
-class GetRadioBackupFilesNameAPIView2(views.APIView):
+class GetRadioBackupFilesNameAPIView(views.APIView):
     def post(self, request, format=None):
         try:
             radio_id = request.data.get('radio_id')
