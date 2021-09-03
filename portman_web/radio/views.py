@@ -180,7 +180,7 @@ class File:
 class GetRadioBackupFilesNameAPIView(views.APIView):
     def post(self, request, format=None):
         try:
-            radio_id = request.data.get('radio_id')
+            radio_id = request.data.get('radio_Id')
             radio_obj = Radio.objects.get(id=radio_id)
             fqdn = radio_obj.device_fqdn
             ip = radio_obj.device_ip
