@@ -44,7 +44,9 @@ class ClosePort(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
+            err1 = tn.read_until(b"#", 1)
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd device\r\n")
             tn.write("set interface {0}/{1} disable".format(self.port_conditions['slot_number'],
                                                             self.port_conditions['port_number']).encode('utf-8'))
@@ -52,7 +54,13 @@ class ClosePort(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()
-            return str(result)
+            if "SlotNoPortConvertObjIndex" in str(result):
+                return "The Card number maybe unavailable or does not exist."
+            elif "ifStr" in str(result):
+                return "Card number or Port number is out of range."
+            else:
+                tn.close()
+                return "Port disabled successfully."
 
         except (EOFError, socket_error) as e:
             print(e)

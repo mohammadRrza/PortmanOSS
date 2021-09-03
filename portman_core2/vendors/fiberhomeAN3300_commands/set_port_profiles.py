@@ -48,18 +48,33 @@ class SetPortProfile(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write(b"end\r\n")
+            err1 = tn.read_until(b"end")
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.read_until(b"User>")
+            tn.write(b'admin\r\n')
             tn.read_until(b"Password:")
-            tn.write('{0}\r\n'.format("admin").encode('utf-8'))
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            time.sleep(0.5)
+            err1 = tn.read_until(b"#", 1)
+            if "Bad Password..." in str(err1):
+                return "DSLAM Password is wrong!"
             tn.write(b"cd profile\r\n")
-            tn.write("set port {0}:{1} attach dsl-profile {2} \r\n\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number'], self.__lineprofile).encode('utf-8'))
+            tn.write("set port {0}:{1} attach dsl-profile {2} \r\n\r\n".format(self.port_conditions['slot_number'],
+                                                                               self.port_conditions['port_number'],
+                                                                               self.__lineprofile).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "Incorrect  port number here." in str(result):
+                return "Card number or Port number is out of range."
+            if "not exist." in str(result):
+                return f"Profile '{self.__lineprofile}' does not exist."
             tn.close()
 
-            return str(result)
+            return f"Port profile has been changed to {self.__lineprofile}"
 
         except (EOFError, socket_error) as e:
             print(e)
@@ -75,4 +90,3 @@ class SetPortProfile(BaseCommand):
             self.retry += 1
             if self.retry < 3:
                 return self.run_command()
-

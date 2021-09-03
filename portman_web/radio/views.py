@@ -12,6 +12,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from radio.models import Radio, RadioCommand
 from radio.serializers import RadioSerializer, RadioCommandSerializer
+from django.core.serializers import serialize
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -53,11 +54,11 @@ class RadioRunCommandAPIView(views.APIView):
 
 
 class RadioViewSet(mixins.ListModelMixin,
-                    mixins.CreateModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet):
+                   mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   viewsets.GenericViewSet):
     queryset = Radio.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = RadioSerializer
@@ -138,8 +139,8 @@ class RouterRunCommandAPIView(views.APIView):
 
 
 class RadioCommandViewSet(mixins.ListModelMixin,
-                           mixins.RetrieveModelMixin,
-                           viewsets.GenericViewSet):
+                          mixins.RetrieveModelMixin,
+                          viewsets.GenericViewSet):
     serializer_class = RadioCommandSerializer
     permission_classes = (IsAuthenticated,)
     queryset = RadioCommand.objects.all()
@@ -148,22 +149,23 @@ class RadioCommandViewSet(mixins.ListModelMixin,
     paginator = None
 
     def get_queryset(self):
-        user = self.request.user
-        queryset = self.queryset
-
+        queryset = RadioCommand.objects.all()
         limit_row = self.request.query_params.get('limit_row', None)
         radio_type_id = self.request.query_params.get('radio_type_id', None)
         router_command_description = self.request.query_params.get('command_type', None)
         router_command_text = self.request.query_params.get('command_type', None)
         try:
             if radio_type_id:
-                queryset = queryset.filter(radio_type=radio_type_id)
+                print('radio_type_id:' + radio_type_id)
+                queryset = queryset.filter(radio_type_id=radio_type_id)
             if limit_row:
-                queryset = queryset.filter(radio_type=radio_type_id)[:int(limit_row)]
+                print('limit_row:' + limit_row)
+                queryset = queryset.filter(radio_type_id=radio_type_id)[:int(limit_row)]
             else:
-                queryset = queryset.filter(radio_type=radio_type_id)
+                queryset = queryset.filter(radio_type_id=radio_type_id)
             return queryset
-        except:
+        except Exception as ex:
+            print(ex)
             return queryset
 
 
@@ -196,6 +198,7 @@ class File:
     file_name = ''
     file_date = ''
 
+
 class GetRadioBackupFilesNameAPIView2(views.APIView):
     def post(self, request, format=None):
         try:
@@ -223,7 +226,7 @@ class GetRadioBackupFilesNameAPIView2(views.APIView):
                         filenames.append(fileobj)
                         total.append(filenames)
             return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
-            sort_keys=True, indent=4)})
+                                                        sort_keys=True, indent=4)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})

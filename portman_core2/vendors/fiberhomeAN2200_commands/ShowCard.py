@@ -57,14 +57,13 @@ class ShowCard(BaseCommand):
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
             err1 = tn.read_until(b"correct")
             if "incorrect" in str(err1):
-                return "access name is wrong!"
+                return "Access name is wrong!"
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            err2 = tn.read_until(b"Password:", 2)
+            err2 = tn.read_until(b"Password:", 1)
             if "Invalid User Name" in str(err2):
                 return "User Name is wrong."
-            print('user sent ...')
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            err3 = tn.read_until(b"OK!", 2)
+            err3 = tn.read_until(b"OK!", 1)
             if "Invalid Password" in str(err3):
                 return "Password is wrong."
             print('password sent ...')

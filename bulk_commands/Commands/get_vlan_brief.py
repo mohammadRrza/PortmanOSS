@@ -12,7 +12,7 @@ class GetVlanBrief():
         pass
 
     def run_command(self):
-        home = "/home/mrtbadboy"  # str(Path.home())
+        home = "/home/taher"  # str(Path.home())
         print("=============================================")
         print("Switch Vlan Brief Process has been started...")
         print("=============================================")

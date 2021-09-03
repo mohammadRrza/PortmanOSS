@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -5,13 +7,11 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowVLAN(BaseCommand):
+class ShowProfileByPort(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
 
     @property
@@ -45,45 +45,48 @@ class ShowVLAN(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"end\r\n")
-            err1 = tn.read_until(b"end")
+            err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.read_until(b"User>")
-            tn.write(b'admin\r\n')
-            tn.read_until(b"Password:")
-            tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
-            time.sleep(0.5)
-            err1 = tn.read_until(b"#", 1)
-            if "Bad Password..." in str(err1):
-                return "DSLAM Password is wrong!"
-            tn.write(b"cd vlan\r\n")
-            tn.write("show pvc vlan {0}\r\n".format(self.__vlan_name['vlan_name']).encode('utf-8'))
-            time.sleep(0.5)
+            tn.write(b"cd dsl\r\n")
+            tn.write("show pvc profile attach interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
+                                                                            self.port_conditions['port_number']).encode(
+                'utf-8'))
             tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            print('test')
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
-            if "not exist." in str(result):
-                return f"VLAN '{self.__vlan_name['vlan_name']}' does not exist."
+            if "SlotNoPortConvertObjIndex" in str(result):
+                return "The Card number maybe unavailable or does not exist."
+            elif "ifStr" in str(result):
+                return "Card number or Port number is out of range."
             result = str(result).split("\\r\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
-                      re.search(r'\s{4,}[-\d\w]|-{5,}', val)]
+            result = [val for val in result if re.search(r'\s{3,}', val)]
+            profile_id = f"id: {result[1].split()[2]}"
+
+            tn.write(b"cd qos\r\n")
+            time.sleep(0.1)
+            tn.write(b"show rate-limit profile all\r\n")
+            time.sleep(1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"end")
+            result = tn.read_until(b"end")
             tn.close()
-            return result
+            result = str(result).split("\\r\\n")
+            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
+                      re.search(r':\s', val)]
+            for inx, val in enumerate(result):
+                if profile_id in val:
+                    prf_name = result[inx + 1].split(":")[1].strip()
+                    return f"Profile set to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: '{prf_name}'"
 
         except (EOFError, socket_error) as e:
             print(e)
@@ -92,5 +95,6 @@ class ShowVLAN(BaseCommand):
                 return self.run_command()
 
         except Exception as e:
-            print(e)
-            return str(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return str(exc_tb.tb_lineno)

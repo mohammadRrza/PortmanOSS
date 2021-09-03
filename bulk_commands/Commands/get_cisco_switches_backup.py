@@ -18,7 +18,7 @@ class GetCiscoSwitchbackUp():
         mail.msg_subject = 'Get Device Backups'
         mail.msg_body = 'Cisco Switch Backup Process has been started at {0}'.format(
             str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
-        Mail.Send_Mail(mail)
+        # Mail.Send_Mail(mail)
         home = "/home/taher"#str(Path.home())
         print("=============================================")
         print("Switch Backup Process has been started...")
