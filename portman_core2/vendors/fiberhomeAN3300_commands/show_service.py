@@ -11,7 +11,7 @@ class ShowService(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name','an3300')
+        self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
 
     @property
@@ -45,22 +45,21 @@ class ShowService(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write(b"end\r\n")
+            err1 = tn.read_until(b"end")
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.read_until(b"User>")
             tn.write(b'admin\r\n')
             tn.read_until(b"Password:")
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
             time.sleep(0.5)
-            # tn.write(b'end')
-            # err1 = tn.read_until(b"end")
-            # print(err1)
-            # if "Bad Password..." in str(err1):
-            #     return "DSLAM Password is Wrong"
-            tn.write(b"\r\n")
-            tn.read_until(b"#")
+            err1 = tn.read_until(b"#", 1)
+            if "Bad Password..." in str(err1):
+                return "DSLAM Password is wrong!"
             tn.write(b"cd service\r\n")
-            tn.write(b"show service\r\n\r\n")
-            time.sleep(0.5)
-            tn.write(b"\r\n")
+            tn.write(b"show service\r\n")
+            time.sleep(0.1)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()

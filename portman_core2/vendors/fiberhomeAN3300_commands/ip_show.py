@@ -45,17 +45,33 @@ class IPShow(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
+            tn.write(b"end\r\n")
+            err1 = tn.read_until(b"end")
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.read_until(b"User>")
             tn.write(b'admin\r\n')
+            tn.read_until(b"Password:")
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            time.sleep(0.5)
+            err1 = tn.read_until(b"#", 1)
+            if "Bad Password..." in str(err1):
+                return "DSLAM Password is wrong!"
             tn.write(b"cd vlan\r\n")
-            tn.write(b"show manage vlan\r\n\r\n")
+            tn.write(b"show manage vlan\r\n")
             time.sleep(0.5)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'\s+:', val)]
+            d = {}
+            for b in result:
+                i = b.split(': ')
+                d[i[0].strip()] = i[1]
+            result = d
             tn.close()
-            return str(result)
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)

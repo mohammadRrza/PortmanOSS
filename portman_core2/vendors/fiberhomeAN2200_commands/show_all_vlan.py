@@ -78,20 +78,19 @@ class ShowAllVLANs(BaseCommand):
             time.sleep(0.5)
             tn.read_until(b'(xx,xx~xx)     :')
             tn.write(b"\r\n")
-            time.sleep(0.5)
+            time.sleep(1)
             tn.write(b"\r\n")
             tn.write(b"end")
             res = tn.read_until(b'end')
             tn.close()
-            if "No specified vlan" in str(res):
-                return "No specified vlan"
-
-            result = [val for val in str(res).split("\\n\\r") if re.search(r'\s+:', val)]
-            d = {}
-            for b in result:
-                i = b.split(' :')
-                d[i[0].strip()] = i[1].replace("\\r", "").strip()
-            result = d
+            res = str(res).replace('\\r', '')
+            result = str(res).split("\\n")
+            result = [val for val in result if re.search(r'--{4,}|[:]', val)]
+            # d = {}
+            # for b in result:
+            #     i = b.split(' :')
+            #     d[i[0].strip()] = i[1].replace("\\r", "").strip()
+            # result = d
             return result
         except (EOFError, socket_error) as e:
             print(e)

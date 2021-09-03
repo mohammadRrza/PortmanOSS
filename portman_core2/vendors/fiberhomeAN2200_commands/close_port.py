@@ -55,30 +55,45 @@ class ClosePort(BaseCommand):
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
-            data = tn.read_until(b'User Name:')
-            print('here')
-            print('==>', data)
+            err1 = tn.read_until(b"correct")
+            if "incorrect" in str(err1):
+                return "Access name is wrong!"
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            print('user sent ...')
-            data = tn.read_until(b'Password:')
-            print('==>', data)
+            err2 = tn.read_until(b"Password:", 1)
+            if "Invalid User Name" in str(err2):
+                return "User Name is wrong."
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err3 = tn.read_until(b"OK!", 1)
+            if "Invalid Password" in str(err3):
+                return "Password is wrong."
             print('password sent ...')
             tn.write(b"line\r\n")
             tn.write(b"cp\r\n")
             tn.read_until(b'(xx-xx)')
             tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
-            tn.read_until(b'(default is 1~32)')
+            err4 = tn.read_until(b'(default is 1~32)', 1)
+            if "not config" in str(err4):
+                return f"Card number '{self.port_conditions['slot_number']}' is not configured."
+            if "not exist" in str(err4):
+                return f"Card number '{self.port_conditions['slot_number']}' not exist or is not available."
+            if "The card ID" in str(err4):
+                return f"Card number '{self.port_conditions['slot_number']}' is out of range. Please insert a number between 1-8 or 11-18"
             tn.write("{0} \r\n".format(self.port_conditions['port_number']).encode('utf-8'))
-            time.sleep(0.5)
+            time.sleep(1)
             tn.write(b"\r\n")
             tn.write(b"finish")
             res = tn.read_until(b'finish')
+            if "timeout!!" in str(res):
+                return "Timeout! Please try again."
+            if "The port is" in str(res):
+                return f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32"
+            result = str(res).split("\\n\\r")
+            result = [val for val in result if 'The port' in val]
+            tn.write(b"exit\r\n")
             tn.close()
-            time.sleep(1)
 
-            return dict(res=str(res).split("\\n\\r"), port_indexes=self.__port_indexes)
+            return result
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
