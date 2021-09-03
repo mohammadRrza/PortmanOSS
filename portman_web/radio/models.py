@@ -47,6 +47,7 @@ class RadioGroup(models.Model):
     def __str__(self):
         return self.title
 
+
 class RadioCommand(models.Model):
     radio_brand = models.ForeignKey(RadioBrand, on_delete=models.CASCADE)
     radio_type = models.ForeignKey(RadioType, on_delete=models.CASCADE)
