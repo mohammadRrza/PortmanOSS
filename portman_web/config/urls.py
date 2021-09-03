@@ -171,7 +171,7 @@ urlpatterns = [
     url(r'^api/v1/', include(portman_router.urls)),
 
     # Radio
-    url(r'^api/v1/router/get_radio_backup_files_name/$', GetRadioBackupFilesNameAPIView.as_view(),
+    url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupFilesNameAPIView.as_view(),
         name='get_radio_backup_files_name'),
 
     url(r'^media/(?P<path>.*)$', django.views.static.serve,
