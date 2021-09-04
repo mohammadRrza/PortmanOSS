@@ -2320,3 +2320,6 @@ Unauthorized: /api/v1/radio/get_radio_backup_files_name/
 Unauthorized: /api/v1/radio/get_radio_backup_files_name/
 =======
 >>>>>>> 833ecf2e77db8659242003e0bcef36e760b584ab
+Unauthorized: /api/v1/radio-command/
+Unauthorized: /api/v1/radio/get_radio_backup_files_name/
+Unauthorized: /api/v1/radio/
