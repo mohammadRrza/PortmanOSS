@@ -167,7 +167,8 @@ urlpatterns = [
         name='get_backup_error_file'),
     url(r'^api/v1/switch/read_switch_backup_error_files_name/$', ReadSwitchBackupErrorFilesNameAPIView.as_view(),
         name='read_switch_backup_error_files_name'),
-
+    url(r'^api/v1/switch/get_switch_show_vlan_brief_files_name/$', GetSwitchShowVlanBriefFilesName.as_view(),
+        name='get_switch_show_vlan_brief_files_name'),
 
     # Radio
     url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupFilesNameAPIView.as_view(),
@@ -175,6 +176,8 @@ urlpatterns = [
 
     url(r'^api/v1/radio/download_radio_backup_file/$', DownloadRadioBackupFileAPIView.as_view(),
         name='download_radio_backup_file'),
+
+
     url(r'^api/v1/', include(portman_router.urls)),
 
     url(r'^media/(?P<path>.*)$', django.views.static.serve,
