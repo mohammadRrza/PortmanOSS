@@ -305,6 +305,7 @@ class ReadSwitchBackupErrorFilesNameAPIView(views.APIView):
 
 vlan_path = '/home/taher/vlan_brief/cisco_switches/'
 
+
 class GetSwitchShowVlanBriefFilesName(views.APIView):
 
     def post(self, request, format=None):
@@ -334,6 +335,19 @@ class GetSwitchShowVlanBriefFilesName(views.APIView):
                         total.append(filenames)
             return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
                                                         sort_keys=True, indent=4)})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class DownloadViewVlanBriefFile(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            vlan_brief_file_name = request.data.get('vlan_brief_file_name')
+            vlan_directory = vlan_path + vlan_brief_file_name
+            f = open(vlan_directory, "r")
+            return JsonResponse({'response': f.read()})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
