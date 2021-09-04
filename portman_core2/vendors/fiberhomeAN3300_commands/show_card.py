@@ -45,17 +45,34 @@ class ShowCard(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write(b"end\r\n")
+            err1 = tn.read_until(b"end")
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.read_until(b"User>")
+            tn.write(b'admin\r\n')
             tn.read_until(b"Password:")
-            tn.write('{0}\r\n'.format("admin").encode('utf-8'))
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
+            time.sleep(0.5)
+            err1 = tn.read_until(b"#", 1)
+            if "Bad Password..." in str(err1):
+                return "DSLAM Password is wrong!"
             tn.write(b"cd device\r\n")
-            tn.write("show port {0}:{1}\r\n\r\n".format(self.port_conditions['slot_number'],self.port_conditions['port_number']).encode('utf-8'))
+            tn.write(b"show slot\r\n")
+            print("test")
             time.sleep(0.5)
             tn.write(b"\r\n")
+            time.sleep(0.5)
+            tn.write(b"\r\n")
+            time.sleep(0.5)
+            tn.write(b"\r\n")
+            time.sleep(0.5)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()
-            return str(result)
+            result = str(result).split("\\r\\n")
+            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}', val)]
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)

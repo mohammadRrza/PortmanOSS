@@ -94,12 +94,12 @@ class ShowPort(BaseCommand):
                    # 'OP_State' : res[4].split(":")[1],
                    # 'Standard' : res[5].split(":")[1],
                    # 'Latency' : res[6].split(":")[1],
-                   'noisemarginDown': result[8].split(":")[1].split()[0],
-                   'noisemarginUp': result[8].split(":")[2].strip(),
-                   'payloadrateDown': result[6].split(":")[1].split()[0],
-                   'payloadrateUp': result[6].split(":")[2].strip(),
-                   'attenuationDown': result[9].split(":")[1].split()[0],
-                   'attenuationUp': result[9].split(":")[2].strip(),
+                   'noisemarginDown': "",
+                   'noisemarginUp': "",
+                   'payloadrateDown': "",
+                   'payloadrateUp': "",
+                   'attenuationDown': "",
+                   'attenuationUp': "",
                    # 'Tx power(D/U)' : res[10].split(":")[1].split("/")[0],
                    # 'Tx power(D/U)' : res[10].split(":")[1].split("/")[1].split(" ")[0],
                    # 'Remote vendor ID' : res[11].split(":")[1],
@@ -117,8 +117,8 @@ class ShowPort(BaseCommand):
                    # 'Forward correct(U)' : res[18].split(":")[1].split("/")[1],
                    # 'Uncorrect(D)' : res[19].split(":")[1].split("/")[0],
                    # 'Uncorrect(U)' : res[19].split(":")[1].split("/")[1],
-                   'attainablerateDown': result[7].split(":")[1].split()[0],
-                   'attainablerateUp': result[7].split(":")[2].strip(),
+                   'attainablerateDown': "",
+                   'attainablerateUp': "",
                    'actualrateDown': "",
                    'actualrateUp': "",
 
@@ -126,6 +126,20 @@ class ShowPort(BaseCommand):
                    # 'Interleaved Delay(U) ' : res[21].split(":")[1].split("/")[1],
                    # 'Remote loss of link' : res[22].split(":")[1],
                    }
+            for inx, val in enumerate(result):
+                if "DownStream Margin" in val:
+                    res['noisemarginUp'] = val.split(":")[2].strip()
+                    res['noisemarginDown'] = val.split(":")[1].split()[0]
+                if "DownStream attain rate" in val:
+                    res['attainablerateUp'] = val.split(":")[2].strip()
+                    res['attainablerateDown'] = val.split(":")[1].split()[0]
+                if "DownStream rate" in val:
+                    res['payloadrateUp'] = val.split(":")[2].strip()
+                    res['payloadrateDown'] = val.split(":")[1].split()[0]
+                if "DownStream Attenuat" in val:
+                    res['attenuationUp'] = val.split(":")[2].strip()
+                    res['attenuationDown'] = val.split(":")[1].split()[0]
+
             return res
 
         except (EOFError, socket_error) as e:

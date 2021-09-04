@@ -77,8 +77,8 @@ class ShowPort(BaseCommand):
                    # 'OP_State' : res[4].split(":")[1],
                    # 'Standard' : res[5].split(":")[1],
                    # 'Latency' : res[6].split(":")[1],
-                   'noisemarginDown': result[24].split(":")[2].strip(),
-                   'noisemarginUp': result[24].split(":")[1].split()[0],
+                   'noisemarginDown': "",
+                   'noisemarginUp': "",
                    'payloadrateDown': "",
                    'payloadrateUp': "",
                    'attenuationDown': "",
@@ -100,15 +100,26 @@ class ShowPort(BaseCommand):
                    # 'Forward correct(U)' : res[18].split(":")[1].split("/")[1],
                    # 'Uncorrect(D)' : res[19].split(":")[1].split("/")[0],
                    # 'Uncorrect(U)' : res[19].split(":")[1].split("/")[1],
-                   'attainablerateDown': result[30].split(":")[2].strip(),
-                   'attainablerateUp': result[30].split(":")[1].split()[0],
-                   'actualrateDown': result[31].split(":")[2].strip(),
-                   'actualrateUp': result[31].split(":")[1].split()[0],
+                   'attainablerateDown': "",
+                   'attainablerateUp': "",
+                   'actualrateDown': "",
+                   'actualrateUp': "",
 
                    # 'Interleaved Delay(D) ' : res[21].split(":")[1].split("/")[0],
                    # 'Interleaved Delay(U) ' : res[21].split(":")[1].split("/")[1],
                    # 'Remote loss of link' : res[22].split(":")[1],
                    }
+            for inx, val in enumerate(result):
+                if "SNR margin" in val:
+                    res['noisemarginUp'] = val.split(":")[2].strip()
+                    res['noisemarginDown'] = val.split(":")[1].split()[0]
+                if "Attainable bit rate" in val:
+                    res['attainablerateUp'] = val.split(":")[2].strip()
+                    res['attainablerateDown'] = val.split(":")[1].split()[0]
+                if "Actual Line bit rate" in val:
+                    res['actualrateUp'] = val.split(":")[2].strip()
+                    res['actualrateDown'] = val.split(":")[1].split()[0]
+
             return res
 
         except (EOFError, socket_error) as e:
