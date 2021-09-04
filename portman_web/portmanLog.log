@@ -2323,3 +2323,8 @@ Unauthorized: /api/v1/radio/get_radio_backup_files_name/
 Unauthorized: /api/v1/radio-command/
 Unauthorized: /api/v1/radio/get_radio_backup_files_name/
 Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/radio-command/
+Unauthorized: /api/v1/radio/get_radio_backup_files_name/
+Unauthorized: /api/v1/radio/
+Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
+Method Not Allowed: /api/v1/switch/get_switch_show_vlan_brief_files_name/
