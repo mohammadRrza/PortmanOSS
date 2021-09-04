@@ -169,6 +169,8 @@ urlpatterns = [
         name='read_switch_backup_error_files_name'),
     url(r'^api/v1/switch/get_switch_show_vlan_brief_files_name/$', GetSwitchShowVlanBriefFilesName.as_view(),
         name='get_switch_show_vlan_brief_files_name'),
+    url(r'^api/v1/switch/download_view_vlan_brief_file/$', DownloadViewVlanBriefFile.as_view(),
+        name='download_view_vlan_brief_file'),
 
     # Radio
     url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupFilesNameAPIView.as_view(),
