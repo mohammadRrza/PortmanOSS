@@ -5573,6 +5573,8 @@ class FiberHomeGetPortAPIView(views.APIView):
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                if "There is one of the following problems:" in result:
+                    return JsonResponse({'result': result})
                 for i in result:
                     port_info = {}
                     info = i.split()
@@ -5582,6 +5584,10 @@ class FiberHomeGetPortAPIView(views.APIView):
                 return JsonResponse({'result': ports_info})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                if "This card is not configured" in result:
+                    return JsonResponse({'result': result})
+                if "No card is defined on this port" in result:
+                    return JsonResponse({'result': result})
                 result = [val for val in result if re.search(r'.prf', val)]
                 for i in result:
                     port_info = {}
@@ -5594,6 +5600,10 @@ class FiberHomeGetPortAPIView(views.APIView):
                 # return JsonResponse({'result': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                if "The Card number maybe unavailable or does not exist." in result:
+                    return JsonResponse({'result': result})
+                if "Card number is out of range." in result:
+                    return JsonResponse({'result': result})
                 for i in result:
                     port_info = {}
                     info = i.split()
