@@ -58,19 +58,21 @@ class ShowCard(BaseCommand):
             if "Bad Password..." in str(err1):
                 return "DSLAM Password is wrong!"
             tn.write(b"cd device\r\n")
-            tn.write(b"show slot\r\n")
-            print("test")
-            time.sleep(0.5)
-            tn.write(b"\r\n")
-            time.sleep(0.5)
-            tn.write(b"\r\n")
+            tn.write("show port {0}:{1}-{0}:{2} linelink\r\n".format(self.port_conditions['slot_number'],
+                                                                     self.port_conditions['start_port'],
+                                                                     self.port_conditions['end_port']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"\r\n")
             time.sleep(0.5)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "Invalid port list" in str(result):
+                str_res = ["There is one of the following problems:", "This card is disable",
+                           "Card number is out of range.", "Port number is out of range."]
+                return str_res
             tn.close()
-            result = str(result).split("\\r\\n")
+            result = str(result).replace("\\n\\n\\r", "").replace("\\r", "")
+            result = result.split("\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}', val)]
             return result
 
