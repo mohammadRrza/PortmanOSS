@@ -218,7 +218,7 @@ class GetSwitchBackupFilesNameAPIView(views.APIView):
                         for item in date_array:
                             if item in filename:
                                 fileobj.file_name = filename
-                                fileobj.file_date = filename.split('_')[2].split('.')[0]
+                                fileobj.file_date = filename.split('@')[1].split('_')[1].split('.')[0]
                                 filenames_error.append(fileobj)
                                 total.append(filenames_error)
                 else:
@@ -226,7 +226,7 @@ class GetSwitchBackupFilesNameAPIView(views.APIView):
                         for item in date_array:
                             if item in filename:
                                 fileobj.file_name = filename
-                                fileobj.file_date = filename.split('_')[2].split('.')[0]
+                                fileobj.file_date = filename.split('@')[1].split('_')[1].split('.')[0]
                                 filenames_error.append(fileobj)
                                 total.append(filenames_error)
             return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
