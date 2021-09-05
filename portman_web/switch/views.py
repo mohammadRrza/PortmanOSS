@@ -223,11 +223,12 @@ class GetSwitchBackupFilesNameAPIView(views.APIView):
                                 total.append(filenames_error)
                 else:
                     if filename.__contains__(fqdn) and filename.__contains__('@'):
-                        if item in filename:
-                            fileobj.file_name = filename
-                            fileobj.file_date = filename.split('_')[2].split('.')[0]
-                            filenames_error.append(fileobj)
-                            total.append(filenames_error)
+                        for item in date_array:
+                            if item in filename:
+                                fileobj.file_name = filename
+                                fileobj.file_date = filename.split('_')[2].split('.')[0]
+                                filenames_error.append(fileobj)
+                                total.append(filenames_error)
             return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
                                                         sort_keys=True, indent=4)})
         except Exception as ex:
