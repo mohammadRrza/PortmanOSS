@@ -15,11 +15,43 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 from datetime import timedelta
 import posixpath
-
 from django.conf.global_settings import SECURE_SSL_REDIRECT
+import ldap
+from django_auth_ldap.config import LDAPSearch
+from django_auth_ldap.config import ActiveDirectoryGroupType
 
+AUTH_LDAP_SERVER_URI = 'ldap://172.28.238.238'
+AUTH_LDAP_BIND_DN = " CN=OSS,OU=PTE-Staff,DC=pishgaman,DC=local"
+AUTH_LDAP_BIND_PASSWORD = "Pte@1577"
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    "dc=pishgaman,dc=local", ldap.SCOPE_SUBTREE, "sAMAccountName=oss"
+)
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    "username": "OSS",
+    "first_name": "OSS",
+    "last_name": "Pishgaman",
+    "email": "oss@pishgaman.local",
+}
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+    "dc=Pishgaman,dc=local", ldap.SCOPE_SUBTREE, "(objectCategory=PTE-STAFF)"
+)
+AUTH_LDAP_GROUP_TYPE = ActiveDirectoryGroupType(name_attr="OSS")
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+    "is_superuser": "CN=OSS,CN=PTE-STAFF,DC=PISHGAMAN,DC=LOCAL",
+    "is_staff": "CN=OSS,CN=PTE-STAFF,DC=PISHGAMAN,DC=LOCAL",
+}
+AUTH_LDAP_FIND_GROUP_PERMS = True
+AUTH_LDAP_CACHE_GROUPS = True
+AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1  # 1 hour cache
+
+AUTHENTICATION_BACKENDS = [
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+#==========================================================================
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -87,12 +119,12 @@ MIDDLEWARE = (
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_HEADERS = (
-        'x-requested-with',
-        'content-type',
-        'accept',
-        'origin',
-        'authorization',
-        'x-csrftoken',)
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken',)
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -139,16 +171,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 JWT_AUTH = {
-        'JWT_SECRET_KEY': SECRET_KEY,
-        'JWT_ALGORITHM': 'HS256',
-        'JWT_VERIFY': True,
-        'JWT_VERIFY_EXPIRATION': True,
-        'JWT_LEEWAY': 0,
-        'JWT_EXPIRATION_DELTA': timedelta(seconds=24 * 60 * 60),
-        'JWT_ALLOW_REFRESH': True,
-        'JWT_AUTH_HEADER_PREFIX': 'Token',
+    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LEEWAY': 0,
+    'JWT_EXPIRATION_DELTA': timedelta(seconds=24 * 60 * 60),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_AUTH_HEADER_PREFIX': 'Token',
 }
 
 WSGI_APPLICATION = 'config.wsgi.application'
@@ -214,10 +245,10 @@ LOGGING = {
             'class': 'logging.StreamHandler'
         },
         'applogfile': {
-            'level':'DEBUG',
-            'class':'logging.handlers.RotatingFileHandler',
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join('', 'portmanLog.log'),
-            'maxBytes': 1024*1024*15, # 15MB
+            'maxBytes': 1024 * 1024 * 15,  # 15MB
             'backupCount': 10
         },
     },
