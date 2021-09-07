@@ -5498,6 +5498,7 @@ class GetPortInfoByIdAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
+###### Fiberhome Get Card API
 class FiberHomeGetCardAPIView(views.APIView):
 
     def get_permissions(self):
@@ -5555,6 +5556,7 @@ class FiberHomeGetCardAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
+###### Fiberhome Get Port API
 class FiberHomeGetPortAPIView(views.APIView):
 
     def get_permissions(self):
