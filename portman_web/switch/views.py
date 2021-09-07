@@ -199,6 +199,9 @@ class File:
 class GetSwitchBackupFilesNameAPIView(views.APIView):
     def post(self, request, format=None):
         try:
+            date_array = []
+            for i in range(0, 7):
+                date_array.append(str(datetime.datetime.now().date() - datetime.timedelta(i)))
             switch_id = request.data.get('switch_id')
             switch_obj = Switch.objects.get(id=switch_id)
             fqdn = switch_obj.device_fqdn
@@ -212,16 +215,20 @@ class GetSwitchBackupFilesNameAPIView(views.APIView):
                 # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
                 if 'Error' in filename:
                     if filename.__contains__(fqdn) and filename.__contains__('@'):
-                        fileobj.file_name = filename
-                        fileobj.file_date = filename.split('_')[2].split('.')[0]
-                        filenames_error.append(fileobj)
-                        total.append(filenames_error)
+                        for item in date_array:
+                            if item in filename:
+                                fileobj.file_name = filename
+                                fileobj.file_date = filename.split('@')[1].split('_')[1].split('.')[0]
+                                filenames_error.append(fileobj)
+                                total.append(filenames_error)
                 else:
                     if filename.__contains__(fqdn) and filename.__contains__('@'):
-                        fileobj.file_name = filename
-                        fileobj.file_date = filename.split('_')[1].split('.')[0]
-                        filenames.append(fileobj)
-                        total.append(filenames)
+                        for item in date_array:
+                            if item in filename:
+                                fileobj.file_name = filename
+                                fileobj.file_date = filename.split('@')[1].split('_')[1].split('.')[0]
+                                filenames_error.append(fileobj)
+                                total.append(filenames_error)
             return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
                                                         sort_keys=True, indent=4)})
         except Exception as ex:

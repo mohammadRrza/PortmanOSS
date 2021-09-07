@@ -1807,7 +1807,11 @@ Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
 Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
 Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
 Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
+<<<<<<< HEAD
 >>>>>>> dcb463bd0a432cf6de5ad0ef5bdd19dae2c237d4
 Not Found: /api/v1/dslamport/FiberHomeGetCardAPIView/
 Not Found: /api/v1/dslamport/FiberHomeGetCardAPIView/
 Unauthorized: /api/v1/dslamport/fiberhome_get_port/
+=======
+Not Found: /favicon.ico
+>>>>>>> 889fc5cf41b9bc619ee985fbd947a8e7b282624a
