@@ -59,7 +59,6 @@ class ShowMac(BaseCommand):
             tn.write(b"cd fdb\r\n")
             tn.write("sh fdb slot {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(3)
-            print("test")
             tn.write(b"\r\n")
             time.sleep(0.1)
             tn.write(b"\r\n")

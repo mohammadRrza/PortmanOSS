@@ -64,8 +64,9 @@ class ShowMacBySlotPort(BaseCommand):
             tn.write(b"ip\r\n")
             tn.write(b"showmac\r\n")
             time.sleep(0.5)
-            tn.write("0-{0}-{1}\r\n".format(self.port_conditions['slot_number'],
-                                            self.port_conditions['port_number']).encode('utf-8'))
+            tn.write(
+                "0-{0}-{1}\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']).encode(
+                    'utf-8'))
             time.sleep(1)
             tn.write(b"exit\r\n")
             tn.write(b"end\r\n")

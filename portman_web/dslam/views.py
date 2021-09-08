@@ -5498,6 +5498,126 @@ class GetPortInfoByIdAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
+class FiberHomeGetCardAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        print('FiberHomeGetCardAPIView')
+        data = request.data
+        command = 'Show Shelf'
+        dslam_id = data.get('dslam_id', None)
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        active_cards = []
+        inactive_cards = []
+
+        try:
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                result = [val for val in result if re.search(r'\d\s{4,}\w', val)]
+                for i in result:
+                    card_number = i.split()
+                    if "up" in i:
+                        active_cards.append(card_number)
+                    else:
+                        inactive_cards.append(card_number)
+                return JsonResponse(
+                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN3300'})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                result = [val for val in result['res'] if re.search(r'\d\s{4,}\d', val)]
+                for i in result:
+                    card_number = i.split()[1:3]
+                    if "AD32+" in i:
+                        active_cards.append(card_number)
+                    else:
+                        inactive_cards.append(card_number)
+                return JsonResponse(
+                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN2200'})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                result = [val for val in result if re.search(r'\s{10,}', val)]
+                for i in result:
+                    card_number = i.split()[0:2]
+                    if "ADSL" in i:
+                        active_cards.append(card_number)
+                    else:
+                        inactive_cards.append(card_number)
+                return JsonResponse(
+                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN5006'})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+class FiberHomeGetPortAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        print('FiberHomeGetCardAPIView')
+        data = request.data
+        command = 'Show Card'
+        dslam_id = data.get('dslam_id', None)
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        ports_info = []
+
+        try:
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                if "There is one of the following problems:" in result:
+                    return JsonResponse({'result': result})
+                for i in result:
+                    port_info = {}
+                    info = i.split()
+                    port_info['port_number'] = info[1].split(":")[1]
+                    port_info['port_state'] = info[-1]
+                    ports_info.append(port_info)
+                return JsonResponse({'result': ports_info})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                if "This card is not configured" in result:
+                    return JsonResponse({'result': result})
+                if "No card is defined on this port" in result:
+                    return JsonResponse({'result': result})
+                result = [val for val in result if re.search(r'.prf', val)]
+                for i in result:
+                    port_info = {}
+                    info = i.split()
+                    port_info['port_number'] = info[0]
+                    port_info['port_state'] = info[2]
+                    port_info['profile_name'] = info[-1]
+                    ports_info.append(port_info)
+                return JsonResponse({'result': ports_info})
+                # return JsonResponse({'result': result})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                if "The Card number maybe unavailable or does not exist." in result:
+                    return JsonResponse({'result': result})
+                if "Card number is out of range." in result:
+                    return JsonResponse({'result': result})
+                for i in result:
+                    port_info = {}
+                    info = i.split()
+                    port_info['port_number'] = info[1]
+                    port_info['port_state'] = info[-1]
+                    ports_info.append(port_info)
+                return JsonResponse({'result': ports_info})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
 class FiberHomeCommandAPIView(views.APIView):
 
     def get_permissions(self):

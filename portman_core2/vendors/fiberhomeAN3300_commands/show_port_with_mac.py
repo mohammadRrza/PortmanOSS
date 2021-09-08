@@ -5,14 +5,14 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowCard(BaseCommand):
+class ShowPortWithMac(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name','an3300')
         self.port_conditions = params.get('port_conditions')
+        self.__access_name = params.get('access_name', 'an3300')
+        self.__mac = params.get('mac')
 
     @property
     def HOST(self):
@@ -57,24 +57,32 @@ class ShowCard(BaseCommand):
             err1 = tn.read_until(b"#", 1)
             if "Bad Password..." in str(err1):
                 return "DSLAM Password is wrong!"
-            tn.write(b"cd device\r\n")
-            tn.write("show port {0}:{1}-{0}:{2} linelink\r\n".format(self.port_conditions['slot_number'],
-                                                                     self.port_conditions['start_port'],
-                                                                     self.port_conditions['end_port']).encode('utf-8'))
-            time.sleep(0.5)
+            tn.write(b"cd fdb\r\n")
+            tn.write("sh fdb slot {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+            time.sleep(3)
             tn.write(b"\r\n")
-            time.sleep(0.5)
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
-            if "Invalid port list" in str(result):
-                str_res = ["There is one of the following problems:", "This card is disable",
-                           "Card number is out of range.", "Port number is out of range."]
-                return str_res
             tn.close()
-            result = str(result).replace("\\n\\n\\r", "").replace("\\r", "")
-            result = result.split("\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}', val)]
-            return result
+            if "Invaild Slot." in str(result):
+                return "The Card number maybe unavailable or does not exist."
+            if "Can not get the fdb information." in str(result):
+                return "This Card is not connected."
+            result = str(result).split("\\r\\n")
+            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
+                      re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
+            for i in result:
+                if self.__mac in i:
+                    port_number = i.split()[1].split(":")[1].strip()
+                    return f"Port number of MAC '{self.__mac}' is: {port_number}"
+            return f"MAC address '{self.__mac}' does not exits"
 
         except (EOFError, socket_error) as e:
             print(e)
@@ -84,4 +92,5 @@ class ShowCard(BaseCommand):
 
         except Exception as e:
             print(e)
-            return str(e)
+            return "error"
+
