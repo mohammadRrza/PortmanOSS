@@ -97,16 +97,17 @@ class ShowPort(BaseCommand):
             res = {'current_userProfile': "",
                    'dslamName/cammandName': "",
                    'date': "",
-                   'slot/port': str(self.port_conditions['slot_number']) + '-' + str(self.port_conditions['port_number']),
+                   'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
+                       self.port_conditions['port_number']),
                    # 'OP_State' : res[4].split(":")[1],
                    # 'Standard' : res[5].split(":")[1],
                    # 'Latency' : res[6].split(":")[1],
-                   'noisemarginDown': result[4].split(":")[1].split("/")[0].strip(),
-                   'noisemarginUp': result[4].split(":")[1].split("/")[1].split(" ")[0],
-                   'payloadrateDown': result[5].split(":")[1].split("/")[0].strip(),
-                   'payloadrateUp': result[5].split(":")[1].split("/")[1].split(" ")[0],
-                   'attenuationDown': result[6].split(":")[1].split("/")[0].strip(),
-                   'attenuationUp': result[6].split(":")[1].split("/")[1].split(" ")[0],
+                   'noisemarginDown': "",
+                   'noisemarginUp': "",
+                   'payloadrateDown': "",
+                   'payloadrateUp': "",
+                   'attenuationDown': "",
+                   'attenuationUp': "",
                    # 'Tx power(D/U)' : res[10].split(":")[1].split("/")[0],
                    # 'Tx power(D/U)' : res[10].split(":")[1].split("/")[1].split(" ")[0],
                    # 'Remote vendor ID' : res[11].split(":")[1],
@@ -124,8 +125,8 @@ class ShowPort(BaseCommand):
                    # 'Forward correct(U)' : res[18].split(":")[1].split("/")[1],
                    # 'Uncorrect(D)' : res[19].split(":")[1].split("/")[0],
                    # 'Uncorrect(U)' : res[19].split(":")[1].split("/")[1],
-                   'attainablerateDown': result[18].split(":")[1].split("/")[0].strip(),
-                   'attainablerateUp': result[18].split(":")[1].split("/")[1].split(" ")[0],
+                   'attainablerateDown': "",
+                   'attainablerateUp': "",
                    'actualrateDown': "",
                    'actualrateUp': "",
 
@@ -133,6 +134,20 @@ class ShowPort(BaseCommand):
                    # 'Interleaved Delay(U) ' : res[21].split(":")[1].split("/")[1],
                    # 'Remote loss of link' : res[22].split(":")[1],
                    }
+            for inx, val in enumerate(result):
+                if "Stream SNR_Margin" in val:
+                    res['noisemarginUp'] = val.split(":")[1].split("/")[1].split(" ")[0]
+                    res['noisemarginDown'] = val.split(":")[1].split("/")[0].strip()
+                if "Attainable rate" in val:
+                    res['attainablerateUp'] = val.split(":")[1].split("/")[1].split(" ")[0]
+                    res['attainablerateDown'] = val.split(":")[1].split("/")[0].strip()
+                if "Rate(D/U)" in val:
+                    res['payloadrateUp'] = val.split(":")[1].split("/")[1].split(" ")[0]
+                    res['payloadrateDown'] = val.split(":")[1].split("/")[0].strip()
+                if "Stream attenuation" in val:
+                    res['attenuationUp'] = val.split(":")[1].split("/")[1].split(" ")[0]
+                    res['attenuationDown'] = val.split(":")[1].split("/")[0].strip()
+
             return res
         except (EOFError, socket_error) as e:
             print(e)

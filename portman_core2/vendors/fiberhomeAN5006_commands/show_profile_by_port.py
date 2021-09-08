@@ -62,6 +62,7 @@ class ShowProfileByPort(BaseCommand):
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}', val)]
             profile_id = f"id: {result[1].split()[2]}"
+            print(profile_id)
 
             tn.write(b"cd qos\r\n")
             time.sleep(0.1)
@@ -77,8 +78,8 @@ class ShowProfileByPort(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"\r\n")
             tn.write(b"\r\n")
-            tn.write(b"end")
-            result = tn.read_until(b"end")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end", 1)
             tn.close()
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
@@ -87,6 +88,8 @@ class ShowProfileByPort(BaseCommand):
                 if profile_id in val:
                     prf_name = result[inx + 1].split(":")[1].strip()
                     return f"Profile set to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: '{prf_name}'"
+            else:
+                return "Profile not found."
 
         except (EOFError, socket_error) as e:
             print(e)

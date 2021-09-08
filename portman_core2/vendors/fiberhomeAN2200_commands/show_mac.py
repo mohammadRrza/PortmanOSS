@@ -59,10 +59,12 @@ class ShowMac(BaseCommand):
             if "incorrect" in str(err1):
                 return "Access name is wrong!"
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            print(self.__telnet_username)
             err2 = tn.read_until(b"Password:", 1)
             if "Invalid User Name" in str(err2):
                 return "User Name is wrong."
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            print(self.__telnet_password)
             err3 = tn.read_until(b"OK!", 1)
             if "Invalid Password" in str(err3):
                 return "Password is wrong."
@@ -70,8 +72,8 @@ class ShowMac(BaseCommand):
             tn.write(b"ip\r\n")
             tn.write(b"sm \r\n")
             tn.read_until(b' :')
-            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-            time.sleep(1)
+            tn.write("0-{0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+            time.sleep(2)
             tn.write(b"exit\r\n")
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
@@ -82,7 +84,6 @@ class ShowMac(BaseCommand):
             result = str(res).split("\\n\\r")
             result = [re.sub(r'\\t', '    ', val) for val in result if
                       re.search(r'\s{4,}|\d{2}|MAC|--+', val)]
-            tn.write(b"exit\r\n")
             tn.close()
 
             return dict(res=result, port_indexes=self.__port_indexes)
