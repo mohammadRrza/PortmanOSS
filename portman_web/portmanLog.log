@@ -1823,4 +1823,8 @@ Unauthorized: /api/v1/dslamport/fiberhome_get_port/
 =======
 Not Found: /favicon.ico
 >>>>>>> 889fc5cf41b9bc619ee985fbd947a8e7b282624a
+<<<<<<< HEAD
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+=======
 >>>>>>> origin/celery
+>>>>>>> 31c331683924e573140f7062213126df2786e6d3
