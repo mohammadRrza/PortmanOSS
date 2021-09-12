@@ -47,20 +47,22 @@ class ShowLineInfo(BaseCommand):
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             for port_item in self.__port_indexes:
                 tn.write("show lineinfo {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
                 time.sleep(1)
-            tn.read_until("Communications Corp.")
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.read_until(b"Communications Corp.")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('*******************************************')
             print(("show lineinfo {0}".format(result)))
             print('*******************************************')
-            return {"result": result}
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r':\s', val)]
+            return result
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
