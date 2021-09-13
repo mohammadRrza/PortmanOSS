@@ -58,7 +58,7 @@ from datetime import timedelta
 class Zyxel(BaseDSLAM):
 
     command_factory = CommandFactory()
-    command_factory.register_type('selt', Selt)
+    command_factory.register_type('showSelt', Selt)
     command_factory.register_type('show mac slot port', ShowMacSlotPort)
     command_factory.register_type('show mac', ShowMac)
     command_factory.register_type('show lineinfo', ShowLineInfo)

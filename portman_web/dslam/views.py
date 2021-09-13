@@ -5646,6 +5646,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'showSelt'
             elif command == 'selt start' or command == 'Selt Start' or command == 'start selt' or command == 'startSelt':
                 command = 'selt start'
+            elif command == 'show lineinfo' or command == 'Show Lineinfo' or command == 'Show LineInfo':
+                command = 'show lineinfo'
 
             elif command == 'open port' or command == 'port enable':
                 command = 'port enable'
@@ -5693,8 +5695,60 @@ class FiberHomeCommandAPIView(views.APIView):
                 command = 'show profile by port'
 
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
-            if dslam_type == 1:  ################################### zyxel ###################################
-                return JsonResponse({'Result': dslam_type})
+            # if dslam_type == 1:  ################################### zyxel ###################################
+            #     return JsonResponse({'Result': dslam_type})
+            if dslam_type == 1:    ################################### zyxel ###################################
+                if not command:
+                    return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
+                if result:
+                    if 'Busy' in result:
+                        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
+                    else:
+                        description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
+
+                        add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
+                if command == "show linerate":
+                    return Response({'result': result})
+
+                elif command == "show lineinfo":
+                    return JsonResponse({'response': result})
+                elif command == "showSelt":
+                    return JsonResponse({'response': result})
+                elif command == 'profile adsl show':
+                    return Response({'response': result})
+                elif command == 'port enable' or command == 'port disable' or command == 'port pvc show' or command == 'get config':
+                    return JsonResponse({'response': result})
+                elif command == "show mac slot port":
+                    portPvc = utility.dslam_port_run_command(dslamObj.pk, 'port pvc show', params)
+                    res = utility.dslam_port_run_command(dslamObj.pk, 'show linerate', params)
+                    payload = res['result'].split('\r\n')[6].split("=")[1]
+                    payloadrate = [int(s) for s in payload.split() if s.isdigit()]
+                    return JsonResponse(
+                        {'Port PVC': portPvc, 'response': result['result'], 'payloadrateUp': payloadrate[0],
+                         'payloadrateDown': payloadrate[1]})
+                elif command == "show linestat port":
+                    return JsonResponse({'link status': result['result'].split('\r\n')[5].split()[4],
+                                         'up-time':
+                                             [x.strip(' ') for x in result['result'].split('\r\n')][5].split()[6]})
+                elif command == 'show port with mac' or command == 'show port mac':
+                    return JsonResponse({'response': result['result']})
+
+                    slot = result['result'][5].split()[2].replace('-', '')
+                    port = result['result'][5].split()[3]
+                    vid = result['result'][5].split()[0]
+                    mac = result['result'][5].split()[1]
+                    if fiber.card == int(slot) and fiber.port == int(port):
+                        return JsonResponse({'Slot': slot, 'Port': port, 'Vid': vid, 'Mac': mac})
+                    else:
+                        s = get_user_info_from_ibs('2177901525')
+                        return JsonResponse({'response': s})
+                        url = 'http://5.202.129.160:2080/api/v1/dslamport/port_conflict_correction/'
+                        data = "{'fqdn':'teh.tehn.abouzar.t.dsl.Z6000.01','old_fqdn':'teh.tehn.abouzar.t.dsl.Z6000.01','old_port':{'card_number':3,'port_number':10},'port':{'card_number':2,'port_number':4},'reseller':{'name':'Iran-mabna'},'old_reseller':{'name':'Iran-mabna'},'subscriber':{'username':''}}"
+                        # return JsonResponse({'response':data})
+                        fhresponse = requests.post(url, data=data, headers={"Content-Type": "application/json"})
+                        sid = fhresponse.json()
+                        return JsonResponse({'Slot': slot, 'Port': port, 'Vid': vid, 'Mac': mac,
+                                             'result': 'there is a port conflict.'})
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
