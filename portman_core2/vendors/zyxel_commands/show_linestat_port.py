@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -9,7 +11,7 @@ class ShowLineStatPort(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')
+        self.port_conditions = params.get('port_conditions')
 
     @property
     def HOST(self):
@@ -47,27 +49,33 @@ class ShowLineStatPort(BaseCommand):
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
-            for port_item in self.__port_indexes:
-                tn.write("show linestat {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
-                time.sleep(1)
-            tn.read_until("Communications Corp.")
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.read_until(b"Password:")
+            tn.write("show linestat {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']).encode('utf-8'))
+            time.sleep(1)
+            tn.read_until(b"Communications Corp.")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('*******************************************')
             print(("show linestat {0}".format(result)))
             print('*******************************************')
-            return {"result": result}
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'\s{4,}|--{4,}', val)][-1].split()
+            return dict(port={'card': self.port_conditions['slot_number'], 'port': self.port_conditions['port_number']},
+                        link=result[-5], usPayLoadRate=result[-4] + " kbps", dsPayLoadRate=result[-3] + " kbps",
+                        protocol=result[-2], upTime=result[-1])
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()
