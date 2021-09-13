@@ -69,7 +69,7 @@ class ProfileADSLShow(BaseCommand):
             tn.write(b"end")
             result = tn.read_until(b"end")
             result = str(result).split("\\r\\n")
-            result = [val for val in result if re.search(r'\d+[.]\s', val)]
+            result = [re.sub(r'\d+[.]\s', '', val) for val in result if re.search(r'\d+[.]\s', val)]
             return result
 
             lstProfile = re.findall(r'\d+\.\s(\S*)',result)

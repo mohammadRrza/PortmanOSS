@@ -46,9 +46,7 @@ class ShowLineRate(BaseCommand):
     retry = 1
 
     def run_command(self):
-        print("test")
         try:
-            print("OK ")
             print(self.__telnet_password)
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))

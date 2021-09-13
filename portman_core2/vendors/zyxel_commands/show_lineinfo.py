@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -62,14 +64,22 @@ class ShowLineInfo(BaseCommand):
             print('*******************************************')
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r':\s', val)]
+            d = {}
+            for b in result:
+                i = b.split(': ')
+                d[i[0].strip()] = i[1]
+            result = d
             return result
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()

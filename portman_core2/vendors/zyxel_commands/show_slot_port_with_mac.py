@@ -1,8 +1,11 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
 from .command_base import BaseCommand
 import re
+
 
 class ShowSlotPortWithMac(BaseCommand):
 
@@ -49,24 +52,34 @@ class ShowSlotPortWithMac(BaseCommand):
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             tn.write("show mac {0}\r\n\r\n".format(self.__mac).encode('utf-8'))
-            tn.write("end\r\n")
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
-            result = tn.read_until("end").split('\r\n')
+            tn.write(b"end\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
+            result = tn.read_until(b"end")
+            if "XX" in str(result):
+                return "Insert MAC address in correct format"
+            print(result)
+            if "vid" not in str(result):
+                return "There is no port on this MAC address"
             tn.close()
             print('******************************************')
             print(("show mac {0}\r\n\r\n".format(self.__mac)))
             print('******************************************')
-            return dict(result= result )
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'\S:\S', val)][1].split("  ")
+            return dict(port={'card': result[-1].split("-")[0], 'port': result[-1].split("-")[1].strip()})
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
-            if self.retry < 4:
+            if self.retry < 3:
                 return self.run_command()
