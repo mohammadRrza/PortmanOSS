@@ -68,7 +68,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('show performance', ShowPerformance)
     command_factory.register_type('profile adsl show', ProfileADSLShow)
     command_factory.register_type('lcman show', LcmanShow)
-    command_factory.register_type('profile adsl set', ChangeLineProfilePort)
+    # command_factory.register_type('profile adsl set', ChangeLineProfilePort)
     command_factory.register_type('profile adsl delete', DeleteProfile)
     command_factory.register_type('lcman disable slot', LcmanDisableSlot)
     command_factory.register_type('lcman reset slot', LcmanResetSlot)

@@ -83,8 +83,11 @@ class ChangeLineProfilePort(BaseCommand):
                     if error_status:
                         error_desc = "error: {0} send to port {1}!!!. dslam dont have line profile {2}".format(
                             error_status.prettyPrint(), port_item['port_index'], self.__lineprofile)
+                        if "badValue" in error_desc:
+                            return f"DSLAM don't have line profile '{self.__lineprofile}'"
                         if 'notWritable' in error_desc:
                             try:
+                                print("test")
                                 tn = telnetlib.Telnet(self.__HOST)
                                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
                                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
@@ -96,6 +99,18 @@ class ChangeLineProfilePort(BaseCommand):
                                     'utf-8'))
                                 time.sleep(1)
                                 tn.write(b"end\r\n")
+                                result = tn.read_until(b'end')
+                                if "example:" in str(result):
+                                    result = str(result).split("\\r\\n")
+                                    result = [val for val in result if re.search(r'example|between', val)]
+                                    return result
+                                if "inactive" in str(result):
+                                    result = str(result).split("\\r\\n")
+                                    result = [val for val in result if re.search(r'inactive', val)]
+                                    return result
+                                if "no such profile" in str(result):
+                                    return f"Profile '{self.__lineprofile}' does not exist."
+                                print(result)
                                 tn.write(b"exit\r\n")
                                 tn.write(b"y\r\n")
                                 tn.close()

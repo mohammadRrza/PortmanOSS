@@ -46,15 +46,24 @@ class ShowLineStatPort(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
-            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            time.sleep(1)
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.read_until(b"Password:")
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err1 = tn.read_until(b'Communications Corp.', 2)
+            if "Password:" in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write("show linestat {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']).encode('utf-8'))
             time.sleep(1)
-            tn.read_until(b"Communications Corp.")
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
+            if "example:" in str(result):
+                result = str(result).split("\\r\\n")
+                result = [val for val in result if re.search(r'example|between', val)]
+                return result
+            if "must be active" in str(result):
+                result = str(result).split("\\r\\n")
+                result = [val for val in result if re.search(r'must', val)]
+                return result
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()

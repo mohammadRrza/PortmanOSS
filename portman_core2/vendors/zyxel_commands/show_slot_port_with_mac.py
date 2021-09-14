@@ -49,10 +49,12 @@ class ShowSlotPortWithMac(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
-            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            time.sleep(1)
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.read_until(b"Password:")
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err1 = tn.read_until(b'Communications Corp.', 2)
+            if "Password:" in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write("show mac {0}\r\n\r\n".format(self.__mac).encode('utf-8'))
             tn.write(b"end\r\n")
             tn.write(b"exit\r\n")
