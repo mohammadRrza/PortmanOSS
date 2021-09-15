@@ -55,7 +55,11 @@ class ProfileADSLShow(BaseCommand):
         try:
             tn = telnetlib.Telnet(self.__HOST, timeout=10)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            tn.read_until(b"Password:")
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err1 = tn.read_until(b'Communications Corp.', 2)
+            if "Password:" in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(("profile adsl show\r\n").encode('utf-8'))
             time.sleep(0.5)
             # tn.read_until("profile adsl show")
@@ -69,7 +73,7 @@ class ProfileADSLShow(BaseCommand):
             tn.write(b"end")
             result = tn.read_until(b"end")
             result = str(result).split("\\r\\n")
-            result = [val for val in result if re.search(r'\d+[.]\s', val)]
+            result = [re.sub(r'\d+[.]\s', '', val) for val in result if re.search(r'\d+[.]\s', val)]
             return result
 
             lstProfile = re.findall(r'\d+\.\s(\S*)',result)
