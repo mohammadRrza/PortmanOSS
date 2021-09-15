@@ -52,9 +52,12 @@ class Selt(BaseCommand):
             prompt = 'command'
             c_n = 1
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
-            tn.write((self.__telnet_password + "\n").encode('utf-8'))
-            tn.read_until(b'Password:')
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            tn.read_until(b"Password:")
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err1 = tn.read_until(b'Communications Corp.', 2)
+            if "Password:" in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             # tn.write("diagnostic selt test {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']).encode(
             #         'utf-8'))
             # time.sleep(40)
@@ -69,7 +72,15 @@ class Selt(BaseCommand):
             time.sleep(1)
             tn.write((str(prompt)+str(c_n)+"\r\n").encode('utf-8'))
             time.sleep(0.2)
-            tn.read_until((str(prompt)+str(c_n)).encode('utf-8'))
+            err2 = tn.read_until((str(prompt)+str(c_n)).encode('utf-8'))
+            if "example:" in str(err2):
+                result = str(err2).split("\\r\\n")
+                result = [val for val in result if re.search(r'example|between', val)]
+                return result
+            if "inactive" in str(err2):
+                result = str(err2).split("\\r\\n")
+                result = [val for val in result if re.search(r'inactive', val)]
+                return result
             c_n += 1
             tn.write("diagnostic selt show {0}-{1}\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']).encode('utf-8'))
             tn.write((str(prompt)+str(c_n)+"\r\n").encode('utf-8'))

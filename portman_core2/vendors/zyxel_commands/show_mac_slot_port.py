@@ -38,17 +38,30 @@ class ShowMacSlotPort(BaseCommand):
     retry = 1
 
     def run_command(self):
-        print('start run command')
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            tn.read_until(b"Password:")
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err1 = tn.read_until(b'Communications Corp.', 2)
+            if "Password:" in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             results = []
             tn.write("show mac {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'],
                                                        self.port_conditions['port_number']).encode("utf-8"))
             time.sleep(0.5)
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
+            if "example:" in str(result):
+                result = str(result).split("\\r\\n")
+                result = [val for val in result if re.search(r'example|between', val)]
+                return result
+            if "inactive" in str(result):
+                result = str(result).split("\\r\\n")
+                result = [val for val in result if re.search(r'inactive', val)]
+                return result
+            if "giga-port" in str(result):
+                return "Card or Port number is out of range."
             if "vid" not in str(result):
                 return "There is no MAC Address on this port"
             #     com = re.compile(r'(?P<vlan_id>\s(\d{1,10}))(\s)*(?P<mac>([0-9A-F]{2}[:-]){5}([0-9A-F]{2}))(\s)*(?P<port>(\d{1,3})?-(\s)?(\d{1,3})?)',re.MULTILINE | re.I)
