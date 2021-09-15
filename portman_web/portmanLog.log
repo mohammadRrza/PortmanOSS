@@ -1937,13 +1937,18 @@ Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
 Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
 Method Not Allowed: /api/v1/radio/get_radio_backup_files_name/
 <<<<<<< HEAD
+<<<<<<< HEAD
 Not Found: /favicon.ico
 =======
+=======
+>>>>>>> origin/celery
 >>>>>>> dcb463bd0a432cf6de5ad0ef5bdd19dae2c237d4
 Not Found: /api/v1/dslamport/FiberHomeGetCardAPIView/
 Not Found: /api/v1/dslamport/FiberHomeGetCardAPIView/
 Unauthorized: /api/v1/dslamport/fiberhome_get_port/
+<<<<<<< HEAD
 >>>>>>> origin/develop
+<<<<<<< HEAD
 >>>>>>> 10389a9e50846268035087914270d84b0a69ad2a
 Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
@@ -2107,3 +2112,15 @@ Unauthorized: /api/v1/radio/
 Unauthorized: /api/v1/router/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
+=======
+=======
+=======
+Not Found: /favicon.ico
+>>>>>>> 889fc5cf41b9bc619ee985fbd947a8e7b282624a
+<<<<<<< HEAD
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+=======
+>>>>>>> origin/celery
+>>>>>>> 31c331683924e573140f7062213126df2786e6d3
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+>>>>>>> 3ac44ece1c74ebd79e7fb49676d2a40691a7cbc6

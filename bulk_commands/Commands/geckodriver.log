@@ -227,3 +227,14 @@ console.log: WebExtensions: reset-default-search: starting.
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
 1630307601155	Marionette	INFO	Stopped listening on port 45343
 JavaScript error: resource:///modules/Interactions.jsm, line 209: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIUserIdleService.removeIdleObserver]
+1631099735684	geckodriver	INFO	Listening on 127.0.0.1:53135
+1631099736678	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileOSSLbk"
+1631099738063	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileOSSLbk/search.json.mozlz4", (void 0)))
+1631099740406	Marionette	INFO	Listening on port 44513
+1631099740529	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1631099750146	Marionette	INFO	Stopped listening on port 44513
+JavaScript error: resource:///modules/Interactions.jsm, line 209: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIUserIdleService.removeIdleObserver]
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+

@@ -1,18 +1,18 @@
-from celery import shared_task
+from portman_core2.celeryapp import app
+import time
 
 
-@shared_task
+@app.task
 def add(x, y):
+    time.sleep(10)
     return x + y
 
 
-@shared_task
+@app.task
 def mul(x, y):
     return x * y
 
 
-@shared_task
+@app.task
 def xsum(numbers):
     return sum(numbers)
-
-

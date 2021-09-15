@@ -62,15 +62,6 @@ SECRET_KEY = 'qepv7vyyu4-&un2-9opv6n&dwwi9p2nn14kh_dggzjyfu%on#n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# CELERY_RESULT_BACKENDcelery -A proj worker -l INFO
-CELERY_RESULT_BACKEND = 'django-cache'
-
-# CELERY_RESULT_BACKEND
-CELERY_RESULT_BACKEND = 'django-db'
-CORS_ALLOW_ALL_ORIGINS = True
-CELERY_TIMEZONE = "Australia/Tasmania"
-CELERY_TASK_TRACK_STARTED = True
-CELERY_TASK_TIME_LIMIT = 30 * 60
 
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['172.28.238.114', '5.202.129.160', 'localhost', '127.0.0.1', 'portman.pishgaman.net']
@@ -101,7 +92,7 @@ INSTALLED_APPS = (
     'switch',
     'radio',
     'contact',
-    'sslserver',
+    # 'sslserver',
 
 )
 
