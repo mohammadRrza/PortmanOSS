@@ -545,7 +545,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
                    mixins.DestroyModelMixin,
                    viewsets.GenericViewSet):
     queryset = DSLAM.objects.all()
-    permission_classes = (IsAuthenticated, DSLAMView, DSLAMEdit)
+    # permission_classes = (IsAuthenticated, DSLAMView, DSLAMEdit)
     serializer_class = DSLAMSerializer
     pagination_class = LargeResultsSetPagination
 
@@ -1823,7 +1823,7 @@ class DSLAMPortViewSet(mixins.ListModelMixin,
                        viewsets.GenericViewSet):
     serializer_class = DSLAMPortSerializer
     queryset = DSLAMPort.objects.all().order_by('port_index')
-    permission_classes = (IsAuthenticated, DSLAMPortView, DSLAMPortEdit)
+    # permission_classes = (IsAuthenticated, DSLAMPortView, DSLAMPortEdit)
     pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
