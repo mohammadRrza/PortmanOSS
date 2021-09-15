@@ -92,7 +92,7 @@ INSTALLED_APPS = (
     'switch',
     'radio',
     'contact',
-    'sslserver',
+    # 'sslserver',
 
 )
 
