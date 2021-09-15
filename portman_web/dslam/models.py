@@ -918,7 +918,6 @@ class Switch(models.Model):
     device_ip = models.CharField(max_length=256)
     device_fqdn = models.CharField(max_length=256)
 
-<<<<<<< HEAD
 
 class RentedPort(models.Model):
     province_name = models.CharField(max_length=250)
@@ -933,5 +932,4 @@ class RentedPort(models.Model):
 
     def __str__(self):
         return self.telecom_name
-=======
->>>>>>> 7c652874d0826f000eb4905949416275121aea45
+
