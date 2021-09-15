@@ -1829,3 +1829,7 @@ Unauthorized: /api/v1/dslamport/fiberHomeCommand/
 >>>>>>> origin/celery
 >>>>>>> 31c331683924e573140f7062213126df2786e6d3
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+Not Found: /api/v1/dslamport/upload_rented_port/
+Unauthorized: /api/v1/dslamport/upload_rented_port/
+Method Not Allowed: /api/v1/dslamport/upload_rented_port/
+Method Not Allowed: /api/v1/dslamport/upload_rented_port/
