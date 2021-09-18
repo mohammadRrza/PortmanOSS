@@ -59,7 +59,7 @@ from dslam.permissions import HasAccessToDslam, IsAdminUser, HasAccessToDslamPor
     HasAccessToDslamPortSnapshot
 from dslam.serializers import *
 from users.helpers import add_audit_log
-
+from .command_recognise import command_recognise
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 1000
@@ -5627,11 +5627,13 @@ class FiberHomeCommandAPIView(views.APIView):
         device_ip = get_device_ip(request)
         data = request.data
         command = data.get('command', None)
+        command = command_recognise(command)
         fqdn = request.data.get('fqdn')
         dslamObj = DSLAM.objects.get(fqdn=fqdn)
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
         try:
+<<<<<<< Updated upstream
             if command == 'show linerate' or command == 'showPort' or command == 'show port':
                 command = 'show linerate'
             elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles' or command == 'show profiles':
@@ -5690,6 +5692,8 @@ class FiberHomeCommandAPIView(views.APIView):
             elif command == 'show profile by port' or command == 'showProfile by port':
                 command = 'show profile by port'
 
+=======
+>>>>>>> Stashed changes
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  ################################### zyxel ###################################
                 return JsonResponse({'Result': dslam_type})
