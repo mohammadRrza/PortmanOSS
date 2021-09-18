@@ -828,7 +828,7 @@ class Rented_port(models.Model):
     telco_row = models.IntegerField(max_length=256, null=True, blank=True)
     telco_column = models.IntegerField(max_length=256, null=True, blank=True)
     telco_connection = models.IntegerField(max_length=256, null=True, blank=True)
-    fqdn = models.IntegerField(max_length=256, null=True, blank=True)
+    fqdn = models.CharField(max_length=256, null=True, blank=True)
 
 
 class PowerEquipmentCategory(models.Model):
@@ -917,4 +917,6 @@ class Switch(models.Model):
     device_name = models.CharField(max_length=256, null=True, blank=True)
     device_ip = models.CharField(max_length=256)
     device_fqdn = models.CharField(max_length=256)
+
+
 
