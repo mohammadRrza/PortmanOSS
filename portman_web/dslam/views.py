@@ -5700,7 +5700,7 @@ class FiberHomeCommandAPIView(views.APIView):
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             # if dslam_type == 1:  ################################### zyxel ###################################
             #     return JsonResponse({'Result': dslam_type})
-            if dslam_type == 1:    ################################### zyxel ###################################
+            if dslam_type == 1:  ################################### zyxel ###################################
                 if not command:
                     return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
                 if result:
@@ -7743,11 +7743,11 @@ class RentedPortAPIView(views.APIView):
         params = data.get('params', None)
         try:
             dslam_obj = Rented_port.objects.get(agent_name=data.get('agent_name'),
-                                            city_name=data.get('city_name'),
-                                            telecom_name=data.get('telecom_name'),
-                                            dslam_number=data.get('dslam_number'),
-                                            card=params['port_conditions']['slot_number'],
-                                            port=params['port_conditions']['port_number'])
+                                                city_name=data.get('city_name'),
+                                                telecom_name=data.get('telecom_name'),
+                                                dslam_number=data.get('dslam_number'),
+                                                card=params['port_conditions']['slot_number'],
+                                                port=params['port_conditions']['port_number'])
         except ObjectDoesNotExist:
             return Response({"Result": "You don't have access to this Card & Port. Please check parameters."})
         fqdn = dslam_obj.fqdn
@@ -7819,7 +7819,7 @@ class RentedPortAPIView(views.APIView):
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             # if dslam_type == 1:  ################################### zyxel ###################################
             #     return JsonResponse({'Result': dslam_type})
-            if dslam_type == 1:    ################################### zyxel ###################################
+            if dslam_type == 1:  ################################### zyxel ###################################
                 if not command:
                     return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
                 if result:
