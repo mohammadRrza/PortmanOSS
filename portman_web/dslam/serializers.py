@@ -1,9 +1,11 @@
 from rest_framework import serializers
 
-from dslam.models import DSLAM, TelecomCenter, DSLAMPort, DSLAMStatusSnapshot, DSLAMICMPSnapshot, Vlan, DSLAMPortVlan,\
-    DSLAMICMP, DSLAMPortSnapshot, Reseller, ResellerPort, CustomerPort, DSLAMEvent, DSLAMPortEvent, TelecomCenterLocation, DSLAMBulkCommandResult, \
-    PortCommand, City, Command, DSLAMType, LineProfile, Terminal, TelecomCenterMDF, DSLAMCommand, DSLAMLocation, CityLocation,\
-    MDFDSLAM, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, LineProfileExtraSettings, DSLAMCart
+from dslam.models import DSLAM, TelecomCenter, DSLAMPort, DSLAMStatusSnapshot, DSLAMICMPSnapshot, Vlan, DSLAMPortVlan, \
+    DSLAMICMP, DSLAMPortSnapshot, Reseller, ResellerPort, CustomerPort, DSLAMEvent, DSLAMPortEvent, \
+    TelecomCenterLocation, DSLAMBulkCommandResult, \
+    PortCommand, City, Command, DSLAMType, LineProfile, Terminal, TelecomCenterMDF, DSLAMCommand, DSLAMLocation, \
+    CityLocation, \
+    MDFDSLAM, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, LineProfileExtraSettings, DSLAMCart, RentedPort
 
 from khayyam import JalaliDatetime
 from datetime import datetime
@@ -35,8 +37,8 @@ class CitySerializer(serializers.ModelSerializer):
             if obj.parent is None:
                 break
             obj = City.objects.get(id=obj.parent.id)
-            #cities =  unicode(obj.name + '-' + obj.english_name)+' / '+cities
-            cities =  str(obj.name)+' / '+cities
+            # cities =  unicode(obj.name + '-' + obj.english_name)+' / '+cities
+            cities = str(obj.name) + ' / ' + cities
         return cities
 
     class Meta:
@@ -66,13 +68,13 @@ class TelecomCenterSerializer(serializers.ModelSerializer):
     text = serializers.SerializerMethodField('get_name_of_tc')
 
     def get_name_of_tc(self, obj):
-        #if obj.english_name:
+        # if obj.english_name:
         #    return obj.name +' - '+ obj.english_name
-        #else:
+        # else:
         return obj.name
 
-    #text = serializers.CharField(source='name', read_only=True, required=False)
-    #text = serializers.SerializerMethodField('get_cascade_city')
+    # text = serializers.CharField(source='name', read_only=True, required=False)
+    # text = serializers.SerializerMethodField('get_cascade_city')
 
     def get_cascade_city(self, obj):
         city_info = CitySerializer(obj.city)
@@ -80,7 +82,8 @@ class TelecomCenterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TelecomCenter
-        fields = ('id', 'name', 'english_name', 'city', 'city_info', 'text','prefix_bukht_name', 'mdf_row_orientation', 'total_ports_count', 'down_ports_count', 'up_ports_count', 'dslams_count')
+        fields = ('id', 'name', 'english_name', 'city', 'city_info', 'text', 'prefix_bukht_name', 'mdf_row_orientation',
+                  'total_ports_count', 'down_ports_count', 'up_ports_count', 'dslams_count')
         read_only_fields = ('id',)
 
 
@@ -89,14 +92,14 @@ class TelecomCenterLocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TelecomCenterLocation
-        fields = ('id', 'telecom_center', 'telecom_center_info', 'telecom_lat', 'telecom_long', )
-
+        fields = ('id', 'telecom_center', 'telecom_center_info', 'telecom_lat', 'telecom_long',)
 
 
 class TelecomCenterMDFSerializer(serializers.ModelSerializer):
     telecom_center_info = TelecomCenterSerializer(source='telecom_center', read_only=True, required=False)
     terminal_info = TerminalSerializer(source='terminal', read_only=True, required=False)
     reseller_detail = serializers.SerializerMethodField('get_reseller')
+
     def get_reseller(self, obj):
         if obj.reseller:
             return {'id': obj.reseller.id, 'name': obj.reseller.name}
@@ -105,8 +108,10 @@ class TelecomCenterMDFSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TelecomCenterMDF
-        fields = ('id', 'telecom_center', 'telecom_center_info', 'row_number', 'terminal', 'terminal_info', 'floor_start',
-                  'floor_count', 'connection_count', 'floor_counting_status', 'connection_start', 'priority', 'status_of_port', 'connection_counting_status', 'reseller', 'reseller_detail')
+        fields = (
+        'id', 'telecom_center', 'telecom_center_info', 'row_number', 'terminal', 'terminal_info', 'floor_start',
+        'floor_count', 'connection_count', 'floor_counting_status', 'connection_start', 'priority', 'status_of_port',
+        'connection_counting_status', 'reseller', 'reseller_detail')
 
 
 class DSLAMSerializer(serializers.ModelSerializer):
@@ -123,8 +128,8 @@ class DSLAMSerializer(serializers.ModelSerializer):
             for field_name in remove_fields:
                 self.fields.pop(field_name)
 
-    dslam_type_info = DSLAMTypeSerializer(source="dslam_type" ,read_only=True, required=False)
-    telecom_center_info = TelecomCenterSerializer(source="telecom_center" ,read_only=True, required=False)
+    dslam_type_info = DSLAMTypeSerializer(source="dslam_type", read_only=True, required=False)
+    telecom_center_info = TelecomCenterSerializer(source="telecom_center", read_only=True, required=False)
     text = serializers.CharField(source='name', read_only=True, required=False)
 
     created_at = serializers.DateTimeField(
@@ -175,28 +180,30 @@ class DSLAMSerializer(serializers.ModelSerializer):
             'id', 'name', 'telecom_center', 'telecom_center_info', 'dslam_type', 'dslam_type_info', 'ip',
             'active', 'status', 'last_sync', 'conn_type', 'get_snmp_community', 'set_snmp_community', 'slot_count',
             'telnet_username', 'telnet_password', 'snmp_port', 'snmp_timeout', 'created_at', 'updated_at', 'port_count',
-            'text', 'total_ports_count', 'up_ports_count', 'down_ports_count', 'last_sync_duration','uptime','version',
-            'availability_start_time', 'down_seconds', 'dslam_availability', 'hostname','sync_ports_count', 'nosync_ports_count', 'fqdn', 'slots', 'ports',
+            'text', 'total_ports_count', 'up_ports_count', 'down_ports_count', 'last_sync_duration', 'uptime',
+            'version',
+            'availability_start_time', 'down_seconds', 'dslam_availability', 'hostname', 'sync_ports_count',
+            'nosync_ports_count', 'fqdn', 'slots', 'ports',
         )
         read_only_fields = (
             'id', 'created_at', 'updated_at', 'last_sync',
             'get_ports_count', 'get_up_ports_count', 'get_down_ports_count',
-            'last_sync_duration','uptime', 'version',
+            'last_sync_duration', 'uptime', 'version',
         )
 
 
-
 class DSLAMCartSerializer(serializers.ModelSerializer):
-    dslam_info = DSLAMSerializer(source="dslam" ,read_only=True, required=False)
-    telecom_center_info = DSLAMSerializer(source="teleccon_center" ,read_only=True, required=False)
+    dslam_info = DSLAMSerializer(source="dslam", read_only=True, required=False)
+    telecom_center_info = DSLAMSerializer(source="teleccon_center", read_only=True, required=False)
 
     class Meta:
         model = DSLAMCart
-        fields = ('id', 'dslam', 'dslam_info', 'priority', 'cart_count', 'cart_start', 'port_count', 'port_start', 'telecom_center', 'telecom_center_info')
+        fields = ('id', 'dslam', 'dslam_info', 'priority', 'cart_count', 'cart_start', 'port_count', 'port_start',
+                  'telecom_center', 'telecom_center_info')
 
 
 class DSLAMLocationSerializer(serializers.ModelSerializer):
-    dslam_info = DSLAMSerializer(source="dslam" ,read_only=True, required=False)
+    dslam_info = DSLAMSerializer(source="dslam", read_only=True, required=False)
 
     class Meta:
         model = DSLAMLocation
@@ -212,17 +219,18 @@ class LineProfileSerializer(serializers.ModelSerializer):
 
     def get_extra_settings(self, obj):
         line_profile_id = obj.id
-        return LineProfileExtraSettings.objects.filter(line_profile__id=line_profile_id).\
-                values('attr_name', 'attr_value')
-
+        return LineProfileExtraSettings.objects.filter(line_profile__id=line_profile_id). \
+            values('attr_name', 'attr_value')
 
     class Meta:
         model = LineProfile
-        fields = ('id', 'name', 'text', 'template_type', 'channel_mode', 'max_ds_interleaved', 'max_us_interleaved', 'ds_snr_margin', 'us_snr_margin', 'min_ds_transmit_rate', 'max_ds_transmit_rate', 'min_us_transmit_rate', 'max_us_transmit_rate', 'extra_settings_info', 'dslam_type', 'ports_count')
+        fields = ('id', 'name', 'text', 'template_type', 'channel_mode', 'max_ds_interleaved', 'max_us_interleaved',
+                  'ds_snr_margin', 'us_snr_margin', 'min_ds_transmit_rate', 'max_ds_transmit_rate',
+                  'min_us_transmit_rate', 'max_us_transmit_rate', 'extra_settings_info', 'dslam_type', 'ports_count')
 
 
 class DSLAMEventSerializer(serializers.ModelSerializer):
-    dslam_info = DSLAMSerializer(source="dslam" ,read_only=True, required=False)
+    dslam_info = DSLAMSerializer(source="dslam", read_only=True, required=False)
 
     class Meta:
         model = DSLAMEvent
@@ -230,12 +238,14 @@ class DSLAMEventSerializer(serializers.ModelSerializer):
 
 
 class DSLAMPortEventSerializer(serializers.ModelSerializer):
-    dslam_info = DSLAMSerializer(source="dslam" ,read_only=True, required=False)
+    dslam_info = DSLAMSerializer(source="dslam", read_only=True, required=False)
 
     class Meta:
         model = DSLAMPortEvent
-        fields = ('id','dslam','dslam_info','slot_number','port_number','type', 'status', 'message', 'flag', 'created_at')
-        read_only_fields = ('id','dslam','dslam_info','slot_number','port_number','type', 'message', 'flag', 'created_at')
+        fields = (
+        'id', 'dslam', 'dslam_info', 'slot_number', 'port_number', 'type', 'status', 'message', 'flag', 'created_at')
+        read_only_fields = (
+        'id', 'dslam', 'dslam_info', 'slot_number', 'port_number', 'type', 'message', 'flag', 'created_at')
 
 
 class DSLAMStatusSnapshotSerializer(serializers.ModelSerializer):
@@ -246,10 +256,10 @@ class DSLAMStatusSnapshotSerializer(serializers.ModelSerializer):
 
 class CommandSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='text', read_only=True, required=False)
+
     class Meta:
         model = Command
         fields = ('id', 'text', 'type', 'description', 'name', 'show_command')
-
 
 
 class DSLAMPortSerializer(serializers.ModelSerializer):
@@ -276,9 +286,10 @@ class DSLAMPortSerializer(serializers.ModelSerializer):
         fields = ('id', 'dslam', 'dslam_info', 'port_number', 'slot_number', 'created_at', 'updated_at', 'port_index',
                   'port_name', 'admin_status', 'oper_status', 'line_profile', 'upstream_snr',
                   'downstream_snr', 'upstream_attenuation', 'downstream_attenuation', 'upstream_attainable_rate',
-                  'downstream_attainable_rate', 'upstream_tx_rate', 'downstream_tx_rate','text', 'selt_value', 'upstream_snr_flag',
-                  'downstream_snr_flag', 'upstream_attenuation_flag', 'downstream_attenuation_flag', 'reseller', 'subscriber')
-
+                  'downstream_attainable_rate', 'upstream_tx_rate', 'downstream_tx_rate', 'text', 'selt_value',
+                  'upstream_snr_flag',
+                  'downstream_snr_flag', 'upstream_attenuation_flag', 'downstream_attenuation_flag', 'reseller',
+                  'subscriber')
 
 
 class ResellerSerializer(serializers.ModelSerializer):
@@ -299,26 +310,31 @@ class VlanSerializer(serializers.ModelSerializer):
 
     reseller_info = ResellerSerializer(source='reseller', read_only=True, required=False)
     text = serializers.CharField(source='vlan_id', read_only=True, required=False)
+
     class Meta:
         model = Vlan
-        fields = ('id', 'vlan_id', 'vlan_name', 'text','reseller', 'reseller_info', 'ports_count', 'dslam_count')
+        fields = ('id', 'vlan_id', 'vlan_name', 'text', 'reseller', 'reseller_info', 'ports_count', 'dslam_count')
         read_only_fields = ('id', 'text', 'reseller_info', 'ports_count', 'dslam_count')
 
 
 class ResellerPortSerializer(serializers.ModelSerializer):
-    reseller_info = ResellerSerializer(source="reseller" ,read_only=True, required=False)
+    reseller_info = ResellerSerializer(source="reseller", read_only=True, required=False)
 
     class Meta:
         model = ResellerPort
-        fields = ('id', 'reseller', 'reseller_info', 'identifier_key', 'telecom_center_id', 'dslam_id', 'dslam_fqdn', 'dslam_slot', 'dslam_port')
+        fields = ('id', 'reseller', 'reseller_info', 'identifier_key', 'telecom_center_id', 'dslam_id', 'dslam_fqdn',
+                  'dslam_slot', 'dslam_port')
 
 
 class CustomerPortSerializer(serializers.ModelSerializer):
     dslam_info = DSLAMSerializer(source='dslam', read_only=True, required=False)
+
     class Meta:
         model = CustomerPort
-        fields = ('id', 'identifier_key', 'firstname', 'lastname', 'username', 'email', 'tel', 'mobile', 'national_code', 'dslam_info', 'telecom_center_id')
-        read_only_fields = ('dslam_info', )
+        fields = (
+        'id', 'identifier_key', 'firstname', 'lastname', 'username', 'email', 'tel', 'mobile', 'national_code',
+        'dslam_info', 'telecom_center_id')
+        read_only_fields = ('dslam_info',)
 
 
 class PortCommandSerializer(serializers.ModelSerializer):
@@ -361,10 +377,10 @@ class MDFDSLAMSerializer(serializers.ModelSerializer):
     subscriber = serializers.JSONField(
         source='get_subscriber', read_only=True, required=False)
 
-
     def get_port_id(self, obj):
         try:
-            port = DSLAMPort.objects.get(dslam__id=obj.dslam_id, slot_number=obj.slot_number, port_number=obj.port_number)
+            port = DSLAMPort.objects.get(dslam__id=obj.dslam_id, slot_number=obj.slot_number,
+                                         port_number=obj.port_number)
             return {'id': port.id, 'port_name': port.port_name}
         except Exception as ex:
             print(ex)
@@ -378,11 +394,14 @@ class MDFDSLAMSerializer(serializers.ModelSerializer):
         except:
             return None
 
-
     class Meta:
         model = MDFDSLAM
-        fields = ('id', 'row_number', 'floor_number', 'connection_number', 'dslam_id', 'slot_number', 'port_number', 'identifier_key', 'telecom_center_mdf_id', 'dslam_name', 'status', 'reseller', 'subscriber', 'port_detail', )
-        read_only_fields = ('id', 'row_number', 'floor_number', 'connection_number', 'dslam_id', 'slot_number', 'port_number', 'identifier_key', 'telecom_center_mdf_id', 'dslam_name', 'reseller', 'subscriber')
+        fields = ('id', 'row_number', 'floor_number', 'connection_number', 'dslam_id', 'slot_number', 'port_number',
+                  'identifier_key', 'telecom_center_mdf_id', 'dslam_name', 'status', 'reseller', 'subscriber',
+                  'port_detail',)
+        read_only_fields = (
+        'id', 'row_number', 'floor_number', 'connection_number', 'dslam_id', 'slot_number', 'port_number',
+        'identifier_key', 'telecom_center_mdf_id', 'dslam_name', 'reseller', 'subscriber')
 
 
 class DSLAMBulkCommandResultSerializer(serializers.ModelSerializer):
@@ -395,6 +414,7 @@ class DSLAMBulkCommandResultSerializer(serializers.ModelSerializer):
         model = DSLAMBulkCommandResult
         fields = ('id', 'title', 'error_file', 'success_file', 'result_file', 'created_at')
 
+
 class DSLAMFaultyConfigSerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField('get_created_persian_date')
     updated_at = serializers.SerializerMethodField('get_created_persian_date')
@@ -404,7 +424,10 @@ class DSLAMFaultyConfigSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DSLAMFaultyConfig
-        fields = ('id', 'slot_number_from', 'slot_number_to', 'port_number_from', 'port_number_to', 'created_at', 'updated_at', 'dslam_id')
+        fields = (
+        'id', 'slot_number_from', 'slot_number_to', 'port_number_from', 'port_number_to', 'created_at', 'updated_at',
+        'dslam_id')
+
 
 class DSLAMPortFaultySerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField('get_created_persian_date')
@@ -415,3 +438,9 @@ class DSLAMPortFaultySerializer(serializers.ModelSerializer):
     class Meta:
         model = DSLAMPortFaulty
         fields = ('id', 'slot_number', 'port_number', 'created_at', 'dslam_id')
+
+
+class RentedPortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RentedPort
+        fields = '__all__'

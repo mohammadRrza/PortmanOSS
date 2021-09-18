@@ -1,3 +1,4 @@
+import os
 import telnetlib
 import sys
 import time
@@ -11,7 +12,6 @@ class ProfileADSLShow(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__params = params
 
     @property
     def HOST(self):
@@ -55,17 +55,26 @@ class ProfileADSLShow(BaseCommand):
         try:
             tn = telnetlib.Telnet(self.__HOST, timeout=10)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            tn.read_until(b"Password:")
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err1 = tn.read_until(b'Communications Corp.', 2)
+            if "Password:" in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(("profile adsl show\r\n").encode('utf-8'))
-            tn.read_until("profile adsl show")
-            lstresult=[]
-            for item in range(7):
-                tn.write("n\r\n")
-            tn.write("next\r\n")
-            result = tn.read_until("# n")
-            result = re.findall(r'\d+\.\s(\S*)',result)
-
-            return {"result": result }
+            time.sleep(0.5)
+            # tn.read_until("profile adsl show")
+            # lstresult=[]
+            # for item in range(7):
+            #     tn.write("n\r\n")
+            # tn.write("next\r\n")
+            # result = tn.read_until("# n")
+            # result = re.findall(r'\d+\.\s(\S*)',result)
+            tn.write(b"n\r\n")
+            tn.write(b"end")
+            result = tn.read_until(b"end")
+            result = str(result).split("\\r\\n")
+            result = [re.sub(r'\d+[.]\s', '', val) for val in result if re.search(r'\d+[.]\s', val)]
+            return result
 
             lstProfile = re.findall(r'\d+\.\s(\S*)',result)
             for profilename in lstProfile:
@@ -122,9 +131,22 @@ class ProfileADSLShow(BaseCommand):
             tn.write("y\r\n")
             tn.close()
             return {"result": lstresult}
-        except Exception as ex:
-            print('????????????????????????????')
-            print((self.__HOST, self.__telnet_username, self.__telnet_password))
-            print(ex)
-            print('????????????????????????????')
-            return self.run_command()
+        # except Exception as ex:
+        #     print('????????????????????????????')
+        #     print((self.__HOST, self.__telnet_username, self.__telnet_password))
+        #     print(ex)
+        #     print('????????????????????????????')
+        #     return self.run_command()
+        except (EOFError, socket_error) as e:
+            print(e)
+            self.retry += 1
+            if self.retry < 3:
+                return self.run_command()
+        except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
+            print(e)
+            self.retry += 1
+            if self.retry < 3:
+                return self.run_command()

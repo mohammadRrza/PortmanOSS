@@ -58,8 +58,8 @@ from datetime import timedelta
 class Zyxel(BaseDSLAM):
 
     command_factory = CommandFactory()
-    command_factory.register_type('selt', Selt)
-    command_factory.register_type('show mac slot port', ShowMacSlotPort)
+    command_factory.register_type('showSelt', Selt)
+    command_factory.register_type('show mac by slot port', ShowMacSlotPort)
     command_factory.register_type('show mac', ShowMac)
     command_factory.register_type('show lineinfo', ShowLineInfo)
     command_factory.register_type('show linerate', ShowLineRate)
@@ -68,7 +68,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('show performance', ShowPerformance)
     command_factory.register_type('profile adsl show', ProfileADSLShow)
     command_factory.register_type('lcman show', LcmanShow)
-    command_factory.register_type('profile adsl set', ChangeLineProfilePort)
+    # command_factory.register_type('profile adsl set', ChangeLineProfilePort)
     command_factory.register_type('profile adsl delete', DeleteProfile)
     command_factory.register_type('lcman disable slot', LcmanDisableSlot)
     command_factory.register_type('lcman reset slot', LcmanResetSlot)
@@ -81,7 +81,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('add to vlan', AddToVlan)
     command_factory.register_type('create vlan', CreateVlan)
     command_factory.register_type('vlan show', VlanShow)
-    command_factory.register_type('change lineprofile port', ChangeLineProfilePort)
+    command_factory.register_type('setPortProfiles', ChangeLineProfilePort)
     command_factory.register_type('change admin status', ChangeAdminStatus)
     command_factory.register_type('reset admin status', ResetAdminStatus)
     command_factory.register_type('switch mac flush all', SwitchMacFlushAll)
@@ -91,7 +91,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('acl maccount set', AclMaccountSet)
     command_factory.register_type('enable annexm', EnableAnnexm)
     command_factory.register_type('disable annexm', DisableAnnexm)
-    command_factory.register_type('port pvc show', PortPvcShow)
+    command_factory.register_type('show pvc by port', PortPvcShow)
     command_factory.register_type('port Info', PortInfo)
     command_factory.register_type('delete from vlan', RemoveFromVlan)
     command_factory.register_type('get config', GetBackUp)
@@ -571,7 +571,6 @@ class Zyxel(BaseDSLAM):
         command_class.HOST = dslam_info['ip']
         command_class.telnet_username = dslam_info['telnet_username']
         command_class.telnet_password = dslam_info['telnet_password']
-        print(command_class.run_command())
         return command_class.run_command()
 
     @classmethod

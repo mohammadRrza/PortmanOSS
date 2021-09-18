@@ -146,6 +146,8 @@ urlpatterns = [
     url(r'^api/v1/dslamport/get_port_count/$', GetDslamPorts.as_view(), name='get_port_count'),
     url(r'^api/v1/dslamport/fiberhome_get_card/$', FiberHomeGetCardAPIView.as_view(), name='fiberhome_get_card'),
     url(r'^api/v1/dslamport/fiberhome_get_port/$', FiberHomeGetPortAPIView.as_view(), name='fiberhome_get_port'),
+    url(r'^api/v1/dslamport/upload_rented_port/$', UploadRentedPort.as_view(), name='upload_rented_port'),
+    url(r'^api/v1/dslamport/rented_port/$', RentedPortAPIView.as_view(), name='rented_port'),
 
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
@@ -170,7 +172,10 @@ urlpatterns = [
         name='get_backup_error_file'),
     url(r'^api/v1/switch/read_switch_backup_error_files_name/$', ReadSwitchBackupErrorFilesNameAPIView.as_view(),
         name='read_switch_backup_error_files_name'),
-
+    url(r'^api/v1/switch/get_switch_show_vlan_brief_files_name/$', GetSwitchShowVlanBriefFilesName.as_view(),
+        name='get_switch_show_vlan_brief_files_name'),
+    url(r'^api/v1/switch/download_view_vlan_brief_file/$', DownloadViewVlanBriefFile.as_view(),
+        name='download_view_vlan_brief_file'),
 
     # Radio
     url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupFilesNameAPIView.as_view(),
@@ -178,6 +183,8 @@ urlpatterns = [
 
     url(r'^api/v1/radio/download_radio_backup_file/$', DownloadRadioBackupFileAPIView.as_view(),
         name='download_radio_backup_file'),
+
+
     url(r'^api/v1/', include(portman_router.urls)),
 
     url(r'^media/(?P<path>.*)$', django.views.static.serve,

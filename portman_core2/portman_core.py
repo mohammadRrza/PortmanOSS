@@ -15,7 +15,6 @@ from dj_bridge import DSLAM, DSLAMPort, DSLAMType, DSLAMTypeCommand, Switch, Rou
 import time
 import os
 import sys
-from tasks_queue import add
 from django_orm_cursor import DjangoORMCursor
 
 from portman_runners import PortInfoSyncTask, DSLAMInitTask, DSLAMBulkCommand, \
