@@ -55,7 +55,7 @@ from dslam.models import DSLAM, TelecomCenter, DSLAMPort, DSLAMPortSnapshot, Lin
     DSLAMICMPSnapshot, DSLAMICMP, \
     PortCommand, ResellerPort, City, Command, DSLAMType, Terminal, DSLAMStatusSnapshot, DSLAMStatus, \
     DSLAMCommand, CityLocation, MDFDSLAM, DSLAMPortVlan, \
-    DSLAMPortMac, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, DSLAMTypeCommand, DSLAMCart
+    DSLAMPortMac, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, DSLAMTypeCommand, DSLAMCart, Rented_port
 from dslam.permissions import HasAccessToDslam, IsAdminUser, HasAccessToDslamPort, \
     HasAccessToDslamPortSnapshot
 from dslam.serializers import *
@@ -7740,9 +7740,18 @@ class RentedPortAPIView(views.APIView):
         device_ip = get_device_ip(request)
         data = request.data
         command = data.get('command', None)
-        fqdn = request.data.get('fqdn')
-        dslamObj = DSLAM.objects.get(fqdn=fqdn)
         params = data.get('params', None)
+        try:
+            dslam_obj = Rented_port.objects.get(agent_name=data.get('agent_name'),
+                                            city_name=data.get('city_name'),
+                                            telecom_name=data.get('telecom_name'),
+                                            dslam_number=data.get('dslam_number'),
+                                            card=params['port_conditions']['slot_number'],
+                                            port=params['port_conditions']['port_number'])
+        except ObjectDoesNotExist:
+            return Response({"Result": "You don't have access to this Card & Port. Please check parameters."})
+        fqdn = dslam_obj.fqdn
+        dslamObj = DSLAM.objects.get(fqdn=fqdn)
         dslam_type = dslamObj.dslam_type_id
         try:
             if command == 'show linerate' or command == 'showPort' or command == 'show port':

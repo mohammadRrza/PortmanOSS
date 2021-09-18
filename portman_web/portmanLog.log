@@ -1833,3 +1833,4 @@ Not Found: /api/v1/dslamport/upload_rented_port/
 Unauthorized: /api/v1/dslamport/upload_rented_port/
 Method Not Allowed: /api/v1/dslamport/upload_rented_port/
 Method Not Allowed: /api/v1/dslamport/upload_rented_port/
+Unauthorized: /api/v1/dslamport/rented_port/
