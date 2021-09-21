@@ -25,7 +25,7 @@ class ShowRun(BaseCommand):
                            look_for_keys=False)
             stdin, stdout, stderr = client.exec_command('show run')
             f = open("/home/taher/backup/cisco_switches/{0}@{1}_{2}.txt".format(
-                self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
+                self.__IP, self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
             for line in stdout:
                 f.write(line.strip('\n'))
             f.close()
