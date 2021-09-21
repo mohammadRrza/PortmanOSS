@@ -1,4 +1,5 @@
 import datetime
+import time
 
 import paramiko
 import sys, os
@@ -18,13 +19,19 @@ class ExportVerboseTerse(BaseCommand):
 
     def run_command(self):
         try:
+            endtime = time.time() + 10
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False, look_for_keys=False)
             stdin, stdout, stderr = client.exec_command(self.__Command)
             f = open("/home/taher/backup/mikrotik_routers/{0}@{1}_{2}.txt".format(
                 self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
-            for line in stdout:
+            while not stdout.channel.eof_received:
+                time.sleep(1)
+                if time.time() > endtime:
+                    stdout.channel.close()
+                    break
+            for line in iter(lambda: stdout.readline(2048), ""):
                 f.write(line.strip('\n'))
             f.close()
             client.close()
