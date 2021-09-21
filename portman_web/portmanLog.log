@@ -2170,3 +2170,27 @@ Method Not Allowed: /api/v1/dslamport/upload_rented_port/
 Method Not Allowed: /api/v1/dslamport/upload_rented_port/
 Unauthorized: /api/v1/dslamport/rented_port/
 >>>>>>> a6a4229c09e7a31b27dcb0af9fffb8ccea5cd24e
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Bad Request: /api/v1/dslamport/fiberHomeCommand/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/router/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router-command/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
