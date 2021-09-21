@@ -25,7 +25,7 @@ class ExportVerboseTerse(BaseCommand):
             client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False, look_for_keys=False, banner_timeout=200)
             stdin, stdout, stderr = client.exec_command(self.__Command)
             f = open("/home/taher/backup/mikrotik_routers/{0}@{1}_{2}.txt".format(
-                self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
+                self.__IP, self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
             while not stdout.channel.eof_received:
                 time.sleep(1)
                 if time.time() > endtime:
