@@ -22,7 +22,7 @@ class LargeResultsSetPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = max
 
-
+"""
 class RouterRunCommandAPIView(views.APIView):
     def get_permissions(self):
         return permissions.IsAuthenticated(),
@@ -53,7 +53,7 @@ class RouterRunCommandAPIView(views.APIView):
             return JsonResponse(
                 {'result': str('an error occurred. please try again. {0}'.format(str(exc_tb.tb_lineno)))},
                 status=status.HTTP_202_ACCEPTED)
-
+"""
 
 class RouterViewSet(mixins.ListModelMixin,
                     mixins.CreateModelMixin,
