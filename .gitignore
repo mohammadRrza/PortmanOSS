@@ -1,2 +1,2 @@
-portman_core2/dj_bridge.py
-*.pyc
+/opt/portmanv3/.gitignore
+/opt/portmanv3/*.pyc
