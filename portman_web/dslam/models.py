@@ -828,7 +828,7 @@ class Rented_port(models.Model):
     telco_row = models.IntegerField(max_length=256, null=True, blank=True)
     telco_column = models.IntegerField(max_length=256, null=True, blank=True)
     telco_connection = models.IntegerField(max_length=256, null=True, blank=True)
-    fqdn = models.IntegerField(max_length=256, null=True, blank=True)
+    fqdn = models.CharField(max_length=256, null=True, blank=True)
 
 
 class PowerEquipmentCategory(models.Model):
@@ -919,17 +919,13 @@ class Switch(models.Model):
     device_fqdn = models.CharField(max_length=256)
 
 
-class RentedPort(models.Model):
-    province_name = models.CharField(max_length=250)
-    city_name = models.CharField(max_length=250)
-    telecom_name = models.CharField(max_length=250)
-    dslam_number = models.IntegerField()
-    card = models.IntegerField(max_length=4, null=True, blank=True)
-    portman_core = models.IntegerField(max_length=4, null=True, blank=True)
-    telco_row = models.IntegerField(max_length=4, null=True, blank=True)
-    telco_column = models.IntegerField(max_length=4, null=True, blank=True)
-    telco_connection = models.IntegerField(max_length=4, null=True, blank=True)
-
-    def __str__(self):
-        return self.telecom_name
-
+class TestModel(models.Model):
+    agent_name = models.CharField(max_length=256, null=True, blank=True)
+    city_name = models.CharField(max_length=256, null=True, blank=True)
+    telecom_name = models.CharField(max_length=256, null=True, blank=True)
+    dslam_number = models.IntegerField(max_length=256, null=True, blank=True)
+    card = models.IntegerField(max_length=256, null=True, blank=True)
+    port = models.IntegerField(max_length=256, null=True, blank=True)
+    telco_row = models.IntegerField(max_length=256, null=True, blank=True)
+    telco_column = models.IntegerField(max_length=256, null=True, blank=True)
+    telco_connection = models.IntegerField(max_length=256, null=True, blank=True)
