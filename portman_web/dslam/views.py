@@ -5621,6 +5621,82 @@ class FiberHomeGetPortAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
+###### Get PVC and VLAN API
+class GetPVCVlanAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        print('Get PVC VLAN')
+        data = request.data
+        command = 'Show VLAN'
+        dslam_id = data.get('dslam_id', None)
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        pvc_vlan = []
+
+        try:
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                # if "There is one of the following problems:" in result:
+                #     return JsonResponse({'result': result})
+                # for i in result:
+                #     port_info = {}
+                #     info = i.split()
+                #     port_info['port_number'] = info[1].split(":")[1]
+                #     port_info['port_state'] = info[-1]
+                #     ports_info.append(port_info)
+                # return JsonResponse({'result': ports_info})
+                return JsonResponse({'result': result})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                # if "This card is not configured" in result:
+                #     return JsonResponse({'result': result})
+                # if "No card is defined on this port" in result:
+                #     return JsonResponse({'result': result})
+                # result = [val for val in result if re.search(r'.prf', val)]
+                # for i in result:
+                #     port_info = {}
+                #     info = i.split()
+                #     port_info['port_number'] = info[0]
+                #     port_info['port_state'] = info[2]
+                #     port_info['profile_name'] = info[-1]
+                #     ports_info.append(port_info)
+                # return JsonResponse({'result': ports_info})
+                vlan_info = {}
+                vlan_info['vlan_id'] = result['VLAN ID']
+                vlan_info['vlan_name'] = result['Name']
+                result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                result = result[-1]
+                result = re.split("\s{2,}", result)
+                vlan_info['pvc1'] = result[4].strip()
+                vlan_info['pvc2'] = result[6].strip()
+                pvc_vlan.append(vlan_info)
+                return JsonResponse({'result': pvc_vlan})
+                # return JsonResponse({'result': result})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                if "The Card number maybe unavailable or does not exist." in result:
+                    return JsonResponse({'result': result})
+                if "Card number is out of range." in result:
+                    return JsonResponse({'result': result})
+                for i in result:
+                    port_info = {}
+                    info = i.split()
+                    port_info['port_number'] = info[1]
+                    port_info['port_state'] = info[-1]
+                    pvc_vlan.append(port_info)
+                return JsonResponse({'result': pvc_vlan})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+
 class FiberHomeCommandAPIView(views.APIView):
 
     def get_permissions(self):
