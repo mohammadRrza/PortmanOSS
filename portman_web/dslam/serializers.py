@@ -5,7 +5,7 @@ from dslam.models import DSLAM, TelecomCenter, DSLAMPort, DSLAMStatusSnapshot, D
     TelecomCenterLocation, DSLAMBulkCommandResult, \
     PortCommand, City, Command, DSLAMType, LineProfile, Terminal, TelecomCenterMDF, DSLAMCommand, DSLAMLocation, \
     CityLocation, \
-    MDFDSLAM, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, LineProfileExtraSettings, DSLAMCart, RentedPort
+    MDFDSLAM, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, LineProfileExtraSettings, DSLAMCart
 
 from khayyam import JalaliDatetime
 from datetime import datetime
@@ -439,8 +439,3 @@ class DSLAMPortFaultySerializer(serializers.ModelSerializer):
         model = DSLAMPortFaulty
         fields = ('id', 'slot_number', 'port_number', 'created_at', 'dslam_id')
 
-
-class RentedPortSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RentedPort
-        fields = '__all__'
