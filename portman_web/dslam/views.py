@@ -60,6 +60,8 @@ from dslam.permissions import HasAccessToDslam, IsAdminUser, HasAccessToDslamPor
     HasAccessToDslamPortSnapshot
 from dslam.serializers import *
 from users.helpers import add_audit_log
+from .command_recognise import command_recognise
+import openpyxl
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -5630,73 +5632,12 @@ class FiberHomeCommandAPIView(views.APIView):
         device_ip = get_device_ip(request)
         data = request.data
         command = data.get('command', None)
+        command = command_recognise(command)
         fqdn = request.data.get('fqdn')
         dslamObj = DSLAM.objects.get(fqdn=fqdn)
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
         try:
-            if command == 'show linerate' or command == 'showPort' or command == 'show port':
-                command = 'show linerate'
-            elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles' or command == 'show profiles':
-                command = 'profile adsl show'
-            elif command == 'show profile by port' or command == 'Show Profile By Port':
-                command = 'show profile by port'
-            elif command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles' or command == 'change lineprofile port':
-                command = 'setPortProfiles'
-            elif command == 'selt show' or command == 'show selt' or command == 'selt' or command == 'showSelt':
-                command = 'showSelt'
-            elif command == 'selt start' or command == 'Selt Start' or command == 'start selt' or command == 'startSelt':
-                command = 'selt start'
-            elif command == 'show lineinfo' or command == 'Show Lineinfo' or command == 'Show LineInfo':
-                command = 'show lineinfo'
-            elif command == 'show linestat port' or command == 'Show Linestat Port':
-                command = 'show linestat port'
-
-            elif command == 'open port' or command == 'port enable':
-                command = 'port enable'
-            elif command == 'close port' or command == 'port disable':
-                command = 'port disable'
-            elif command == 'show mac slot port' or command == 'showmacslotport':
-                command = 'show mac by slot port'
-            elif command == 'show port with mac' or command == 'show port mac':
-                command = 'show port with mac'
-            elif command == 'Show VLAN' or command == 'VLAN Show' or command == 'show vlan':
-                command = 'Show VLAN'
-            elif command == 'Show All VLANs' or command == 'All VLANs Show' or command == 'show all pvc vlans':
-                command = 'Show All VLANs'
-            elif command == 'Show Service' or command == 'show service':
-                command = 'show service'
-            elif command == 'Show Shelf' or command == 'show shelf':
-                command = 'Show Shelf'
-            elif command == 'Show Card' or command == 'show card':
-                command = 'Show Card'
-            elif command == 'port reset' or command == 'reset port':
-                command = 'port reset'
-            elif command == 'save config':
-                command = 'save config'
-            elif command == 'ip show' or command == 'show ip' or command == 'IP Show':
-                command = 'IP Show'
-            elif command == 'show snmp community' or command == 'sys snmp show' or command == 'snmp show':
-                command = 'show snmp community'
-            elif command == 'show time' or command == 'show uptime' or command == 'Show UpTime':
-                command = 'show time'
-            elif command == 'show mac' or command == 'Show MAC':
-                command = 'show mac'
-            elif command == 'show temp' or command == 'Show Temp' or command == 'Show Temperature':
-                command = 'show temp'
-            elif command == 'version' or command == 'Version' or command == 'Show version':
-                command = 'Version'
-            elif command == 'show pvc' or command == 'Show PVC' or command == 'ShowPVC':
-                command = 'show pvc'
-            elif command == 'show pvc by port' or command == 'Show PVC By Port' or command == 'show pvc by port' or command == 'port pvc show':
-                command = 'show pvc by port'
-            elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit':
-                command = 'show mac limit'
-            elif command == 'switch port show' or command == 'Switch Port Show':
-                command = 'switch port show'
-            elif command == 'show profile by port' or command == 'showProfile by port':
-                command = 'show profile by port'
-
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             # if dslam_type == 1:  ################################### zyxel ###################################
             #     return JsonResponse({'Result': dslam_type})
@@ -7501,64 +7442,13 @@ class DslamCommandsV2APIView(views.APIView):
         device_ip = get_device_ip(request)
         data = request.data
         command = data.get('command', None)
+        command = command_recognise(command)
         fqdn = request.data.get('fqdn')
         dslam_id = request.data.get('dslam_id')
         dslamObj = DSLAM.objects.get(id=dslam_id)
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
-        try:
-            if command == 'show linerate' or command == 'showPort' or command == 'show port':
-                command = 'show linerate'
-            elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles' or command == 'show profiles':
-                command = 'profile adsl show'
-            elif command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles':
-                command = 'setPortProfiles'
-            elif command == 'selt show' or command == 'show selt' or command == 'selt' or command == 'showSelt':
-                command = 'showSelt'
-
-            elif command == 'open port' or command == 'port enable':
-                command = 'port enable'
-            elif command == 'close port' or command == 'port disable':
-                command = 'port disable'
-            elif command == 'show mac slot port' or command == 'showmacslotport':
-                command = 'show mac by slot port'
-            elif command == 'show port with mac' or command == 'show port mac':
-                command = 'show port with mac'
-            elif command == 'Show VLAN' or command == 'VLAN Show' or command == 'show vlan':
-                command = 'Show VLAN'
-            elif command == 'Show All VLANs' or command == 'All VLANs Show' or command == 'show all pvc vlans':
-                command = 'Show All VLANs'
-            elif command == 'Show Service' or command == 'show service':
-                command = 'show service'
-            elif command == 'Show Shelf' or command == 'show shelf':
-                command = 'Show Shelf'
-            elif command == 'Show Card' or command == 'show card':
-                command = 'Show Card'
-            elif command == 'port reset' or command == 'reset port':
-                command = 'port reset'
-            elif command == 'save config':
-                command = 'save config'
-            elif command == 'ip show' or command == 'show ip' or command == 'IP Show':
-                command = 'IP Show'
-            elif command == 'show snmp community' or command == 'sys snmp show' or command == 'snmp show':
-                command = 'show snmp community'
-            elif command == 'show time' or command == 'show uptime' or command == 'Show UpTime':
-                command = 'show time'
-            elif command == 'show mac' or command == 'Show MAC':
-                command = 'show mac'
-            elif command == 'show temp' or command == 'Show Temp' or command == 'Show Temperature':
-                command = 'show temp'
-            elif command == 'version' or command == 'Version' or command == 'Show version':
-                command = 'Version'
-            elif command == 'show pvc' or command == 'Show PVC' or command == 'ShowPVC':
-                command = 'show pvc'
-            elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit':
-                command = 'show mac limit'
-            elif command == 'switch port show' or command == 'Switch Port Show':
-                command = 'switch port show'
-            elif command == 'show profile by port' or command == 'showProfile by port':
-                command = 'show profile by port'
-
+        try:            
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  ################################### zyxel ###################################
                 return JsonResponse({'Result': dslam_type})
@@ -7720,15 +7610,41 @@ class UploadRentedPort(views.APIView):
     def get_permissions(self):
         return permissions.IsAuthenticated(),
 
-    parser_classes = [FileUploadParser]
+    def post(self, request, forman=None):
+        # Read excel file items
+        excel_file = request.FILES['hamyarnet']
+        if ".xlsx" not in excel_file.name:
+            return Response({"result": "File is not a excel(xlsx). Please upload only xlsx files."})
+        wb = openpyxl.load_workbook(excel_file)
+        worksheet = wb["sadra-salman-ghadir"]
 
-    def put(self, request, format=None):
-        file_obj = request.files['file']
-        # ...
-        # do some stuff with uploaded file
-        # ...
-        print(file_obj)
-        return Response(status=204)
+        excel_data = list()
+        for row in worksheet.iter_rows():
+            row_data = list()
+            for cell in row:
+                row_data.append(str(cell.value))
+            excel_data.append(row_data)
+        try:
+            i = 1
+            for val in excel_data[1:]:
+                rented_port = Rented_port()
+                rented_port.agent_name = val[0]
+                rented_port.city_name = val[1]
+                rented_port.telecom_name = val[2]
+                rented_port.dslam_number = val[3]
+                rented_port.card = val[4]
+                rented_port.port = val[5]
+                rented_port.telco_row = val[6]
+                rented_port.telco_column = val[7]
+                rented_port.telco_connection = val[8]
+                rented_port.save()
+                i = i +1
+        except Exception as ex:
+            # return Response({"result": str(ex) + str(i)})
+            return Response({"result": "Excel format has a problem."})
+
+
+        return Response({"result": "Upload Completed."})
 
 
 class RentedPortAPIView(views.APIView):
@@ -7740,6 +7656,7 @@ class RentedPortAPIView(views.APIView):
         device_ip = get_device_ip(request)
         data = request.data
         command = data.get('command', None)
+        command = command_recognise(command)
         params = data.get('params', None)
         try:
             dslam_obj = Rented_port.objects.get(agent_name=data.get('agent_name'),
@@ -7754,68 +7671,6 @@ class RentedPortAPIView(views.APIView):
         dslamObj = DSLAM.objects.get(fqdn=fqdn)
         dslam_type = dslamObj.dslam_type_id
         try:
-            if command == 'show linerate' or command == 'showPort' or command == 'show port':
-                command = 'show linerate'
-            elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles' or command == 'show profiles':
-                command = 'profile adsl show'
-            elif command == 'show profile by port' or command == 'Show Profile By Port':
-                command = 'show profile by port'
-            elif command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles' or command == 'change lineprofile port':
-                command = 'setPortProfiles'
-            elif command == 'selt show' or command == 'show selt' or command == 'selt' or command == 'showSelt':
-                command = 'showSelt'
-            elif command == 'selt start' or command == 'Selt Start' or command == 'start selt' or command == 'startSelt':
-                command = 'selt start'
-            elif command == 'show lineinfo' or command == 'Show Lineinfo' or command == 'Show LineInfo':
-                command = 'show lineinfo'
-            elif command == 'show linestat port' or command == 'Show Linestat Port':
-                command = 'show linestat port'
-
-            elif command == 'open port' or command == 'port enable':
-                command = 'port enable'
-            elif command == 'close port' or command == 'port disable':
-                command = 'port disable'
-            elif command == 'show mac slot port' or command == 'showmacslotport':
-                command = 'show mac by slot port'
-            elif command == 'show port with mac' or command == 'show port mac':
-                command = 'show port with mac'
-            elif command == 'Show VLAN' or command == 'VLAN Show' or command == 'show vlan':
-                command = 'Show VLAN'
-            elif command == 'Show All VLANs' or command == 'All VLANs Show' or command == 'show all pvc vlans':
-                command = 'Show All VLANs'
-            elif command == 'Show Service' or command == 'show service':
-                command = 'show service'
-            elif command == 'Show Shelf' or command == 'show shelf':
-                command = 'Show Shelf'
-            elif command == 'Show Card' or command == 'show card':
-                command = 'Show Card'
-            elif command == 'port reset' or command == 'reset port':
-                command = 'port reset'
-            elif command == 'save config':
-                command = 'save config'
-            elif command == 'ip show' or command == 'show ip' or command == 'IP Show':
-                command = 'IP Show'
-            elif command == 'show snmp community' or command == 'sys snmp show' or command == 'snmp show':
-                command = 'show snmp community'
-            elif command == 'show time' or command == 'show uptime' or command == 'Show UpTime':
-                command = 'show time'
-            elif command == 'show mac' or command == 'Show MAC':
-                command = 'show mac'
-            elif command == 'show temp' or command == 'Show Temp' or command == 'Show Temperature':
-                command = 'show temp'
-            elif command == 'version' or command == 'Version' or command == 'Show version':
-                command = 'Version'
-            elif command == 'show pvc' or command == 'Show PVC' or command == 'ShowPVC':
-                command = 'show pvc'
-            elif command == 'show pvc by port' or command == 'Show PVC By Port' or command == 'show pvc by port' or command == 'port pvc show':
-                command = 'show pvc by port'
-            elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit':
-                command = 'show mac limit'
-            elif command == 'switch port show' or command == 'Switch Port Show':
-                command = 'switch port show'
-            elif command == 'show profile by port' or command == 'showProfile by port':
-                command = 'show profile by port'
-
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             # if dslam_type == 1:  ################################### zyxel ###################################
             #     return JsonResponse({'Result': dslam_type})
@@ -7855,3 +7710,4 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+

@@ -2169,6 +2169,7 @@ Unauthorized: /api/v1/dslamport/upload_rented_port/
 Method Not Allowed: /api/v1/dslamport/upload_rented_port/
 Method Not Allowed: /api/v1/dslamport/upload_rented_port/
 Unauthorized: /api/v1/dslamport/rented_port/
+<<<<<<< HEAD
 >>>>>>> a6a4229c09e7a31b27dcb0af9fffb8ccea5cd24e
 Unauthorized: /api/v1/dslamport/fiberHomeCommand/
 Bad Request: /api/v1/dslamport/fiberHomeCommand/
@@ -2270,3 +2271,88 @@ Traceback (most recent call last):
     raise self.model.MultipleObjectsReturned(
 dslam.models.Rented_port.MultipleObjectsReturned: get() returned more than one Rented_port -- it returned 3!
 Not Found: /api/v1/users/permission-profile/172/objects/
+=======
+Unauthorized: /api/v1/dslamport/upload_rented_port/
+Method Not Allowed: /api/v1/dslamport/upload_rented_port/
+Unauthorized: /api/v1/dslamport/upload_rented_port/
+Internal Server Error: /api/v1/dslamport/upload_rented_port/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/utils/datastructures.py", line 76, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'hamyarnet'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 7615, in post
+    excel_file = request.FILES['hamyarnet']
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/utils/datastructures.py", line 78, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'hamyarnet'
+Internal Server Error: /api/v1/dslamport/upload_rented_port/
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/utils/datastructures.py", line 76, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'hamyarnet'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 7615, in post
+    excel_file = request.FILES['hamyarnet']
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/django/utils/datastructures.py", line 78, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'hamyarnet'
+Not Found: /
+Not Found: /favicon.ico
+Not Found: /logout/
+Not Found: /favicon.ico
+Not Found: /
+Not Found: /logout/
+Not Found: /logout/
+Not Found: /
+Not Found: /favicon.ico
+Not Found: /logout/
+Not Found: /logout/
+Not Found: /
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /
+Not Found: /logout/
+Not Found: /logout/
+>>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171

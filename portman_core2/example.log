@@ -528,6 +528,8 @@ DEBUG:paramiko.transport:EOF in transport thread
 DEBUG:paramiko.transport:EOF in transport thread
 =======
 INFO:root:AddCommand
+<<<<<<< HEAD
+=======
 ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "showport" is Not Registered!
 >
 Traceback (most recent call last):
@@ -545,6 +547,7 @@ Exception: Resource Type "showport" is Not Registered!
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+<<<<<<< HEAD
 >>>>>>> 9ffbba0660b18a0ee9ba71b94b9bf75cbd844b5f
 INFO:root:AddCommand
 INFO:root:AddCommand
@@ -662,3 +665,6 @@ INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+=======
+>>>>>>> 784b2461b14bbba1253268a9fca53d1e3e6faf6a
+>>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171

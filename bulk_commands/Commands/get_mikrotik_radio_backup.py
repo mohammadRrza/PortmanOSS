@@ -15,18 +15,22 @@ class GetMikrotikRadiobackUp():
 
     def run_command(self):
         try:
-            mail = Mail()
+            """mail = Mail()
             mail.from_addr = 'oss-problems@pishgaman.net'
             mail.to_addr = 'oss-problems@pishgaman.net'
             mail.msg_subject = 'Get Device Backups'
             mail.msg_body = 'Mikrotik Wireless Backup Process has been started at {0}'.format(
                 str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
+<<<<<<< HEAD
             # Mail.Send_Mail(mail)
+=======
+            Mail.Send_Mail(mail)"""
+>>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171
             home = "/home/taher"  # str(Path.home())
             endtime = time.time() + 10
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            query = "select DISTINCT * from zabbix_hosts where device_brand = 'mikrotik' and device_type = 'wireless' and device_fqdn NOT like  '%OLD%' ORDER BY device_ip"
+            query = "SELECT Distinct  device_type, device_brand, device_ip, device_fqdn from zabbix_hosts where device_brand = 'mikrotik' and device_type = 'wireless' and device_fqdn NOT like  '%OLD%' ORDER BY device_ip"
             cursor = connection.cursor()
             cursor.execute(query)
             RadioObjs = cursor.fetchall()
@@ -69,9 +73,18 @@ class GetMikrotikRadiobackUp():
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             print(str(ex) + "  // " + str(exc_tb.tb_lineno))
+<<<<<<< HEAD
             # mail = Mail()
             # mail.from_addr = 'oss-problems@pishgaman.net'
             # mail.to_addr = 'oss-problems@pishgaman.net'
             # mail.msg_subject = 'Get Device Backups Error'
             # mail.msg_body = 'Error: {0}----{1}'.format(str(ex) + "  // " + str(exc_tb.tb_lineno), )
             # Mail.Send_Mail(mail)
+=======
+            """mail = Mail()
+            mail.from_addr = 'oss-problems@pishgaman.net'
+            mail.to_addr = 'oss-problems@pishgaman.net'
+            mail.msg_subject = 'Get Device Backups Error'
+            mail.msg_body = 'Error: {0}----{1}'.format(str(ex), str(exc_tb.tb_lineno), )
+            Mail.Send_Mail(mail)"""
+>>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171
