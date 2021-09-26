@@ -2194,3 +2194,79 @@ Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router-command/router_run_command/
 Internal Server Error: /api/v1/router/router_run_command/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+Unauthorized: /api/v1/dslamport/fiberHomeCommand/
+Internal Server Error: /api/v1/users/get-token
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/deprecation.py", line 113, in __call__
+    response = self.process_request(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/middleware/common.py", line 54, in process_request
+    path = self.get_full_path_with_slash(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:2080/api/v1/users/get-token/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+Bad Request: /users/get-token
+Not Found: /api/v1/dslamport
+Bad Request: /users/get-token
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/switch/
+Method Not Allowed: /api/v1/switch/get_switch_show_vlan_brief_files_name/
+Unauthorized: /api/v1/switch/get_switch_show_vlan_brief_files_name/
+Unauthorized: /api/v1/switch/get_switch_show_vlan_brief_files_name/
+Bad Request: /api/v1/dslamport/rented_port/
+Internal Server Error: /api/v1/dslamport/rented_port/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 7745, in post
+    dslam_obj = Rented_port.objects.get(agent_name=data.get('agent_name'),
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/db/models/query.py", line 433, in get
+    raise self.model.MultipleObjectsReturned(
+dslam.models.Rented_port.MultipleObjectsReturned: get() returned more than one Rented_port -- it returned 3!
+Not Found: /api/v1/users/permission-profile/172/objects/
