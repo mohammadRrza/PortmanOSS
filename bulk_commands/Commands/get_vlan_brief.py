@@ -12,13 +12,13 @@ class GetVlanBrief():
         pass
 
     def run_command(self):
-        home = "/home/mrtbadboy"  # str(Path.home())
+        home = "/home/taher"  # str(Path.home())
         print("=============================================")
         print("Switch Vlan Brief Process has been started...")
         print("=============================================")
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        query = "select DISTINCT * from zabbix_hosts where  device_type = 'switch' and device_fqdn NOT like  '%OLD%' ORDER BY device_ip"
+        query = "SELECT Distinct  device_type, device_brand, device_ip, device_fqdn from zabbix_hosts where  (device_type = 'switch' or device_type = 'switch_layer3') and device_fqdn NOT like  '%OLD%' ORDER BY device_ip"
         cursor = connection.cursor()
         cursor.execute(query)
         SwitchObjs = cursor.fetchall()
@@ -46,7 +46,7 @@ class GetVlanBrief():
             except Exception as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 f = open(home + "/vlan_brief/cisco_switches/Error_{0}@{1}_{2}.txt".format(
-                    SwitchObj[2], SwitchObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
+                    SwitchObj[3], SwitchObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                 f.write(str(ex) + "  // " + str(exc_tb.tb_lineno))
                 f.close()
                 client.close()

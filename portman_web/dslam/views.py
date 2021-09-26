@@ -7625,6 +7625,7 @@ class UploadRentedPort(views.APIView):
                 row_data.append(str(cell.value))
             excel_data.append(row_data)
         try:
+            i = 1
             for val in excel_data[1:]:
                 rented_port = Rented_port()
                 rented_port.agent_name = val[0]
@@ -7637,8 +7638,11 @@ class UploadRentedPort(views.APIView):
                 rented_port.telco_column = val[7]
                 rented_port.telco_connection = val[8]
                 rented_port.save()
-        except ValueError:
+                i = i +1
+        except Exception as ex:
+            # return Response({"result": str(ex) + str(i)})
             return Response({"result": "Excel format has a problem."})
+
 
         return Response({"result": "Upload Completed."})
 
@@ -7706,7 +7710,4 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
-<<<<<<< HEAD
 
-=======
->>>>>>> 784b2461b14bbba1253268a9fca53d1e3e6faf6a

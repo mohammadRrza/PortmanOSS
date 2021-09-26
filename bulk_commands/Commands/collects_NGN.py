@@ -12,15 +12,10 @@ for filename in os.listdir(directory):
     print('===================================')
     file_text = open(directory + filename, "r")
     for row in csv.reader(file_text):
-        if 'CALLER_ID' not in row[0]:
-            print(row)
             writer.writerow(row)
-    i = i+1
+    i = i + 1
     file_text.close()
 print(i)
 """main_file = total_directory + 'total.csv'
 read_file = open(main_file, 'r')
 print(read_file.read())"""
-
-
-

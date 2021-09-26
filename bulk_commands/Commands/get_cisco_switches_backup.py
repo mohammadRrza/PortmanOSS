@@ -25,7 +25,7 @@ class GetCiscoSwitchbackUp():
         print("=============================================")
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        query = "select * from zabbix_hosts where device_type = 'switch' and device_brand = 'cisco'"
+        query = "SELECT Distinct  device_type, device_brand, device_ip, device_fqdn from zabbix_hosts where  (device_type = 'switch' or device_type = 'switch_layer3') and device_fqdn NOT like  '%OLD%' ORDER BY device_ip"
         cursor = connection.cursor()
         cursor.execute(query)
         SwitchObjs = cursor.fetchall()
