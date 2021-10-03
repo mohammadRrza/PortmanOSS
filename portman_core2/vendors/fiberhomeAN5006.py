@@ -28,6 +28,7 @@ from .fiberhomeAN5006_commands.close_port import ClosePort
 from .fiberhomeAN5006_commands.open_port import OpenPort
 from .fiberhomeAN5006_commands.show_profile_by_port import ShowProfileByPort
 from .fiberhomeAN5006_commands.show_pvc_port import ShowPVCByPort
+from .fiberhomeAN5006_commands.show_pvc import ShowPVC
 
 
 class FiberhomeAN5006(BaseDSLAM):
@@ -49,6 +50,7 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('port enable', OpenPort)
     command_factory.register_type('show profile by port', ShowProfileByPort)
     command_factory.register_type('show pvc by port', ShowPVCByPort)
+    command_factory.register_type('show pvc', ShowPVC)
 
     '''
     command_factory.register_type('selt', Selt)

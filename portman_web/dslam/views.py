@@ -5638,59 +5638,75 @@ class GetPVCVlanAPIView(views.APIView):
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
         pvc_vlan = []
+        vlan_info = {}
 
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-                # if "There is one of the following problems:" in result:
-                #     return JsonResponse({'result': result})
-                # for i in result:
-                #     port_info = {}
-                #     info = i.split()
-                #     port_info['port_number'] = info[1].split(":")[1]
-                #     port_info['port_state'] = info[-1]
-                #     ports_info.append(port_info)
-                # return JsonResponse({'result': ports_info})
-                return JsonResponse({'result': result})
-
-            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
-                # if "This card is not configured" in result:
-                #     return JsonResponse({'result': result})
-                # if "No card is defined on this port" in result:
-                #     return JsonResponse({'result': result})
-                # result = [val for val in result if re.search(r'.prf', val)]
-                # for i in result:
-                #     port_info = {}
-                #     info = i.split()
-                #     port_info['port_number'] = info[0]
-                #     port_info['port_state'] = info[2]
-                #     port_info['profile_name'] = info[-1]
-                #     ports_info.append(port_info)
-                # return JsonResponse({'result': ports_info})
-                vlan_info = {}
-                vlan_info['vlan_id'] = result['VLAN ID']
-                vlan_info['vlan_name'] = result['Name']
+                result = utility.dslam_port_run_command(dslamObj.pk, "Show All VLANs", params)
+                if "information" not in result[0]:
+                    return JsonResponse({'result': result})
+                cart_port = [val.split() for val in result]
+                flag = 0
+                for item in reversed(cart_port):
+                    print(item)
+                    if item[0] == str(params['port_conditions']['slot_number']) and item[1] == str(params['port_conditions']['port_number']):
+                        flag = 1
+                    if 'vlan' in item and flag == 1:
+                        vlan_info['vlan_id'] = item[2].split(":")[1]
+                        vlan_info['vlan_name'] = item[1].split(":")[1]
+                        break
                 result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
-                result = result[-1]
-                result = re.split("\s{2,}", result)
-                vlan_info['pvc1'] = result[4].strip()
-                vlan_info['pvc2'] = result[6].strip()
+                for val in result:
+                    vlan_info.update(val)
                 pvc_vlan.append(vlan_info)
                 return JsonResponse({'result': pvc_vlan})
                 # return JsonResponse({'result': result})
 
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                # vlan_info['vlan_id'] = result['VLAN ID']
+                # vlan_info['vlan_name'] = result['Name']
+                # result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                # result = result[-1]
+                # result = re.split("\s{2,}", result)
+                # vlan_info['pvc1'] = result[4].strip()
+                # vlan_info['pvc2'] = result[6].strip()
+                # pvc_vlan.append(vlan_info)
+                # return JsonResponse({'result': pvc_vlan})
+                return JsonResponse({'result': result})
+
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                if "The Card number maybe unavailable or does not exist." in result:
+                result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                if "Profile name" not in result:
                     return JsonResponse({'result': result})
-                if "Card number is out of range." in result:
-                    return JsonResponse({'result': result})
-                for i in result:
-                    port_info = {}
-                    info = i.split()
-                    port_info['port_number'] = info[1]
-                    port_info['port_state'] = info[-1]
-                    pvc_vlan.append(port_info)
+                for val in result:
+                    if "pvc index" not in val:
+                        vlan_info[val] = result.get(val)
+                    else:
+                        if result.get(val)['vpi'] != "0" or result.get(val)["vci"] != "0":
+                            vlan_info[val] = result.get(val)
+                pvc_vlan.append(vlan_info)
                 return JsonResponse({'result': pvc_vlan})
+                # return JsonResponse({'result': result})
+
+            elif dslam_type == 1:  ############################## zyxel ##############################
+                result = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
+                if 'name' not in result[0]:
+                    return JsonResponse({'result': result})
+                result = result[-2:]
+                pvc_count = 0
+                for val in result:
+                    if "pvc" in val:
+                        vlan_info = {}
+                        pvc_count += 1
+                        vlan_info["pvc"] = pvc_count
+                        vlan_info["vlan_id"] = val.split()[0]
+                        vlan_info['vpi'] = val.split()[1].split("-")[-1].split("/")[0]
+                        vlan_info['vci'] = val.split()[1].split("-")[-1].split("/")[1]
+                        print(pvc_vlan)
+                        pvc_vlan.append(vlan_info)
+                return JsonResponse({'result': pvc_vlan})
+                # return JsonResponse({'result': result})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()

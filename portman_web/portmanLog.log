@@ -1845,3 +1845,9 @@ Unauthorized: /api/v1/dslamport/upload_rented_port/
 Method Not Allowed: /api/v1/dslamport/upload_rented_port/
 Unauthorized: /api/v1/dslamport/upload_rented_port/
 >>>>>>> 8d04c19a1ead59db88d6c85baafd3e14495921cd
+Unauthorized: /api/v1/dslamport/get_pvc_vlan/
+Unauthorized: /api/v1/dslamport/get_pvc_vlan/
+Unauthorized: /api/v1/dslamport/get_pvc_vlan/
+Unauthorized: /api/v1/dslamport/get_pvc_vlan/
+Unauthorized: /api/v1/dslamport/get_pvc_vlan/
+Unauthorized: /api/v1/dslamport/get_pvc_vlan/
