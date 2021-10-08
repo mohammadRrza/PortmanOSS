@@ -21,11 +21,7 @@ class GetMikrotikRadiobackUp():
             mail.msg_subject = 'Get Device Backups'
             mail.msg_body = 'Mikrotik Wireless Backup Process has been started at {0}'.format(
                 str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
-<<<<<<< HEAD
-            # Mail.Send_Mail(mail)
-=======
-            Mail.Send_Mail(mail)"""
->>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171
+            # Mail.Send_Mail(mail)"""
             home = "/home/taher"  # str(Path.home())
             endtime = time.time() + 10
             client = paramiko.SSHClient()
@@ -73,18 +69,15 @@ class GetMikrotikRadiobackUp():
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             print(str(ex) + "  // " + str(exc_tb.tb_lineno))
-<<<<<<< HEAD
             # mail = Mail()
             # mail.from_addr = 'oss-problems@pishgaman.net'
             # mail.to_addr = 'oss-problems@pishgaman.net'
             # mail.msg_subject = 'Get Device Backups Error'
             # mail.msg_body = 'Error: {0}----{1}'.format(str(ex) + "  // " + str(exc_tb.tb_lineno), )
             # Mail.Send_Mail(mail)
-=======
             """mail = Mail()
             mail.from_addr = 'oss-problems@pishgaman.net'
             mail.to_addr = 'oss-problems@pishgaman.net'
             mail.msg_subject = 'Get Device Backups Error'
             mail.msg_body = 'Error: {0}----{1}'.format(str(ex), str(exc_tb.tb_lineno), )
             Mail.Send_Mail(mail)"""
->>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171

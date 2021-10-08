@@ -668,3 +668,178 @@ INFO:root:AddCommand
 =======
 >>>>>>> 784b2461b14bbba1253268a9fca53d1e3e6faf6a
 >>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171
+INFO:root:AddCommand
+DEBUG:paramiko.transport:starting thread (client mode): 0x944e9850
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "show linestat port" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/fiberhomeAN5006.py", line 549, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "show linestat port" is Not Registered!
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "show linestat port" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/fiberhomeAN5006.py", line 549, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "show linestat port" is Not Registered!
+DEBUG:paramiko.transport:starting thread (client mode): 0x944d8d30
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.18.12.86: b'd76238588cec5fdfe8d0be45217817f8'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:Ignoring message for dead channel 0
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/lcman_show_slot.py", line 12, in __init__ | KeyError: 'slot'
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 572, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/lcman_show_slot.py", line 12, in __init__
+    self.__slot = params['slot']
+KeyError: 'slot'
+DEBUG:paramiko.transport:starting thread (client mode): 0x94425580
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x944255b0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/lcman_show_slot.py", line 12, in __init__ | KeyError: 'slot'
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 572, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/lcman_show_slot.py", line 12, in __init__
+    self.__slot = params['slot']
+KeyError: 'slot'
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "showCard" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 572, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "showCard" is Not Registered!
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand

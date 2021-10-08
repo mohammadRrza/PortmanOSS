@@ -25,11 +25,7 @@ class GetMikrotikbackUp():
         endtime = time.time() + 10
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-<<<<<<< HEAD
-        query = "select DISTINCT * from zabbix_hosts where device_brand = 'mikrotik' and device_type = 'router_board' and device_fqdn NOT like '%OLD%' ORDER BY device_ip"
-=======
         query = "SELECT Distinct  device_type, device_brand, device_ip, device_fqdn from zabbix_hosts where device_brand = 'mikrotik' and device_type = 'router_board' and device_fqdn NOT like  '%OLD%' ORDER BY device_ip"
->>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171
         cursor = connection.cursor()
         cursor.execute(query)
         RouterObjs = cursor.fetchall()
