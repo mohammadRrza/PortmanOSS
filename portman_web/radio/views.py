@@ -281,3 +281,31 @@ class DownloadRadioBackupFileAPIView(views.APIView):
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
 
 
+class GetRadioBackupErrorFilesNameAPIView(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            filenames = []
+            directory = path
+            for filename in os.listdir(directory):
+                if filename.__contains__('Error'):
+                    filenames.append(filename)
+                else:
+                    continue
+            return JsonResponse({'response': filenames})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class SetRadioGeographicalCoordinatesAPIView(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            lat = request.data.get('lat')
+            long = request.data.get('long')
+
+            return JsonResponse({'response': ''})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
