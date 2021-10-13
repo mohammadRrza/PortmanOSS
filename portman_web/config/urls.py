@@ -180,12 +180,13 @@ urlpatterns = [
         name='download_view_vlan_brief_file'),
 
     # Radio
-    url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupFilesNameAPIView.as_view(),
+    url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupErrorFilesNameAPIView.as_view(),
         name='get_radio_backup_files_name'),
 
     url(r'^api/v1/radio/download_radio_backup_file/$', DownloadRadioBackupFileAPIView.as_view(),
         name='download_radio_backup_file'),
-
+    url(r'^api/v1/radio/read_radio_backup_error_files_name/$', ReadRadioBackupErrorFilesNameAPIView.as_view(),
+        name='download_radio_backup_file'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 

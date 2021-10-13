@@ -7543,7 +7543,17 @@ class DslamCommandsV2APIView(views.APIView):
         try:            
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 1:  ################################### zyxel ###################################
-                return JsonResponse({'Result': dslam_type})
+                if not command:
+                    return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
+                if result:
+                    if 'Busy' in result:
+                        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
+                    else:
+                        description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
+
+                        add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
+
+                return JsonResponse({'response': result})
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
