@@ -45,6 +45,8 @@ class ShowVLAN(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            print(self.__telnet_username)
+            print(self.__telnet_password)
             tn.write(b"end\r\n")
             err1 = tn.read_until(b"end")
             if "Login Failed." in str(err1):

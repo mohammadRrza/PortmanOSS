@@ -68,7 +68,7 @@ portman_router.register(r'router', RouterViewSet, basename='router')
 portman_router.register(r'switch', SwitchViewSet, basename='switch')
 portman_router.register(r'switch-command', SwitchCommandViewSet, basename='switch_command')
 portman_router.register(r'router-command', RouterCommandViewSet, basename='router_command')
-portman_router.register(r'contact/portmap', PortMapViewSet, basename='portmap')
+portman_router.register(r'contact/portmap', PortMapViewSet, basename='contact')
 portman_router.register(r'radio', RadioViewSet, basename='radio')
 portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
 
@@ -148,6 +148,8 @@ urlpatterns = [
     url(r'^api/v1/dslamport/fiberhome_get_port/$', FiberHomeGetPortAPIView.as_view(), name='fiberhome_get_port'),
     url(r'^api/v1/dslamport/upload_rented_port/$', UploadRentedPort.as_view(), name='upload_rented_port'),
     url(r'^api/v1/dslamport/rented_port/$', RentedPortAPIView.as_view(), name='rented_port'),
+    url(r'^api/v1/dslamport/get_pvc_vlan/$', GetPVCVlanAPIView.as_view(), name='get_pvc_vlan'),
+    url(r'^api/v1/dslamport/portmap/$', PortmapAPIView.as_view(), name='portmap'),
 
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),

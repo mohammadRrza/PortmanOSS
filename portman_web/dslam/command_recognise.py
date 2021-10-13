@@ -60,5 +60,7 @@ def command_recognise(command):
         command = 'switch port show'
     elif command == 'show profile by port' or command == 'showProfile by port':
         command = 'show profile by port'
+    elif command == 'port Info' or command == 'port info' or command == 'Port Info':
+        command = 'port Info'
 
     return command

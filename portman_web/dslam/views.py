@@ -5623,6 +5623,98 @@ class FiberHomeGetPortAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
+###### Get PVC and VLAN API
+class GetPVCVlanAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        print('Get PVC VLAN')
+        data = request.data
+        command = 'Show VLAN'
+        dslam_id = data.get('dslam_id', None)
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        pvc_vlan = []
+        vlan_info = {}
+
+        try:
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                result = utility.dslam_port_run_command(dslamObj.pk, "Show All VLANs", params)
+                if "information" not in result[0]:
+                    return JsonResponse({'result': result})
+                cart_port = [val.split() for val in result]
+                flag = 0
+                for item in reversed(cart_port):
+                    print(item)
+                    if item[0] == str(params['port_conditions']['slot_number']) and item[1] == str(params['port_conditions']['port_number']):
+                        flag = 1
+                    if 'vlan' in item and flag == 1:
+                        vlan_info['vlan_id'] = item[2].split(":")[1]
+                        vlan_info['vlan_name'] = item[1].split(":")[1]
+                        break
+                result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                for val in result:
+                    vlan_info.update(val)
+                pvc_vlan.append(vlan_info)
+                return JsonResponse({'result': pvc_vlan})
+                # return JsonResponse({'result': result})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                # vlan_info['vlan_id'] = result['VLAN ID']
+                # vlan_info['vlan_name'] = result['Name']
+                # result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                # result = result[-1]
+                # result = re.split("\s{2,}", result)
+                # vlan_info['pvc1'] = result[4].strip()
+                # vlan_info['pvc2'] = result[6].strip()
+                # pvc_vlan.append(vlan_info)
+                # return JsonResponse({'result': pvc_vlan})
+                return JsonResponse({'result': result})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                if "Profile name" not in result:
+                    return JsonResponse({'result': result})
+                for val in result:
+                    if "pvc index" not in val:
+                        vlan_info[val] = result.get(val)
+                    else:
+                        if result.get(val)['vpi'] != "0" or result.get(val)["vci"] != "0":
+                            vlan_info[val] = result.get(val)
+                pvc_vlan.append(vlan_info)
+                return JsonResponse({'result': pvc_vlan})
+                # return JsonResponse({'result': result})
+
+            elif dslam_type == 1:  ############################## zyxel ##############################
+                result = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
+                if 'name' not in result[0]:
+                    return JsonResponse({'result': result})
+                result = result[-2:]
+                pvc_count = 0
+                for val in result:
+                    if "pvc" in val:
+                        vlan_info = {}
+                        pvc_count += 1
+                        vlan_info["pvc"] = pvc_count
+                        vlan_info["vlan_id"] = val.split()[0]
+                        vlan_info['vpi'] = val.split()[1].split("-")[-1].split("/")[0]
+                        vlan_info['vci'] = val.split()[1].split("-")[-1].split("/")[1]
+                        print(pvc_vlan)
+                        pvc_vlan.append(vlan_info)
+                return JsonResponse({'result': pvc_vlan})
+                # return JsonResponse({'result': result})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+
 class FiberHomeCommandAPIView(views.APIView):
 
     def get_permissions(self):
@@ -7648,11 +7740,10 @@ class UploadRentedPort(views.APIView):
                 rented_port.telco_column = val[7]
                 rented_port.telco_connection = val[8]
                 rented_port.save()
-                i = i +1
+                i = i + 1
         except Exception as ex:
             # return Response({"result": str(ex) + str(i)})
             return Response({"result": "Excel format has a problem."})
-
 
         return Response({"result": "Upload Completed."})
 
@@ -7720,4 +7811,5 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
 
