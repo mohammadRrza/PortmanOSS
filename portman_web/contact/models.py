@@ -30,13 +30,14 @@ class Contact(models.Model):
 class Order(models.Model):
     rastin_order_id = models.IntegerField(db_index=True, blank=True, null=True)
     order_contact_id = models.IntegerField(db_index=True, blank=True, null=True)
-    ranjePhoneNumber = models.CharField(max_length=256)
-    username = models.CharField(max_length=256)
+    ranjePhoneNumber = models.CharField(max_length=256, blank=True, null=True)
+    username = models.CharField(max_length=256, blank=True, null=True)
     slot_number = models.IntegerField(db_index=True, blank=True, null=True)
     port_number = models.IntegerField(db_index=True, blank=True, null=True)
     telco_row = models.IntegerField(db_index=True, blank=True, null=True)
     telco_column = models.IntegerField(db_index=True, blank=True, null=True)
     telco_connection = models.IntegerField(db_index=True, blank=True, null=True)
-    fqdn = models.CharField(max_length=256)
+    fqdn = models.CharField(max_length=256, blank=True, null=True)
+
     def __str__(self):
         return self.rastin_order_id

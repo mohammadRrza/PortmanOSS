@@ -7730,11 +7730,10 @@ class UploadRentedPort(views.APIView):
                 rented_port.telco_column = val[7]
                 rented_port.telco_connection = val[8]
                 rented_port.save()
-                i = i +1
+                i = i + 1
         except Exception as ex:
             # return Response({"result": str(ex) + str(i)})
             return Response({"result": "Excel format has a problem."})
-
 
         return Response({"result": "Upload Completed."})
 
@@ -7802,7 +7801,5 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
-<<<<<<< HEAD
-=======
 
->>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171
+
