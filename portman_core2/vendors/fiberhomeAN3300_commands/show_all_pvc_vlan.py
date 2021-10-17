@@ -42,6 +42,8 @@ class ShowAllVLANs(BaseCommand):
 
     def run_command(self):
         try:
+            count = 1
+            res = ''
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
@@ -60,22 +62,27 @@ class ShowAllVLANs(BaseCommand):
             tn.write(b"cd vlan\r\n")
             tn.write(b"show pvc vlan\r\n")
             time.sleep(0.5)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
+            print("OK")
+            tn.read_until(b'#')
+            output = tn.read_until(b'stop--', 0.1)
+            res += str(output)
+            print(res)
+            while '#' not in str(output):
+                print('----------------------------------------')
+                print(count)
+                print('----------------------------------------')
+                # output.replace(b"--Press any key to continue Ctrl+c to stop--", b"")
+                count += 1
+                tn.write(b'\r\n')
+                output = tn.read_until(b'#', 0.1)
+                res += str(output)
             print("test")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
-            result = str(result).split("\\r\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
+            res += str(result)
+            print(res)
+            result = str(res).split("\\r\\n")
+            result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;-]+('b')[a-zA-Z +\\1-9[;-]+H", '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}', val)]
             tn.close()
             return result
