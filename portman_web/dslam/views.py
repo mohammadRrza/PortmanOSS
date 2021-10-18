@@ -5647,11 +5647,10 @@ class GetPVCVlanAPIView(views.APIView):
             if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
                 result = utility.dslam_port_run_command(dslamObj.pk, "Show All VLANs", params)
                 if "information" not in result[0]:
-                    return JsonResponse({'result': result})
+                    return Response({'result': result})
                 cart_port = [val.split() for val in result]
                 flag = 0
                 for item in reversed(cart_port):
-                    print(item)
                     if item[0] == str(params['port_conditions']['slot_number']) and item[1] == str(
                             params['port_conditions']['port_number']):
                         vlan_info['pvc_num'] = item[2]
@@ -5661,11 +5660,13 @@ class GetPVCVlanAPIView(views.APIView):
                         vlan_info['vlan_name'] = item[1].split(":")[1]
                         break
                 result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                if "pvc" not in str(result[0]):
+                    return Response({'result': result})
                 for val in result:
                     vlan_info.update(val)
                 pvc_vlan.append(vlan_info)
-                return JsonResponse({'result': pvc_vlan})
-                # return JsonResponse({'result': result})
+                return Response({'result': pvc_vlan})
+                # return Response({'result': result})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
                 # vlan_info['vlan_id'] = result['VLAN ID']

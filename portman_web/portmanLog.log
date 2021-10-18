@@ -1970,3 +1970,4 @@ Bad Request: /api/v1/dslamport/portmap/
 Unauthorized: /api/v1/dslamport/add_to_vlan/
 Unauthorized: /api/v1/dslamport/add_to_vlan/
 Unauthorized: /api/v1/dslamport/get_pvc_vlan/
+Unauthorized: /api/v1/dslamport/add_to_vlan/

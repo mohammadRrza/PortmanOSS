@@ -60,7 +60,6 @@ class ShowPVC(BaseCommand):
             tn.write(b"cd profile\r\n")
             tn.write("show dsl-profile {0}\r\n".format(self.__lineprofile).encode('utf-8'))
             time.sleep(0.5)
-            # result1 = tn.read_until(b"--Press any key to continue Ctrl+c to stop--")
             tn.write(b"\r\n")
             time.sleep(0.5)
             tn.write(b"\r\n")
@@ -70,18 +69,27 @@ class ShowPVC(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end")
             result = tn.read_until(b"end")
+            if "not exist." in str(result):
+                return f"Profile {self.__lineprofile} does not exist."
             tn.close()
-            result = str(result).split("\\r\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'pvc\d|vpi|vci', val)]
-            res = []
-            for inx, val in enumerate(result):
-                if "pvc" in val:
-                    temp = {}
-                    temp[val.split(':')[0].strip()] = {}
-                    temp[val.split(":")[0].strip()]['vpi'] = result[inx + 1].split(":")[1]
-                    temp[val.split(":")[0].strip()]['vci'] = result[inx + 2].split(":")[1]
-                    res.append(temp)
-            return res
+            if 'pvc' in str(result):
+                result = str(result).split("\\r\\n")
+                result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'pvc\d|vpi|vci', val)]
+                res = []
+                for inx, val in enumerate(result):
+                    if "pvc" in val:
+                        temp = {}
+                        temp[val.split(':')[0].strip()] = {}
+                        temp[val.split(":")[0].strip()]['vpi'] = result[inx + 1].split(":")[1]
+                        temp[val.split(":")[0].strip()]['vci'] = result[inx + 2].split(":")[1]
+                        res.append(temp)
+                return res
+            else:
+                result = str(result).replace("\\t", "    ")
+                result = str(result).split("\\r\\n")
+                result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
+                          re.search(r':', val)]
+                return result
 
         except (EOFError, socket_error) as e:
             print(e)
