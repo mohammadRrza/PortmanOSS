@@ -5848,11 +5848,20 @@ class AddToVlanAPIView(views.APIView):  # 000000
                 "vpi": 0,
                 "vci": 35,
             }
+            vlan_name = vlan_objs[0].vlan_name
+            if dslam_type == 3 or dslam_type == 4 or dslam_type == 5:
+                vlan_name = str(reseller_obj).split('-')[1]
+                if vlan_name == 'didehban':
+                    vlan_name = 'dideban'
+                if vlan_name == 'baharsamaneh':
+                    vlan_name = 'baharsam'
+                if vlan_name == 'badrrayan':
+                    vlan_name = 'badrray'
             params = {
                 "type": "dslamport",
                 "is_queue": False,
                 "vlan_id": vlan_objs[0].vlan_id,
-                "vlan_name": vlan_objs[0].vlan_name,
+                "vlan_name": vlan_name,
                 "dslam_id": dslam_obj.id,
                 "port_indexes": port_indexes,
                 "username": customer_data.get('username'),
@@ -5861,7 +5870,6 @@ class AddToVlanAPIView(views.APIView):  # 000000
             }
 
             # res = utility.dslam_port_run_command(dslam_obj.id, 'delete from vlan', pishParams)
-            print("ok")
             result = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
             # PVC = utility.dslam_port_run_command(dslam_obj.id, 'port pvc show', params)
 

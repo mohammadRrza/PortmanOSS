@@ -49,7 +49,8 @@ class AddToVlan(BaseCommand):
             count = 1
             res = ''
             vlan_info = {}
-            pvc = []
+            all_pvc = []
+            pvc_num = None
             profile_name = None
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
@@ -127,6 +128,11 @@ class AddToVlan(BaseCommand):
                     vlan_info['vlan_id'] = item[2].split(":")[1]
                     vlan_info['vlan_name'] = item[1].split(":")[1]
                     break
+                else:                  ##################### Add a new Vlan #####################
+                    tn.write("create pvc vlan {0}\r\n".format(self.__vlan_name).encode('utf-8'))
+                    time.sleep(0.2)
+                    tn.write("set pvc vlan {0} tag {1}\r\n".format(self.__vlan_name, self.__vlan_id).encode('utf-8'))
+                    time.sleep(0.2)
             ################################ Show PVC command ###############################
             check_directory = tn.read_until(b'profile#', 0.1)
             while 'profile#' not in str(check_directory):
@@ -134,19 +140,20 @@ class AddToVlan(BaseCommand):
                 check_directory = tn.read_until(b'profile#', 0.1)
             tn.write("show dsl-profile {0}\r\n".format(profile_name).encode('utf-8'))
             time.sleep(0.2)
-            tn.write(b"\r\n")
-            time.sleep(0.2)
-            tn.write(b"\r\n")
-            time.sleep(0.2)
-            tn.write(b"\r\n")
-            time.sleep(0.2)
-            tn.write(b"\r\n")
+            pvc_res = ''
+            output = tn.read_until(b'profile#', 0.1)
+            pvc_res += str(output)
+            while 'profile#' not in str(output):
+                tn.write(b'\r\n')
+                output = tn.read_until(b'profile#', 0.1)
+                pvc_res += str(output)
             tn.write(b"end")
             result = tn.read_until(b"end")
+            pvc_res += str(result)
             if "not exist." in str(result):
                 return f"Profile {profile_name} does not exist."
-            if 'pvc' in str(result):
-                result = str(result).split("\\r\\n")
+            if 'pvc' in str(pvc_res):
+                result = str(pvc_res).split("\\r\\n")
                 result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                           re.search(r'pvc\d|vpi|vci', val)]
                 for inx, val in enumerate(result):
@@ -155,7 +162,7 @@ class AddToVlan(BaseCommand):
                         temp[val.split(':')[0].strip()] = {}
                         temp[val.split(":")[0].strip()]['vpi'] = result[inx + 1].split(":")[1]
                         temp[val.split(":")[0].strip()]['vci'] = result[inx + 2].split(":")[1]
-                        pvc.append(temp)
+                        all_pvc.append(temp)
             else:
                 result = str(result).replace("\\t", "    ")
                 result = str(result).split("\\r\\n")
@@ -164,12 +171,15 @@ class AddToVlan(BaseCommand):
                 return result
 
             ############################## Get user PVC ##############################
-            for val in pvc:
-                for k, v in val.items():
-                    print(k, v)
-
-            user_pvc = None
-
+            for item in all_pvc:
+                for key, value in item.items():
+                    if int(value['vpi']) == self.__vpi and int(value['vci']) == self.__vci:
+                        pvc_num = key[-1]
+            ############################## Delete PVC Vlan ##############################
+            check_directory = tn.read_until(b'vlan#', 0.1)
+            while 'vlan#' not in str(check_directory):
+                tn.write(b'cd vlan\r\n')
+                check_directory = tn.read_until(b'vlan#', 0.1)
             tn.write("set pvc vlan {0} delete slot {1} port {2} pvc {3} untagged\r\n".format(vlan_info['vlan_name'],
                                                                                              self.port_index[
                                                                                                  'slot_number'],
@@ -178,20 +188,20 @@ class AddToVlan(BaseCommand):
                                                                                              vlan_info[
                                                                                                  'pvc_num']).encode(
                 'utf-8'))
+
+            ############################## Add PVC Vlan ##############################
             tn.write("set pvc vlan {0} add slot {1} port {2} pvc {3} untagged\r\n".format(self.__vlan_name,
                                                                                           self.port_index[
                                                                                               'slot_number'],
                                                                                           self.port_index[
                                                                                               'port_number'],
-                                                                                          vlan_info[
-                                                                                              'pvc_num']).encode(
-                'utf-8'))
+                                                                                          pvc_num).encode('utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if "has been add" in str(result):
                 return f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {vlan_info['pvc_num']} has been successfully add to vlan {vlan_info['vlan_name']}"
             tn.close()
-            return str(result)
+            return f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {vlan_info['pvc_num']} has been successfully add to vlan {vlan_info['vlan_name']}"
 
         except (EOFError, socket_error) as e:
             print(e)
