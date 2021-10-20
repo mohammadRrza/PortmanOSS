@@ -147,7 +147,9 @@ class Transaction(object):
     @classmethod
     def change_port_vlan(cls, dslam_id, port_indexes, vlan_id):
         try:
+            print(port_indexes)
             for port_item in port_indexes:
+                print(port_item)
                 port_obj = DSLAMPort.objects.get(dslam__id=dslam_id, port_index=port_item['port_index'])
                 port_vlan_obj = DSLAMPortVlan()
                 port_vlan_obj.port = port_obj

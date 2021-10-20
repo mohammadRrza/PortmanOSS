@@ -28,6 +28,8 @@ def command_recognise(command):
         command = 'Show VLAN'
     elif command == 'Show All VLANs' or command == 'All VLANs Show' or command == 'show all pvc vlans':
         command = 'Show All VLANs'
+    elif command == 'add to vlan' or command == 'Add To Vlan' or command == 'add to VLAN':
+        command = 'add to vlan'
     elif command == 'Show Service' or command == 'show service':
         command = 'show service'
     elif command == 'Show Shelf' or command == 'show shelf':
@@ -60,5 +62,7 @@ def command_recognise(command):
         command = 'switch port show'
     elif command == 'show profile by port' or command == 'showProfile by port':
         command = 'show profile by port'
+    elif command == 'port Info' or command == 'port info' or command == 'Port Info':
+        command = 'port Info'
 
     return command

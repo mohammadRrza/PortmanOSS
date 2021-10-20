@@ -68,7 +68,7 @@ portman_router.register(r'router', RouterViewSet, basename='router')
 portman_router.register(r'switch', SwitchViewSet, basename='switch')
 portman_router.register(r'switch-command', SwitchCommandViewSet, basename='switch_command')
 portman_router.register(r'router-command', RouterCommandViewSet, basename='router_command')
-portman_router.register(r'contact/portmap', PortMapViewSet, basename='portmap')
+portman_router.register(r'contact/portmap', PortMapViewSet, basename='contact')
 portman_router.register(r'radio', RadioViewSet, basename='radio')
 portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
 
@@ -118,8 +118,8 @@ urlpatterns = [
     url(r'^api/v1/dslamport/getPortDownstream/$', GetPortDownstreamAPIView.as_view(), name='getPortDownstreamAPIView'),
     url(r'^api/v1/dslamport/saveLineStats/$', SaveLineStatsAPIView.as_view(), name='saveLineStats'),
     url(r'^api/v1/dslamport/getSeltByFqdn/$', GetSeltByFqdnAPIView.as_view(), name='getSeltByFqdn'),
-    url(r'^api/v1/dslamport/createTicket/$', CreateTicketAPIView.as_view(), name='createTicket'),
-    url(r'^api/v1/dslamport/getticket/$', GetTicketInfoAPIView.as_view(), name='getticket'),
+    # url(r'^api/v1/dslamport/createTicket/$', CreateTicketAPIView.as_view(), name='createTicket'),
+    # url(r'^api/v1/dslamport/getticket/$', GetTicketInfoAPIView.as_view(), name='getticket'),
     url(r'^api/v1/dslamport/port_conflict_correction/$', PortConflictCorrectionAPIView.as_view(), name='port_conflict_correction'),
     url(r'^api/v1/dslamport/addTicket/$', AddTicketDanaAPIView.as_view(), name='addTicket'),
     url(r'^api/v1/dslamport/get_ticket_Details/$', GetTicketDetailsDanaAPIView.as_view(), name='get_ticket_Details'),
@@ -132,6 +132,7 @@ urlpatterns = [
     url(r'^api/v1/dslam/get_dslams_packet_loss_count/$', DslamIcmpSnapshotCount.as_view(), name='get_dslams_packet_loss_count'),
     url(r'^api/v1/dslam/get_interface_traffic_input/$', GetInterfaceTrafficInput.as_view(), name='get_interface_traffic_input'),
     url(r'^api/v1/dslam/zabbix_get_history/$', ZabbixGetHistory.as_view(), name='zabbix_get_history'),
+    url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
     url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
     url(r'^api/v1/quick-search/$', QuickSearchView.as_view(), name='quick-search'),
 
@@ -148,6 +149,9 @@ urlpatterns = [
     url(r'^api/v1/dslamport/fiberhome_get_port/$', FiberHomeGetPortAPIView.as_view(), name='fiberhome_get_port'),
     url(r'^api/v1/dslamport/upload_rented_port/$', UploadRentedPort.as_view(), name='upload_rented_port'),
     url(r'^api/v1/dslamport/rented_port/$', RentedPortAPIView.as_view(), name='rented_port'),
+    url(r'^api/v1/dslamport/get_pvc_vlan/$', GetPVCVlanAPIView.as_view(), name='get_pvc_vlan'),
+    url(r'^api/v1/dslamport/add_to_vlan/$', AddToVlanAPIView.as_view(), name='add_to_vlan'),
+    url(r'^api/v1/dslamport/portmap/$', PortmapAPIView.as_view(), name='portmap'),
 
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),

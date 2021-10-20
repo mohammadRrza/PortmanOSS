@@ -49,29 +49,31 @@ class VlanShow(BaseCommand):
     retry = 1
     def run_command(self):
         try:
-            tn = telnetlib.Telnet(self.__HOST,23,20)
-            time.sleep(1)
+            tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            if self.__telnet_password:
-                tn.read_until("Password: ")
-                tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.read_until(b"Password:")
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err1 = tn.read_until(b'Communications Corp.', 2)
+            if "Password:" in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.write(b"vlan show\r\n")
             time.sleep(1)
-            tn.write(("vlan show\r\n").encode('utf-8'))
-            time.sleep(1)
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            results = result.split('\n')
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            result = str(result).split('\\r\\n')
+            result = [val for val in result if re.search(r'\s{4,}', val)][1:]
             vlans = {}
-            for line in results[5:len(results)-1]:
-                items = line.split()
-                vlans[items[0]] = items[-1]
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            results = []
+            for line in result:
+                temp = line.split()
+                vlans[temp[0]] = temp[-1]
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('********************************')
-            print(vlans)
+            print(results)
             print('********************************')
-            return {"result": vlans}
+            return vlans
         except Exception as e:
             print(e)
             self.retry += 1
