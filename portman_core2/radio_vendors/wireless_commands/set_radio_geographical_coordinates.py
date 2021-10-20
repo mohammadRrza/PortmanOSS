@@ -14,7 +14,9 @@ class SetRadioGeographicalCoordinates(BaseCommand):
         self.__SSH_password = params.get('SSH_password')
         self.__SSH_port = params.get('SSH_port', 1001)
         self.__SSH_timeout = params.get('SSH_timeout', 10)
-        self.__Command = 'Latitude:{0}-Longitude:{1}'.format()
+        self.Latitude = params.get('Latitude', 0)
+        self.Longitude = params.get('Longitude', 0)
+        self.__Command = 'snmp set location="Latitude:{0}-Longitude:{1}"'.format(self.Latitude, self.Longitude)
         self.__FQDN = params.get('router_fqdn')
 
     def run_command(self):
