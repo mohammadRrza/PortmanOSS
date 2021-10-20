@@ -1,4 +1,4 @@
-#!/opt/portmanv3/venv/bin/python3
+#!/opt/portmanv3/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

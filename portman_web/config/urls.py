@@ -133,6 +133,7 @@ urlpatterns = [
     url(r'^api/v1/dslam/get_interface_traffic_input/$', GetInterfaceTrafficInput.as_view(), name='get_interface_traffic_input'),
     url(r'^api/v1/dslam/zabbix_get_history/$', ZabbixGetHistory.as_view(), name='zabbix_get_history'),
     url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
+    url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
     url(r'^api/v1/quick-search/$', QuickSearchView.as_view(), name='quick-search'),
 
     url(r'^api/v1/dslamport/ranjeNumber-Inquiry/$', RanjeNumberInquiryAPIView.as_view(), name='ranjeNumberInquiry'),
@@ -149,6 +150,7 @@ urlpatterns = [
     url(r'^api/v1/dslamport/upload_rented_port/$', UploadRentedPort.as_view(), name='upload_rented_port'),
     url(r'^api/v1/dslamport/rented_port/$', RentedPortAPIView.as_view(), name='rented_port'),
     url(r'^api/v1/dslamport/get_pvc_vlan/$', GetPVCVlanAPIView.as_view(), name='get_pvc_vlan'),
+    url(r'^api/v1/dslamport/add_to_vlan/$', AddToVlanAPIView.as_view(), name='add_to_vlan'),
     url(r'^api/v1/dslamport/portmap/$', PortmapAPIView.as_view(), name='portmap'),
 
     # Routers

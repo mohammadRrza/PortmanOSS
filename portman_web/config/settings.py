@@ -16,6 +16,7 @@ import os
 from datetime import timedelta
 import posixpath
 from django.conf.global_settings import SECURE_SSL_REDIRECT
+
 """import ldap
 from django_auth_ldap.config import LDAPSearch
 from django_auth_ldap.config import ActiveDirectoryGroupType
@@ -50,8 +51,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 """
-# ==========================================================================
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
