@@ -21,6 +21,7 @@ class GetMikrotikbackUp():
         mail.msg_body = 'Mikrotik Router Backup Process has been started at {0}'.format(
             str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
         # Mail.Send_Mail(mail)
+        ex_msg = ''
         home = "/home/taher"  # str(Path.home())
         endtime = time.time() + 10
         client = paramiko.SSHClient()
@@ -42,7 +43,8 @@ class GetMikrotikbackUp():
                                allow_agent=False,
                                look_for_keys=False,
                                banner_timeout=200)
-                stdin, stdout, stderr = client.exec_command('export verbose terse')
+                stdin, stdout, stderr = client.exec_command('export')
+                #stdin, stdout, stderr = client.exec_command('export verbose terse')
 
                 f = open(home + "/backup/mikrotik_routers/{0}@{1}_{2}.txt".format(
                     RouterObj[3], RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
@@ -55,12 +57,17 @@ class GetMikrotikbackUp():
                     f.write(line.strip('\n'))
                 f.close()
                 client.close()
+
             except Exception as ex:
                 print(str(ex) + " " + "35_mik")
                 exc_type, exc_obj, exc_tb = sys.exc_info()
+                ex_msg = str(ex)
+                if('reading SSH protocol banner' in ex_msg):
+                    ex_msg = 'authentication failed.'
                 f = open(home + "/backup/mikrotik_routers/Error_{0}@{1}_{2}.txt".format(
                     RouterObj[3], RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
-                f.write(str(ex) + "  // " + str(exc_tb.tb_lineno))
+                f.write(ex_msg + "  // " + str(exc_tb.tb_lineno))
                 f.close()
                 client.close()
+            endtime = time.time() + 10
         return ""

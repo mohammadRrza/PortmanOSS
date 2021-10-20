@@ -23,6 +23,7 @@ class GetMikrotikRadiobackUp():
                 str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
             # Mail.Send_Mail(mail)"""
             home = "/home/taher"  # str(Path.home())
+            ex_msg = ''
             endtime = time.time() + 10
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -57,18 +58,31 @@ class GetMikrotikRadiobackUp():
                     f.close()
                     client.close()
                 except Exception as ex:
-                    print(str(ex) + " " + "35_mik")
                     exc_type, exc_obj, exc_tb = sys.exc_info()
+                    print(str(ex) + "  // " + str(exc_tb.tb_lineno))
+                    ex_msg = str(ex)
+                    print(ex_msg+"OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+                    if('reading SSH protocol banner' in ex_msg):
+                        ex_msg = 'authentication failed.'
                     f = open(home + "/backup/mikrotik_radios/Error_{0}@{1}_{2}.txt".format(
                         RadioObj[3], RadioObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
-                    f.write(str(ex) + "  // " + str(exc_tb.tb_lineno))
+                    f.write(ex_msg + "  // " + str(exc_tb.tb_lineno))
                     f.close()
                     client.close()
-            return ""
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             print(str(ex) + "  // " + str(exc_tb.tb_lineno))
+            ex_msg = str(ex)
+            print(ex_msg+"OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+            if('reading SSH protocol banner' in ex_msg):
+               ex_msg = 'authentication failed.'
+            f = open(home + "/backup/mikrotik_radios/Error_{0}@{1}_{2}.txt".format(
+                 RouterObj[3], RouterObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
+            f.write(ex_msg + "  // " + str(exc_tb.tb_lineno))
+            f.close()
+            client.close()
+
             # mail = Mail()
             # mail.from_addr = 'oss-problems@pishgaman.net'
             # mail.to_addr = 'oss-problems@pishgaman.net'
