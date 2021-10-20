@@ -261,7 +261,6 @@ class Portman(object):
                         return "task.command"
 
     def _execute_command(self, task, is_queue=True, save_result=True):
-
         dslam_class = self.__portman_factory.get_type(task.dslam_data['dslam_type'])
         print(task.dslam_data)
         print(task.command)
@@ -282,6 +281,7 @@ class Portman(object):
         if task_result:
             if not isinstance(task_result, bool):
                 if task.params["type"] == 'dslamport':
+
                     if is_queue:
                         if save_result:
                             self.__django_orm_queue.put(("update_dslamport_command_result",
