@@ -6,6 +6,7 @@ from vendors.fiberhomeAN3300 import FiberhomeAN3300
 from vendors.fiberhomeAN5006 import FiberhomeAN5006
 from switch_vendors.cisco_commands.switch_C2960 import C2960
 from router_vendors.mikrotik_commands.RB951Ui2HnD import RB951Ui2HnD
+from radio_vendors.wireless_commands.set_radio_geographical_coordinates import SetRadioGeographicalCoordinates
 
 from portman_factory import PortmanFactory
 from django_orm_cursor import Transaction
@@ -77,6 +78,8 @@ class Portman(object):
         self.__portman_factory.register_type('RB450', RB951Ui2HnD)
         self.__portman_factory.register_type('CCR1036', RB951Ui2HnD)
 
+        #radios
+        self.__portman_factory.register_type('wireless', RB951Ui2HnD)
 
     def __get_dslam_slot_port(self, slot_port_conditions, dslams_id):
         slot_number_from = slot_port_conditions.get('slot_number_from')
@@ -248,6 +251,27 @@ class Portman(object):
         )
 
         switch_id = task.switch_data['id']
+        command = task.command
+        if task_result:
+            if not isinstance(task_result, bool):
+                if is_queue:
+                    if save_result:
+                        return ""
+                else:
+                    if save_result:
+                        return task_result
+                    if task.command == "profile adsl show":
+                        return "task.command"
+
+    def _radio_execute_command(self, task, is_queue=True, save_result=True):
+        radio_class = self.__portman_factory.get_type(task.radio_data['radio_type'])
+        task_result = radio_class.execute_command(
+            task.radio_data,
+            task.command,
+            task.params
+        )
+
+        radio_id = task.radio_data['id']
         command = task.command
         if task_result:
             if not isinstance(task_result, bool):

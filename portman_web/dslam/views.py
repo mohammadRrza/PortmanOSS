@@ -18,9 +18,9 @@ from django.http import StreamingHttpResponse
 from dslam.mail import Mail
 from dslam.mail import Ticket
 from rest_framework.parsers import FileUploadParser
-from rtkit.resource import RTResource
+"""from rtkit.resource import RTResource
 from rtkit.authenticators import BasicAuthenticator, CookieAuthenticator
-from rtkit.errors import RTResourceError
+from rtkit.errors import RTResourceError"""
 
 import re
 import smtplib, ssl
@@ -6927,7 +6927,7 @@ class PortConflictCorrectionAPIView(views.APIView):
                 status=status.HTTP_202_ACCEPTED)
 
 
-from rtkit import set_logging
+"""from rtkit import set_logging
 import logging
 
 set_logging('debug')
@@ -7040,7 +7040,7 @@ def get_ticket_info_rt(ticket_id):
     print()
     '==============='
     return ticket_info
-
+"""
 
 # Dana ticketing API
 class AddTicketDanaAPIView(views.APIView):

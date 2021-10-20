@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.insert(0, '/home/sajad/Project/portmanv3/portman_web/')
+sys.path.append('/opt/portmanv3/portman_web/')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings'
 
 from django.core.wsgi import get_wsgi_application
@@ -37,3 +37,8 @@ from router.models import Router
 
 #SwitchModels
 from switch.models import Switch
+
+
+#RadioModels
+from radio.models import Radio
+

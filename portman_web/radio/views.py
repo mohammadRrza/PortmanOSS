@@ -302,9 +302,11 @@ class SetRadioGeographicalCoordinatesAPIView(views.APIView):
 
     def post(self, request, format=None):
         try:
-            lat = request.data.get('lat')
-            long = request.data.get('long')
-
+            data = request.data
+            radio_id = data['radio_id']
+            params = data.get('params')
+            command = data.get('command')
+            result = utility.radio_run_command(radio_id, command, params)
             return JsonResponse({'response': ''})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
