@@ -19,6 +19,7 @@ from dslam.mail import Mail
 from dslam.mail import Ticket
 from rest_framework.parsers import FileUploadParser
 """from rtkit.resource import RTResource
+from rtkit.resource import RTResource
 from rtkit.authenticators import BasicAuthenticator, CookieAuthenticator
 from rtkit.errors import RTResourceError"""
 
@@ -55,7 +56,7 @@ from dslam.models import DSLAM, TelecomCenter, DSLAMPort, DSLAMPortSnapshot, Lin
     DSLAMICMPSnapshot, DSLAMICMP, \
     PortCommand, ResellerPort, City, Command, DSLAMType, Terminal, DSLAMStatusSnapshot, DSLAMStatus, \
     DSLAMCommand, CityLocation, MDFDSLAM, DSLAMPortVlan, \
-    DSLAMPortMac, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, DSLAMTypeCommand, DSLAMCart, Rented_port
+    DSLAMPortMac, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, DSLAMTypeCommand, DSLAMCart
 from dslam.permissions import HasAccessToDslam, IsAdminUser, HasAccessToDslamPort, \
     HasAccessToDslamPortSnapshot
 from dslam.serializers import *
@@ -5501,7 +5502,6 @@ class GetPortInfoByIdAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
-###### Fiberhome Get Card API
 class FiberHomeGetCardAPIView(views.APIView):
 
     def get_permissions(self):
@@ -5559,7 +5559,6 @@ class FiberHomeGetCardAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
-###### Fiberhome Get Port API
 class FiberHomeGetPortAPIView(views.APIView):
 
     def get_permissions(self):
@@ -7554,6 +7553,7 @@ class DslamCommandsV2APIView(views.APIView):
                         add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
 
                 return JsonResponse({'response': result})
+
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
@@ -7811,5 +7811,4 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
-
 

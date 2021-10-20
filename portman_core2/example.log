@@ -69,6 +69,11 @@ INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+<<<<<<< HEAD
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> a6a4229c09e7a31b27dcb0af9fffb8ccea5cd24e
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
@@ -365,3 +370,10 @@ INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+<<<<<<< HEAD
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+>>>>>>> Stashed changes
+=======
+>>>>>>> a6a4229c09e7a31b27dcb0af9fffb8ccea5cd24e
