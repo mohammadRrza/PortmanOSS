@@ -87,7 +87,7 @@ class RadioViewSet(mixins.ListModelMixin,
         user = self.request.user
 
         sort_field = self.request.query_params.get('sort_field', None)
-        router_name = self.request.query_params.get('search_router', None)
+        router_name = self.request.query_params.get('search_radio', None)
         device_ip = self.request.query_params.get('search_ip', None)
         ip_list = self.request.query_params.get('search_ip_list', None)
         device_fqdn = self.request.query_params.get('search_fqdn', None)
@@ -316,7 +316,7 @@ class SetRadioGeographicalCoordinatesAPIView(views.APIView):
             params = data.get('params')
             command = data.get('command')
             result = utility.radio_run_command(radio_id, command, params)
-            return JsonResponse({'response': ''})
+            return JsonResponse({'response': result})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})

@@ -20,7 +20,7 @@ from django_orm_cursor import DjangoORMCursor
 from portman_runners import PortInfoSyncTask, DSLAMInitTask, DSLAMBulkCommand, \
     DSLAMPortLineProfileChangeTask, DSLAMPortStatusInfoTask, \
     DSLAMPortResetAdminStatusInfoTask, DSLAMPortAdminStatusChangeTask, DSLAMPortCommandTask, \
-    RouterCommandTask, SwitchCommandTask
+    RouterCommandTask, SwitchCommandTask, RadioCommandTask
 
 import multiprocessing
 from multiprocessing import Manager

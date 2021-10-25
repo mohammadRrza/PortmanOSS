@@ -190,6 +190,8 @@ urlpatterns = [
         name='download_radio_backup_file'),
     url(r'^api/v1/radio/read_radio_backup_error_files_name/$', ReadRadioBackupErrorFilesNameAPIView.as_view(),
         name='download_radio_backup_file'),
+    url(r'^api/v1/radio/set_radio_geographical_coordinates/$', SetRadioGeographicalCoordinatesAPIView.as_view(),
+        name='set_radio_geographical_coordinates'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 

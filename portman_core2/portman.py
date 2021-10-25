@@ -6,7 +6,7 @@ from vendors.fiberhomeAN3300 import FiberhomeAN3300
 from vendors.fiberhomeAN5006 import FiberhomeAN5006
 from switch_vendors.cisco_commands.switch_C2960 import C2960
 from router_vendors.mikrotik_commands.RB951Ui2HnD import RB951Ui2HnD
-from radio_vendors.wireless_commands.set_radio_geographical_coordinates import SetRadioGeographicalCoordinates
+from radio_vendors.wireless import Wireless
 
 from portman_factory import PortmanFactory
 from django_orm_cursor import Transaction
@@ -79,7 +79,7 @@ class Portman(object):
         self.__portman_factory.register_type('CCR1036', RB951Ui2HnD)
 
         #radios
-        self.__portman_factory.register_type('wireless', RB951Ui2HnD)
+        self.__portman_factory.register_type('wireless', Wireless)
 
     def __get_dslam_slot_port(self, slot_port_conditions, dslams_id):
         slot_number_from = slot_port_conditions.get('slot_number_from')
