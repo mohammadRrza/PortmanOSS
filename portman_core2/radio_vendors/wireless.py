@@ -16,7 +16,7 @@ class Wireless:
         params['router_name'] = router_data['name']
         params['router_ip'] = router_data['ip']
         params['router_fqdn'] = router_data['fqdn']
-        params['router_type'] = router_data['router_type']
+        params['radio_type'] = router_data['radio_type']
         params['SSH_username'] = router_data['SSH_username']
         params['SSH_password'] = router_data['SSH_password']
         params['SSH_port'] = router_data['SSH_port']
