@@ -23,7 +23,7 @@ class SetRadioGeographicalCoordinates(BaseCommand):
         try:
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            client.connect('172.17.192.70', username=self.__SSH_username, password=self.__SSH_password, port=1001, timeout=self.__SSH_timeout, allow_agent=False, look_for_keys=False)
+            client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False, look_for_keys=False)
             stdin, stdout, stderr = client.exec_command(self.__Command)
 
         except Exception as ex:
