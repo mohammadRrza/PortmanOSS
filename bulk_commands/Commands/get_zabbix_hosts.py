@@ -26,8 +26,7 @@ class ZabbixHosts:
             cursor.execute(select_query)
             rows = cursor.fetchall()
             for row in rows:
-                zabbix_get_host_data = '{"jsonrpc": "2.0","method": "host.get","params": {"groupids":["%s"],"output": ["hostid","host"],"selectInterfaces": ["ip"]},"id": 1,"auth": "%s"}' % (
-                row[0], token)
+                zabbix_get_host_data = '{"jsonrpc": "2.0","method": "host.get","params": {"groupids":["%s"],"output": ["hostid","host"],"selectInterfaces": ["ip"]},"id": 1,"auth": "%s"}'% (row[0], token)
                 host_response = requests.post(zabbix_url, data=zabbix_get_host_data,
                                               headers={"Content-Type": "application/json"})
                 hosts = host_response.json()

@@ -4554,3 +4554,54 @@ Unauthorized: /api/v1/dslam/
 Unauthorized: /api/v1/dslam/
 =======
 >>>>>>> 37183df39efa6dcff67533a8c11c24a0b5051271
+Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Internal Server Error: /api/v1/dslam/get_interface_traffic_input/
+Unauthorized: /api/v1/radio/123/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
