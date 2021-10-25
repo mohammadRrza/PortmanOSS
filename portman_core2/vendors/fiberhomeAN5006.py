@@ -22,6 +22,7 @@ from .fiberhomeAN5006_commands.show_card import ShowCard
 from .fiberhomeAN5006_commands.show_mac import ShowMac
 from .fiberhomeAN5006_commands.save_config import SaveConfig
 from .fiberhomeAN5006_commands.show_pvc_vlan import ShowVLAN
+from .fiberhomeAN5006_commands.add_to_vlan import AddToVlan
 from .fiberhomeAN5006_commands.show_time import ShowUpTime
 from .fiberhomeAN5006_commands.show_temp import ShowTemperature
 from .fiberhomeAN5006_commands.close_port import ClosePort
@@ -44,6 +45,7 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('show mac', ShowMac)
     command_factory.register_type('save config', SaveConfig)
     command_factory.register_type('Show VLAN', ShowVLAN)
+    command_factory.register_type('add to vlan', AddToVlan)
     command_factory.register_type('show time', ShowUpTime)
     command_factory.register_type('show temp', ShowTemperature)
     command_factory.register_type('port disable', ClosePort)
@@ -552,7 +554,7 @@ class FiberhomeAN5006(BaseDSLAM):
         command_class.HOST = dslam_info['ip']
         command_class.telnet_username = dslam_info['telnet_username']
         command_class.telnet_password = dslam_info['telnet_password']
-        command_class.port_conditions = params["port_conditions"]
+        # command_class.port_conditions = params["port_conditions"]
         return command_class.run_command()
 
     @classmethod

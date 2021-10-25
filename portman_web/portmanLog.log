@@ -1971,3 +1971,9 @@ Unauthorized: /api/v1/dslamport/add_to_vlan/
 Unauthorized: /api/v1/dslamport/add_to_vlan/
 Unauthorized: /api/v1/dslamport/get_pvc_vlan/
 Unauthorized: /api/v1/dslamport/add_to_vlan/
+Unauthorized: /api/v1/dslamport/get_pvc_vlan/
+Unauthorized: /api/v1/dslamport/add_to_vlan/
+Not Found: /home/sajad/Project/portmanv3/portman_core2/vendors/fiberhomeAN5006.py/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/dslamport/add_to_vlan/
+Unauthorized: /api/v1/dslamport/add_to_vlan/

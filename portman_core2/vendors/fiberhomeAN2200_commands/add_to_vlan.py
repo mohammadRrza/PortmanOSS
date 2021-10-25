@@ -52,32 +52,25 @@ class AddToVlan(BaseCommand):
         try:
             tn = telnetlib.Telnet(self.__HOST, timeout=5)
             tn.set_option_negotiation_callback(self.process_telnet_option)
-
-            index, match_obj, text = tn.expect(
-                        ['[U|u]sername: ', '[L|l]ogin:', '[L|l]oginname:', '[P|p]assword:'])
-
-            print(index, match_obj, text)
-            if index == 1:
-                print('send login ...')
-                tn.write('{0}\r\n'.format(self.__access_name))
-
-            data = tn.read_until('User Name:', 5)
-            print('here')
-            print('==>', data)
+            print('send login ...')
+            tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
+            err1 = tn.read_until(b"correct")
+            if "incorrect" in str(err1):
+                return "Access name is wrong!"
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            print('user sent ...')
-            data = tn.read_until('Password:', 5)
-            print('==>', data)
-            tn.write(( self.__telnet_username + "\r\n").encode('utf-8'))
-            print('password sent ...')
-            data = tn.read_until('>', 5)
-            tn.write("sc\r\n".encode('utf-8'))
-            time.sleep(1)
-            time.sleep(1)
-            tn.write("end\r\n".encode('utf-8'))
-            WANE2W_obj = tn.read_until('end')
+            err2 = tn.read_until(b"Password:", 1)
+            if "Invalid User Name" in str(err2):
+                return "User Name is wrong."
+            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            err3 = tn.read_until(b"OK!", 1)
+            if "Invalid Password" in str(err3):
+                return "Password is wrong."
+            tn.write(b"sc\r\n")
+            tn.write(b"end\r\n")
+            WANE2W_obj = tn.read_until(b'end')
+            return str(WANE2W_obj)
             for item in WANE2W_obj.split('\n\r'):
-                if('WANE2W' in item):
+                if 'WANE2W' in item:
                     WANE2W_par = item.split()[1]
 
             tn.write("ip\r\n".encode('utf-8'))
@@ -109,7 +102,7 @@ class AddToVlan(BaseCommand):
             tn.write("exit\r\n\r\n")
             tn.close()
             if('Continue to add port' in result):
-                return 'port {0}-{1} added to vlan {2}'.format(self.port_conditions[0]['slot_number'],self.port_conditions[0]['port_number'],self.__vlan_name)
+                return 'port {0}-{1} added to vlan {2}'.format(self.port_conditions[0]['slot_number'], self.port_conditions[0]['port_number'],self.__vlan_name)
 
         except Exception as ex:
              exc_type, exc_obj, exc_tb = sys.exc_info()

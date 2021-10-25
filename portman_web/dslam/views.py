@@ -5681,6 +5681,7 @@ class GetPVCVlanAPIView(views.APIView):
                 return JsonResponse({'result': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                vlan_info.update(result)
                 result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
                 if "Profile name" not in result:
                     return JsonResponse({'result': result})
@@ -5778,6 +5779,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
                                         status=status.HTTP_200_OK)
 
             telecom_mdf_obj = TelecomCenterMDF.objects.filter(telecom_center_id=dslam_obj.telecom_center.id)
+            print(dslam_obj.telecom_center.id)
             if telecom_mdf_obj:
                 telecom_mdf_obj = telecom_mdf_obj.first()
             print(identifier_key)
