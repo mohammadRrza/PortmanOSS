@@ -645,6 +645,8 @@ class TelecomCenterMDF(models.Model):
 
     class Meta:
         ordering = ('created_at',)
+    def __str__(self):
+        return self.telecom_center.name
 
 
 class ResellerPort(models.Model):
