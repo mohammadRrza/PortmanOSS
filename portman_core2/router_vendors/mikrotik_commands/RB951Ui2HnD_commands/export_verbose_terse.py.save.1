@@ -1,0 +1,42 @@
+import datetime
+import time
+
+import paramiko
+import sys, os
+from .command_base import BaseCommand
+import re
+
+
+class ExportVerboseTerse(BaseCommand):
+    def __init__(self, params):
+        self.__IP = params.get('router_ip')
+        self.__SSH_username = params.get('SSH_username')
+        self.__SSH_password = params.get('SSH_password')
+        self.__SSH_port = params.get('SSH_port', 1001)
+        self.__SSH_timeout = params.get('SSH_timeout', 10)
+        self.__Command = 'export verbose terse'
+        self.__FQDN = params.get('router_fqdn')
+
+    def run_command(self):
+        try:
+            endtime = time.time() + 10
+            client = paramiko.SSHClient()
+            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False, look_for_keys=False, banner_timeout=2000)
+            stdin, stdout, stderr = client.exec_command(self.__Command)
+            f = open("/home/taher/backup/mikrotik_routers/{0}@{1}_{2}.txt".format(
+                self.__IP, self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
+            while not stdout.channel.eof_received:
+                time.sleep(1)
+                if time.time() > endtime:
+                    stdout.channel.close()
+                    break
+            for line in iter(lambda: stdout.readline(2048), ""):
+
+                f.write(line.strip('\n'))
+            f.close()
+            client.close()
+            return "Backup File named Backups/{0}_{1}.txt has been created.".format(self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return str(ex) + "  // " + str(exc_tb.tb_lineno)

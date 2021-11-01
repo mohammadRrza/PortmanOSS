@@ -18,7 +18,7 @@ class GetCiscoSwitchbackUp():
         mail.msg_subject = 'Get Device Backups'
         mail.msg_body = 'Cisco Switch Backup Process has been started at {0}'.format(
             str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
-        Mail.Send_Mail(mail)
+        # Mail.Send_Mail(mail)
         home = "/home/taher"#str(Path.home())
         print("=============================================")
         print("Switch Backup Process has been started...")
@@ -53,7 +53,7 @@ class GetCiscoSwitchbackUp():
             except Exception as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 f = open(home+"/backup/cisco_switches/Error_{0}@{1}_{2}.txt".format(
-                    SwitchObj[2], SwitchObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
+                    SwitchObj[3], SwitchObj[2], str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
                 f.write(str(ex) + "  // " + str(exc_tb.tb_lineno))
                 f.close()
                 client.close()

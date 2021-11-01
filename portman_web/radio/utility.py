@@ -14,4 +14,9 @@ def shutdown_portman(self):
 
 def radio_run_command(radio_id, command, params):
     c = jsonrpclib.Server('http://localhost:7060')
-    return c.radio_run_command(radio_id, command, params)
+    return c.router_run_command(radio_id, command, params)
+
+
+def router_run_command(radio_id, command, params):
+    c = jsonrpclib.Server('http://localhost:7060')
+    return c.router_run_command(radio_id, command, params)

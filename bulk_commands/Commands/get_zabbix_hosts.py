@@ -26,8 +26,7 @@ class ZabbixHosts:
             cursor.execute(select_query)
             rows = cursor.fetchall()
             for row in rows:
-                zabbix_get_host_data = '{"jsonrpc": "2.0","method": "host.get","params": {"groupids":["%s"],"output": ["hostid","host"],"selectInterfaces": ["ip"]},"id": 1,"auth": "%s"}' % (
-                row[0], token)
+                zabbix_get_host_data = '{"jsonrpc": "2.0","method": "host.get","params": {"groupids":["%s"],"output": ["hostid","host"],"selectInterfaces": ["ip"]},"id": 1,"auth": "%s"}'% (row[0], token)
                 host_response = requests.post(zabbix_url, data=zabbix_get_host_data,
                                               headers={"Content-Type": "application/json"})
                 hosts = host_response.json()
@@ -36,7 +35,7 @@ class ZabbixHosts:
                 switch_layer3 = ["c3850", "c3750", "c4500", "c4500x", "c6816x", "c6840x"]
                 router = ["9500", "c2921k9", "asr1002x", "asr1002", "asr1002hx", "asr1001x"]
                 router_board = ["RB450G", "RB450", "RB750Gr3", "RB750R2", "CCR1009", "RB1100", "CCR1016", "CCR1036",
-                                "hEX", "RB1100AHx2", "RB1100AH", "RB1100x4", "RB2011", "RB433AH", "RB433ah", "hEXRB750",
+                                "hEX", "RB1100AHx2","1100AHx2", "RB1100AH", "RB1100x4", "RB1100AHx4","RB2011", "RB433AH", "RB433ah", "hEXRB750",
                                 "750Gr3hEX", "RB3011UiAS", "HexRB750", "hex"]
                 router_virtual = ["vmx86", "vmx86"]
                 switch_board = ["CRS328", "CRS125"]

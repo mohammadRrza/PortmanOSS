@@ -2,6 +2,22 @@ INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+<<<<<<< HEAD
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "lcman show2" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 154, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 572, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "lcman show2" is Not Registered!
+=======
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
@@ -485,6 +501,7 @@ INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+>>>>>>> 37183df39efa6dcff67533a8c11c24a0b5051271
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
@@ -811,13 +828,1180 @@ INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+<<<<<<< HEAD
+DEBUG:paramiko.transport:starting thread (client mode): 0xec538bb0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.19.200.254: b'2d794c440359e796e7d17d42130a1ed7'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Auth banner: b'C\r\n###########################################################\r\n#                     ____  ____________                  #\r\n#                    / __ \\/_  __/ ____/                  #\r\n#                   / /_/ / / / / __/                     #\r\n#                  / ____/ / / / /___                     #\r\n#                 /_/     /_/ /_____/                     #\r\n#                                                         #\r\n#                        WARNING!                         #\r\n#   "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED"    #\r\n#    You must have explicit authorized permission to      #\r\n#         access or configure this device.                #\r\n#   Unauthorized attempts and actions to access or        #\r\n#use this system may result in civil or criminal penalties#\r\n#   All activities performed on this device are logged    #\r\n#                   and monitored                         #\r\n###########################################################\r\n'
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:starting thread (client mode): 0xec54fd90
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.19.200.254: b'2d794c440359e796e7d17d42130a1ed7'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Auth banner: b'C\r\n###########################################################\r\n#                     ____  ____________                  #\r\n#                    / __ \\/_  __/ ____/                  #\r\n#                   / /_/ / / / / __/                     #\r\n#                  / ____/ / / / /___                     #\r\n#                 /_/     /_/ /_____/                     #\r\n#                                                         #\r\n#                        WARNING!                         #\r\n#   "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED"    #\r\n#    You must have explicit authorized permission to      #\r\n#         access or configure this device.                #\r\n#   Unauthorized attempts and actions to access or        #\r\n#use this system may result in civil or criminal penalties#\r\n#   All activities performed on this device are logged    #\r\n#                   and monitored                         #\r\n###########################################################\r\n'
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:starting thread (client mode): 0xec538d60
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.19.200.254: b'2d794c440359e796e7d17d42130a1ed7'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Auth banner: b'C\r\n###########################################################\r\n#                     ____  ____________                  #\r\n#                    / __ \\/_  __/ ____/                  #\r\n#                   / /_/ / / / / __/                     #\r\n#                  / ____/ / / / /___                     #\r\n#                 /_/     /_/ /_____/                     #\r\n#                                                         #\r\n#                        WARNING!                         #\r\n#   "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED"    #\r\n#    You must have explicit authorized permission to      #\r\n#         access or configure this device.                #\r\n#   Unauthorized attempts and actions to access or        #\r\n#use this system may result in civil or criminal penalties#\r\n#   All activities performed on this device are logged    #\r\n#                   and monitored                         #\r\n###########################################################\r\n'
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:starting thread (client mode): 0x107e7c10
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.19.200.254: b'2d794c440359e796e7d17d42130a1ed7'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Auth banner: b'C\r\n###########################################################\r\n#                     ____  ____________                  #\r\n#                    / __ \\/_  __/ ____/                  #\r\n#                   / /_/ / / / / __/                     #\r\n#                  / ____/ / / / /___                     #\r\n#                 /_/     /_/ /_____/                     #\r\n#                                                         #\r\n#                        WARNING!                         #\r\n#   "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED"    #\r\n#    You must have explicit authorized permission to      #\r\n#         access or configure this device.                #\r\n#   Unauthorized attempts and actions to access or        #\r\n#use this system may result in civil or criminal penalties#\r\n#   All activities performed on this device are logged    #\r\n#                   and monitored                         #\r\n###########################################################\r\n'
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:starting thread (client mode): 0xec4ecbe0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.19.200.254: b'2d794c440359e796e7d17d42130a1ed7'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Auth banner: b'C\r\n###########################################################\r\n#                     ____  ____________                  #\r\n#                    / __ \\/_  __/ ____/                  #\r\n#                   / /_/ / / / / __/                     #\r\n#                  / ____/ / / / /___                     #\r\n#                 /_/     /_/ /_____/                     #\r\n#                                                         #\r\n#                        WARNING!                         #\r\n#   "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED"    #\r\n#    You must have explicit authorized permission to      #\r\n#         access or configure this device.                #\r\n#   Unauthorized attempts and actions to access or        #\r\n#use this system may result in civil or criminal penalties#\r\n#   All activities performed on this device are logged    #\r\n#                   and monitored                         #\r\n###########################################################\r\n'
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:Ignoring message for dead channel 0
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:starting thread (client mode): 0xec4ecf40
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.19.200.254: b'2d794c440359e796e7d17d42130a1ed7'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Auth banner: b'C\r\n###########################################################\r\n#                     ____  ____________                  #\r\n#                    / __ \\/_  __/ ____/                  #\r\n#                   / /_/ / / / / __/                     #\r\n#                  / ____/ / / / /___                     #\r\n#                 /_/     /_/ /_____/                     #\r\n#                                                         #\r\n#                        WARNING!                         #\r\n#   "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED"    #\r\n#    You must have explicit authorized permission to      #\r\n#         access or configure this device.                #\r\n#   Unauthorized attempts and actions to access or        #\r\n#use this system may result in civil or criminal penalties#\r\n#   All activities performed on this device are logged    #\r\n#                   and monitored                         #\r\n###########################################################\r\n'
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0xec538f10
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.19.200.254: b'2d794c440359e796e7d17d42130a1ed7'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Auth banner: b'C\r\n###########################################################\r\n#                     ____  ____________                  #\r\n#                    / __ \\/_  __/ ____/                  #\r\n#                   / /_/ / / / / __/                     #\r\n#                  / ____/ / / / /___                     #\r\n#                 /_/     /_/ /_____/                     #\r\n#                                                         #\r\n#                        WARNING!                         #\r\n#   "UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED"    #\r\n#    You must have explicit authorized permission to      #\r\n#         access or configure this device.                #\r\n#   Unauthorized attempts and actions to access or        #\r\n#use this system may result in civil or criminal penalties#\r\n#   All activities performed on this device are logged    #\r\n#                   and monitored                         #\r\n###########################################################\r\n'
+INFO:paramiko.transport:Authentication (password) failed.
+DEBUG:paramiko.transport:starting thread (client mode): 0xec4f8d30
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.18.4.54: b'f75fba4f0d6b91b2f90af877df47e2a4'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) failed.
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:EOF in transport thread
+=======
 INFO:root:AddCommand
+<<<<<<< HEAD
+=======
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "showport" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.8/site-packages/jsonrpclib/SimpleJSONRPCServer.py", line 388, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 570, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "showport" is Not Registered!
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+<<<<<<< HEAD
+>>>>>>> 9ffbba0660b18a0ee9ba71b94b9bf75cbd844b5f
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
 INFO:root:AddCommand
+DEBUG:paramiko.transport:starting thread (client mode): 0x386babb0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.17.192.10]:1001: b'6ca26fba48ea3653e3c7257e66d2c3d0'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x386d56a0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.18.12.86: b'd76238588cec5fdfe8d0be45217817f8'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:starting thread (client mode): 0x3865aa00
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x38634280
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x386bad30
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
 INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+<<<<<<< HEAD
+=======
+>>>>>>> 784b2461b14bbba1253268a9fca53d1e3e6faf6a
+>>>>>>> f7fc5d25288bcbea3d90e9e34cbdbab99aaf1171
+INFO:root:AddCommand
+DEBUG:paramiko.transport:starting thread (client mode): 0x944e9850
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "show linestat port" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/fiberhomeAN5006.py", line 549, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "show linestat port" is Not Registered!
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "show linestat port" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/fiberhomeAN5006.py", line 549, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "show linestat port" is Not Registered!
+DEBUG:paramiko.transport:starting thread (client mode): 0x944d8d30
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-1.99-Cisco-1.25
+INFO:paramiko.transport:Connected (version 1.99, client Cisco-1.25)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', '3des-cbc', 'aes192-cbc', 'aes256-cbc'] client mac:['hmac-sha1', 'hmac-sha1-96'] server mac:['hmac-sha1', 'hmac-sha1-96'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha1
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (2048 bits)
+DEBUG:paramiko.transport:kex engine KexGex specified hash_algo <built-in function openssl_sha1>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for 172.18.12.86: b'd76238588cec5fdfe8d0be45217817f8'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 4096 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF received (0)
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:Dropping user packet because connection is dead.
+DEBUG:paramiko.transport:Ignoring message for dead channel 0
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/lcman_show_slot.py", line 12, in __init__ | KeyError: 'slot'
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 572, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/lcman_show_slot.py", line 12, in __init__
+    self.__slot = params['slot']
+KeyError: 'slot'
+DEBUG:paramiko.transport:starting thread (client mode): 0x94425580
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x944255b0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/lcman_show_slot.py", line 12, in __init__ | KeyError: 'slot'
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 572, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/lcman_show_slot.py", line 12, in __init__
+    self.__slot = params['slot']
+KeyError: 'slot'
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "showCard" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 572, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "showCard" is Not Registered!
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+DEBUG:paramiko.transport:starting thread (client mode): 0x94443160
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.24.140]:1001: b'6fe26636587807b0b0b34a7199fb813f'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x9443d460
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.24.140]:1001: b'6fe26636587807b0b0b34a7199fb813f'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x94425b80
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x9443d370
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x944c6520
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x9440b520
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x944c6af0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x94443c40
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x9443d5b0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x94409e80
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x94425dc0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x9443dbe0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x944c6f70
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+DEBUG:paramiko.transport:starting thread (client mode): 0x9440bbb0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x94425940
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x94443d00
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x944438b0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:starting thread (client mode): 0x9443df70
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x9443d430
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x9443d040
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x944430a0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x94443970
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x944c65e0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/command_factory.py", line 13, in get_type | Exception: Resource Type "None" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 163, in router_run_command
+    return self.portman._router_execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 223, in _router_execute_command
+    task_result = router_class.execute_command(
+  File "/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/RB951Ui2HnD.py", line 27, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/router_vendors/mikrotik_commands/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!' % name)
+Exception: Resource Type "None" is Not Registered!
+DEBUG:paramiko.transport:starting thread (client mode): 0x943d5490
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.20.7.36]:1001: b'3d709b4d087ee5de24b67c6748103311'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+DEBUG:paramiko.transport:starting thread (client mode): 0x944f0df0
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x9443d790
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x94409820
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+DEBUG:paramiko.transport:starting thread (client mode): 0x943d8040
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.7.2
+ERROR:paramiko.transport:Exception: Error reading SSH protocol banner
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2211, in _check_banner
+ERROR:paramiko.transport:    buf = self.packetizer.readline(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 380, in readline
+ERROR:paramiko.transport:    buf += self._read_timeout(timeout)
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/packet.py", line 609, in _read_timeout
+ERROR:paramiko.transport:    raise EOFError()
+ERROR:paramiko.transport:EOFError
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:During handling of the above exception, another exception occurred:
+ERROR:paramiko.transport:
+ERROR:paramiko.transport:Traceback (most recent call last):
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2039, in run
+ERROR:paramiko.transport:    self._check_banner()
+ERROR:paramiko.transport:  File "/usr/local/lib/python3.8/dist-packages/paramiko/transport.py", line 2215, in _check_banner
+ERROR:paramiko.transport:    raise SSHException(
+ERROR:paramiko.transport:paramiko.ssh_exception.SSHException: Error reading SSH protocol banner
+ERROR:paramiko.transport:
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 273, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/zyxel.py", line 572, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "" is Not Registered!
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+DEBUG:paramiko.transport:starting thread (client mode): 0xc02bdc10
+DEBUG:paramiko.transport:Local version/idstring: SSH-2.0-paramiko_2.8.0
+DEBUG:paramiko.transport:Remote version/idstring: SSH-2.0-ROSSSH
+INFO:paramiko.transport:Connected (version 2.0, client ROSSSH)
+DEBUG:paramiko.transport:kex algos:['diffie-hellman-group-exchange-sha256', 'diffie-hellman-group-exchange-sha1', 'diffie-hellman-group14-sha1', 'diffie-hellman-group1-sha1'] server key:['ssh-dss', 'rsa-sha2-256', 'ssh-rsa'] client encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] server encrypt:['aes128-ctr', 'aes192-ctr', 'aes256-ctr', 'aes128-cbc', 'aes192-cbc', 'aes256-cbc', 'blowfish-cbc', '3des-cbc', 'none'] client mac:['hmac-sha1', 'hmac-md5'] server mac:['hmac-sha1', 'hmac-md5'] client compress:['none'] server compress:['none'] client lang:[''] server lang:[''] kex follows?False
+DEBUG:paramiko.transport:Kex agreed: diffie-hellman-group-exchange-sha256
+DEBUG:paramiko.transport:HostKey agreed: ssh-rsa
+DEBUG:paramiko.transport:Cipher agreed: aes128-ctr
+DEBUG:paramiko.transport:MAC agreed: hmac-sha1
+DEBUG:paramiko.transport:Compression agreed: none
+DEBUG:paramiko.transport:Got server p (1024 bits)
+DEBUG:paramiko.transport:kex engine KexGexSHA256 specified hash_algo <built-in function openssl_sha256>
+DEBUG:paramiko.transport:Switch to new keys ...
+DEBUG:paramiko.transport:Adding ssh-rsa host key for [172.17.192.10]:1001: b'6ca26fba48ea3653e3c7257e66d2c3d0'
+DEBUG:paramiko.transport:userauth is OK
+INFO:paramiko.transport:Authentication (password) successful!
+DEBUG:paramiko.transport:[chan 0] Max packet in: 32768 bytes
+DEBUG:paramiko.transport:[chan 0] Max packet out: 262144 bytes
+DEBUG:paramiko.transport:Secsh channel 0 opened.
+DEBUG:paramiko.transport:[chan 0] Sesch channel 0 request ok
+DEBUG:paramiko.transport:[chan 0] EOF sent (0)
+DEBUG:paramiko.transport:EOF in transport thread
+=======
 >>>>>>> 27f1491b9ea06ae60e7dba30c67e35e3593e0193
+>>>>>>> 37183df39efa6dcff67533a8c11c24a0b5051271

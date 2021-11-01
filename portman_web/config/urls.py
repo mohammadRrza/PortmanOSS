@@ -156,6 +156,7 @@ urlpatterns = [
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
     url(r'^api/v1/router-command/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
+    url(r'^api/v1/router/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
     url(r'^api/v1/router/get_router_backup_files_name/$', GetRouterBackupFilesNameAPIView.as_view(),
         name='get_backup_files_name'),
     url(r'^api/v1/router/get_router_backup_files_name2/$', GetRouterBackupFilesNameAPIView2.as_view(),
@@ -184,7 +185,7 @@ urlpatterns = [
         name='download_view_vlan_brief_file'),
 
     # Radio
-    url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupErrorFilesNameAPIView.as_view(),
+    url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupFilesNameAPIView.as_view(),
         name='get_radio_backup_files_name'),
 
     url(r'^api/v1/radio/download_radio_backup_file/$', DownloadRadioBackupFileAPIView.as_view(),
