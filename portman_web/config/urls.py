@@ -165,6 +165,8 @@ urlpatterns = [
         name='get_router_backup_error_file'),
     url(r'^api/v1/router-command/read_router_backup_error_files_name/$', ReadRouterBackupErrorFilesNameAPIView.as_view(),
         name='read_router_backup_error_files_name'),
+    url(r'^api/v1/router/set_ssl_on_router/$', SetSSLOnRouter.as_view(),
+        name='set_ssl_on_router'),
 
     # Switches
     url(r'^api/v1/switch/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),
