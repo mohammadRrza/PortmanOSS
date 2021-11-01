@@ -14,7 +14,7 @@ class ExportVerboseTerse(BaseCommand):
         self.__SSH_password = params.get('SSH_password')
         self.__SSH_port = params.get('SSH_port', 1001)
         self.__SSH_timeout = params.get('SSH_timeout', 10)
-        self.__Command = 'export verbose terse'
+        self.__Command = 'export'
         self.__FQDN = params.get('router_fqdn')
 
     def run_command(self):
