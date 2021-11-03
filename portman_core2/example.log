@@ -2033,3 +2033,38 @@ Traceback (most recent call last):
     raise Exception('Resource Type "%s" is Not Registered!'%name)
 Exception: Resource Type "showShelf" is Not Registered!
 INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/portman.py", line 414, in _execute_command | AttributeError: 'str' object has no attribute 'get'
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 414, in _execute_command
+    task_result.get('result')
+AttributeError: 'str' object has no attribute 'get'
+INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/portman.py", line 414, in _execute_command | AttributeError: 'str' object has no attribute 'get'
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 414, in _execute_command
+    task_result.get('result')
+AttributeError: 'str' object has no attribute 'get'
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/portman.py", line 414, in _execute_command | AttributeError: 'str' object has no attribute 'get'
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 414, in _execute_command
+    task_result.get('result')
+AttributeError: 'str' object has no attribute 'get'
+INFO:root:AddCommand

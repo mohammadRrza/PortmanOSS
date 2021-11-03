@@ -72,9 +72,6 @@ class ShowShelf(BaseCommand):
             res = tn.read_until(b'end')
             tn.write(b"exit\r\n")
             tn.close()
-            if self.device_ip=='127.0.0.1':
-                return res
-
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s{4,}|SHELF|Polling|Current|--+', val)]
 
