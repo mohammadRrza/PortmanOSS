@@ -87,7 +87,7 @@ class RadioViewSet(mixins.ListModelMixin,
         user = self.request.user
 
         sort_field = self.request.query_params.get('sort_field', None)
-        router_name = self.request.query_params.get('search_router', None)
+        router_name = self.request.query_params.get('search_radio', None)
         device_ip = self.request.query_params.get('search_ip', None)
         ip_list = self.request.query_params.get('search_ip_list', None)
         device_fqdn = self.request.query_params.get('search_fqdn', None)
@@ -180,6 +180,10 @@ class File:
 class GetRadioBackupFilesNameAPIView(views.APIView):
     def post(self, request, format=None):
         try:
+            date_array = []
+            for i in range(0, 7):
+                date_array.append(str(datetime.datetime.now().date() - datetime.timedelta(i)))
+
             print(request.data)
             radio_id = request.data['radio_id']
             radio_obj = Radio.objects.get(id=radio_id)
@@ -195,16 +199,20 @@ class GetRadioBackupFilesNameAPIView(views.APIView):
                 # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
                 if 'Error' in filename:
                     if filename.__contains__(fqdn) and filename.__contains__('@'):
-                        fileobj.file_name = filename
-                        fileobj.file_date = filename.split('@')[1].split('_')[1].split('.')[0]
-                        filenames_error.append(fileobj)
-                        total.append(filenames_error)
+                        for item in date_array:
+                            if item in filename:
+                               fileobj.file_name = filename
+                               fileobj.file_date = filename.split('@')[1].split('_')[1].split('.')[0]
+                               filenames_error.append(fileobj)
+                               total.append(filenames_error)
                 else:
                     if filename.__contains__(fqdn) and filename.__contains__('@'):
-                        fileobj.file_name = filename
-                        fileobj.file_date = filename.split('@')[1].split('_')[1].split('.')[0]
-                        filenames.append(fileobj)
-                        total.append(filenames)
+                        for item in date_array:
+                            if item in filename:
+                               fileobj.file_name = filename
+                               fileobj.file_date = filename.split('@')[1].split('_')[1].split('.')[0]
+                               filenames.append(fileobj)
+                               total.append(filenames_error)
             return JsonResponse({'response': json.dumps(total, default=lambda o: o.__dict__,
                                                         sort_keys=True, indent=4)})
         except Exception as ex:
@@ -246,14 +254,15 @@ class ReadRadioBackupErrorFilesNameAPIView(views.APIView):
 
     def post(self, request, format=None):
         try:
-            if os.path.exists(path + 'router_backup_errors.txt'):
-                os.remove(path + 'router_backup_errors.txt')
+            if os.path.exists(path + 'radio_backup_errors.txt'):
+                os.remove(path + 'radio_backup_errors.txt')
             filenames = []
             directory = path
-            backup_errors_file = open(path + 'router_backup_errors.txt', 'w')
-            for filename in os.listdir(directory):
+            backup_errors_file = open(path + 'radio_backup_errors.txt', 'w')
+            for filename in os.listdir(path):
                 if filename.__contains__('Error') and filename.__contains__(
                         str(datetime.datetime.now().date() - datetime.timedelta(1))):
+
                     f = open(directory + filename, "r")
                     err_text = filename + "   " + "|" + "   " + f.read()
                     backup_errors_file.write(filename + '     ' + f.read() + '\n')
@@ -302,10 +311,12 @@ class SetRadioGeographicalCoordinatesAPIView(views.APIView):
 
     def post(self, request, format=None):
         try:
-            lat = request.data.get('lat')
-            long = request.data.get('long')
-
-            return JsonResponse({'response': ''})
+            data = request.data
+            radio_id = data['radio_id']
+            params = data.get('params')
+            command = data.get('command')
+            result = utility.radio_run_command(radio_id, command, params)
+            return JsonResponse({'response': result})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})

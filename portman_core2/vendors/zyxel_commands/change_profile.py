@@ -12,6 +12,7 @@ class ChangeProfile(BaseCommand):
         self.__telnet_password = None
         self.__lineprofile = params.get('new_lineprofile')
         self.__port_indexes = params.get('port_indexes')
+        self.device_ip = params.get('device_ip')
 
 
     @property

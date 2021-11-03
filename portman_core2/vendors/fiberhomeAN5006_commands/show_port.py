@@ -11,6 +11,7 @@ class ShowPort(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):
@@ -62,6 +63,13 @@ class ShowPort(BaseCommand):
                 return "Port number is out of range."
             tn.close()
             result = str(result).split("\\r\\n")
+            ''' result = [val for val in result if re.search(r':\s', val)]
+            d = {}
+            for b in result:
+                i = b.split(': ', 1)
+                d[i[0].strip()] = i[1].replace("\\t", "    ")
+            result = d
+            return str(result)'''
             result = [val.replace("\\t", "    ") for val in result if re.search(r':\s', val)]
             # d = {}
             # for b in result:

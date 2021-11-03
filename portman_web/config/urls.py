@@ -118,8 +118,8 @@ urlpatterns = [
     url(r'^api/v1/dslamport/getPortDownstream/$', GetPortDownstreamAPIView.as_view(), name='getPortDownstreamAPIView'),
     url(r'^api/v1/dslamport/saveLineStats/$', SaveLineStatsAPIView.as_view(), name='saveLineStats'),
     url(r'^api/v1/dslamport/getSeltByFqdn/$', GetSeltByFqdnAPIView.as_view(), name='getSeltByFqdn'),
-    url(r'^api/v1/dslamport/createTicket/$', CreateTicketAPIView.as_view(), name='createTicket'),
-    url(r'^api/v1/dslamport/getticket/$', GetTicketInfoAPIView.as_view(), name='getticket'),
+    # url(r'^api/v1/dslamport/createTicket/$', CreateTicketAPIView.as_view(), name='createTicket'),
+    # url(r'^api/v1/dslamport/getticket/$', GetTicketInfoAPIView.as_view(), name='getticket'),
     url(r'^api/v1/dslamport/port_conflict_correction/$', PortConflictCorrectionAPIView.as_view(), name='port_conflict_correction'),
     url(r'^api/v1/dslamport/addTicket/$', AddTicketDanaAPIView.as_view(), name='addTicket'),
     url(r'^api/v1/dslamport/get_ticket_Details/$', GetTicketDetailsDanaAPIView.as_view(), name='get_ticket_Details'),
@@ -132,6 +132,7 @@ urlpatterns = [
     url(r'^api/v1/dslam/get_dslams_packet_loss_count/$', DslamIcmpSnapshotCount.as_view(), name='get_dslams_packet_loss_count'),
     url(r'^api/v1/dslam/get_interface_traffic_input/$', GetInterfaceTrafficInput.as_view(), name='get_interface_traffic_input'),
     url(r'^api/v1/dslam/zabbix_get_history/$', ZabbixGetHistory.as_view(), name='zabbix_get_history'),
+    url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
     url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
     url(r'^api/v1/quick-search/$', QuickSearchView.as_view(), name='quick-search'),
 
@@ -149,11 +150,13 @@ urlpatterns = [
     url(r'^api/v1/dslamport/upload_rented_port/$', UploadRentedPort.as_view(), name='upload_rented_port'),
     url(r'^api/v1/dslamport/rented_port/$', RentedPortAPIView.as_view(), name='rented_port'),
     url(r'^api/v1/dslamport/get_pvc_vlan/$', GetPVCVlanAPIView.as_view(), name='get_pvc_vlan'),
+    url(r'^api/v1/dslamport/add_to_vlan/$', AddToVlanAPIView.as_view(), name='add_to_vlan'),
     url(r'^api/v1/dslamport/portmap/$', PortmapAPIView.as_view(), name='portmap'),
 
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
     url(r'^api/v1/router-command/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
+    url(r'^api/v1/router/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
     url(r'^api/v1/router/get_router_backup_files_name/$', GetRouterBackupFilesNameAPIView.as_view(),
         name='get_backup_files_name'),
     url(r'^api/v1/router/get_router_backup_files_name2/$', GetRouterBackupFilesNameAPIView2.as_view(),
@@ -163,6 +166,8 @@ urlpatterns = [
         name='get_router_backup_error_file'),
     url(r'^api/v1/router-command/read_router_backup_error_files_name/$', ReadRouterBackupErrorFilesNameAPIView.as_view(),
         name='read_router_backup_error_files_name'),
+    url(r'^api/v1/router/set_ssl_on_router/$', SetSSLOnRouter.as_view(),
+        name='set_ssl_on_router'),
 
     # Switches
     url(r'^api/v1/switch/switch_run_command/$', SwitchRunCommandAPIView.as_view(), name='switch_run_command'),
@@ -180,13 +185,15 @@ urlpatterns = [
         name='download_view_vlan_brief_file'),
 
     # Radio
-    url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupErrorFilesNameAPIView.as_view(),
+    url(r'^api/v1/radio/get_radio_backup_files_name/$', GetRadioBackupFilesNameAPIView.as_view(),
         name='get_radio_backup_files_name'),
 
     url(r'^api/v1/radio/download_radio_backup_file/$', DownloadRadioBackupFileAPIView.as_view(),
         name='download_radio_backup_file'),
     url(r'^api/v1/radio/read_radio_backup_error_files_name/$', ReadRadioBackupErrorFilesNameAPIView.as_view(),
         name='download_radio_backup_file'),
+    url(r'^api/v1/radio/set_radio_geographical_coordinates/$', SetRadioGeographicalCoordinatesAPIView.as_view(),
+        name='set_radio_geographical_coordinates'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 

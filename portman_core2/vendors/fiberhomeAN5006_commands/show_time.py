@@ -12,6 +12,7 @@ class ShowUpTime(BaseCommand):
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
         self.__vlan_name = params.get('vlan_name')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

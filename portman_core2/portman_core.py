@@ -11,7 +11,7 @@ from django_orm_cursor import Transaction
 from portman_runners import DSLAMPortCommandTask
 from datetime import datetime
 from get_back_ups import GetbackUp
-from dj_bridge import DSLAM, DSLAMPort, DSLAMType, DSLAMTypeCommand, Switch, Router
+from dj_bridge import DSLAM, DSLAMPort, DSLAMType, DSLAMTypeCommand, Switch, Router, Radio
 import time
 import os
 import sys
@@ -20,7 +20,7 @@ from django_orm_cursor import DjangoORMCursor
 from portman_runners import PortInfoSyncTask, DSLAMInitTask, DSLAMBulkCommand, \
     DSLAMPortLineProfileChangeTask, DSLAMPortStatusInfoTask, \
     DSLAMPortResetAdminStatusInfoTask, DSLAMPortAdminStatusChangeTask, DSLAMPortCommandTask, \
-    RouterCommandTask, SwitchCommandTask
+    RouterCommandTask, SwitchCommandTask, RadioCommandTask
 
 import multiprocessing
 from multiprocessing import Manager
@@ -169,6 +169,12 @@ class PortmanRPC(object):
         if is_queue == False:
             return self.portman._switch_execute_command(task, is_queue)
 
+    def radio_run_command(self, radio_id, command, params):
+        radio = Radio.objects.get(id=radio_id)
+        task = RadioCommandTask(radio.get_info(), command, params)
+        is_queue = False
+        if not is_queue:
+            return self.portman._radio_execute_command(task, is_queue)
 
 class PortmanRPCStarter(threading.Thread):
     def __init__(self, portman_runner):

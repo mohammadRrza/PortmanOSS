@@ -14,7 +14,7 @@ class ExportVerboseTerse(BaseCommand):
         self.__SSH_password = params.get('SSH_password')
         self.__SSH_port = params.get('SSH_port', 1001)
         self.__SSH_timeout = params.get('SSH_timeout', 10)
-        self.__Command = 'export verbose terse'
+        self.__Command = 'export'
         self.__FQDN = params.get('router_fqdn')
 
     def run_command(self):
@@ -22,7 +22,7 @@ class ExportVerboseTerse(BaseCommand):
             endtime = time.time() + 10
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False, look_for_keys=False)
+            client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False, look_for_keys=False, banner_timeout=200)
             stdin, stdout, stderr = client.exec_command(self.__Command)
             f = open("/home/taher/backup/mikrotik_routers/{0}@{1}_{2}.txt".format(
                 self.__IP, self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
@@ -32,6 +32,7 @@ class ExportVerboseTerse(BaseCommand):
                     stdout.channel.close()
                     break
             for line in iter(lambda: stdout.readline(2048), ""):
+                print(line.strip('\n'))
                 f.write(line.strip('\n'))
             f.close()
             client.close()

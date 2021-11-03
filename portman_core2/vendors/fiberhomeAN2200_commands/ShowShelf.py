@@ -11,6 +11,7 @@ class ShowShelf(BaseCommand):
         self.__telnet_password = None
         self.__access_name = params.get('access_name','an2100')
         self.__port_indexes = params.get('port_indexes')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):
@@ -71,10 +72,11 @@ class ShowShelf(BaseCommand):
             res = tn.read_until(b'end')
             tn.write(b"exit\r\n")
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s{4,}|SHELF|Polling|Current|--+', val)]
 
-            return dict(res=result, port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

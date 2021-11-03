@@ -11,6 +11,7 @@ class GetDSLAMBoard(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.__params = params
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

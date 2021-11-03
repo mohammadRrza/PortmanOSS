@@ -13,6 +13,7 @@ class DelFromVlan(BaseCommand):
         self.__vlan_name = params.get('vlan_name')
         self.__port_name = self.__clear_port_name(params['port_name'])
         self.__untagged_port = params.get('untagged_port')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

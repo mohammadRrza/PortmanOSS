@@ -282,7 +282,9 @@ class Zyxel(BaseDSLAM):
         if port_up_time_value:
             port_up_time_tikcs = int(port_up_time_value)
             seconds = port_up_time_tikcs / 100
-            port_up_time = "{:0>8}".format(timedelta(seconds=seconds))
+            print('=======================================')
+            print(timedelta(seconds=seconds))
+            port_up_time = "{:0>8}".format(str(timedelta(seconds=seconds)))
             uptime = port_up_time
 
         port_current_status['ADSL_UPTIME'] = uptime

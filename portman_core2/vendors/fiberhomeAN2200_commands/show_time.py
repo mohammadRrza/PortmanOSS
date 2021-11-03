@@ -14,6 +14,7 @@ class ShowTime(BaseCommand):
         self.__telnet_password = None
         self.__access_name = params.get('access_name', 'an2100')
         self.__port_indexes = params.get('port_indexes')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

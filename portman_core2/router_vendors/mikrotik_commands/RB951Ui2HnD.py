@@ -2,12 +2,14 @@ from .command_factory import CommandFactory
 
 from .RB951Ui2HnD_commands.export_verbose_terse import ExportVerboseTerse
 from .RB951Ui2HnD_commands.apply_permission import ApplyPermission
+from .RB951Ui2HnD_commands.set_ssl_on_router import SetSSLOnRouter
 
 
 class RB951Ui2HnD:
     command_factory = CommandFactory()
     command_factory.register_type('get Backup', ExportVerboseTerse)
     command_factory.register_type('apply permission', ApplyPermission)
+    command_factory.register_type('set SSL on router', SetSSLOnRouter)
 
     def __init__(self):
         pass

@@ -319,3 +319,18 @@ class ReadRouterBackupErrorFilesNameAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class SetSSLOnRouter(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            router_id = data['router_id']
+            params = data.get('params')
+            command = data.get('command')
+            result = utility.router_run_command(router_id, command, params)
+            return JsonResponse({'response': result})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
