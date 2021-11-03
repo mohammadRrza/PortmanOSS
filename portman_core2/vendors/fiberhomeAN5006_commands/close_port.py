@@ -12,6 +12,7 @@ class ClosePort(BaseCommand):
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
         self.__lineprofile = params.get('new_lineprofile')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

@@ -17,6 +17,7 @@ class RemoveFromVlan(BaseCommand):
         self.__vlan_id = params.get('vlan_id', '1')
         self.__vlan_name = params.get('vlan_name', '1')
         self.__priority = params.get('priority', '0')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

@@ -17,6 +17,7 @@ class PortPvcSet(BaseCommand):
         self.__mux = params.get('mux', 'llc')
         self.__vlan_id = params.get('vlan_id', '1')
         self.__priority = params.get('priority', '0')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

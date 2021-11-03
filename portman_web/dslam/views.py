@@ -7380,7 +7380,7 @@ def get_device_ip(request):
         ip = x_forwarded_for.split(',')[0]
     else:
         ip = request.META.get('REMOTE_ADDR')
-    return Response({'result': ip}, status=status.HTTP_201_CREATED)
+    return ip
 
 
 class CheckNetworkBulkAvailability(views.APIView):
@@ -7698,14 +7698,14 @@ class DslamCommandsV2APIView(views.APIView):
         return permissions.IsAuthenticated(),
 
     def post(self, request, format=None):
-        device_ip = get_device_ip(request)
+        device_ip = str(get_device_ip(request))
         data = request.data
         command = data.get('command', None)
         command = command_recognise(command)
         fqdn = request.data.get('fqdn')
-        dslam_id = request.data.get('dslam_id')
-        dslamObj = DSLAM.objects.get(id=dslam_id)
+        dslamObj = DSLAM.objects.get(fqdn=fqdn)
         params = data.get('params', None)
+        params['device_ip'] = device_ip
         dslam_type = dslamObj.dslam_type_id
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
@@ -7979,4 +7979,5 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
 

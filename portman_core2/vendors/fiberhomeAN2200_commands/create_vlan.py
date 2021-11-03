@@ -12,6 +12,7 @@ class CreateVlan(BaseCommand):
         self.__vlan_name = params.get('vlan_name')
         self.__vlan_id = params.get('vlan_id')
         self.__untagged_port = params.get('untagged_port')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

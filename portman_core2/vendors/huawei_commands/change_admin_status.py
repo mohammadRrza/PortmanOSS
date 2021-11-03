@@ -16,6 +16,7 @@ class ChangeAdminStatus(BaseCommand):
         self.__snmp_port = params.get('snmp_port', 161)
         self.__snmp_timeout = params.get('snmp_timeout', 7)
         self.__set_snmp_community = params.get('set_snmp_community')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

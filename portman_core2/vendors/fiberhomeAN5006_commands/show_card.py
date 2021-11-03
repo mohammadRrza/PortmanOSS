@@ -11,6 +11,7 @@ class ShowCard(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

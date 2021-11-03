@@ -11,6 +11,7 @@ class ShowPerformance(BaseCommand):
         self.__telnet_password = None
         self.__port_indexes = params.get('port_indexes')
         self.__time_elapsed = params.get('time_elapsed')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

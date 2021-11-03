@@ -13,6 +13,7 @@ class ShowLineRate(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):
@@ -54,8 +55,9 @@ class ShowLineRate(BaseCommand):
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.write("show linerate {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']).encode(
-                    'utf-8'))
+            tn.write("show linerate {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'],
+                                                            self.port_conditions['port_number']).encode(
+                'utf-8'))
             time.sleep(1)
             tn.write(b'end\r\n')
             result = tn.read_until(b'end')
@@ -78,7 +80,8 @@ class ShowLineRate(BaseCommand):
             res = {'current_userProfile': "",
                    'dslamName/cammandName': "",
                    'date': "",
-                   'slot/port': str(self.port_conditions['slot_number']) + '-' + str(self.port_conditions['port_number']),
+                   'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
+                       self.port_conditions['port_number']),
                    # 'OP_State' : res[4].split(":")[1],
                    # 'Standard' : res[5].split(":")[1],
                    # 'Latency' : res[6].split(":")[1],
@@ -114,6 +117,8 @@ class ShowLineRate(BaseCommand):
                    # 'Interleaved Delay(U) ' : res[21].split(":")[1].split("/")[1],
                    # 'Remote loss of link' : res[22].split(":")[1],
                    }
+            if self.device_ip == '127.0.0.1':
+                return result
             for inx, val in enumerate(result):
                 if "noise margin" in val:
                     res['noisemarginUp'] = val.split("=")[1].split()[0]
@@ -132,7 +137,6 @@ class ShowLineRate(BaseCommand):
                     res['payloadrateDown'] = val.split("=")[1].split()[1]
                 if "link" in val:
                     res['link'] = val.split("=")[1].strip()
-
 
             return res
         except (EOFError, socket_error) as e:

@@ -13,6 +13,7 @@ class AclMaccountSet(BaseCommand):
         self.__vci = params.get('vci')
         self.__port_indexes = params.get('port_indexes')
         self.__count = params.get('count')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

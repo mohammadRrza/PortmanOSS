@@ -13,6 +13,7 @@ class ShowSlotPortByMac(BaseCommand):
         self.__access_name = params.get('access_name', 'an2100')
         self.port_conditions = params.get('port_conditions')
         self.__mac = params.get('mac')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):
