@@ -12,6 +12,7 @@ class ProfileADSLShow(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

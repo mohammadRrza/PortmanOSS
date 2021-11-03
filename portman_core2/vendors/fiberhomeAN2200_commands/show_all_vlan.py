@@ -16,6 +16,7 @@ class ShowAllVLANs(BaseCommand):
         self.__port_indexes = params.get('port_indexes')
         self.port_conditions = params.get('port_conditions')
         self.__vlan_name = params.get('vlan_name')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

@@ -17,6 +17,7 @@ class AddToVlan(BaseCommand):
         self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
         self.port_index = params.get('port_indexes')[0]
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

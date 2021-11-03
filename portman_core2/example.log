@@ -2005,3 +2005,8 @@ DEBUG:paramiko.transport:EOF in transport thread
 =======
 >>>>>>> 27f1491b9ea06ae60e7dba30c67e35e3593e0193
 >>>>>>> 37183df39efa6dcff67533a8c11c24a0b5051271
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand

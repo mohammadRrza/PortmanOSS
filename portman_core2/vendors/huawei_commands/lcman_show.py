@@ -10,6 +10,7 @@ class LcmanShow(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.__port_name = None
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

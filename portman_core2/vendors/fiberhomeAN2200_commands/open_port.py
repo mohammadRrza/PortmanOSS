@@ -13,6 +13,7 @@ class OpenPort(BaseCommand):
         self.__access_name = params.get('access_name', 'an2100')
         self.__port_indexes = params.get('port_indexes')
         self.port_conditions = params.get('port_conditions')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

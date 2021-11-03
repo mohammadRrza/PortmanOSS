@@ -10,6 +10,7 @@ class EnableAnnexm(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.__port_indexes = params.get('port_indexes')
+        self.device_ip = params.get('device_ip')
 
     @property
     def HOST(self):

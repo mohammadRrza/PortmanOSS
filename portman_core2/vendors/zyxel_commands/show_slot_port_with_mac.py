@@ -14,6 +14,7 @@ class ShowSlotPortWithMac(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.__mac = params.get('mac')
+        self.device_ip = params.get('device_ip')
 
 
     @property
