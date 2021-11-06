@@ -75,6 +75,8 @@ class IPShow(BaseCommand):
             time.sleep(0.5)
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return str(res)
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\s+:\s', val)]
             d = {}
             for b in result:

@@ -1,8 +1,10 @@
 def command_recognise(command):
     if command == 'show linerate' or command == 'showPort' or command == 'show port':
         command = 'show linerate'
-    elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles' or command == 'show profiles':
+    elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles':
         command = 'profile adsl show'
+    elif command == 'show profiles' or command == 'Show Profiles':
+        command = 'show profiles'
     elif command == 'show profile by port' or command == 'Show Profile By Port':
         command = 'show profile by port'
     elif command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles' or command == 'change lineprofile port':

@@ -41,7 +41,7 @@ class FiberhomeAN2200(BaseDSLAM):
     command_factory.register_type('port enable', OpenPort)
     command_factory.register_type('port disable', ClosePort)
     command_factory.register_type('port reset', ResetPort)
-    command_factory.register_type('profile adsl show', ShowProfiles)
+    command_factory.register_type('show profiles', ShowProfiles)
     command_factory.register_type('Show VLAN', ShowVLAN)
     command_factory.register_type('save config', SaveConfig)
     command_factory.register_type('show time', ShowTime)
