@@ -25,7 +25,7 @@ class OrderSerializer(serializers.ModelSerializer):
         if remove_fields:
             for field_name in remove_fields:
                 self.fields.pop(field_name)
-        port_status_info = PortStatusSerializer(source="status", read_only=True, required=False)
+    port_status_info = PortStatusSerializer(source="status", read_only=True, required=False)
 
     class Meta:
         model = Order
