@@ -291,3 +291,46 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 1125, in get_field_names
     assert field_name in fields, (
 AssertionError: The field 'text' was declared on serializer PortStatusSerializer, but has not been included in the 'fields' option.
+Internal Server Error: /api/v1/contact/portmap/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.8/dist-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/mixins.py", line 43, in list
+    return self.get_paginated_response(serializer.data)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 745, in data
+    ret = super().data
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 246, in data
+    self._data = self.to_representation(self.instance)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 663, in to_representation
+    return [
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 664, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 515, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 500, in to_representation
+    for field in fields:
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 361, in _readable_fields
+    for field in self.fields.values():
+  File "/usr/local/lib/python3.8/dist-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/serializers.py", line 350, in fields
+    fields[key] = value
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/utils/serializer_helpers.py", line 145, in __setitem__
+    field.bind(field_name=key, parent=self.serializer)
+  File "/usr/local/lib/python3.8/dist-packages/rest_framework/fields.py", line 378, in bind
+    assert self.source != field_name, (
+AssertionError: It is redundant to specify `source='description'` on field 'CharField' in serializer 'PortStatusSerializer', because it is the same as the field name. Remove the `source` keyword argument.
