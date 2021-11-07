@@ -71,7 +71,9 @@ class ShowProfiles(BaseCommand):
             tn.write(b"line\r\n")
             tn.write(b"cfgport\r\n")
             tn.read_until(b'(xx-xx)')
-            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+
+            # here we set default card and port because with different parameter, result is the same
+            tn.write(b"0-1\r\n")
             time.sleep(0.5)
             err4 = tn.read_until(b'(default is 1~32)', 1)
             if "not config" in str(err4):
@@ -80,7 +82,7 @@ class ShowProfiles(BaseCommand):
                 return f"Card number '{self.port_conditions['slot_number']}' not exist or is not available."
             if "The card ID" in str(err4):
                 return f"Card number '{self.port_conditions['slot_number']}' is out of range. Please insert a number between 1-8 or 11-18"
-            tn.write("{0}\r\n".format(self.port_conditions['port_number']).encode('utf-8'))
+            tn.write(b"1\r\n")
             time.sleep(0.5)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
@@ -91,6 +93,8 @@ class ShowProfiles(BaseCommand):
                 return f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32"
             tn.write(b"exit\r\n")
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return str(res)
 
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s', val)]
             d = {}

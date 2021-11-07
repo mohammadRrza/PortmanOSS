@@ -5,14 +5,13 @@ from .command_base import BaseCommand
 import re
 
 
-class SaveConfig(BaseCommand):
+class ShowAllVLANs(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
+        self.__vlan_name = params.get('vlan_name')
         self.device_ip = params.get('device_ip')
 
     @property
@@ -46,28 +45,20 @@ class SaveConfig(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"end\r\n")
-            err1 = tn.read_until(b"end")
-            if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.read_until(b"User>")
-            tn.write(b'admin\r\n')
             tn.read_until(b"Password:")
-            tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
             time.sleep(0.5)
-            err1 = tn.read_until(b"#", 1)
-            if "Bad Password..." in str(err1):
-                return "DSLAM Password is wrong!"
-            tn.write(b"save\r\n\r\n")
-            time.sleep(0.5)
+            tn.write(b"cd vlan\r\n")
+            time.sleep(0.1)
+            tn.write(b"show uplink vlan")
             tn.write(b"\r\n")
+            time.sleep(0.1)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return str(result)
             result = str(result).split("\\r\\n")
-            result = [val for val in result if re.search(r'\w+[.]', val)]
+            result = [val for val in result if re.search(r'\s{4,}', val)]
             return result
 
         except (EOFError, socket_error) as e:

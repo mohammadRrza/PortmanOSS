@@ -1,10 +1,8 @@
 def command_recognise(command):
     if command == 'show linerate' or command == 'showPort' or command == 'show port':
         command = 'show linerate'
-    elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles':
+    elif command == 'profile adsl show' or command == 'showProfiles' or command == 'showprofiles' or command == 'show profiles':
         command = 'profile adsl show'
-    elif command == 'show profiles' or command == 'Show Profiles':
-        command = 'show profiles'
     elif command == 'show profile by port' or command == 'Show Profile By Port':
         command = 'show profile by port'
     elif command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles' or command == 'change lineprofile port':
@@ -56,6 +54,10 @@ def command_recognise(command):
         command = 'Version'
     elif command == 'show pvc' or command == 'Show PVC' or command == 'ShowPVC':
         command = 'show pvc'
+    elif command == 'show pvc profile id' or command == 'Show PVC Profile ID':
+        command = 'show pvc profile id'
+    elif command == 'show pvc by profile' or command == 'Show PVC By Profile':
+        command = 'show pvc by profile'
     elif command == 'show pvc by port' or command == 'Show PVC By Port' or command == 'show pvc by port' or command == 'port pvc show':
         command = 'show pvc by port'
     elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit':

@@ -14,11 +14,11 @@ from .fiberhomeAN2200_commands.show_mac import ShowMac
 from .fiberhomeAN2200_commands.open_port import OpenPort
 from .fiberhomeAN2200_commands.close_port import ClosePort
 from .fiberhomeAN2200_commands.reset_port import ResetPort
-from .fiberhomeAN2200_commands.show_profile import ShowProfiles
+from .fiberhomeAN2200_commands.show_profiles import ShowProfiles
 from .fiberhomeAN2200_commands.show_vlan import ShowVLAN
 from .fiberhomeAN2200_commands.save_config import SaveConfig
 from .fiberhomeAN2200_commands.show_time import ShowTime
-from .fiberhomeAN2200_commands.show_pvc import ShowPVC
+from .fiberhomeAN2200_commands.show_pvc_by_port import ShowPVCByPort
 from .fiberhomeAN2200_commands.ip_show import IPShow
 from .fiberhomeAN2200_commands.acl_maccount_show import ACLMaccountShow
 from .fiberhomeAN2200_commands.switch_port_show import SwitchPortShow
@@ -41,11 +41,11 @@ class FiberhomeAN2200(BaseDSLAM):
     command_factory.register_type('port enable', OpenPort)
     command_factory.register_type('port disable', ClosePort)
     command_factory.register_type('port reset', ResetPort)
-    command_factory.register_type('show profiles', ShowProfiles)
+    command_factory.register_type('profile adsl show', ShowProfiles)
     command_factory.register_type('Show VLAN', ShowVLAN)
     command_factory.register_type('save config', SaveConfig)
     command_factory.register_type('show time', ShowTime)
-    command_factory.register_type('show pvc', ShowPVC)
+    command_factory.register_type('show pvc by port', ShowPVCByPort)
     command_factory.register_type('IP Show', IPShow)
     command_factory.register_type('show mac limit', ACLMaccountShow)
     command_factory.register_type('switch port show', SwitchPortShow)

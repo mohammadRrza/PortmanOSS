@@ -7,7 +7,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowPVC(BaseCommand):
+class ShowPVCByPort(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
