@@ -20,7 +20,7 @@ class TerminalSerializer(serializers.ModelSerializer):
 
 
 class DSLAMTypeSerializer(serializers.ModelSerializer):
-    text = serializers.CharField(source='name', read_only=True, required=False)
+    text = serializers.CharField(read_only=True, required=False)
 
     class Meta:
         model = DSLAMType
