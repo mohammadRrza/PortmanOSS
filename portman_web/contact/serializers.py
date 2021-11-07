@@ -25,8 +25,9 @@ class OrderSerializer(serializers.ModelSerializer):
         if remove_fields:
             for field_name in remove_fields:
                 self.fields.pop(field_name)
+        dslam_type_info = PortStatusSerializer(source="status", read_only=True, required=False)
 
     class Meta:
         model = Order
         fields = ['username', 'ranjePhoneNumber', 'slot_number', 'port_number',
-                  'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'description']
+                  'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'dslam_type_info']
