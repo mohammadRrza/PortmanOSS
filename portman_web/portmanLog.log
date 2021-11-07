@@ -5199,3 +5199,11 @@ Traceback (most recent call last):
     assert isinstance(response, HttpResponseBase), (
 AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'str'>`
 Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /admin/contact/portmapstates/
+Not Found: /admin/contact/portmapstates/
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Not Found: /favicon.ico
