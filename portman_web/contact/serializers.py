@@ -7,10 +7,9 @@ from contact.models import Order, PortmapState
 class PortStatusSerializer(serializers.ModelSerializer):
     text = serializers.CharField(source='description', read_only=True, required=False)
 
-
-class Meta:
-    model = PortmapState
-    fields = ('id', 'description')
+    class Meta:
+        model = PortmapState
+        fields = ('id', 'description')
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -27,11 +26,7 @@ class OrderSerializer(serializers.ModelSerializer):
             for field_name in remove_fields:
                 self.fields.pop(field_name)
 
-
-
-
-
-class Meta:
-    model = Order
-    fields = ['username', 'ranjePhoneNumber', 'slot_number', 'port_number',
-              'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'description']
+    class Meta:
+        model = Order
+        fields = ['username', 'ranjePhoneNumber', 'slot_number', 'port_number',
+                  'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'description']
