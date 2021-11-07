@@ -14,17 +14,25 @@ class ContactType(models.Model):
     def __str__(self):
         return self.title
 
+
 class Contact(models.Model):
-    #contact_dslam = models.ForeignKey(DSLAM,db_index=True, on_delete=models.CASCADE)
-    contact_type = models.ForeignKey(ContactType,db_index=True, on_delete=models.CASCADE)
+    # contact_dslam = models.ForeignKey(DSLAM,db_index=True, on_delete=models.CASCADE)
+    contact_type = models.ForeignKey(ContactType, db_index=True, on_delete=models.CASCADE)
     contact_name = models.CharField(max_length=256)
-    phone= models.CharField(max_length=256)
+    phone = models.CharField(max_length=256)
     mobile_phone = models.CharField(max_length=256)
     contact_email = models.CharField(max_length=256)
-    rastin_contact_id= models.CharField(max_length=256)
+    rastin_contact_id = models.CharField(max_length=256)
 
     def __str__(self):
         return self.contact_name
+
+
+class PortmapState(models.Model):
+    description = models.CharField(max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return self.description
 
 
 class Order(models.Model):
@@ -32,12 +40,14 @@ class Order(models.Model):
     order_contact_id = models.IntegerField(db_index=True, blank=True, null=True)
     ranjePhoneNumber = models.CharField(max_length=256, blank=True, null=True)
     username = models.CharField(max_length=256, blank=True, null=True)
+    user_id = models.IntegerField(db_index=True, blank=True, null=True)
     slot_number = models.IntegerField(db_index=True, blank=True, null=True)
     port_number = models.IntegerField(db_index=True, blank=True, null=True)
     telco_row = models.IntegerField(db_index=True, blank=True, null=True)
     telco_column = models.IntegerField(db_index=True, blank=True, null=True)
     telco_connection = models.IntegerField(db_index=True, blank=True, null=True)
     fqdn = models.CharField(max_length=256, blank=True, null=True)
+    status = models.ForeignKey(PortmapState, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.rastin_order_id
