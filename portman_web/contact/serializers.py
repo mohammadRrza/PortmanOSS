@@ -5,7 +5,7 @@ from contact.models import Order, PortmapState
 
 
 class PortStatusSerializer(serializers.ModelSerializer):
-    text = serializers.CharField(source='description', read_only=True, required=False)
+    description = serializers.CharField(source='description', read_only=True, required=False)
 
     class Meta:
         model = PortmapState
