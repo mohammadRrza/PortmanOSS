@@ -420,3 +420,23 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.8/dist-packages/rest_framework/fields.py", line 378, in bind
     assert self.source != field_name, (
 AssertionError: It is redundant to specify `source='description'` on field 'CharField' in serializer 'PortStatusSerializer', because it is the same as the field name. Remove the `source` keyword argument.
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/users/get_permission/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/radio/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/contact/portmap/
+Unauthorized: /api/v1/contact/portmap/
+Unauthorized: /api/v1/switch/
+Unauthorized: /api/v1/router/
+Unauthorized: /api/v1/reseller/
+Unauthorized: /api/v1/contact/portmap/
+Unauthorized: /api/v1/contact/portmap/
+Unauthorized: /api/v1/contact/portmap/
