@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -5,13 +7,13 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowVLAN(BaseCommand):
+class ShowPVCProfileID(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
-        self.__vlan_name = params.get('vlan_name')
+        self.__lineprofile = params.get('new_lineprofile')
         self.device_ip = params.get('device_ip')
 
     @property
@@ -45,17 +47,24 @@ class ShowVLAN(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
-            time.sleep(0.5)
-            tn.write(b"cd vlan\r\n")
-            time.sleep(0.1)
-            tn.write("show pvc vlan {0}".format(self.__vlan_name['vlan_name']).encode('utf-8'))
+            err1 = tn.read_until(b"#", 1)
+            if "Login Failed." in str(err1):
+                return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.write(b"cd dsl\r\n")
+            tn.write("show pvc profile attach interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
+                                                                            self.port_conditions['port_number']).encode(
+                'utf-8'))
             tn.write(b"\r\n")
-            time.sleep(0.1)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "SlotNoPortConvertObjIndex" in str(result):
+                return "The Card number maybe unavailable or does not exist."
+            elif "ifStr" in str(result):
+                return "Card number or Port number is out of range."
             tn.close()
-            return str(result)
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'\s{3,}', val)]
+            return result
 
         except (EOFError, socket_error) as e:
             print(e)
@@ -64,5 +73,6 @@ class ShowVLAN(BaseCommand):
                 return self.run_command()
 
         except Exception as e:
-            print(e)
-            return str(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return str(exc_tb.tb_lineno)

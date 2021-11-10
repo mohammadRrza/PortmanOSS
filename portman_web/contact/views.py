@@ -4,7 +4,7 @@ from datetime import time
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
-from contact.models import Order
+from contact.models import Order, Province
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from contact.serializers import OrderSerializer
@@ -162,3 +162,13 @@ class PortmapAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetProvincesAPIView(views.APIView):
+    def get(self, request, format=None):
+        try:
+            provinces = Province.objects.all().values()
+            return HttpResponse(provinces, content_type="application/json")
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})

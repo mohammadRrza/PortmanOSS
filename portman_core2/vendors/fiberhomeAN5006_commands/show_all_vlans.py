@@ -1,18 +1,18 @@
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
 from .command_base import BaseCommand
 import re
-import sys, os
 
-class ShowShelf(BaseCommand):
+
+class ShowAllVLANs(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
+        self.__vlan_name = params.get('vlan_name')
         self.device_ip = params.get('device_ip')
 
     @property
@@ -43,30 +43,19 @@ class ShowShelf(BaseCommand):
 
     def run_command(self):
         try:
+            res = ''
+            vlan_id = None
+            vlan_name = None
+            uplink_vlans_id = []
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"end\r\n")
-            err1 = tn.read_until(b"end")
+            err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.read_until(b"User>")
-            tn.write(b'admin\r\n')
-            tn.read_until(b"Password:")
-            tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
-            time.sleep(0.5)
-            err1 = tn.read_until(b"#", 1)
-            if "Bad Password..." in str(err1):
-                return "DSLAM Password is wrong!"
-            tn.write(b"cd device\r\n")
-            tn.write(b"show slot\r\n")
+            tn.write(b"cd vlan\r\n")
             time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
+            tn.write(b"show uplink vlan")
             tn.write(b"\r\n")
             time.sleep(0.1)
             tn.write(b"end\r\n")
@@ -75,10 +64,32 @@ class ShowShelf(BaseCommand):
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return str(result)
             result = str(result).split("\\r\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
-                      re.search(r'\s{4,}[-\d\w]', val)]
+            result = [val for val in result if re.search(r'\s{4,}', val)]
             return result
 
+            tn.read_until(b"vlan#")
+            tn.write("show service vlan interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
+                                                                      self.port_conditions['port_number']).encode(
+                'utf-8'))
+            result = tn.read_until(b'vlan#', 0.2)
+            res += str(result)
+            while "vlan#" not in str(result):
+                tn.write(b"\r\n")
+                time.sleep(0.2)
+                result = tn.read_until(b'vlan#', 0.2)
+                res += str(result)
+            result = str(res).split('\\r\\n')
+            for val in result:
+                if "cvlan" in val:
+                    vlan_id = val.split()[3]
+            tn.write(b'show uplink vlan\r\n')
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end")
+            result = [re.sub(r'(\w+\s){3,}:\s\d+\s', '', val) for val in str(result).split('\\r\\n') if re.search(r'\s{4,}', val)]
+            for vlan in result[1:]:
+                if vlan.split()[2] == vlan_id:
+                    vlan_name = vlan.split()[1]
+            return dict(vlan_id=vlan_id, vlan_name=vlan_name)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

@@ -54,6 +54,10 @@ def command_recognise(command):
         command = 'Version'
     elif command == 'show pvc' or command == 'Show PVC' or command == 'ShowPVC':
         command = 'show pvc'
+    elif command == 'show pvc profile id' or command == 'Show PVC Profile ID':
+        command = 'show pvc profile id'
+    elif command == 'show pvc by profile' or command == 'Show PVC By Profile':
+        command = 'show pvc by profile'
     elif command == 'show pvc by port' or command == 'Show PVC By Port' or command == 'show pvc by port' or command == 'port pvc show':
         command = 'show pvc by port'
     elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit':

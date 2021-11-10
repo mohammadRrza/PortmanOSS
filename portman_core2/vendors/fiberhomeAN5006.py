@@ -21,14 +21,15 @@ from .fiberhomeAN5006_commands.show_shelf import ShowShelf
 from .fiberhomeAN5006_commands.show_card import ShowCard
 from .fiberhomeAN5006_commands.show_mac import ShowMac
 from .fiberhomeAN5006_commands.save_config import SaveConfig
-from .fiberhomeAN5006_commands.show_pvc_vlan import ShowVLAN
+from .fiberhomeAN5006_commands.show_all_vlans import ShowAllVLANs
+from .fiberhomeAN5006_commands.add_to_vlan import AddToVlan
 from .fiberhomeAN5006_commands.show_time import ShowUpTime
 from .fiberhomeAN5006_commands.show_temp import ShowTemperature
 from .fiberhomeAN5006_commands.close_port import ClosePort
 from .fiberhomeAN5006_commands.open_port import OpenPort
 from .fiberhomeAN5006_commands.show_profile_by_port import ShowProfileByPort
-from .fiberhomeAN5006_commands.show_pvc_port import ShowPVCByPort
-from .fiberhomeAN5006_commands.show_pvc import ShowPVC
+from .fiberhomeAN5006_commands.show_pvc_profile_id import ShowPVCProfileID
+from .fiberhomeAN5006_commands.show_pvc_by_profile import ShowPVCByProfile
 
 
 class FiberhomeAN5006(BaseDSLAM):
@@ -43,14 +44,15 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('Show Card', ShowCard)
     command_factory.register_type('show mac', ShowMac)
     command_factory.register_type('save config', SaveConfig)
-    command_factory.register_type('Show VLAN', ShowVLAN)
+    command_factory.register_type('Show All VLANs', ShowAllVLANs)
+    command_factory.register_type('add to vlan', AddToVlan)
     command_factory.register_type('show time', ShowUpTime)
     command_factory.register_type('show temp', ShowTemperature)
     command_factory.register_type('port disable', ClosePort)
     command_factory.register_type('port enable', OpenPort)
     command_factory.register_type('show profile by port', ShowProfileByPort)
-    command_factory.register_type('show pvc by port', ShowPVCByPort)
-    command_factory.register_type('show pvc', ShowPVC)
+    command_factory.register_type('show pvc profile id', ShowPVCProfileID)
+    command_factory.register_type('show pvc by profile', ShowPVCByProfile)
 
     '''
     command_factory.register_type('selt', Selt)
@@ -552,7 +554,7 @@ class FiberhomeAN5006(BaseDSLAM):
         command_class.HOST = dslam_info['ip']
         command_class.telnet_username = dslam_info['telnet_username']
         command_class.telnet_password = dslam_info['telnet_password']
-        command_class.port_conditions = params["port_conditions"]
+        # command_class.port_conditions = params["port_conditions"]
         return command_class.run_command()
 
     @classmethod

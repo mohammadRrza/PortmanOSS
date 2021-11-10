@@ -73,6 +73,8 @@ class ShowPVC(BaseCommand):
             if "not exist." in str(result):
                 return f"Profile {self.__lineprofile} does not exist."
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return str(result)
             if 'pvc' in str(result):
                 result = str(result).split("\\r\\n")
                 result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'pvc\d|vpi|vci', val)]

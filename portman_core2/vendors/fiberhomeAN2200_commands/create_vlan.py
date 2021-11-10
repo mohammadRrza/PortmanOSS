@@ -8,7 +8,7 @@ class CreateVlan(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__access_name = params.get('access_name','an2100')
+        self.__access_name = params.get('access_name', 'an2100')
         self.__vlan_name = params.get('vlan_name')
         self.__vlan_id = params.get('vlan_id')
         self.__untagged_port = params.get('untagged_port')
@@ -74,9 +74,9 @@ class CreateVlan(BaseCommand):
             print('got to prompt ...', data)
             tn.write("ip\r\n".encode('utf-8'))
             time.sleep(1)
-            data = tn.read_until('>',5)
+            data = tn.read_until('>', 5)
             tn.write("createvlan\r\n".encode('utf-8'))
-            data = tn.read_until('>',5)
+            data = tn.read_until('>', 5)
             print("got to prompt 2...", data)
             time.sleep(1)
             tn.write(self.__vlan_name+"\r\n".encode('utf-8'))
@@ -91,11 +91,11 @@ class CreateVlan(BaseCommand):
             time.sleep(1)
             tn.write("n\r\n".encode('utf-8'))
             time.sleep(1)
-            result = tn.read_until('>',5)
+            result = tn.read_until('>', 5)
             print('===================================')
             print(result)
             print('===================================')
-            tn.write("exit\r\n\r\n")
+            tn.write(b"exit\r\n\r\n")
             tn.close()
             return "{0} created valn".format(self.__vlan_name)
         except Exception as ex:
