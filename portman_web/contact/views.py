@@ -167,7 +167,7 @@ class PortmapAPIView(views.APIView):
 class GetProvincesAPIView(views.APIView):
     def get(self, request, format=None):
         try:
-            provinces = Province.objects.all().values()
+            provinces = Province.objects.all().values().order_by('provinceName')[:10]
             return JsonResponse({"result": list(provinces)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
