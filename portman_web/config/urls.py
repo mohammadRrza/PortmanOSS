@@ -69,7 +69,6 @@ portman_router.register(r'switch', SwitchViewSet, basename='switch')
 portman_router.register(r'switch-command', SwitchCommandViewSet, basename='switch_command')
 portman_router.register(r'router-command', RouterCommandViewSet, basename='router_command')
 portman_router.register(r'contact/portmap', PortMapViewSet, basename='contact')
-
 portman_router.register(r'radio', RadioViewSet, basename='radio')
 portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
 
@@ -195,6 +194,9 @@ urlpatterns = [
         name='download_radio_backup_file'),
     url(r'^api/v1/radio/set_radio_geographical_coordinates/$', SetRadioGeographicalCoordinatesAPIView.as_view(),
         name='set_radio_geographical_coordinates'),
+
+    url(r'^api/v1/province/get_provinces/$', GetProvincesAPIView.as_view(),
+        name='get_provinces'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 
