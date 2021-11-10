@@ -5,7 +5,7 @@ from dslam.models import DSLAM, DSLAMPort, DSLAMPortSnapshot, Command, PortComma
     Reseller, MDFDSLAM, DSLAMTypeCommand, \
     TelecomContractType, EquipmentCategoryType, EquipmentCategory, ActiveEquipmentCategory, PassiveEquipmentCategory, \
     PowerEquipmentCategory, EquipmentlinksInfo, \
-    CapacityType, CraPrice
+    CapacityType, CraPrice,TelecomCenterMDF
 
 from dslam.admin_views import *
 
@@ -154,3 +154,4 @@ admin.site.register(PowerEquipmentCategory)
 admin.site.register(EquipmentlinksInfo)
 admin.site.register(CapacityType)
 admin.site.register(CraPrice)
+admin.site.register(TelecomCenterMDF)
