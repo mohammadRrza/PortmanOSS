@@ -168,7 +168,7 @@ class GetProvincesAPIView(views.APIView):
     def get(self, request, format=None):
         try:
             provinces = Province.objects.all().values()
-            return HttpResponse(provinces, content_type="application/json")
+            return JsonResponse({"result": list(provinces)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
