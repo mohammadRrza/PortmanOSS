@@ -63,6 +63,8 @@ class ShowUpTime(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return str(result)
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'(is :|Start)', val)]
             tn.close()

@@ -58,8 +58,6 @@ class ShowMac(BaseCommand):
                 tn.write(b"\r\n")
                 tn.write(b"end\r\n")
                 result = tn.read_until(b"end")
-                print("test")
-                print(result)
                 if "invalid interface" in str(result):
                     str_res = ["There is one of the following problems:",
                                "This card is not configured or not available", "Card number is out of range."]

@@ -7,7 +7,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowPVCByPort(BaseCommand):
+class ShowPVCByProfile(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
@@ -61,10 +61,38 @@ class ShowPVCByPort(BaseCommand):
                 return "The Card number maybe unavailable or does not exist."
             elif "ifStr" in str(result):
                 return "Card number or Port number is out of range."
-            tn.close()
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}', val)]
-            return result
+            profile_id = result[1].split()[2]
+            print(profile_id)
+
+            tn.write("show pvc profile id {0}\r\n".format(profile_id).encode('utf-8'))
+            time.sleep(1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            time.sleep(0.1)
+            tn.write(b"\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end", 1)
+            tn.close()
+            result = str(result).split("\\r\\n")
+            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
+                      re.search(r'\s{4,}', val)]
+            result = [re.sub(r'\s{4,}', ':', val) for val in result]
+            d = {}
+            d[result[0].split(':')[0]] = result[0].split(':')[1]
+            d[result[1].split(':')[0]] = result[1].split(':')[1]
+            d['pvc number'] = result[2].split(':')[1]
+            for inx, val in enumerate(result):
+                if 'PvcIndex' in val:
+                    temp = f"pvc index {val.split(':')[1]}"
+                    d[temp] = {}
+                    d[temp]['vpi'] = result[inx + 1].split(':')[1]
+                    d[temp]['vci'] = result[inx + 2].split(':')[1]
+            return d
 
         except (EOFError, socket_error) as e:
             print(e)
