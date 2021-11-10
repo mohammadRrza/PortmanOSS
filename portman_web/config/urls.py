@@ -69,6 +69,7 @@ portman_router.register(r'switch', SwitchViewSet, basename='switch')
 portman_router.register(r'switch-command', SwitchCommandViewSet, basename='switch_command')
 portman_router.register(r'router-command', RouterCommandViewSet, basename='router_command')
 portman_router.register(r'contact/portmap', PortMapViewSet, basename='contact')
+
 portman_router.register(r'radio', RadioViewSet, basename='radio')
 portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
 
