@@ -54,7 +54,6 @@ class ShowAllVLANs(BaseCommand):
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd vlan\r\n")
-<<<<<<< HEAD:portman_core2/vendors/fiberhomeAN5006_commands/show_all_vlans.py
             time.sleep(0.1)
             tn.write(b"show uplink vlan")
             tn.write(b"\r\n")
@@ -68,7 +67,6 @@ class ShowAllVLANs(BaseCommand):
             result = [val for val in result if re.search(r'\s{4,}', val)]
             return result
 
-=======
             tn.read_until(b"vlan#")
             tn.write("show service vlan interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
                                                                       self.port_conditions['port_number']).encode(
@@ -92,7 +90,6 @@ class ShowAllVLANs(BaseCommand):
                 if vlan.split()[2] == vlan_id:
                     vlan_name = vlan.split()[1]
             return dict(vlan_id=vlan_id, vlan_name=vlan_name)
->>>>>>> add_to_vlan:portman_core2/vendors/fiberhomeAN5006_commands/show_pvc_vlan.py
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

@@ -1,5 +1,27 @@
+import time
+import csv
+from datetime import datetime
+from collections import defaultdict
+from pysnmp.entity.rfc3413.oneliner import cmdgen
+from pysnmp.proto import rfc1902
+from vendors.base import BaseDSLAM
+import telnetlib
+from easysnmp import Session
+import jsonrpclib
+import re
+from datetime import timedelta
+from .command_factory import CommandFactory
+from .fiberhomeAN5006_commands.show_port import ShowPort
+from .fiberhomeAN5006_commands.show_mac_by_port import ShowMacSlotPort
+from .fiberhomeAN5006_commands.show_profiles import ShowProfiles
+from .fiberhomeAN5006_commands.set_port_profiles import SetPortProfiles
+from .fiberhomeAN5006_commands.selt_show import ShowSelt
+from .fiberhomeAN5006_commands.selt_start import StartSelt
+from .fiberhomeAN5006_commands.show_shelf import ShowShelf
+from .fiberhomeAN5006_commands.show_card import ShowCard
+from .fiberhomeAN5006_commands.show_mac import ShowMac
+from .fiberhomeAN5006_commands.save_config import SaveConfig
 from .fiberhomeAN5006_commands.show_all_vlans import ShowAllVLANs
-from .fiberhomeAN5006_commands.show_pvc_vlan import ShowVLAN
 from .fiberhomeAN5006_commands.add_to_vlan import AddToVlan
 from .fiberhomeAN5006_commands.show_time import ShowUpTime
 from .fiberhomeAN5006_commands.show_temp import ShowTemperature
@@ -23,7 +45,6 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('show mac', ShowMac)
     command_factory.register_type('save config', SaveConfig)
     command_factory.register_type('Show All VLANs', ShowAllVLANs)
-    command_factory.register_type('Show VLAN', ShowVLAN)
     command_factory.register_type('add to vlan', AddToVlan)
     command_factory.register_type('show time', ShowUpTime)
     command_factory.register_type('show temp', ShowTemperature)
