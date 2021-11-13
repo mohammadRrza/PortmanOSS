@@ -16,3 +16,4 @@ Traceback (most recent call last):
 AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'django.db.models.query.QuerySet'>`
 Not Found: /favicon.ico
 Not Found: /favicon.ico
+Not Found: /api/v1/province/get_cities_by_province_id/
