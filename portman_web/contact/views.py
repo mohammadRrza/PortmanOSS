@@ -181,8 +181,10 @@ class GetCitiesByProvinceIdAPIView(views.APIView):
     def get(self, request, format=None):
         try:
             province_id = request.query_params.get('province_id')
-            if province_id:
-                Cities = City.objects.filter(provinceId=province_id).values().order_by('cityName')[:10]
+            city_name = request.query_params.get('city_name')
+
+            if province_id and city_name:
+                Cities = City.objects.filter(provinceId=province_id, cityName__icontains=city_name).values().order_by('cityName')[:10]
                 return JsonResponse({"result": list(Cities)})
             Cities = City.objects.all().values().order_by('cityName')[:10]
             return JsonResponse({"result": list(Cities)})
