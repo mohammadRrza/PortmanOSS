@@ -197,12 +197,10 @@ urlpatterns = [
 
     url(r'^api/v1/contact/get_provinces/$', GetProvincesAPIView.as_view(),
         name='get_provinces'),
-    url(r'^api/v1/contact/get_cities_by_province_id/$', GetTelecomsByCityIdAPIView.as_view(),
-        name='get_cities_by_province_id'),
+    url(r'^api/v1/contact/get_cities_by_province_id/$', GetCitiesByProvinceIdAPIView.as_view(),
+        name='get_cities'),
     url(r'^api/v1/contact/get_telecoms_by_city_id/$', GetTelecomsByCityIdAPIView.as_view(),
         name='get_telecoms_by_city_id'),
-
-
     url(r'^api/v1/', include(portman_router.urls)),
 
     url(r'^media/(?P<path>.*)$', django.views.static.serve,
