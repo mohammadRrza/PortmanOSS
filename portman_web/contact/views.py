@@ -4,7 +4,7 @@ from datetime import time
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
-from contact.models import Order, Province
+from contact.models import Order, Province, City
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from contact.serializers import OrderSerializer
@@ -173,6 +173,19 @@ class GetProvincesAPIView(views.APIView):
                 return JsonResponse({"result": list(provinces)})
             provinces = Province.objects.all().values().order_by('provinceName')[:10]
             return JsonResponse({"result": list(provinces)})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+class GetCitiesByProvinceIdAPIView(views.APIView):
+    def get(self, request, format=None):
+        try:
+            province_id = request.query_params.get('province_id')
+            if province_id:
+                Cities = City.objects.filter(provinceId=province_id).values().order_by('cityName')[:10]
+                return JsonResponse({"result": list(Cities)})
+            Cities = City.objects.all().values().order_by('cityName')[:10]
+            return JsonResponse({"result": list(Cities)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})

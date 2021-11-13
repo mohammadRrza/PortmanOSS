@@ -195,9 +195,10 @@ urlpatterns = [
     url(r'^api/v1/radio/set_radio_geographical_coordinates/$', SetRadioGeographicalCoordinatesAPIView.as_view(),
         name='set_radio_geographical_coordinates'),
 
-    url(r'^api/v1/province/get_provinces/$', GetProvincesAPIView.as_view(),
+    url(r'^api/v1/contact/get_provinces/$', GetProvincesAPIView.as_view(),
         name='get_provinces'),
-
+    url(r'^api/v1/contact/get_cities_by_province_id/$', GetCitiesByProvinceIdAPIView.as_view(),
+        name='get_cities'),
     url(r'^api/v1/', include(portman_router.urls)),
 
     url(r'^media/(?P<path>.*)$', django.views.static.serve,
