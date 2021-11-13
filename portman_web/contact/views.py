@@ -4,7 +4,7 @@ from datetime import time
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
-from contact.models import Order, Province, City, TelecommunicationCenters
+from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from contact.serializers import OrderSerializer
@@ -207,6 +207,16 @@ class GetTelecomsByCityIdAPIView(views.APIView):
                 return JsonResponse({"result": list(telecoms)})
             telecoms = TelecommunicationCenters.objects.all().values().order_by('name')[:10]
             return JsonResponse({"result": list(telecoms)})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class GetPortsStatus(views.APIView):
+    def get(self, request, format=None):
+        try:
+            statuses = PortmapState.objects.all().values().order_by('description')[:10]
+            return JsonResponse({"result": list(statuses)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
