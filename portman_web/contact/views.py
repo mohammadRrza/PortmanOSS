@@ -4,7 +4,7 @@ from datetime import time
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from rest_framework import status, views, mixins, viewsets, permissions
-from contact.models import Order, Province, City
+from contact.models import Order, Province, City, TelecommunicationCenters
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from contact.serializers import OrderSerializer
@@ -169,13 +169,15 @@ class GetProvincesAPIView(views.APIView):
         try:
             province_name = request.query_params.get('province_name')
             if province_name:
-                provinces = Province.objects.filter(provinceName__icontains=province_name).values().order_by('provinceName')[:10]
+                provinces = Province.objects.filter(provinceName__icontains=province_name).values().order_by(
+                    'provinceName')[:10]
                 return JsonResponse({"result": list(provinces)})
             provinces = Province.objects.all().values().order_by('provinceName')[:10]
             return JsonResponse({"result": list(provinces)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
 
 class GetCitiesByProvinceIdAPIView(views.APIView):
     def get(self, request, format=None):
@@ -184,10 +186,27 @@ class GetCitiesByProvinceIdAPIView(views.APIView):
             city_name = request.query_params.get('city_name')
 
             if province_id and city_name:
-                Cities = City.objects.filter(provinceId=province_id, cityName__icontains=city_name).values().order_by('cityName')[:10]
+                Cities = City.objects.filter(provinceId=province_id, cityName__icontains=city_name).values().order_by(
+                    'cityName')[:10]
                 return JsonResponse({"result": list(Cities)})
             Cities = City.objects.all().values().order_by('cityName')[:10]
             return JsonResponse({"result": list(Cities)})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class GetTelecomsByCityIdAPIView(views.APIView):
+    def get(self, request, format=None):
+        try:
+            city_id = request.query_params.get('city_id')
+            telecom_name = request.query_params.get('telecom_name')
+
+            if city_id and telecom_name:
+                telecoms = TelecommunicationCenters.objects.filter(city_id=city_id, name__icontains=telecom_name).values().order_by('name')[:10]
+                return JsonResponse({"result": list(telecoms)})
+            telecoms = TelecommunicationCenters.objects.all().values().order_by('name')[:10]
+            return JsonResponse({"result": list(telecoms)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
