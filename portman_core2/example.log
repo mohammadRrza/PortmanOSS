@@ -1,0 +1,58 @@
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "show cart" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 296, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/fiberhomeAN5006.py", line 553, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "show cart" is Not Registered!
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "showProfiles" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 296, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/fiberhomeAN5006.py", line 553, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "showProfiles" is Not Registered!
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type | Exception: Resource Type "Show VLAN" is Not Registered!
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 296, in _execute_command
+    task_result = dslam_class.execute_command(
+  File "/opt/portmanv3/portman_core2/vendors/fiberhomeAN5006.py", line 553, in execute_command
+    command_class = cls.command_factory.get_type(command)(params)
+  File "/opt/portmanv3/portman_core2/vendors/command_factory.py", line 13, in get_type
+    raise Exception('Resource Type "%s" is Not Registered!'%name)
+Exception: Resource Type "Show VLAN" is Not Registered!
+INFO:root:AddCommand
+INFO:root:AddCommand
+ERROR:jsonrpclib.SimpleJSONRPCServer:Server-side exception: <Fault -32603: Server error: File "/opt/portmanv3/portman_core2/portman.py", line 414, in _execute_command | AttributeError: 'list' object has no attribute 'get'
+>
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/jsonrpclib/SimpleJSONRPCServer.py", line 420, in _dispatch
+    return func(*params)
+  File "portman_core.py", line 153, in add_command
+    return self.portman._execute_command(task, is_queue)
+  File "/opt/portmanv3/portman_core2/portman.py", line 414, in _execute_command
+    task_result.get('result')
+AttributeError: 'list' object has no attribute 'get'
+INFO:root:AddCommand
