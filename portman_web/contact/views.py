@@ -167,6 +167,10 @@ class PortmapAPIView(views.APIView):
 class GetProvincesAPIView(views.APIView):
     def get(self, request, format=None):
         try:
+            province_name = request.query_params.get('province_name')
+            if province_name:
+                provinces = Province.objects.filter(provinceName__icontains=province_name).values().order_by('provinceName')[:10]
+                return JsonResponse({"result": list(provinces)})
             provinces = Province.objects.all().values().order_by('provinceName')[:10]
             return JsonResponse({"result": list(provinces)})
         except Exception as ex:
