@@ -3,6 +3,7 @@ import sys, os
 from datetime import time
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
+from django.db import connection
 from rest_framework import status, views, mixins, viewsets, permissions
 from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState
 from django.http import JsonResponse, HttpResponse
@@ -217,6 +218,32 @@ class GetPortsStatus(views.APIView):
         try:
             statuses = PortmapState.objects.all().values().order_by('description')[:10]
             return JsonResponse({"result": list(statuses)})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class SearchPorts(views.APIView):
+    def get(self, request, format=None):
+        try:
+            province_id = request.query_params.get('province_id')
+            city_id = request.query_params.get('city_id')
+            telecom_id = request.query_params.get('telecom_id')
+            port_status_id = request.query_params.get('port_status_id')
+            """if province_id:
+                query = 'select * from contact_order o INNER JOIN contact_telecommunicationcenters tc on tc."id" = o.telecom_id INNER JOIN contact_city ci on ci."id" = tc.city_id INNER JOIN contact_province cp on cp."id" = ci.province_id WHERE cp."id" = {0} limit 100'.format(province_id)
+                cursor = connection.cursor()
+                cursor.execute(query)
+                rows = cursor.fetchall()
+                print(rows)
+                return JsonResponse({"result": rows})
+            if city_id:
+                ports = Order.objects.select_related('telecom__city').filter(city_id=city_id)"""
+            if telecom_id:
+                ports = Order.objects.filter(telecom_id=telecom_id).values()
+            if port_status_id and telecom_id:
+                ports = Order.objects.filter(telecom_id=telecom_id, status_id=port_status_id).values()
+            return JsonResponse({"result": list(ports)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})

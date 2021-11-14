@@ -203,6 +203,8 @@ urlpatterns = [
         name='get_telecoms_by_city_id'),
     url(r'^api/v1/contact/get_port_statuses/$', GetPortsStatus.as_view(),
         name='get_port_statuses'),
+    url(r'^api/v1/contact/search_ports/$', SearchPorts.as_view(),
+        name='search_ports'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 
