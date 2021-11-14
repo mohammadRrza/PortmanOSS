@@ -272,3 +272,15 @@ class UpdateStatusPorts(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+class GetOrdrPortInfo(views.APIView):
+    def get(self, request, format=None):
+        try:
+            username = request.query_params.get('username')
+            order_port = Order.objects.get(username=username)
+
+            return JsonResponse({"username": str(order_port.username), "status": str(order_port.status), "telecom": str(order_port.telecom)})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
