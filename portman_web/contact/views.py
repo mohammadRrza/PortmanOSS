@@ -256,3 +256,19 @@ class SearchPorts(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class UpdateStatusPorts(views.APIView):
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            username = data.get('username', None)
+            new_port_status_id = data.get('port_status_id', None)
+            order = Order.objects.get(username=username)
+            order.status_id = new_port_status_id
+            order.save()
+            return JsonResponse({"username": str(order.username), "status": str(order.status), "telecom": str(order.telecom)})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
