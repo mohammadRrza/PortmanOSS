@@ -39,12 +39,13 @@ class PortMapViewSet(mixins.ListModelMixin,
             return OrderSerializer(request=self.request, *args, **kwargs)
         elif self.request.user.type == 'SUPPORT':
             print(self.request.user.type)
-            _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port']
+            _fields = ['username', 'ranjePhoneNumber', 'slot_number', 'port_number', 'telecomCenter_info',
+                  'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'port_status_info']
             return OrderSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
         else:
             print(self.request.user.type)
-            _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port',
-                       'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
+            _fields = ['username', 'ranjePhoneNumber', 'slot_number', 'port_number', 'telecomCenter_info',
+                  'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'port_status_info']
             return OrderSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
     @action(methods=['GET'], detail=False)
@@ -65,6 +66,8 @@ class PortMapViewSet(mixins.ListModelMixin,
         telco_row = self.request.query_params.get('search_telco_row', None)
         telco_Column = self.request.query_params.get('search_telco_Column', None)
         telco_connection = self.request.query_params.get('search_telco_connection', None)
+        telecom_id = self.request.query_params.get('telecom_id')
+        port_status_id = self.request.query_params.get('port_status_id')
 
         if username:
             queryset = queryset.filter(username__icontains=username)
@@ -89,6 +92,12 @@ class PortMapViewSet(mixins.ListModelMixin,
 
         if telco_connection:
             queryset = queryset.filter(telco_connection=telco_connection)
+
+        if telecom_id:
+            queryset = queryset.filter(telecom_id=telecom_id)
+
+        if port_status_id:
+            queryset = queryset.filter(status_id=port_status_id)
 
         return queryset
 
