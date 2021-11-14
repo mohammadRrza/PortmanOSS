@@ -242,7 +242,7 @@ class SearchPorts(views.APIView):
             if telecom_id:
                 ports = Order.objects.filter(telecom_id=telecom_id).values()
             if port_status_id and telecom_id:
-                ports = Order.objects.filter(telecom_id=int(telecom_id), status_id=int(port_status_id)).values()
+                ports = Order.objects.filter(telecom_id=int(float(telecom_id)), status_id=int(float(port_status_id))).values()
             return JsonResponse({"result": list(ports)})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
