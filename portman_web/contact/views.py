@@ -309,7 +309,7 @@ class GetOrdrPortInfo(views.APIView):
             username = request.query_params.get('username')
             order_port = Order.objects.get(username=username)
 
-            return JsonResponse({"username": str(order_port.username), "status": str(order_port.status), "telecom": str(order_port.telecom)})
+            return JsonResponse({"username": str(order_port.username), "status": str(order_port.status), "telecom": str(order_port.telecom), "telecom_id": str(order_port.telecom_id)})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
