@@ -273,6 +273,36 @@ class UpdateStatusPorts(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
 
+
+class UpdateStatusPorts2(views.APIView):
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            username = data.get('username', None)
+            ranjePhoneNumber = data.get('ranjePhoneNumber', None)
+            old_port_status_id = data.get('port_status_id', None)
+            new_port_status_id = data.get('new_port_status_id', None)
+            old_order = Order.objects.get(username=username)
+            telecom_id = old_order.telecom_id
+            new_telco_row = data.get('new_telco_row', None)
+            new_telco_column = data.get('new_telco_column', None)
+            new_telco_connection = data.get('new_telco_connection', None)
+            old_order.status_id = old_port_status_id
+            old_order.username = 'NULL'
+            old_order.ranjePhoneNumber = 'NULL'
+            old_order.save()
+            new_order = Order.objects.get(telecom_id=telecom_id, telco_row=new_telco_row, telco_column=new_telco_column, telco_connection=new_telco_connection)
+            new_order.status_id = new_port_status_id
+            new_order.username = username
+            new_order.ranjePhoneNumber = ranjePhoneNumber
+            new_order.save()
+            return JsonResponse({"username": str(new_order.username), "status": str(new_order.status), "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
 class GetOrdrPortInfo(views.APIView):
     def get(self, request, format=None):
         try:

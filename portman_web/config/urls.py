@@ -205,7 +205,7 @@ urlpatterns = [
         name='get_port_statuses'),
     url(r'^api/v1/contact/search_ports/$', SearchPorts.as_view(),
         name='search_ports'),
-    url(r'^api/v1/contact/update_status_ports/$', UpdateStatusPorts.as_view(),
+    url(r'^api/v1/contact/update_status_ports/$', UpdateStatusPorts2.as_view(),
         name='update_status_ports'),
     url(r'^api/v1/contact/get_ordr_port_info/$', GetOrdrPortInfo.as_view(),
         name='get_ordr_port_info'),
