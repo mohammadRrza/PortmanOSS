@@ -1,0 +1,11 @@
+Method Not Allowed: /users/get-token/
+Bad Request: /users/get-token/
+Bad Request: /users/get-token/
+Bad Request: /users/get-token/
+Method Not Allowed: /users/get-token/
+Method Not Allowed: /users/get-token/
+Method Not Allowed: /users/get-token/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
