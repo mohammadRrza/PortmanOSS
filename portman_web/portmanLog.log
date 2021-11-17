@@ -103,3 +103,4 @@ Method Not Allowed: /api/v1/contact/get_ordr_port_info/
 Unauthorized: /api/v1/contact/get_ordr_port_info/
 Method Not Allowed: /api/v1/contact/get_ordr_port_info/
 Method Not Allowed: /api/v1/contact/get_ordr_port_info/
+Unauthorized: /api/v1/contact/update_status_ports/

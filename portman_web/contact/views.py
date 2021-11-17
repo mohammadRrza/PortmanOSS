@@ -40,12 +40,12 @@ class PortMapViewSet(mixins.ListModelMixin,
         elif self.request.user.type == 'SUPPORT':
             print(self.request.user.type)
             _fields = ['username', 'ranjePhoneNumber', 'slot_number', 'port_number', 'telecomCenter_info',
-                  'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'port_status_info']
+                       'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'port_status_info']
             return OrderSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
         else:
             print(self.request.user.type)
             _fields = ['username', 'ranjePhoneNumber', 'slot_number', 'port_number', 'telecomCenter_info',
-                  'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'port_status_info']
+                       'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'port_status_info']
             return OrderSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
     @action(methods=['GET'], detail=False)
@@ -213,7 +213,9 @@ class GetTelecomsByCityIdAPIView(views.APIView):
             telecom_name = request.query_params.get('telecom_name')
 
             if city_id and telecom_name:
-                telecoms = TelecommunicationCenters.objects.filter(city_id=city_id, name__icontains=telecom_name).values().order_by('name')[:10]
+                telecoms = TelecommunicationCenters.objects.filter(city_id=city_id,
+                                                                   name__icontains=telecom_name).values().order_by(
+                    'name')[:10]
                 return JsonResponse({"result": list(telecoms)})
             telecoms = TelecommunicationCenters.objects.all().values().order_by('name')[:10]
             return JsonResponse({"result": list(telecoms)})
@@ -267,7 +269,8 @@ class UpdateStatusPorts(views.APIView):
             order = Order.objects.get(username=username)
             order.status_id = new_port_status_id
             order.save()
-            return JsonResponse({"username": str(order.username), "status": str(order.status), "telecom": str(order.telecom)})
+            return JsonResponse(
+                {"username": str(order.username), "status": str(order.status), "telecom": str(order.telecom)})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -280,23 +283,35 @@ class UpdateStatusPorts2(views.APIView):
             data = request.data
             username = data.get('username', None)
             ranjePhoneNumber = data.get('ranjePhoneNumber', None)
-            old_port_status_id = data.get('port_status_id', None)
+            old_port_status_id = data.get('old_port_status_id', None)
             new_port_status_id = data.get('new_port_status_id', None)
-            old_order = Order.objects.get(username=username)
-            telecom_id = old_order.telecom_id
+            telecom_id = data.get('telecom_id', None)
+            telco_row = data.get('old_telco_row', None)
+            telco_column = data.get('old_telco_column', None)
+            telco_connection = data.get('old_telco_connection', None)
             new_telco_row = data.get('new_telco_row', None)
             new_telco_column = data.get('new_telco_column', None)
             new_telco_connection = data.get('new_telco_connection', None)
+            try:
+                old_order = Order.objects.get(telecom_id=telecom_id, telco_row=telco_row, telco_column=telco_column,
+                                              telco_connection=telco_connection)
+            except ObjectDoesNotExist as ex:
+                return JsonResponse({"username": "Old Bukht is not available in this telecommunication center."})
             old_order.status_id = old_port_status_id
             old_order.username = 'NULL'
             old_order.ranjePhoneNumber = 'NULL'
             old_order.save()
-            new_order = Order.objects.get(telecom_id=telecom_id, telco_row=new_telco_row, telco_column=new_telco_column, telco_connection=new_telco_connection)
+            try:
+                new_order = Order.objects.get(telecom_id=telecom_id, telco_row=new_telco_row, telco_column=new_telco_column,
+                                telco_connection=new_telco_connection)
+            except ObjectDoesNotExist as ex:
+                return JsonResponse({"username": "New Bukht is not available in this telecommunication center."})
             new_order.status_id = new_port_status_id
             new_order.username = username
             new_order.ranjePhoneNumber = ranjePhoneNumber
             new_order.save()
-            return JsonResponse({"username": str(new_order.username), "status": str(new_order.status), "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)})
+            return JsonResponse({"username": str(new_order.username), "status": str(new_order.status),
+                                 "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -309,7 +324,8 @@ class GetOrdrPortInfo(views.APIView):
             username = request.query_params.get('username')
             order_port = Order.objects.get(username=username)
 
-            return JsonResponse({"username": str(order_port.username), "status": str(order_port.status), "telecom": str(order_port.telecom), "telecom_id": str(order_port.telecom_id)})
+            return JsonResponse({"username": str(order_port.username), "status": str(order_port.status),
+                                 "telecom": str(order_port.telecom), "telecom_id": str(order_port.telecom_id)})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
