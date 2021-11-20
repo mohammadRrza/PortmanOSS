@@ -296,26 +296,26 @@ class UpdateStatusPorts2(views.APIView):
                 old_order = Order.objects.get(telecom_id=telecom_id, telco_row=telco_row, telco_column=telco_column,
                                               telco_connection=telco_connection)
             except ObjectDoesNotExist as ex:
-                return JsonResponse({"username": "Old Bukht is not available in this telecommunication center."})
+                return JsonResponse({"Message": "Old Bukht is not available in this telecommunication center."}, status=500)
             old_order.status_id = old_port_status_id
             old_order.username = 'NULL'
             old_order.ranjePhoneNumber = 'NULL'
-            old_order.save()
             try:
                 new_order = Order.objects.get(telecom_id=telecom_id, telco_row=new_telco_row, telco_column=new_telco_column,
                                 telco_connection=new_telco_connection)
             except ObjectDoesNotExist as ex:
-                return JsonResponse({"username": "New Bukht is not available in this telecommunication center."})
+                return JsonResponse({"Message": "New Bukht is not available in this telecommunication center."}, status=500)
             new_order.status_id = new_port_status_id
             new_order.username = username
             new_order.ranjePhoneNumber = ranjePhoneNumber
+            old_order.save()
             new_order.save()
             return JsonResponse({"username": str(new_order.username), "status": str(new_order.status),
-                                 "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)})
+                                 "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)}, status=200)
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)}, status=500)
 
 
 class GetOrdrPortInfo(views.APIView):
