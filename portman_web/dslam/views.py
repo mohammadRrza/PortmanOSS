@@ -20,6 +20,7 @@ from django.http import StreamingHttpResponse
 from dslam.mail import Mail
 from dslam.mail import Ticket
 from rest_framework.parsers import FileUploadParser
+
 """from rtkit.resource import RTResource
 from rtkit.resource import RTResource
 from rtkit.authenticators import BasicAuthenticator, CookieAuthenticator
@@ -272,7 +273,7 @@ class VlanViewSet(mixins.ListModelMixin,
                 'port_number': port.port_number})
 
         if len(dslam_ports) > 0:
-            for dslam_id, port_indexes in dslam_ports.items():
+            for dslam_id, port_indexes in list(dslam_ports.items()):
                 params = {
                     "is_queue": False,
                     "type": "dslam",
@@ -553,6 +554,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
     queryset = DSLAM.objects.all()
     # permission_classes = (IsAuthenticated, DSLAMView, DSLAMEdit)
     serializer_class = DSLAMSerializer
+
     # pagination_class = LargeResultsSetPagination
 
     def get_serializer(self, *args, **kwargs):
@@ -715,7 +717,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         result = utility.dslam_port_run_command(dslam.id, 'vlan show', {"is_queue": False, "type": "dslam"})
         if bool(result):
             all_vlan_count = {key: {'vlan_name': value, 'total': 0, 'percentage': 0.0} for key, value in
-                              result['result'].items()}
+                              list(result['result'].items())}
             ports = DSLAMPort.objects.filter(dslam=dslam)
             vlans_count = DSLAMPortVlan.objects.filter(port__in=ports).values('vlan__vlan_id', 'vlan__vlan_name',
                                                                               'vlan').annotate(
@@ -2076,7 +2078,7 @@ class DSLAMPortViewSet(mixins.ListModelMixin,
                    {'name': 'UP Stream TX Rate', 'data': up_tx_rate}]
         attainable_rate_data = [{'name': 'UP Stream Attainable Rate', 'data': up_attainable_rate},
                                 {'name': 'DOWN Stream Attainable Rate', 'data': down_attainable_rate}]
-        oper_status_data = {'data': [{'name': name, 'y': value} for name, value in oper_status.items()]}
+        oper_status_data = {'data': [{'name': name, 'y': value} for name, value in list(oper_status.items())]}
 
         return JsonResponse(
             {'dates': json.dumps(dates),
@@ -2174,7 +2176,7 @@ class PortStatusReportView(views.APIView):
                    {'name': 'UP Stream TX Rate', 'data': up_tx_rate}]
         attainable_rate_data = [{'name': 'UP Stream Attainable Rate', 'data': up_attainable_rate},
                                 {'name': 'DOWN Stream Attainable Rate', 'data': down_attainable_rate}]
-        oper_status_data = [{'name': name, 'y': value} for name, value in oper_status.items()]
+        oper_status_data = [{'name': name, 'y': value} for name, value in list(oper_status.items())]
         reseller_obj = None
         customer_obj = None
         identifier_key = None
@@ -2321,7 +2323,7 @@ class ResellerViewSet(mixins.ListModelMixin,
         total_ports_count = 0
         up_ports_count = 0
         down_ports_count = 0
-        for telecom_center_id, identifier_keys in telecom_center_ports.items():
+        for telecom_center_id, identifier_keys in list(telecom_center_ports.items()):
             tc_object = TelecomCenter.objects.get(id=telecom_center_id)
             customer_port = set(
                 CustomerPort.objects.filter(telecom_center_id=telecom_center_id).values_list('identifier_key',
@@ -2941,7 +2943,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
                         conn_start = telecomMDF_obj.connection_start + 1
                 conn_step = 2
 
-            connection_range = range(conn_start, conn_start + telecomMDF_obj.connection_count, conn_step)
+            connection_range = list(range(conn_start, conn_start + telecomMDF_obj.connection_count, conn_step))
 
             # create bukht table without dslam cart and port
             for floor_number in floor_range:
@@ -2963,8 +2965,8 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
             faulty_ports = DSLAMPortFaulty.objects.filter(dslam_id__in=dslams.values_list('id', flat=True))
             for dslam in dslams:
                 for dslam_cart in DSLAMCart.objects.filter(dslam=dslam).order_by('priority', 'id'):
-                    slot_range = range(dslam_cart.cart_start, dslam_cart.cart_start + dslam_cart.cart_count)
-                    port_range = range(dslam_cart.port_start, dslam_cart.port_start + dslam_cart.port_count)
+                    slot_range = list(range(dslam_cart.cart_start, dslam_cart.cart_start + dslam_cart.cart_count))
+                    port_range = list(range(dslam_cart.port_start, dslam_cart.port_start + dslam_cart.port_count))
                     try:
                         for slot in slot_range:
                             for port in port_range:
@@ -3427,7 +3429,7 @@ class RegisterPortAPIView(views.APIView):
                     port_data.get('port_number'), ip)
                 mail_info.msg_subject = 'Error in RegisterPortAPIView'
                 Mail.Send_Mail(mail_info)
-                return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
+                return JsonResponse({'Result': ''}, status=status.HTTP_400_BAD_REQUEST)
         try:
             reseller_obj, reseller_created = Reseller.objects.get_or_create(name=reseller_data.get('name'))
             print()
@@ -3636,14 +3638,14 @@ class RegisterPortAPIView(views.APIView):
                 else:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    mail_info = Mail()
-                    mail_info.from_addr = 'oss-problems@pishgaman.net'
-                    mail_info.to_addr = 'oss-problems@pishgaman.net'
-                    mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
-                        str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
-                        port_data.get('card_number'), port_data.get('port_number'), ip)
-                    mail_info.msg_subject = 'Error in RegisterPortAPIView'
-                    Mail.Send_Mail(mail_info)
+                    # mail_info = Mail()
+                    # mail_info.from_addr = 'oss-problems@pishgaman.net'
+                    # mail_info.to_addr = 'oss-problems@pishgaman.net'
+                    # mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
+                    #     str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
+                    #     port_data.get('card_number'), port_data.get('port_number'), ip)
+                    # mail_info.msg_subject = 'Error in RegisterPortAPIView'
+                    # Mail.Send_Mail(mail_info)
                     return JsonResponse(
                         {'result': str('an error occurred. please try again. {0}'.format(str(exc_tb.tb_lineno)))})
 
@@ -3687,42 +3689,40 @@ class RegisterPortAPIView(views.APIView):
                 port_vlan_obj.vlan = vlan_objs.first()
                 port_vlan_obj = port_obj
                 port_vlan_obj.save()
-            if (dslam_obj.dslam_type_id == 4):
-                if ('succeed' in sid):
+            if dslam_obj.dslam_type_id == 4:
+                if 'succeed' in sid:
                     return JsonResponse({'id': 201, 'res': sid, 'msg': 'port config has been done.'},
                                         status=status.HTTP_201_CREATED)
                 else:
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
-            if (dslam_obj.dslam_type_id == 3):
+            if dslam_obj.dslam_type_id == 3:
                 if ('added to vlan' in sid):
                     return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
                                         status=status.HTTP_201_CREATED)
                 else:
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
-            if (dslam_obj.dslam_type_id == 1):
-                if ('No results was returned' in PVC['result']):
-                    return JsonResponse({'result': 'Error', 'ErrorDesc': PVC['result'], 'id': 400, 'res': 'Error'},
-                                        status=status.HTTP_400_BAD_REQUEST)
+            if dslam_obj.dslam_type_id == 1:
+                if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'), port_data.get('port_number'), reseller_obj.vpi,
+                                                                                       reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:
+                    return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
+                                        status=status.HTTP_201_CREATED)
                 else:
                     return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
                                         status=status.HTTP_201_CREATED)
-            else:
-                return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
-                                    status=status.HTTP_201_CREATED)
                 # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            mail_info = Mail()
-            mail_info.from_addr = 'oss-problems@pishgaman.net'
-            mail_info.to_addr = 'oss-problems@pishgaman.net'
-            mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
-                str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'), port_data.get('card_number'),
-                port_data.get('port_number'), ip)
-            mail_info.msg_subject = 'Error in RegisterPortAPIView'
-            Mail.Send_Mail(mail_info)
+            # mail_info = Mail()
+            # mail_info.from_addr = 'oss-problems@pishgaman.net'
+            # mail_info.to_addr = 'oss-problems@pishgaman.net'
+            # mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
+            #     str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'), port_data.get('card_number'),
+            #     port_data.get('port_number'), ip)
+            # mail_info.msg_subject = 'Error in RegisterPortAPIView'
+            # Mail.Send_Mail(mail_info)
 
             # return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
             return JsonResponse(
@@ -5778,10 +5778,10 @@ class AddToVlanAPIView(views.APIView):  # 000000
                                         status=status.HTTP_200_OK)
 
             telecom_mdf_obj = TelecomCenterMDF.objects.filter(telecom_center_id=dslam_obj.telecom_center.id)
-            print(dslam_obj.telecom_center.id)
+            print((dslam_obj.telecom_center.id))
             if telecom_mdf_obj:
                 telecom_mdf_obj = telecom_mdf_obj.first()
-            print(dslam_obj.telecom_center)
+            print((dslam_obj.telecom_center))
             mdf_dslam_obj, mdf_dslam_updated = MDFDSLAM.objects.update_or_create(
                 telecom_center_id=dslam_obj.telecom_center.id,
                 telecom_center_mdf_id=telecom_mdf_obj.id,
@@ -7212,6 +7212,7 @@ def get_ticket_info_rt(ticket_id):
     return ticket_info
 """
 
+
 # Dana ticketing API
 class AddTicketDanaAPIView(views.APIView):
     def post(self, request, format=None):
@@ -7371,7 +7372,7 @@ class DSLAMRunICMPCommandByFqdnView(views.APIView):
 
         dslam_name = DSLAM.objects.get(id=dslam_id).name
 
-        description = u'Run {0} Command on DSLAM {1} with params: {2}'.format(icmp_type, dslam_name, params)
+        description = 'Run {0} Command on DSLAM {1} with params: {2}'.format(icmp_type, dslam_name, params)
         add_audit_log(request, 'DSLAMICMP', None, 'Run ICMP Command on DSLAM', description)
 
         return Response({'result': result}, status=status.HTTP_201_CREATED)
@@ -7856,5 +7857,3 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
-
-

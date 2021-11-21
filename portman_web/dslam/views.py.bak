@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -17,16 +19,18 @@ from django.contrib.postgres.search import SearchVector
 from django.http import StreamingHttpResponse
 from dslam.mail import Mail
 from dslam.mail import Ticket
+from rest_framework.parsers import FileUploadParser
+
+"""from rtkit.resource import RTResource
 from rtkit.resource import RTResource
 from rtkit.authenticators import BasicAuthenticator, CookieAuthenticator
-from rtkit.errors import RTResourceError
+from rtkit.errors import RTResourceError"""
 
 import re
 import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import requests
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from requests.auth import HTTPDigestAuth
 from rest_framework.response import Response
 from rest_framework import status, views, mixins, viewsets, permissions
@@ -45,7 +49,7 @@ import csv, time
 import simplejson as json
 import io as StringIO
 from collections import defaultdict
-import dslam.utility
+from dslam import utility
 import logging
 import sys, os
 
@@ -53,13 +57,15 @@ from dslam.models import DSLAM, TelecomCenter, DSLAMPort, DSLAMPortSnapshot, Lin
     DSLAMBulkCommandResult, \
     TelecomCenterMDF, DSLAMEvent, DSLAMPortEvent, Reseller, ResellerPort, CustomerPort, DSLAMLocation, \
     DSLAMICMPSnapshot, DSLAMICMP, \
-    PortCommand, ResellerPort, NumPrefix, City, Command, DSLAMType, Terminal, DSLAMStatusSnapshot, DSLAMStatus, \
+    PortCommand, ResellerPort, City, Command, DSLAMType, Terminal, DSLAMStatusSnapshot, DSLAMStatus, \
     DSLAMCommand, CityLocation, MDFDSLAM, DSLAMPortVlan, \
     DSLAMPortMac, DSLAMBoard, DSLAMFaultyConfig, DSLAMPortFaulty, DSLAMTypeCommand, DSLAMCart
 from dslam.permissions import HasAccessToDslam, IsAdminUser, HasAccessToDslamPort, \
     HasAccessToDslamPortSnapshot
 from dslam.serializers import *
 from users.helpers import add_audit_log
+from .command_recognise import command_recognise
+import openpyxl
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -120,11 +126,11 @@ class VlanViewSet(mixins.ListModelMixin,
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        description = u'ADD Vlan {0}'.format(serializer.data['vlan_id'])
+        description = 'ADD Vlan {0}'.format(serializer.data['vlan_id'])
         add_audit_log(request, 'Vlan', serializer.data['id'], 'Create Vlan', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    @list_route(methods=['POST'])
+    @action(methods=['POST'], detail=False)
     def assign_to_reseller(self, request):
         user = request.user
         data = request.data
@@ -161,7 +167,7 @@ class VlanViewSet(mixins.ListModelMixin,
         #    'reseller': reseller.id
         #    }, status=status.HTTP_201_CREATED, headers=headers)
 
-    @list_route(methods=['POST'])
+    @action(methods=['POST'], detail=False)
     def assign_to_subscibers(self, request):
         data = request.data
         user = request.user
@@ -251,11 +257,11 @@ class VlanViewSet(mixins.ListModelMixin,
                     pass
 
         elif card_ports:
-            print
+            print()
             '-------++====++++------------------------------------'
-            print
+            print()
             card_ports
-            print
+            print()
             '-------------------------------------------'
             port = DSLAMPort.objects.get(
                 dslam__id=card_ports.get('dslam_id'),
@@ -267,7 +273,7 @@ class VlanViewSet(mixins.ListModelMixin,
                 'port_number': port.port_number})
 
         if len(dslam_ports) > 0:
-            for dslam_id, port_indexes in dslam_ports.iteritems():
+            for dslam_id, port_indexes in dslam_ports.items():
                 params = {
                     "is_queue": False,
                     "type": "dslam",
@@ -289,7 +295,7 @@ class VlanViewSet(mixins.ListModelMixin,
                 }
                 result = utility.dslam_port_run_command(dslam_id, 'add to vlan', params)
                 for port in port_indexes:
-                    print
+                    print()
                     port.get('id')
                     port_vlan = DSLAMPortVlan.objects.get(port__id=port.get('id'))
                     port_vlan.vlan = vlan_obj
@@ -312,7 +318,7 @@ class VlanViewSet(mixins.ListModelMixin,
             params['username'] = request.user.username
             result = utility.dslam_port_run_command(dslam_obj.pk, 'create vlan', params)
         self.perform_update(serializer)
-        description = u'Update Vlan {0}: {1}'.format(instance.vlan_name, request.data)
+        description = 'Update Vlan {0}: {1}'.format(instance.vlan_name, request.data)
         add_audit_log(request, 'Vlan', instance.id, 'Update Vlan', description)
         return Response(serializer.data)
 
@@ -320,7 +326,7 @@ class VlanViewSet(mixins.ListModelMixin,
         data = request.data
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete vlan {0}'.format(instance.vlan_id)
+        description = 'Delete vlan {0}'.format(instance.vlan_id)
         add_audit_log(request, 'Vlan', instance.id, 'Delete Vlan', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -357,7 +363,7 @@ class DSLAMPortVlanViewSet(mixins.ListModelMixin,
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        description = u'ADD port {0} to Vlan {1}'.format(serializer.data['vlan_id'], data.get('params'))
+        description = 'ADD port {0} to Vlan {1}'.format(serializer.data['vlan_id'], data.get('params'))
         add_audit_log(request, 'DSLAMPortVlan', serializer.data['id'], 'Add port to vlan', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -367,7 +373,7 @@ class DSLAMPortVlanViewSet(mixins.ListModelMixin,
             result = utility.dslam_port_run_command(dslam_obj.pk, 'delete from vlan', params)
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete DSLAMPortVlan {0}: {1}'.format(instance.name, request.data)
+        description = 'Delete DSLAMPortVlan {0}: {1}'.format(instance.name, request.data)
         add_audit_log(request, 'DSLAMPortVlan', instance.id, 'Delete DSLAMPortVlan', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -381,7 +387,7 @@ class DSLAMPortVlanViewSet(mixins.ListModelMixin,
         if data.get('params') and data.get('dslam_id'):
             result = utility.dslam_port_run_command(dslam_obj.pk, 'add to vlan', params)
         self.perform_update(serializer)
-        description = u'Update DSLAMPortVlan {0}: {1}'.format(instance.name, request.data)
+        description = 'Update DSLAMPortVlan {0}: {1}'.format(instance.name, request.data)
         add_audit_log(request, 'DSLAMPortVlan', instance.id, 'Update DSLAMPort Vlan', description)
         return Response(serializer.data)
 
@@ -403,7 +409,7 @@ class LineProfileViewSet(mixins.ListModelMixin,
     permission_classes = (IsAuthenticated, HasAccessToDslam)
     serializer_class = LineProfileSerializer
 
-    @list_route(methods=['POST'])
+    @action(methods=['GET'], detail=False)
     def assign_to_port(self, request):
         user = request.user
         data = request.data
@@ -449,14 +455,14 @@ class LineProfileViewSet(mixins.ListModelMixin,
                 lineprofile_settings.attr_name = setting.get('key')
                 lineprofile_settings.attr_value = setting.get('value')
                 lineprofile_settings.save()
-        description = u'Create LineProfile : {0}'.format(serializer.data['name'])
+        description = 'Create LineProfile : {0}'.format(serializer.data['name'])
         add_audit_log(request, 'LineProfile', serializer.data['id'], 'Create LineProfile', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete LineProfile : {0}'.format(instance.name)
+        description = 'Delete LineProfile : {0}'.format(instance.name)
         add_audit_log(request, 'LineProfile', instance.id, 'Delete LineProfile', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -470,7 +476,7 @@ class LineProfileViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Delete LineProfile : {0}'.format(instance.name)
+        description = 'Delete LineProfile : {0}'.format(instance.name)
         add_audit_log(request, 'LineProfile', serializer.data['id'], 'Update LineProfile', description)
         return Response(serializer.data)
 
@@ -509,7 +515,7 @@ class TelecomCenterMDFViewSet(mixins.ListModelMixin,
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        description = u'Create Telecom Center MDF: {0}'.format(serializer.data.get('name'))
+        description = 'Create Telecom Center MDF: {0}'.format(serializer.data.get('name'))
         add_audit_log(request, 'TelecomCenterMDF', serializer.data['id'], 'Create Telecome Center MDF', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -523,7 +529,7 @@ class TelecomCenterMDFViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update Telecom Center MDF {0}: {1}'.format(instance.id, request.data)
+        description = 'Update Telecom Center MDF {0}: {1}'.format(instance.id, request.data)
         add_audit_log(request, 'TelecomCenterMDF', instance.id, 'Update Telecom Center MDF', description)
         return Response(serializer.data)
 
@@ -534,7 +540,7 @@ class TelecomCenterMDFViewSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete Telecom Center MDF: {0}'.format(instance.id)
+        description = 'Delete Telecom Center MDF: {0}'.format(instance.id)
         add_audit_log(request, 'TelecomCenterMDF', instance.id, 'Delete Telecom Center MDF', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -546,30 +552,32 @@ class DSLAMViewSet(mixins.ListModelMixin,
                    mixins.DestroyModelMixin,
                    viewsets.GenericViewSet):
     queryset = DSLAM.objects.all()
-    permission_classes = (IsAuthenticated, DSLAMView, DSLAMEdit)
+    # permission_classes = (IsAuthenticated, DSLAMView, DSLAMEdit)
     serializer_class = DSLAMSerializer
-    pagination_class = LargeResultsSetPagination
+
+    # pagination_class = LargeResultsSetPagination
 
     def get_serializer(self, *args, **kwargs):
         # if self.request.user.is_superuser or self.request.user.has_permission('edit_dslam'):
-        if self.request.user.is_superuser:
-            print(self.request.user.type)
+        if self.request.user.is_superuser or self.request.user.type == 'ADMIN':
+            print((self.request.user.type))
             return DSLAMSerializer(request=self.request, *args, **kwargs)
         elif self.request.user.type == 'SUPPORT':
-            print(self.request.user.type)
+            print((self.request.user.type))
             _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port']
             return DSLAMSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
         else:
-            print(self.request.user.type)
+            print((self.request.user.type))
             _fields = ['telnet_password', 'telnet_username', 'set_snmp_community', 'get_snmp_community', 'snmp_port',
                        'ip', 'total_ports_count', 'down_ports_count', 'up_ports_count']
             return DSLAMSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def current(self, request):
         serializer = DSLAMSerializer(request.user, request=request)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @action(methods=['GET'], detail=False)
     def get_queryset(self):
         queryset = self.queryset
         user = self.request.user
@@ -639,7 +647,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        description = u'Add DSLAM {0}'.format(serializer.data['name'])
+        description = 'Add DSLAM {0}'.format(serializer.data['name'])
         add_audit_log(request, 'DSLAM', serializer.data['id'], 'Add DSLAM', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -653,7 +661,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         serializer = self.serializer_class(instance, data=request.data, request=self.request, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update DSLAM {0}: {1}'.format(instance.name, request.data)
+        description = 'Update DSLAM {0}: {1}'.format(instance.name, request.data)
         add_audit_log(request, 'DSLAM', instance.id, 'Update DSLAM', description)
         return Response(serializer.data)
 
@@ -664,11 +672,11 @@ class DSLAMViewSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete DSLAM {0}'.format(instance.name)
+        description = 'Delete DSLAM {0}'.format(instance.name)
         add_audit_log(request, 'DSLAM', instance.id, 'Delete DSLAM', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=False)
     def get_dslam_names(self, request):
         data = request.query_params
         exclude_dslam_ids = data.get('exclude_dslam_id')
@@ -685,7 +693,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
                                                                                                           'search_name',
                                                                                                           'name')})
 
-    @detail_route(methods=['GET', ])
+    @action(methods=['GET'], detail=True)
     def getvlan(self, request, pk=None):
         user = request.user
         data = self.request.query_params
@@ -699,7 +707,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         return JsonResponse(
             {'vlans': vlans_json})
 
-    @detail_route(methods=['GET', ])
+    @action(methods=['GET'], detail=True)
     def vlan_usage_percentage(self, request, pk=None):
         user = request.user
         data = self.request.query_params
@@ -709,7 +717,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         result = utility.dslam_port_run_command(dslam.id, 'vlan show', {"is_queue": False, "type": "dslam"})
         if bool(result):
             all_vlan_count = {key: {'vlan_name': value, 'total': 0, 'percentage': 0.0} for key, value in
-                              result['result'].iteritems()}
+                              result['result'].items()}
             ports = DSLAMPort.objects.filter(dslam=dslam)
             vlans_count = DSLAMPortVlan.objects.filter(port__in=ports).values('vlan__vlan_id', 'vlan__vlan_name',
                                                                               'vlan').annotate(
@@ -724,7 +732,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         return JsonResponse(
             {'values': []})
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def scan(self, request, pk=None):
         dslam_id = self.get_object().id
         scan_type = self.request.query_params.get('type', None)
@@ -736,12 +744,12 @@ class DSLAMViewSet(mixins.ListModelMixin,
             return JsonResponse({'values': 'dslam ready to updating'})
         return JsonResponse({'values': 'error when dslam updating'})
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=False)
     def count(self, request):
         dslam_count = DSLAM.objects.all().count()
         return Response({'dslam_count': dslam_count})
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def dslamreport(self, request, pk=None):
         dslam_obj = self.get_object()
         dslam_info = dslam_obj.get_info()
@@ -772,7 +780,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             'dslam_availability': dslam_obj.get_dslam_availability}
         )
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def dslam_curr_temperature_report(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -782,7 +790,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
         try:
             dslamstatus = DSLAMStatus.objects.get(dslam=dslam)
         except Exception as e:
-            print
+            print()
             e
             return Response({'result': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -793,7 +801,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             lst_line_card_values.append(int(obj_card_temp['CurValue']))
         return JsonResponse({'names': lst_line_cards, 'values': lst_line_card_values})
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def dslam_range_temperature_report(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -840,7 +848,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
                         lst_line_card_values.append(int(card_temp['CurValue']))
         return JsonResponse({'names': lst_datetimes, 'values': lst_line_card_values})
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def dslam_range_ping_report(self, request):
         user = request.user
         dslam_id = self.request.query_params.get('dslam_id', None)
@@ -873,7 +881,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
 
 
             except Exception as e:
-                print
+                print()
                 e
                 return Response({'result': 'Dont Still Add This DSLAM For Getting ICMP'},
                                 status=status.HTTP_400_BAD_REQUEST)
@@ -899,13 +907,13 @@ class DSLAMViewSet(mixins.ListModelMixin,
                 }
                 dslamicmp_values[persian_date] = icmp_values
         except:
-            print
+            print()
             'give error dslam icmp : \n{0} - type is {1}'.format(obj.avgping, type(obj.avgping))
 
         return JsonResponse(
             {'names': lst_datetimes, 'values': lst_avgping_values, 'dslamicmp_values': dslamicmp_values}, safe=False)
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def dslam_icmp_info(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -919,7 +927,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             ).get(created_at__gte=date_start, created_at__lt=date_end)
             return Response({'result': serialize('json', [dslam_snapshots, ])})
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def dslam_current_icmp_result(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -931,7 +939,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
 
         return Response({'result': serialize('json', [dslamicmp_obj])})
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def dslamslot(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -945,7 +953,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             json_data = json.dumps(results)
             return HttpResponse(json_data, content_type="application/json")
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def board(self, request, pk=None):
         user = request.user
         dslam = self.get_object()
@@ -1009,7 +1017,7 @@ class DSLAMLocationViewSet(mixins.ListModelMixin,
             dslam_obj = DSLAM.objects.get(id=dslam_id)
             queryset = queryset.filter(dslam=dslam_obj)
 
-        if city_id is not None and city_id != u'' and not telecom_id:
+        if city_id is not None and city_id != '' and not telecom_id:
             city = City.objects.get(id=city_id)
             telecom_objs = TelecomCenter.objects.filter(city=city)
             queryset = queryset.filter(dslam__telecom_center__in=telecom_objs)
@@ -1031,7 +1039,7 @@ class DSLAMLocationViewSet(mixins.ListModelMixin,
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         dslam_name = DSLAM.objects.get(id=request.data['dslam']).name
-        description = u'Add DSLAM Location , DSLAM: {0} - lat: {1} - long: {2}'.format(
+        description = 'Add DSLAM Location , DSLAM: {0} - lat: {1} - long: {2}'.format(
             dslam_name,
             request.data['dslam_lat'],
             request.data['dslam_long'])
@@ -1048,7 +1056,7 @@ class DSLAMLocationViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update DSLAM Location, DSLAM: {0} - params: {1}'.format(instance.dslam.name, request.data)
+        description = 'Update DSLAM Location, DSLAM: {0} - params: {1}'.format(instance.dslam.name, request.data)
         add_audit_log(request, 'DSLAM', instance.id, 'Update DSLAM Location', description)
         return Response(serializer.data)
 
@@ -1059,7 +1067,7 @@ class DSLAMLocationViewSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete DSLAM Location, DSLAM: {0}'.format(instance.dslam.name)
+        description = 'Delete DSLAM Location, DSLAM: {0}'.format(instance.dslam.name)
         add_audit_log(request, 'DSLAM', instance.id, 'Delete DSLAM', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -1099,7 +1107,7 @@ class DSLAMEventViewsSet(mixins.ListModelMixin,
         serializer = DSLAMEventSerializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         new_instance = serializer.save()
-        description = u'Update DSLAM Event, DSLAM: {0} - params: {1}'.format(new_instance.dslam.name, request.data)
+        description = 'Update DSLAM Event, DSLAM: {0} - params: {1}'.format(new_instance.dslam.name, request.data)
         add_audit_log(request, 'DSLAM', new_instance.id, 'Update DSLAM Event', description)
         return Response(serializer.data)
 
@@ -1110,7 +1118,7 @@ class DSLAMEventViewsSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete DSLAM Event, DSLAM: {0}'.format(instance.dslam.name)
+        description = 'Delete DSLAM Event, DSLAM: {0}'.format(instance.dslam.name)
         add_audit_log(request, 'DSLAM', instance.id, 'Delete DSLAM Event', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -1129,7 +1137,7 @@ class DSLAMPortEventViewsSet(mixins.ListModelMixin,
         serializer = DSLAMEventSerializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         new_instance = serializer.save()
-        description = u'Update DSLAM Port Event,  DSLAM: {0} - Card: {1} - Slot: {2}, params: {3}'.format(
+        description = 'Update DSLAM Port Event,  DSLAM: {0} - Card: {1} - Slot: {2}, params: {3}'.format(
             new_instance.dslam.name,
             new_instance.slot_number,
             new_instance.port_number,
@@ -1144,7 +1152,7 @@ class DSLAMPortEventViewsSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete DSLAM Port Event,  DSLAM: {0} - Card: {1} - Slot: {2}, params: {3}'.format(
+        description = 'Delete DSLAM Port Event,  DSLAM: {0} - Card: {1} - Slot: {2}, params: {3}'.format(
             instance.dslam.name,
             instance.slot_number,
             instance.port_number)
@@ -1167,7 +1175,7 @@ class DSLAMRunICMPCommandView(views.APIView):
 
         dslam_name = DSLAM.objects.get(id=dslam_id).name
 
-        description = u'Run {0} Command on DSLAM {1} with params: {2}'.format(icmp_type, dslam_name, params)
+        description = 'Run {0} Command on DSLAM {1} with params: {2}'.format(icmp_type, dslam_name, params)
         add_audit_log(request, 'DSLAMICMP', None, 'Run ICMP Command on DSLAM', description)
 
         return Response({'result': result}, status=status.HTTP_201_CREATED)
@@ -1200,7 +1208,7 @@ class DSLAMPortRunCommandView(views.APIView):
             if 'Busy' in result:
                 return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                description = u'Run Command {0} on DSLAM {1}'.format(
+                description = 'Run Command {0} on DSLAM {1}'.format(
                     command,
                     dslam_obj.name)
 
@@ -1271,7 +1279,7 @@ class ResetAdminStatusView(views.APIView):
             ).exists():
                 return Response({}, status=status.HTTP_401_UNAUTHORIZED)
         result = utility.reset_admin_status(dslam_obj.pk, port_obj.pk)
-        description = u'Reset Admin Status on DSLAM {0} Card {1} port {2}'.format(
+        description = 'Reset Admin Status on DSLAM {0} Card {1} port {2}'.format(
             dslam_obj.name,
             port_obj.slot_number,
             port_obj.port_number)
@@ -1313,7 +1321,7 @@ class ChangePortAdminStatusView(views.APIView):
                 return Response({}, status=status.HTTP_401_UNAUTHORIZED)
 
         result = utility.change_port_admin_status(dslam_obj.pk, port_obj.pk, new_status)
-        description = u'Change Admin Status on DSLAM {0} Card {1} port {2} to new status {3}'.format(
+        description = 'Change Admin Status on DSLAM {0} Card {1} port {2} to new status {3}'.format(
             dslam_obj.name,
             port_obj.slot_number,
             port_obj.port_number,
@@ -1356,7 +1364,7 @@ class ChangePortLineProfileView(views.APIView):
                 return Response({}, status=status.HTTP_401_UNAUTHORIZED)
         new_line_profile_name = LineProfile.objects.get(id=new_line_profile).name
         result = utility.change_port_line_profile(dslam_obj.pk, port_obj.pk, new_line_profile_name)
-        description = u'Change Line Profile on DSLAM {0} Card {1} port {2} to new line profile {3}'.format(
+        description = 'Change Line Profile on DSLAM {0} Card {1} port {2} to new line profile {3}'.format(
             dslam_obj.name,
             port_obj.slot_number,
             port_obj.port_number,
@@ -1385,7 +1393,7 @@ class DSLAMTypeViewSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete DSLAM type {0} '.format(instance.name)
+        description = 'Delete DSLAM type {0} '.format(instance.name)
         add_audit_log(request, 'DSLAMType', instance.id, 'Delete DSLAM Type', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -1399,7 +1407,7 @@ class DSLAMTypeViewSet(mixins.ListModelMixin,
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         city_name = City.objects.get(id=serializer.data['city']).name
-        description = u'Add DSLAM Type {0}'.format(serializer.data['name'])
+        description = 'Add DSLAM Type {0}'.format(serializer.data['name'])
         add_audit_log(request, 'DSLAMType', serializer.data['id'], 'Add DSLAM type', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -1413,7 +1421,7 @@ class DSLAMTypeViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update DSLAM type {0}, params: {1}'.format(instance.name, request.data)
+        description = 'Update DSLAM type {0}, params: {1}'.format(instance.name, request.data)
         add_audit_log(request, 'DSLAMType', instance.id, 'Update DSLAM Type', description)
         return Response(serializer.data)
 
@@ -1467,7 +1475,7 @@ class CommandViewSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete Command {0} '.format(instance.name)
+        description = 'Delete Command {0} '.format(instance.name)
         add_audit_log(request, 'Command', instance.id, 'Delete Command', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -1481,7 +1489,7 @@ class CommandViewSet(mixins.ListModelMixin,
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         city_name = City.objects.get(id=serializer.data['city']).name
-        description = u'Add Command {0}'.format(serializer.data['name'])
+        description = 'Add Command {0}'.format(serializer.data['name'])
         add_audit_log(request, 'Command', serializer.data['id'], 'Add Command', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -1495,7 +1503,7 @@ class CommandViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update Command {0}, params: {1}'.format(instance.name, request.data)
+        description = 'Update Command {0}, params: {1}'.format(instance.name, request.data)
         add_audit_log(request, 'Command', instance.id, 'Update Command', description)
         return Response(serializer.data)
 
@@ -1509,7 +1517,7 @@ class CityViewSet(mixins.ListModelMixin,
     serializer_class = CitySerializer
     permission_classes = (IsAuthenticated,)
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=False)
     def tree_view(self, request):
         q = '''select id,name as text, abbr, english_name ,parent_id from dslam_city order by id desc'''
         cursor = connection.cursor()
@@ -1524,11 +1532,11 @@ class CityViewSet(mixins.ListModelMixin,
                 city_row = (row[0], row[1], row[2], row[3], '#')
             else:
                 city_row = row
-            result.append(dict(zip(keys, city_row)))
+            result.append(dict(list(zip(keys, city_row))))
         json_data = json.dumps(sorted(result, key=lambda k: k['id']))
         return HttpResponse(json_data, content_type="application/json")
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=False)
     def table_view(self, request):
         q = '''select a.id,a.name,b.name from dslam_city a left join dslam_city b on a.parent_id = b.id order by a.id desc'''
         cursor = connection.cursor()
@@ -1543,7 +1551,7 @@ class CityViewSet(mixins.ListModelMixin,
                 city_row = (row[0], row[1], '#')
             else:
                 city_row = row
-            result.append(dict(zip(keys, city_row)))
+            result.append(dict(list(zip(keys, city_row))))
         json_data = json.dumps(sorted(result, key=lambda k: k['id']))
         return HttpResponse(json_data, content_type="application/json")
 
@@ -1572,7 +1580,7 @@ class CityViewSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete City {0} '.format(instance.name)
+        description = 'Delete City {0} '.format(instance.name)
         add_audit_log(request, 'City', instance.id, 'Delete City', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -1586,7 +1594,7 @@ class CityViewSet(mixins.ListModelMixin,
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         city_name = serializer.data['name']
-        description = u'Add City {0}'.format(city_name)
+        description = 'Add City {0}'.format(city_name)
         add_audit_log(request, 'City', serializer.data['id'], 'Add City', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -1600,7 +1608,7 @@ class CityViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update City {0}, params: {1}'.format(instance.name, request.data)
+        description = 'Update City {0}, params: {1}'.format(instance.name, request.data)
         add_audit_log(request, 'City', instance.id, 'Update City', description)
         return Response(serializer.data)
 
@@ -1633,7 +1641,7 @@ class CityLocationViewSet(mixins.ListModelMixin,
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
-        description = u'Delete City {0} Location'.format(instance.city.name)
+        description = 'Delete City {0} Location'.format(instance.city.name)
         add_audit_log(request, 'CityLocation', instance.id, 'Delete City Location', description)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -1647,7 +1655,7 @@ class CityLocationViewSet(mixins.ListModelMixin,
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         city_name = City.objects.get(id=serializer.data['city']).name
-        description = u'Add City Location , City: {0} - lat: {1} - long: {2}'.format(
+        description = 'Add City Location , City: {0} - lat: {1} - long: {2}'.format(
             city_name,
             serializer.data['city_lat'],
             serializer.data['city_long'])
@@ -1664,7 +1672,7 @@ class CityLocationViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update City Location , City: {0} - lat: {1} - long: {2}'.format(
+        description = 'Update City Location , City: {0} - lat: {1} - long: {2}'.format(
             instance.city.name,
             request.data['city_lat'],
             request.data['city_long'])
@@ -1688,7 +1696,7 @@ class TelecomCenterViewSet(mixins.ListModelMixin,
             return Response({'msg': 'this telecom used in dslams'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         else:
             self.perform_destroy(telecom_center)
-            description = u'Delete Telecom Center {0}'.format(telecom_center.name)
+            description = 'Delete Telecom Center {0}'.format(telecom_center.name)
             add_audit_log(request, 'TelecomCenter', telecom_center.id, 'Delete Telecom Center', description)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -1727,7 +1735,7 @@ class TelecomCenterViewSet(mixins.ListModelMixin,
 
         return queryset
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=False)
     def get_without_paging(self, request):
         telecom_objs = TelecomCenter.objects.all()
         data = request.query_params
@@ -1755,7 +1763,7 @@ class TelecomCenterViewSet(mixins.ListModelMixin,
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        description = u'Create Telecom Center {0}'.format(serializer.data['name'])
+        description = 'Create Telecom Center {0}'.format(serializer.data['name'])
         add_audit_log(request, 'TelecomCenter', serializer.data['id'], 'Create Telecome Center', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -1769,7 +1777,7 @@ class TelecomCenterViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update Telecom Center {0}: {1}'.format(instance.name, request.data)
+        description = 'Update Telecom Center {0}: {1}'.format(instance.name, request.data)
         add_audit_log(request, 'TelecomCenter', instance.id, 'Update Telecom Center', description)
         return Response(serializer.data)
 
@@ -1823,7 +1831,7 @@ class DSLAMPortViewSet(mixins.ListModelMixin,
                        viewsets.GenericViewSet):
     serializer_class = DSLAMPortSerializer
     queryset = DSLAMPort.objects.all().order_by('port_index')
-    permission_classes = (IsAuthenticated, DSLAMPortView, DSLAMPortEdit)
+    # permission_classes = (IsAuthenticated, DSLAMPortView, DSLAMPortEdit)
     pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
@@ -2004,14 +2012,14 @@ class DSLAMPortViewSet(mixins.ListModelMixin,
 
         return queryset
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def mac_address(self, request, pk=None):
         user = request.user
         port_obj = self.get_object()
         port_macs = DSLAMPortMac.objects.filter(port=port_obj).values_list('mac_address', flat=True)
         return Response({'mac': port_macs})
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def report(self, request, pk=None):
         user = request.user
         port_obj = self.get_object()
@@ -2070,7 +2078,7 @@ class DSLAMPortViewSet(mixins.ListModelMixin,
                    {'name': 'UP Stream TX Rate', 'data': up_tx_rate}]
         attainable_rate_data = [{'name': 'UP Stream Attainable Rate', 'data': up_attainable_rate},
                                 {'name': 'DOWN Stream Attainable Rate', 'data': down_attainable_rate}]
-        oper_status_data = {'data': [{'name': name, 'y': value} for name, value in oper_status.iteritems()]}
+        oper_status_data = {'data': [{'name': name, 'y': value} for name, value in oper_status.items()]}
 
         return JsonResponse(
             {'dates': json.dumps(dates),
@@ -2168,7 +2176,7 @@ class PortStatusReportView(views.APIView):
                    {'name': 'UP Stream TX Rate', 'data': up_tx_rate}]
         attainable_rate_data = [{'name': 'UP Stream Attainable Rate', 'data': up_attainable_rate},
                                 {'name': 'DOWN Stream Attainable Rate', 'data': down_attainable_rate}]
-        oper_status_data = [{'name': name, 'y': value} for name, value in oper_status.iteritems()]
+        oper_status_data = [{'name': name, 'y': value} for name, value in oper_status.items()]
         reseller_obj = None
         customer_obj = None
         identifier_key = None
@@ -2177,7 +2185,7 @@ class PortStatusReportView(views.APIView):
                                                   port_number=port_obj.port_number).identifier_key
 
         except Exception as ex:
-            print
+            print()
             ex
 
         if identifier_key:
@@ -2185,14 +2193,14 @@ class PortStatusReportView(views.APIView):
                 customer = CustomerPort.objects.get(identifier_key=identifier_key)
                 customer_obj = serialize('json', [customer])
             except Exception as ex:
-                print
+                print()
                 ex
 
             try:
                 reseller = ResellerPort.objects.get(identifier_key=identifier_key).reseller
                 reseller_obj = serialize('json', [reseller])
             except Exception as ex:
-                print
+                print()
                 ex
 
         dslamport_vlan_obj = DSLAMPortVlan.objects.filter(port=port_obj)
@@ -2302,7 +2310,7 @@ class ResellerViewSet(mixins.ListModelMixin,
 
         return reseller_queryset
 
-    @detail_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def report(self, request, pk=None):
         user = request.user
         reseller_obj = self.get_object()
@@ -2315,7 +2323,7 @@ class ResellerViewSet(mixins.ListModelMixin,
         total_ports_count = 0
         up_ports_count = 0
         down_ports_count = 0
-        for telecom_center_id, identifier_keys in telecom_center_ports.iteritems():
+        for telecom_center_id, identifier_keys in telecom_center_ports.items():
             tc_object = TelecomCenter.objects.get(id=telecom_center_id)
             customer_port = set(
                 CustomerPort.objects.filter(telecom_center_id=telecom_center_id).values_list('identifier_key',
@@ -2365,12 +2373,12 @@ class ResellerPortViewSet(mixins.ListModelMixin,
                 identifier_key = MDFDSLAM.objects.get(dslam_id=port_obj.dslam_id, slot_number=port_obj.slot_number,
                                                       port_number=port_obj.port_number).identifier_key
             except Exception as ex:
-                print
+                print()
                 ex
                 return []
 
         if identifier_key:
-            print
+            print()
             identifier_key
             queryset = queryset.filter(identifier_key=identifier_key)
 
@@ -2387,7 +2395,7 @@ class ResellerPortViewSet(mixins.ListModelMixin,
         return queryset
 
     def create(self, request, *args, **kwargs):
-        print
+        print()
         request.data
         self.user = request.user
         dslam_id = request.data.get('dslam')
@@ -2404,7 +2412,7 @@ class ResellerPortViewSet(mixins.ListModelMixin,
         vlan_id = request.data.get('vlan_id')
 
         dslam_obj = DSLAM.objects.get(id=dslam_id)
-        print
+        print()
         dslam_obj
         reseller_obj = Reseller.objects.get(id=reseller_id)
 
@@ -2418,12 +2426,12 @@ class ResellerPortViewSet(mixins.ListModelMixin,
                            mdf_dslam_obj.identifier_key),)
 
         elif port_number and slot_number and dslam_id and reseller_id:
-            print
+            print()
             'here'
             t = MDFDSLAM.objects.filter(dslam_id=dslam_id)
-            print
+            print()
             t
-            print
+            print()
             '====='
             mdf_dslams = MDFDSLAM.objects.filter(
                 dslam_id=dslam_id,
@@ -2445,7 +2453,7 @@ class ResellerPortViewSet(mixins.ListModelMixin,
         else:
             return Response({'result': 'bad parameter send'}, status=status.HTTP_400_BAD_REQUEST)
 
-        print
+        print()
         mdf_dslams
         added_item = []
         exist_item = []
@@ -2517,7 +2525,7 @@ class CustomerPortViewSet(mixins.ListModelMixin,
             try:
                 customerports = customerports.filter(identifier_key__istartswith=identifire_key)
             except Exception as ex:
-                print
+                print()
                 '=>', ex
                 pass
 
@@ -2588,7 +2596,7 @@ class CustomerPortViewSet(mixins.ListModelMixin,
             vlan_obj = Vlan.objects.get(id=vlan_obj_id)
             params['vlan_id'] = vlan_obj.vlan_id
 
-        if 'port_conditions' not in params.keys():
+        if 'port_conditions' not in list(params.keys()):
             params['port_conditions'] = {'slot_number': mdf_dslam_obj.slot_number,
                                          'port_number': mdf_dslam_obj.port_number}
             params['dslam_id'] = mdf_dslam_obj.dslam_id
@@ -2617,11 +2625,11 @@ class CustomerPortViewSet(mixins.ListModelMixin,
         # End Port PVC Set
 
         headers = self.get_success_headers(serializer.data)
-        description = u'Create Customer {0}'.format(serializer.data['username'])
+        description = 'Create Customer {0}'.format(serializer.data['username'])
         add_audit_log(request, 'Customer', serializer.data['id'], 'Create Customer', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    @list_route(methods=['POST'])
+    @action(methods=['GET'], detail=True)
     def activeport(self, request):
         user = request.user
         data = request.data
@@ -2655,7 +2663,7 @@ class CustomerPortViewSet(mixins.ListModelMixin,
                                  'vlan_obj_id does not exist'}, \
                             status=status.HTTP_400_BAD_REQUEST)
 
-        if 'card_ports' not in params.keys():
+        if 'card_ports' not in list(params.keys()):
             params['port_indexes'] = [
                 {'slot_number': mdf_dslam_obj.slot_number, 'port_number': mdf_dslam_obj.port_number}]
         if params.get('vlan_id'):
@@ -2687,7 +2695,7 @@ class CustomerPortViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update Customer Port {0}: {1}'.format(instance.name, request.data)
+        description = 'Update Customer Port {0}: {1}'.format(instance.name, request.data)
         add_audit_log(request, 'CustomerPort', instance.id, 'Update Customer Port', description)
         return Response(serializer.data)
 
@@ -2703,11 +2711,11 @@ class PortCommandViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         user = self.request.user
-        print
+        print()
         '--------------------------'
-        print
+        print()
         self.request.query_params
-        print
+        print()
         '--------------------------'
         portcommands = PortCommand.objects.all().order_by('-created_at')
 
@@ -2725,14 +2733,14 @@ class PortCommandViewSet(mixins.ListModelMixin,
             try:
                 port_obj = DSLAMPort.objects.get(id=dslamport_id)
             except Exception as ex:
-                print
+                print()
                 ex
                 return []
 
         elif slot_number and port_number and dslam_id:
             port_obj = DSLAMPort.objects.get(dslam__id=dslam_id, port_number=port_number, slot_number=slot_number)
         else:
-            print
+            print()
             '=>>>>>>>>> please send dslamport_id'
             return []
 
@@ -2810,15 +2818,15 @@ class BulkCommand(views.APIView):
             command_objs.append(command_dict)
         conditions = data.get('conditions')
         title = data.get('title')
-        print
+        print()
         '======================================='
-        print
+        print()
         title
-        print
+        print()
         command_objs,
-        print
+        print()
         conditions
-        print
+        print()
         '======================================='
         result = utility.bulk_command(title, command_objs, conditions)
         return JsonResponse({'result': 'Commands is running with conditions'})
@@ -2855,7 +2863,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
 
         return queryset
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def get_free_identifier(self, request):
         data = request.query_params
         telecom_id = data.get('telecom_id')
@@ -2891,7 +2899,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
         telecom_center_obj = TelecomCenter.objects.get(id=telecom_center_id)
         prefix_bukht_name = telecom_center_obj.prefix_bukht_name
         dslams = DSLAM.objects.filter(telecom_center=telecom_center_obj).order_by('dslam_number')
-        print(dslams.count())
+        print((dslams.count()))
         # delete all bukht table on tc
         MDFDSLAM.objects.filter(telecom_center_id=telecom_center_id).delete()
 
@@ -2923,7 +2931,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
                         floor_start = floor_start + 1
                 floor_step = 2
 
-            floor_range = range(floor_start, telecomMDF_obj.floor_count + floor_start, floor_step)
+            floor_range = list(range(floor_start, telecomMDF_obj.floor_count + floor_start, floor_step))
 
             # create connection range
             if telecomMDF_obj.connection_counting_status != "STANDARD":
@@ -2935,7 +2943,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
                         conn_start = telecomMDF_obj.connection_start + 1
                 conn_step = 2
 
-            connection_range = xrange(conn_start, conn_start + telecomMDF_obj.connection_count, conn_step)
+            connection_range = range(conn_start, conn_start + telecomMDF_obj.connection_count, conn_step)
 
             # create bukht table without dslam cart and port
             for floor_number in floor_range:
@@ -2947,7 +2955,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
                         'reseller': telecomMDF_obj.reseller,
                         'connection_number': connection_number,
                         'status_of_port': telecomMDF_obj.status_of_port,
-                        'identifier_key': (u'{0}-{1:0' + max_number + '}').format(unicode(prefix_bukht_name), row_count)
+                        'identifier_key': ('{0}-{1:0' + max_number + '}').format(str(prefix_bukht_name), row_count)
                     })
                     row_count += 1
 
@@ -2957,8 +2965,8 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
             faulty_ports = DSLAMPortFaulty.objects.filter(dslam_id__in=dslams.values_list('id', flat=True))
             for dslam in dslams:
                 for dslam_cart in DSLAMCart.objects.filter(dslam=dslam).order_by('priority', 'id'):
-                    slot_range = xrange(dslam_cart.cart_start, dslam_cart.cart_start + dslam_cart.cart_count)
-                    port_range = xrange(dslam_cart.port_start, dslam_cart.port_start + dslam_cart.port_count)
+                    slot_range = range(dslam_cart.cart_start, dslam_cart.cart_start + dslam_cart.cart_count)
+                    port_range = range(dslam_cart.port_start, dslam_cart.port_start + dslam_cart.port_count)
                     try:
                         for slot in slot_range:
                             for port in port_range:
@@ -2989,7 +2997,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
                                 mdf_dslam.save()
                                 telecomBukht_index += 1
                     except Exception as ex:
-                        print
+                        print()
                         ex
                         pass
 
@@ -3014,12 +3022,12 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
 
                 mdf_dslam.save()
             except Exception as ex:
-                print
+                print()
                 ex
 
         return Response({'result': 'Created mdf dslam'}, status=status.HTTP_201_CREATED)
 
-    @list_route(methods=['GET'])
+    @action(methods=['GET'], detail=True)
     def download(self, request):
         def stream():
             buffer_ = StringIO.StringIO()
@@ -3059,7 +3067,7 @@ class MDFDSLAMViewSet(mixins.ListModelMixin,
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        description = u'Update MDF DSLAM Status {0}: {1}'.format(instance.id, request.data)
+        description = 'Update MDF DSLAM Status {0}: {1}'.format(instance.id, request.data)
         add_audit_log(request, 'MDFDSLAM', instance.id, 'Update MDF DSLAM', description)
         return Response(serializer.data)
 
@@ -3158,11 +3166,11 @@ class DSLAMFaultyConfigViewSet(mixins.ListModelMixin,
                 portfaulty.slot_number = slot_number
                 portfaulty.save()
             except Exception as ex:
-                print
+                print()
                 ex
                 pass
 
-        description = u'Add DSLAM Faulty Config {0}'.format(serializer.data['dslam_id'])
+        description = 'Add DSLAM Faulty Config {0}'.format(serializer.data['dslam_id'])
         add_audit_log(request, 'DSLAMFaultyConfig', serializer.data['id'], 'Add DSLAM Faulty Config', description)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -3215,7 +3223,7 @@ class DSLAMFaultyConfigViewSet(mixins.ListModelMixin,
             except:
                 pass
 
-        description = u'Update DSLAM Falty Config {0}, params: {1}'.format(instance.id, request.data)
+        description = 'Update DSLAM Falty Config {0}, params: {1}'.format(instance.id, request.data)
         add_audit_log(request, 'DSLAMFaltyConfig', instance.id, 'Update DSLAM Falty Config', description)
         return Response(serializer.data)
 
@@ -3270,7 +3278,7 @@ class QuickSearchView(views.APIView):
                 mdf_dslam_ports = mdf_dslam_objs.filter(identifier_key__in=reseller_identifier_keys).values('dslam_id',
                                                                                                             'slot_number',
                                                                                                             'port_number')
-                dslam_ids = set(map(lambda dslam: dslam.get('dslam_id'), mdf_dslam_ports))
+                dslam_ids = set([dslam.get('dslam_id') for dslam in mdf_dslam_ports])
                 dslam_objs = dslam_objs.filter(id__in=dslam_ids).filter(
                     Q(ip=value) | Q(name__icontains=value) | Q(hostname__icontains=value)) | Q(fqdn__icontains=value)
             else:
@@ -3333,8 +3341,6 @@ class RegisterPortAPIView(views.APIView):
         res = ''
         result = ''
         PVC = ''
-        print
-        data
         reseller_data = data.get('reseller')
         customer_data = data.get('subscriber')
         mdf_status = data.get('status')
@@ -3350,7 +3356,7 @@ class RegisterPortAPIView(views.APIView):
             ip = request.META.get('REMOTE_ADDR')
         identifier_key = data.get('identifier_key')
         if not identifier_key:
-            identifier_key = str(time.time())
+            identifier_key = str(random.randint(10000000, 9999999999999999))
         port_data = data.get('port')
         try:
             fqdn = port_data.get('fqdn')
@@ -3392,7 +3398,7 @@ class RegisterPortAPIView(views.APIView):
             if telecom_mdf_obj:
                 telecom_mdf_obj = telecom_mdf_obj.first()
 
-            mdf_dslam_obj, mdf_dslam__updated = MDFDSLAM.objects.update_or_create(
+            mdf_dslam_obj, mdf_dslam_updated = MDFDSLAM.objects.update_or_create(
                 telecom_center_id=dslam_obj.telecom_center.id, telecom_center_mdf_id=telecom_mdf_obj.id,
                 #### Check this whole line
                 row_number=0, floor_number=0, connection_number=0,  ##### Check this whole line
@@ -3423,10 +3429,10 @@ class RegisterPortAPIView(views.APIView):
                     port_data.get('port_number'), ip)
                 mail_info.msg_subject = 'Error in RegisterPortAPIView'
                 Mail.Send_Mail(mail_info)
-                return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
+                return JsonResponse({'Result': ''}, status=status.HTTP_400_BAD_REQUEST)
         try:
             reseller_obj, reseller_created = Reseller.objects.get_or_create(name=reseller_data.get('name'))
-            print
+            print()
             'reseller', reseller_obj
 
             customer_obj, customer_updated = CustomerPort.objects.update_or_create(
@@ -3445,7 +3451,7 @@ class RegisterPortAPIView(views.APIView):
             rp.save()
 
             vlan_objs = Vlan.objects.filter(reseller=reseller_obj)
-            print
+            print()
             'vlan_objs ->', vlan_objs
             # return JsonResponse({'vlan':  vlan_objs[0].vlan_id, 'vpi' : reseller_obj.vpi,'vci' : reseller_obj.vci})
             port_indexes = [{'slot_number': port_data.get('card_number'), 'port_number': port_data.get('port_number')}]
@@ -3460,7 +3466,7 @@ class RegisterPortAPIView(views.APIView):
                 "vpi": 0,
                 "vci": 35,
             }
-
+            # 11111
             params = {
                 "type": "dslamport",
                 "is_queue": False,
@@ -3632,14 +3638,14 @@ class RegisterPortAPIView(views.APIView):
                 else:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    mail_info = Mail()
-                    mail_info.from_addr = 'oss-problems@pishgaman.net'
-                    mail_info.to_addr = 'oss-problems@pishgaman.net'
-                    mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
-                        str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
-                        port_data.get('card_number'), port_data.get('port_number'), ip)
-                    mail_info.msg_subject = 'Error in RegisterPortAPIView'
-                    Mail.Send_Mail(mail_info)
+                    # mail_info = Mail()
+                    # mail_info.from_addr = 'oss-problems@pishgaman.net'
+                    # mail_info.to_addr = 'oss-problems@pishgaman.net'
+                    # mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
+                    #     str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
+                    #     port_data.get('card_number'), port_data.get('port_number'), ip)
+                    # mail_info.msg_subject = 'Error in RegisterPortAPIView'
+                    # Mail.Send_Mail(mail_info)
                     return JsonResponse(
                         {'result': str('an error occurred. please try again. {0}'.format(str(exc_tb.tb_lineno)))})
 
@@ -3683,8 +3689,8 @@ class RegisterPortAPIView(views.APIView):
                 port_vlan_obj.vlan = vlan_objs.first()
                 port_vlan_obj = port_obj
                 port_vlan_obj.save()
-            if (dslam_obj.dslam_type_id == 4):
-                if ('succeed' in sid):
+            if dslam_obj.dslam_type_id == 4:
+                if 'succeed' in sid:
                     return JsonResponse({'id': 201, 'res': sid, 'msg': 'port config has been done.'},
                                         status=status.HTTP_201_CREATED)
                 else:
@@ -3697,28 +3703,26 @@ class RegisterPortAPIView(views.APIView):
                 else:
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
-            if (dslam_obj.dslam_type_id == 1):
-                if ('No results was returned' in PVC['result']):
-                    return JsonResponse({'result': 'Error', 'ErrorDesc': PVC['result'], 'id': 400, 'res': 'Error'},
-                                        status=status.HTTP_400_BAD_REQUEST)
+            if dslam_obj.dslam_type_id == 1:
+                if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'), port_data.get('port_number'), reseller_obj.vpi,
+                                                                                       reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:
+                    return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
+                                        status=status.HTTP_201_CREATED)
                 else:
                     return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
                                         status=status.HTTP_201_CREATED)
-            else:
-                return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
-                                    status=status.HTTP_201_CREATED)
                 # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            mail_info = Mail()
-            mail_info.from_addr = 'oss-problems@pishgaman.net'
-            mail_info.to_addr = 'oss-problems@pishgaman.net'
-            mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
-                str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'), port_data.get('card_number'),
-                port_data.get('port_number'), ip)
-            mail_info.msg_subject = 'Error in RegisterPortAPIView'
-            Mail.Send_Mail(mail_info)
+            # mail_info = Mail()
+            # mail_info.from_addr = 'oss-problems@pishgaman.net'
+            # mail_info.to_addr = 'oss-problems@pishgaman.net'
+            # mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
+            #     str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'), port_data.get('card_number'),
+            #     port_data.get('port_number'), ip)
+            # mail_info.msg_subject = 'Error in RegisterPortAPIView'
+            # Mail.Send_Mail(mail_info)
 
             # return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
             return JsonResponse(
@@ -4059,7 +4063,7 @@ class RunCommandAPIView(views.APIView):
 
                 # ---------------------------------------------------zyxel---------------------------------------------------
                 elif (dslam_obj.dslam_type_id == 1):
-                    description = u'Run Command {0} on DSLAM {1}'.format(
+                    description = 'Run Command {0} on DSLAM {1}'.format(
                         command,
                         dslam_obj.name,
                     )
@@ -4089,7 +4093,7 @@ class RunCommandAPIView(views.APIView):
                         if 'Busy' in result:
                             return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
                         else:
-                            description = u'Run Command {0} on DSLAM {1}'.format(
+                            description = 'Run Command {0} on DSLAM {1}'.format(
                                 command,
                                 dslam_obj.name)
 
@@ -4097,7 +4101,7 @@ class RunCommandAPIView(views.APIView):
                     if (command == "show linerate"):
                         try:
                             sp = showPort()
-                            result = result['result'].split("\r\n")
+                            result = result['result'].split("\\r\\n")
                             sp.dslamNameAndcammandName = result[1]
                             sp.slotPort = result[2].split(",")[0].split("=")[1]
                             sp.link = result[3].replace(" ", "").split("=")[1]
@@ -4535,16 +4539,16 @@ class PortAssignAPIView(views.APIView):
             customerObj.identifier_key = identifier_key
             customerObj.save()
             add_audit_log(request, '', None, 'Port Assign',
-                          u'Assign Port to {0} in {1} with {2} Was successful'.format(username, datetime.now(),
-                                                                                      identifier_key))
-            return JsonResponse({'Result': u'Assign Port to {0} in {1} with {2} was successful'.format(username,
-                                                                                                       datetime.now(),
-                                                                                                       identifier_key)},
+                          'Assign Port to {0} in {1} with {2} Was successful'.format(username, datetime.now(),
+                                                                                     identifier_key))
+            return JsonResponse({'Result': 'Assign Port to {0} in {1} with {2} was successful'.format(username,
+                                                                                                      datetime.now(),
+                                                                                                      identifier_key)},
                                 status=status.HTTP_200_OK)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            add_audit_log(request, u'Assign Port to {0} in {1} failed'.format(username, datetime.now()), None,
+            add_audit_log(request, 'Assign Port to {0} in {1} failed'.format(username, datetime.now()), None,
                           'Port Assign', str(ex))
             # return JsonResponse({'result': str(ex),'Line': str(exc_tb.tb_lineno)})
             return JsonResponse({'result': str('an error occurred. please try again')})
@@ -4559,7 +4563,7 @@ class AddCustomerAPIView(views.APIView):
         try:
             data = request.data
             if (CustomerPort.objects.filter(username=data.get('username')).exists()):
-                return JsonResponse({'result': u'UserName {0} already exists.'.format(data.get('username'))})
+                return JsonResponse({'result': 'UserName {0} already exists.'.format(data.get('username'))})
             customer = CustomerPort()
             customer.lastname = data.get('lastname')
             customer.firstname = data.get('firstname')
@@ -4573,13 +4577,13 @@ class AddCustomerAPIView(views.APIView):
             customer.identifier_key = data.get('mobile')
             customer.telecom_center_id = data.get('telecom_center_id')
             customer.save()
-            return JsonResponse({'result': u'Customer {0} in {1} has been created successfully.'.format(
+            return JsonResponse({'result': 'Customer {0} in {1} has been created successfully.'.format(
                 data.get('username'), datetime.now())})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             add_audit_log(request,
-                          u'Add Customer {0} Process in {1} failed'.format(data.get('username'), datetime.now()), None,
+                          'Add Customer {0} Process in {1} failed'.format(data.get('username'), datetime.now()), None,
                           'Add Customer', str(ex))
             return JsonResponse({'result': str(ex), 'Line': str(exc_tb.tb_lineno)})
             return JsonResponse({'result': str('an error occurred. please try again')})
@@ -4641,8 +4645,8 @@ class SetShaskamInquiryAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             add_audit_log(request,
-                          u'Set Shaskam Inquiry for Dsl ServiceId {0} in {1} was Failed,'.format(dsl_service_id,
-                                                                                                 datetime.now()), None,
+                          'Set Shaskam Inquiry for Dsl ServiceId {0} in {1} was Failed,'.format(dsl_service_id,
+                                                                                                datetime.now()), None,
                           'SetShaskamInquiry', str(ex))
             # return JsonResponse({'result': str(ex),'Line': str(exc_tb.tb_lineno)})
             return JsonResponse({'result': str('an error occurred. please try again')})
@@ -5009,7 +5013,7 @@ class RegisterPortByResellerIdAPIView(views.APIView):
     def post(self, request, format=None):
         user = request.user
         data = request.data
-        print
+        print()
         data
         reseller_data = data.get('reseller')
         customer_data = data.get('subscriber')
@@ -5100,7 +5104,7 @@ class RegisterPortByResellerIdAPIView(views.APIView):
                 return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
         try:
             reseller_obj, reseller_created = Reseller.objects.get_or_create(id=reseller_data.get('resellerId'))
-            print
+            print()
             'reseller', reseller_obj
 
             customer_obj, customer_updated = CustomerPort.objects.update_or_create(
@@ -5119,7 +5123,7 @@ class RegisterPortByResellerIdAPIView(views.APIView):
             rp.save()
 
             vlan_objs = Vlan.objects.filter(reseller=reseller_obj)
-            print
+            print()
             'vlan_objs ->', vlan_objs
             # return JsonResponse({'result':  reseller_obj.vci, 'vpi' : reseller_obj.vpi})
             port_indexes = [{'slot_number': port_data.get('card_number'), 'port_number': port_data.get('port_number')}]
@@ -5373,16 +5377,16 @@ class GetDslamBackupAPIView(views.APIView):
                     result = utility.dslam_port_run_command(dslam_obj.pk, 'get config', json.loads(params))
                     os.mkdir('{0}/{1}-{2}'.format('/opt/PortMan/backs', telecom_center, dslam_obj.ip))
                     with open('{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/backs', telecom_center, dslam_obj.ip,
-                                                               telecom_center, dslam_obj.ip), 'w')  as text_file:
+                                                               telecom_center, dslam_obj.ip), 'w') as text_file:
                         text_file.write("backUp Text: %s" % result['results'])
                 except Exception as ex:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    os.mkdir(u'{0}/{1}-{2}'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip))
+                    os.mkdir('{0}/{1}-{2}'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip))
                     with open(
-                            u'{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip,
-                                                              telecom_center, dslam_obj.ip), 'w')  as text_file:
-                        text_file.write(u"Error: %s" % str(ex))
+                            '{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip,
+                                                             telecom_center, dslam_obj.ip), 'w') as text_file:
+                        text_file.write("Error: %s" % str(ex))
 
             return JsonResponse({'result': 'OK'}, status=status.HTTP_201_CREATED)
 
@@ -5424,10 +5428,10 @@ class SetTimeAllDslamsAPIView(views.APIView):
                 except Exception as ex:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                    os.mkdir(u'{0}/{1}-{2}'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip))
-                    with open(u'{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/timeErrors', telecom_center, dslam_obj.ip,
-                                                                telecom_center, dslam_obj.ip), 'w')  as text_file:
-                        text_file.write(u"Error: %s" % str(ex))
+                    os.mkdir('{0}/{1}-{2}'.format('/opt/PortMan/backsErrors', telecom_center, dslam_obj.ip))
+                    with open('{0}/{1}-{2}/{3}-{4}.txt'.format('/opt/PortMan/timeErrors', telecom_center, dslam_obj.ip,
+                                                               telecom_center, dslam_obj.ip), 'w') as text_file:
+                        text_file.write("Error: %s" % str(ex))
 
             return JsonResponse({'result': 'OK'}, status=status.HTTP_201_CREATED)
 
@@ -5500,59 +5504,437 @@ class GetPortInfoByIdAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
-class FiberHomeCommandAPIView(views.APIView):
+class FiberHomeGetCardAPIView(views.APIView):
 
     def get_permissions(self):
-        return (permissions.IsAuthenticated(),)
+        return permissions.IsAuthenticated(),
 
     def post(self, request, format=None):
+        print('FiberHomeGetCardAPIView')
+        data = request.data
+        command = 'Show Shelf'
+        dslam_id = data.get('dslam_id', None)
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        active_cards = []
+        inactive_cards = []
+
         try:
-            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-            if x_forwarded_for:
-                ip = x_forwarded_for.split(',')[0]
-            else:
-                ip = request.META.get('REMOTE_ADDR')
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                result = [val for val in result if re.search(r'\d\s{4,}\w', val)]
+                for i in result:
+                    card_number = i.split()
+                    if "up" in i:
+                        active_cards.append(card_number)
+                    else:
+                        inactive_cards.append(card_number)
+                return JsonResponse(
+                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN3300'})
 
-            user = request.user
-            data = request.data
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                result = [val for val in result['res'] if re.search(r'\d\s{4,}\d', val)]
+                for i in result:
+                    card_number = i.split()[1:3]
+                    if "AD32+" in i:
+                        active_cards.append(card_number)
+                    else:
+                        inactive_cards.append(card_number)
+                return JsonResponse(
+                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN2200'})
 
-            s = []
-            command = data.get('command', None)
-            subscriber = data.get('subscriber')
-            fqdn = request.data.get('fqdn')
-            if ('.z6' in fqdn):
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                result = [val for val in result if re.search(r'\s{10,}', val)]
+                for i in result:
+                    card_number = i.split()[0:2]
+                    if "ADSL" in i:
+                        active_cards.append(card_number)
+                    else:
+                        inactive_cards.append(card_number)
+                return JsonResponse(
+                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN5006'})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+class FiberHomeGetPortAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        print('FiberHomeGetCardAPIView')
+        data = request.data
+        command = 'Show Card'
+        dslam_id = data.get('dslam_id', None)
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        ports_info = []
+
+        try:
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                if "There is one of the following problems:" in result:
+                    return JsonResponse({'result': result})
+                for i in result:
+                    port_info = {}
+                    info = i.split()
+                    port_info['port_number'] = info[1].split(":")[1]
+                    port_info['port_state'] = info[-1]
+                    ports_info.append(port_info)
+                return JsonResponse({'result': ports_info})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                if "This card is not configured" in result:
+                    return JsonResponse({'result': result})
+                if "No card is defined on this port" in result:
+                    return JsonResponse({'result': result})
+                result = [val for val in result if re.search(r'.prf', val)]
+                for i in result:
+                    port_info = {}
+                    info = i.split()
+                    port_info['port_number'] = info[0]
+                    port_info['port_state'] = info[2]
+                    port_info['profile_name'] = info[-1]
+                    ports_info.append(port_info)
+                return JsonResponse({'result': ports_info})
+                # return JsonResponse({'result': result})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                if "The Card number maybe unavailable or does not exist." in result:
+                    return JsonResponse({'result': result})
+                if "Card number is out of range." in result:
+                    return JsonResponse({'result': result})
+                for i in result:
+                    port_info = {}
+                    info = i.split()
+                    port_info['port_number'] = info[1]
+                    port_info['port_state'] = info[-1]
+                    ports_info.append(port_info)
+                return JsonResponse({'result': ports_info})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+###### Get PVC and VLAN API
+class GetPVCVlanAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        print('Get PVC VLAN')
+        data = request.data
+        command = 'Show VLAN'
+        dslam_id = data.get('dslam_id', None)
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        pvc_vlan = []
+        vlan_info = {}
+
+        try:
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                result = utility.dslam_port_run_command(dslamObj.pk, "Show All VLANs", params)
+                if "information" not in result[0]:
+                    return Response({'result': result})
+                cart_port = [val.split() for val in result]
+                flag = 0
+                for item in reversed(cart_port):
+                    if item[0] == str(params['port_conditions']['slot_number']) and item[1] == str(
+                            params['port_conditions']['port_number']):
+                        vlan_info['pvc_num'] = item[2]
+                        flag = 1
+                    if 'vlan' in item and flag == 1:
+                        vlan_info['vlan_id'] = item[2].split(":")[1]
+                        vlan_info['vlan_name'] = item[1].split(":")[1]
+                        break
+                result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                if "pvc" not in str(result[0]):
+                    return Response({'result': result})
+                for val in result:
+                    vlan_info.update(val)
+                pvc_vlan.append(vlan_info)
+                return Response({'result': pvc_vlan})
+                # return Response({'result': result})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+                # vlan_info['vlan_id'] = result['VLAN ID']
+                # vlan_info['vlan_name'] = result['Name']
+                # result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                # result = result[-1]
+                # result = re.split("\s{2,}", result)
+                # vlan_info['pvc1'] = result[4].strip()
+                # vlan_info['pvc2'] = result[6].strip()
+                # pvc_vlan.append(vlan_info)
+                # return JsonResponse({'result': pvc_vlan})
+                return JsonResponse({'result': result})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                vlan_info.update(result)
+                result = utility.dslam_port_run_command(dslamObj.pk, "show pvc", params)
+                if "Profile name" not in result:
+                    return JsonResponse({'result': result})
+                for val in result:
+                    if "pvc index" not in val:
+                        vlan_info[val] = result.get(val)
+                    else:
+                        if result.get(val)['vpi'] != "0" or result.get(val)["vci"] != "0":
+                            vlan_info[val] = result.get(val)
+                pvc_vlan.append(vlan_info)
+                return JsonResponse({'result': pvc_vlan})
+                # return JsonResponse({'result': result})
+
+            elif dslam_type == 1:  ############################## zyxel ##############################
+                result = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
+                if 'name' not in result[0]:
+                    return JsonResponse({'result': result})
+                result = result[-2:]
+                pvc_count = 0
+                for val in result:
+                    if "pvc" in val:
+                        vlan_info = {}
+                        pvc_count += 1
+                        vlan_info["pvc"] = pvc_count
+                        vlan_info["vlan_id"] = val.split()[0]
+                        vlan_info['vpi'] = val.split()[1].split("-")[-1].split("/")[0]
+                        vlan_info['vci'] = val.split()[1].split("-")[-1].split("/")[1]
+                        print(pvc_vlan)
+                        pvc_vlan.append(vlan_info)
+                return JsonResponse({'result': pvc_vlan})
+                # return JsonResponse({'result': result})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+class AddToVlanAPIView(views.APIView):  # 000000
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        data = request.data
+        port_data = data.get('port', None)
+        command = 'Show Shelf'
+        fqdn = port_data.get('fqdn', None)
+        reseller_data = data.get('reseller')
+        customer_data = data.get('subscriber')
+        dslam_obj = DSLAM.objects.get(fqdn=fqdn)
+        mdf_status = data.get('status')
+        identifier_key = data.get('identifier_key')
+        if not identifier_key:
+            identifier_key = str(random.randint(10000000, 9999999999999999))
+        dslam_type = dslam_obj.dslam_type_id
+        if not mdf_status:
+            mdf_status = 'BUSY'
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        try:
+            if '.z6' in fqdn:
                 fqdn = fqdn.replace('.z6', '.Z6')
+
+            # dslam_obj = DSLAM.objects.get(name=port_data.get('dslam_name'), telecom_center__name=port_data.get('telecom_center_name'))
             try:
-                dslamObj = DSLAM.objects.get(fqdn=fqdn)
-                dslam_id = dslamObj.id
-                dslam_ip = dslamObj.ip
+                dslam_obj = DSLAM.objects.get(fqdn=fqdn)
+                # return JsonResponse({'Result': serialize('json',[dslam_obj])}, status=status.HTTP_200_OK)
+                telecom_id = dslam_obj.telecom_center_id
+                city_id = TelecomCenter.objects.get(id=telecom_id).city_id
             except ObjectDoesNotExist as ex:
                 try:
-                    if ('.Z6' in fqdn):
+                    if '.Z6' in fqdn:
                         fqdn = fqdn.replace('.Z6', '.z6')
-                    dslamObj = DSLAM.objects.get(fqdn=fqdn)
-                    dslam_id = dslamObj.id
-                    dslam_ip = dslamObj.ip
-                except Exception as ex:
+                        dslam_obj = DSLAM.objects.get(fqdn=fqdn)
+                        # return JsonResponse({'Result': dslam_obj.fqdn}, status=status.HTTP_200_OK)
+                        telecom_id = dslam_obj.telecom_center_id
+                        city_id = TelecomCenter.objects.get(id=telecom_id).city_id
+
+                except ObjectDoesNotExist as ex:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                     mail_info = Mail()
                     mail_info.from_addr = 'oss-problems@pishgaman.net'
                     mail_info.to_addr = 'oss-problems@pishgaman.net'
-                    mail_info.msg_body = 'Error in RunCommandAPIViewin/Fiberhome2200 Line {0}.Error Is: {1}. fqdn = {2},card = {3}, port = {4}, command = {5}, subscriber = {6}. IP: {7}'.format(
-                        str(exc_tb.tb_lineno), str(ex), request.data.get('fqdn'),
-                        request.data.get('params').get('port_conditions').get('slot_number'),
-                        request.data.get('params').get('port_conditions').get('port_number'), command, subscriber, ip)
-                    mail_info.msg_subject = 'Error in RunCommandAPIView'
+                    mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
+                        str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
+                        port_data.get('card_number'), port_data.get('port_number'), ip)
+                    mail_info.msg_subject = 'Error in RegisterPortAPIView'
                     Mail.Send_Mail(mail_info)
-                    return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
+                    return JsonResponse({'Result': 'Dslam Not Found. Please check FQDN again.'},
+                                        status=status.HTTP_200_OK)
 
-            userProfile = ''  # DSLAMPort.objects.get(port_number = request.data.get('params').get('port_conditions').get('port_number'), slot_number = request.data.get('params').get('port_conditions').get('slot_number'), dslam_id = dslam_id).line_profile
-            params = data.get('params', None)
+            telecom_mdf_obj = TelecomCenterMDF.objects.filter(telecom_center_id=dslam_obj.telecom_center.id)
+            print(dslam_obj.telecom_center.id)
+            if telecom_mdf_obj:
+                telecom_mdf_obj = telecom_mdf_obj.first()
+            print(dslam_obj.telecom_center)
+            mdf_dslam_obj, mdf_dslam_updated = MDFDSLAM.objects.update_or_create(
+                telecom_center_id=dslam_obj.telecom_center.id,
+                telecom_center_mdf_id=telecom_mdf_obj.id,
+                #### Check this whole line
+                row_number=0, floor_number=0, connection_number=0,  ##### Check this whole line
+                dslam_id=dslam_obj.id, slot_number=port_data.get('card_number'),
+                port_number=port_data.get('port_number'),
+                defaults={'status': mdf_status, 'identifier_key': identifier_key})
+            # if mdf_dslam.status != 'FREE':
+            #    return JsonResponse(
+            #            {'result': 'port status is {0}'.format(mdf_dslam.status), 'id': -1}
+            #            )
+            # else:
+            #    mdf_dslam.status = 'RESELLER'
+            #    mdf_dslam.save()
+            # identifier_key = mdf_dslam.identifier_key
+        except ObjectDoesNotExist as ex:
+            return JsonResponse({'result': str(ex), 'id': -1})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            try:
+                return JsonResponse({'result': 'Error is {0}--{1}'.format(ex, exc_tb.tb_lineno)})
+            except ObjectDoesNotExist as ex:
+                mail_info = Mail()
+                mail_info.from_addr = 'oss-problems@pishgaman.net'
+                mail_info.to_addr = 'oss-problems@pishgaman.net'
+                mail_info.msg_body = 'Error in RegisterPortAPIView in Line {0}.Error Is: "{1}". Request is From {2} .fqdn = {3}, Cart = {4}, Port = {5},Ip: {6}'.format(
+                    str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'), port_data.get('card_number'),
+                    port_data.get('port_number'), ip)
+                mail_info.msg_subject = 'Error in RegisterPortAPIView'
+                Mail.Send_Mail(mail_info)
+                return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
 
+        try:
+            reseller_obj, reseller_created = Reseller.objects.get_or_create(name=reseller_data.get('name'))
+
+            customer_obj, customer_updated = CustomerPort.objects.update_or_create(
+                username=customer_data.get('username'),
+                defaults={'identifier_key': identifier_key, 'telecom_center_id': mdf_dslam_obj.telecom_center_id}
+            )
+
+            rp = ResellerPort()
+            rp.identifier_key = identifier_key
+            rp.status = 'ENABLE'
+            rp.dslam_id = dslam_obj.id
+            rp.dslam_slot = port_data.get('card_number')
+            rp.dslam_port = port_data.get('port_number')
+            rp.reseller = reseller_obj
+            rp.telecom_center_id = mdf_dslam_obj.telecom_center_id
+            rp.save()
+
+            vlan_objs = Vlan.objects.filter(reseller=reseller_obj)
+            print()
+            'vlan_objs ->', vlan_objs
+            # return JsonResponse({'vlan':  vlan_objs[0].vlan_id, 'vpi' : reseller_obj.vpi,'vci' : reseller_obj.vci})
+            port_indexes = [{'slot_number': port_data.get('card_number'), 'port_number': port_data.get('port_number')}]
+            pishParams = {
+                "type": "dslamport",
+                "is_queue": False,
+                "vlan_id": 3900,
+                "vlan_name": 'pte',
+                "dslam_id": dslam_obj.id,
+                "port_indexes": port_indexes,
+                "username": customer_data.get('username'),
+                "vpi": 0,
+                "vci": 35,
+            }
+            vlan_name = vlan_objs[0].vlan_name
+            if dslam_type == 3 or dslam_type == 4 or dslam_type == 5:
+                vlan_name = str(reseller_obj).split('-')[1]
+                if vlan_name == 'didehban':
+                    vlan_name = 'dideban'
+                if vlan_name == 'baharsamaneh':
+                    vlan_name = 'baharsam'
+                if vlan_name == 'badrrayan':
+                    vlan_name = 'badrray'
+            params = {
+                "type": "dslamport",
+                "is_queue": False,
+                "vlan_id": vlan_objs[0].vlan_id,
+                "vlan_name": vlan_name,
+                "dslam_id": dslam_obj.id,
+                "port_indexes": port_indexes,
+                "username": customer_data.get('username'),
+                "vpi": reseller_obj.vpi,
+                "vci": reseller_obj.vci,
+            }
+
+            # res = utility.dslam_port_run_command(dslam_obj.id, 'delete from vlan', pishParams)
+            result = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
+            # PVC = utility.dslam_port_run_command(dslam_obj.id, 'port pvc show', params)
+
+            # result2 = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
+
+            return Response({'result': result})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+class FiberHomeCommandAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        device_ip = get_device_ip(request)
+        data = request.data
+        command = data.get('command', None)
+        command = command_recognise(command)
+        fqdn = request.data.get('fqdn')
+        dslamObj = DSLAM.objects.get(fqdn=fqdn)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
-            return JsonResponse({'Error': result})
+            # if dslam_type == 1:  ################################### zyxel ###################################
+            #     return JsonResponse({'Result': dslam_type})
+            if dslam_type == 1:  ################################### zyxel ###################################
+                if not command:
+                    return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
+                if result:
+                    if 'Busy' in result:
+                        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
+                    else:
+                        description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
 
+                        add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
+
+                return JsonResponse({'response': result})
+
+            elif dslam_type == 2:  # huawei
+                return JsonResponse({'Result': dslam_type})
+            elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                if command == 'show mac by slot port':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
+                return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+
+                return JsonResponse({'Result': result})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                if command == 'Show VLAN':
+                    return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
+                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
+
+            elif dslam_type == 7:  ########################### zyxel1248 ##########################
+                return JsonResponse({'Result': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -5561,7 +5943,7 @@ class FiberHomeCommandAPIView(views.APIView):
 
 class RunCommandByIPAPIView(views.APIView):
     def get_permissions(self):
-        return (permissions.IsAuthenticated(),)
+        return permissions.IsAuthenticated(),
 
     def post(self, request, format=None):
         try:
@@ -5716,12 +6098,33 @@ class RunCommandByIPAPIView(views.APIView):
                     sid = fhresponse.json()
                     res = sid.split("\n\r")
                     return JsonResponse({'current_userProfile': userProfile, 'response': sid.split("\r\n")})
+                    # ---------------------------------------------------huawei---------------------------------------------------
+                    if (dslam_obj.dslam_type_id == 2):
+                        try:
+                            if (
+                                    command == 'show mac slot port' or command == 'show mac with port' or command == 'show mac'):
+                                command = 'show mac slot port'
+                            if not command:
+                                return Response({'result': 'Command does not exits'},
+                                                status=status.HTTP_400_BAD_REQUEST)
+                            result = utility.dslam_port_run_command(dslam_obj.pk, command, params)
+                            return JsonResponse({'response': result['result'].split('\r\n')[31].split()[2]})
+                        except Exception as ex:
+                            try:
+                                if ('There is not any MAC address record' in result['result']):
+                                    return JsonResponse({'response': 'There is not any MAC address record'})
+                                return JsonResponse({'response': result['result'].split('\r\n')})
+                            except Exception as ex:
+                                exc_type, exc_obj, exc_tb = sys.exc_info()
+                                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                                return JsonResponse({'result': str(
+                                    'an error occurred. please try again.{0}'.format(str(exc_tb.tb_lineno)))})
 
-                # ---------------------------------------------------zyxel---------------------------------------------------
-                description = u'Run Command {0} on DSLAM {1}'.format(
-                    command,
-                    dslam_obj.name,
-                )
+                    # ---------------------------------------------------zyxel---------------------------------------------------
+                    description = 'Run Command {0} on DSLAM {1}'.format(
+                        command,
+                        dslam_obj.name,
+                    )
             except Exception as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -5747,7 +6150,7 @@ class RunCommandByIPAPIView(views.APIView):
                 if 'Busy' in result:
                     return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    description = u'Run Command {0} on DSLAM {1}'.format(
+                    description = 'Run Command {0} on DSLAM {1}'.format(
                         command,
                         dslam_obj.name)
 
@@ -6278,7 +6681,7 @@ class PortConflictCorrectionAPIView(views.APIView):
         res = ''
         result = ''
         PVC = ''
-        print
+        print()
         data
         reseller_data = data.get('reseller')
         old_reseller_data = data.get('old_reseller')
@@ -6379,7 +6782,7 @@ class PortConflictCorrectionAPIView(views.APIView):
                 return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
         try:
             reseller_obj, reseller_created = Reseller.objects.get_or_create(name=reseller_data.get('name'))
-            print
+            print()
             'reseller', reseller_obj
             old_reseller_obj = Reseller.objects.get(name=old_reseller_data.get('name'))
 
@@ -6401,7 +6804,7 @@ class PortConflictCorrectionAPIView(views.APIView):
             vlan_objs = Vlan.objects.filter(reseller=reseller_obj)
             old_vlan_objs = Vlan.objects.filter(reseller=old_reseller_obj)
 
-            print
+            print()
             'vlan_objs ->', vlan_objs
             # return JsonResponse({'vlan':  vlan_objs[0].vlan_id, 'vpi' : reseller_obj.vpi,'vci' : reseller_obj.vci})
             port_indexes = [{'slot_number': port_data.get('card_number'), 'port_number': port_data.get('port_number')}]
@@ -6694,7 +7097,7 @@ class PortConflictCorrectionAPIView(views.APIView):
                 status=status.HTTP_202_ACCEPTED)
 
 
-from rtkit import set_logging
+"""from rtkit import set_logging
 import logging
 
 set_logging('debug')
@@ -6762,7 +7165,7 @@ def get_ticket_info_rt(ticket_id):
     ticket_info = {'subject': '', 'posts': [], 'status': 'N/A', 'last_update': 'N/A'}
     try:
         response = rt_resource.get(path='ticket/%s/show' % ticket_id)
-        print
+        print()
         response
         for r in response.parsed:
             for t in r:
@@ -6775,7 +7178,7 @@ def get_ticket_info_rt(ticket_id):
 
                 logger.info(t)
     except RTResourceError as e:
-        print
+        print()
         e
         logger.error(e.response.status_int)
         logger.error(e.response.status)
@@ -6796,17 +7199,18 @@ def get_ticket_info_rt(ticket_id):
             if is_reply and content:
                 reply_list.append(content)
     except RTResourceError as e:
-        print
+        print()
         e
 
     ticket_info['posts'] = reply_list
-    print
+    print()
     '==============='
-    print
+    print()
     ticket_info
-    print
+    print()
     '==============='
     return ticket_info
+"""
 
 
 # Dana ticketing API
@@ -6816,7 +7220,7 @@ class AddTicketDanaAPIView(views.APIView):
         try:
             url = 'http://ticketing.pishgaman.net/api/v1/Token/GetToken'
             r_data = "{'username':'%s','password':'%s','secret':'%s'}" % (
-            data['username'], data['password'], 'F7409BC306790047040899006710AF2D93E6A317')
+                data['username'], data['password'], 'F7409BC306790047040899006710AF2D93E6A317')
             # return JsonResponse({'response':data})
 
             fhresponse = requests.post(url, data=r_data, headers={"Content-Type": "application/json"})
@@ -6826,10 +7230,10 @@ class AddTicketDanaAPIView(views.APIView):
                 url = "http://ticketing.pishgaman.net/api/v1/Ticket"
                 if (data['username'] == 'SLA'):
                     payload = "{'TemplateAttributeId':'e659e12c-0fac-49d2-b752-06a8d156cfa8','SaveMethod':'69e0b98b-185b-434f-be3b-d5d2f550a0ee','Status':'28cb76a6-d999-4ee3-887c-66792287453d','ApplicantId':'4b8e7077-d7f7-4137-a431-f9c3f14d24db','Title':'%s','DoneDate':null,'RecordColor':null,'LastResponseDate':null,'ITStaffId':null,'ProblemManagementId':null,'AssetId':null,'IsRemoved':null,'ITStaffGroupID':'b994c735-4b44-417c-af79-54d119efeb48','Type':null,'SatifacationRate':null,'InfluenceLevel':null,'GroupId':null,'Urgency':null,'DueDate':null,'Priority':null,'TicketBody':{'TicketBody':{'Body':'%s','IsPublic':true}}}" % (
-                    data['Title'].encode('utf-8'), data['Body'].encode('utf-8'))
+                        data['Title'].encode('utf-8'), data['Body'].encode('utf-8'))
                 elif (data['username'] == 'Complaint'):
                     payload = "{'TemplateAttributeId':'e659e12c-0fac-49d2-b752-06a8d156cfa8','SaveMethod':'69e0b98b-185b-434f-be3b-d5d2f550a0ee','Status':'28cb76a6-d999-4ee3-887c-66792287453d','ApplicantId':'bfc9a9cc-50ce-4d70-b5ee-d1f3b5d3163c','Title':'%s','DoneDate':null,'RecordColor':null,'LastResponseDate':null,'ITStaffId':null,'ProblemManagementId':null,'AssetId':null,'IsRemoved':null,'ITStaffGroupID':'3065480b-067e-436b-815c-93bc37b39f5e','Type':null,'SatifacationRate':null,'InfluenceLevel':null,'GroupId':null,'Urgency':null,'DueDate':null,'Priority':null,'TicketBody':{'TicketBody':{'Body':'%s','IsPublic':true}}}" % (
-                    data['Title'].encode('utf-8'), data['Body'].encode('utf-8'))
+                        data['Title'].encode('utf-8'), data['Body'].encode('utf-8'))
                 else:
                     return JsonResponse({'response': 'User Not Found.'})
 
@@ -6875,7 +7279,7 @@ class GetTicketDetailsDanaAPIView(views.APIView):
             ticket_id = data['ticket_id']
             token_url = 'http://ticketing.pishgaman.net/api/v1/Token/GetToken'
             r_data = "{'username':'%s','password':'%s','secret':'%s'}" % (
-            data['username'], data['password'], data['secret'])
+                data['username'], data['password'], data['secret'])
             r_response = requests.post(token_url, data=r_data, headers={"Content-Type": "application/json"})
             sid = r_response.json()
             if (sid['ResultMessageList'] == []):
@@ -6904,9 +7308,552 @@ def get_ticket_detail_dana(ticket_guid, bearer):
 
 
 def get_user_info_from_ibs(username):
-    ibs_url = '172.28.179.154:1237'
-    req_data = "{'jsonrpc':'2.0','id':1,'method':'user.getUserInfo','params':{'count':'1','normal_username':'%s','remote_addr':'127.0.0.1','auth_type':'ADMIN','auth_name':'software','auth_pass':'$0ftw@r3'}}" % (
-        username)
-    response = requests.post(ibs_url, data=req_data, headers={"Content-Type": "application/json"})
-    sid = response.json()
-    return JsonResponse({'response': sid})
+    login_url = 'http://172.28.163.22:8280/authenticate/v1/requesttoken'
+    login_data = "{'Username':'oss','Password':'74e#$pRe;F'}"
+    response = requests.post(login_url, data=login_data, headers={"Content-Type": "application/json",
+                                                                  "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d"})
+    response_json = response.json()
+    getuserinfo_url = 'http://172.28.163.22:8280/ibs/v1/getuserinfo'
+    getuserinfo_data = '{"NormalUsername":%s}' % (str(username))
+    # return getuserinfo_data
+
+    userinfo_response = requests.post(getuserinfo_url, data=getuserinfo_data,
+                                      headers={"Content-Type": "application/json",
+                                               "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d",
+                                               "token": '' + response_json['token']})
+    userinfo_response_json = userinfo_response.json()
+    # return userinfo_response_json['error']
+    if (userinfo_response_json['error'] and 'does not exists' in userinfo_response_json['error']):
+        return userinfo_response_json['error']
+    for value in userinfo_response_json['result']:
+        return userinfo_response_json['result'][value]['attrs']['limit_mac']
+
+
+class DSLAMRunICMPCommandByFqdnView(views.APIView):
+
+    def get_permissions(self):
+        return (permissions.IsAuthenticated(),)
+
+    def post(self, request, format=None):
+        self.user = request.user
+        data = request.data
+        icmp_type = data.get('icmp_type')
+        params = data.get('params')
+        fqdn = request.data.get('fqdn')
+
+        if ('.z6' in fqdn):
+            try:
+                fqdn = fqdn.replace('.z6', '.Z6')
+                dslamObj = DSLAM.objects.get(fqdn=fqdn)
+                dslam_id = dslamObj.id
+
+            except ObjectDoesNotExist as ex:
+                try:
+                    if ('.Z6' in fqdn):
+                        fqdn = fqdn.replace('.Z6', '.z6')
+                    dslamObj = DSLAM.objects.get(fqdn=fqdn)
+                    dslam_id = dslamObj.id
+                    dslam_ip = dslamObj.ip
+                except Exception as ex:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                    mail_info = Mail()
+                    mail_info.from_addr = 'oss-problems@pishgaman.net'
+                    mail_info.to_addr = 'oss-problems@pishgaman.net'
+                    mail_info.msg_body = 'Error in RunCommandAPIViewin/Fiberhome2200 Line {0}.Error Is: {1}. fqdn = {2},card = {3}, port = {4}, command = {5}, subscriber = {6}. IP: {7}'.format(
+                        str(exc_tb.tb_lineno), str(ex), request.data.get('fqdn'),
+                        request.data.get('params').get('port_conditions').get('slot_number'),
+                        request.data.get('params').get('port_conditions').get('port_number'), command, subscriber, ip)
+                    mail_info.msg_subject = 'Error in RunCommandAPIView'
+                    Mail.Send_Mail(mail_info)
+                    return JsonResponse({'Result': ''}, status=status.HTTP_200_OK)
+
+        result = utility.run_icmp_command(dslam_id, icmp_type, params)
+
+        dslam_name = DSLAM.objects.get(id=dslam_id).name
+
+        description = u'Run {0} Command on DSLAM {1} with params: {2}'.format(icmp_type, dslam_name, params)
+        add_audit_log(request, 'DSLAMICMP', None, 'Run ICMP Command on DSLAM', description)
+
+        return Response({'result': result}, status=status.HTTP_201_CREATED)
+
+
+def get_device_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
+class CheckNetworkBulkAvailability(views.APIView):
+    def get_permissions(self):
+        return (permissions.IsAuthenticated(),)
+
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            params = data.get('params')
+            dslam_obj = DSLAM.objects.get(id=74)
+            dslam_objs = DSLAM.objects.all().order_by('last_sync_duration', 'created_at', 'last_sync')
+            for dslam_obj in dslam_objs:
+                result = utility.run_icmp_command(dslam_obj.id, 'ping', params)
+                if (result['received'] == '0' and result['packet_loss'] == '100'):
+                    query = "INSERT INTO device_availability_icmp values('{0}','{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                        dslam_obj.ip,
+                        dslam_obj.fqdn,
+                        'DSLAM', result['received'], result['packet_loss'], 'time_Out')
+                elif (result['received'] == '4' and result['packet_loss'] == '0'):
+                    query = "INSERT INTO device_availability_icmp values('{0}','{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                        dslam_obj.ip,
+                        dslam_obj.fqdn,
+                        'DSLAM', result['received'], result['packet_loss'], 'accessible')
+                else:
+                    query = "INSERT INTO device_availability_icmp values('{0}','{1}', '{2}', '{3}', '{4}', '{5}')".format(
+                        dslam_obj.ip,
+                        dslam_obj.fqdn,
+                        'DSLAM', result['received'], result['packet_loss'], 'unknown')
+
+                cursor = connection.cursor()
+                cursor.execute(query)
+            return Response({'result': "OK"}, status=status.HTTP_201_CREATED)
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex) + "  " + str(exc_tb.tb_lineno)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetHostsFromZabbixAPIView(views.APIView):
+    def post(self, request, format=None):
+        data = request.data
+        try:
+            zabbix_url = 'https://zabbix.pishgaman.net/api_jsonrpc.php'
+            zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "pQU5G88Xg44YbX2L"},"id": 1,"auth": null}'
+            response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+            login = response.json()
+            token = login['result']
+            zabbix_get_host_data = '{"jsonrpc": "2.0","method": "host.get","params": {"output": ["hostid","host"],"selectInterfaces": ["interfaceid","ip"]},"id": 125,"auth": "%s"}' % (
+                token)
+            host_response = requests.post(zabbix_url, data=zabbix_get_host_data,
+                                          headers={"Content-Type": "application/json"})
+            hosts = host_response.json()
+            # return JsonResponse({'hosts':hosts })
+
+            i = 1
+            device = ''
+            device_type = ''
+            for item in hosts['result']:
+                host = item['host']
+                try:
+                    if ('Germany' not in host):
+                        device_type = host.split('.')[-2]
+
+                    if ('dsl.' in host):
+                        device = 'Dslam'
+                    elif ('rou.' in host):
+                        device = 'Router'
+                    elif ('swi.' in host):
+                        device = 'Switch'
+
+                except Exception as ex:
+                    device_type = host
+                if ('dsl.' in host):
+                    device = 'Dslam'
+                elif ('rou.' in host):
+                    device = 'Router'
+                elif ('swi.' in host):
+                    device = 'Switch'
+
+                for val in item['interfaces']:
+                    ip = val['ip']
+                    interfaceid = val['interfaceid']
+
+                query = "INSERT INTO zabbix_hosts values('{0}','{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}')".format(
+                    int(item['hostid']),
+                    device_type,
+                    device_type, ip, item['host'], interfaceid, datetime.now(), device)
+
+                cursor = connection.cursor()
+                cursor.execute(query)
+
+            return JsonResponse({'hosts': host})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex) + "  " + str(host)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetItemsFromZabbixAPIView(views.APIView):
+    def post(self, request, format=None):
+        try:
+            zabbix_url = 'https://zabbix.pishgaman.net/api_jsonrpc.php'
+            zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "pQU5G88Xg44YbX2L"},"id": 1,"auth": null}'
+            response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+            login = response.json()
+            token = login['result']
+            zabbix_get_items_data = '{"jsonrpc": "2.0","method": "item.get","params": {"output": "extend","hostids": "11092","search": {},"sortfield": "name"},"id": 125,"auth": "%s"}' % (
+                token)
+            items_response = requests.post(zabbix_url, data=zabbix_get_items_data,
+                                           headers={"Content-Type": "application/json"})
+            items = items_response.json()
+            # for item in item['result']:
+
+            # query = "INSERT INTO zabbix_host_items VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}, {16}, {17}, {18}, {19}, {20}, {21}, {22}, {23}, {24}, {25}, {26}, {27}, {28}, {29}, {30}, {31}, {32}, {33}, {34}, {35}, {36}, {37}, {38}, {39}, {40}, {41}, {42}, {43}, {44}, {45}, {46}, {47}, {48}, {49}, {50}, {51}, {52}, {53}, {54})";
+
+            # cursor = connection.cursor()
+            # cursor.execute(query)
+
+            return JsonResponse({'items': items['result']})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class DslamIcmpSnapshotCount(views.APIView):
+
+    def get(self, request, format=None):
+        try:
+            data = request.data
+            query = "select packet_loss, count(*) from dslam_dslamicmpsnapshot_y2020m12  where updated_at >= '2020-12-30 00:00:00'::timestamp  GROUP BY packet_loss";
+            cursor = connection.cursor()
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            return JsonResponse({'pck_loss': rows})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetInterfaceTrafficInput(views.APIView):
+    def get(self, request, format=None):
+        try:
+            GB = 8589934592
+            zabbix_url = 'https://zabbix.pishgaman.net/api_jsonrpc.php'
+            zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "pQU5G88Xg44YbX2L"},"id": 1,"auth": null}'
+            response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+            login = response.json()
+            token = login['result']
+            zabbix_get_item_data = '{"jsonrpc": "2.0","method": "item.get","params": {"output": "extend","hostids": "11861","filter": {"itemid": "404525"},"sortfield": "name"},"id": 125,"auth": "%s"}' % (
+                token)
+            item_response = requests.post(zabbix_url, data=zabbix_get_item_data,
+                                          headers={"Content-Type": "application/json"})
+            item = item_response.json()
+            # return JsonResponse({'item':item['result'][0]})
+            return JsonResponse({'lastvalue': round(int(item['result'][0].get('lastvalue')) / GB, 4),
+                                 'prevvalue': int(item['result'][0].get('prevvalue')) / GB,
+                                 'lastclock': int(item['result'][0].get('lastclock')) / GB,
+                                 'lastns': int(item['result'][0].get('lastns')) / GB})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ZabbixGetHistory(views.APIView):
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            zabbix_item_id = data.get('zabbix_item_id')
+            time_from = data.get('time_from')
+            time_till = data.get('time_till')
+            timestamp_from = time.mktime(datetime.strptime(time_from, "%Y/%m/%d").timetuple())
+            timestamp_till = time.mktime(datetime.strptime(time_till, "%Y/%m/%d").timetuple())
+            zabbix_url = 'https://zabbix.pishgaman.net/api_jsonrpc.php'
+            zabbix_login_data = '{"jsonrpc": "2.0","method": "user.login","params": {"user": "software","password": "pQU5G88Xg44YbX2L"},"id": 1,"auth": null}'
+            response = requests.post(zabbix_url, data=zabbix_login_data, headers={"Content-Type": "application/json"})
+            login = response.json()
+            token = login['result']
+            zabbix_get_history_data = '{"jsonrpc": "2.0","method": "history.get","params": {"output": "extend","itemids": "%s","time_from": %s,"time_till": %s},"id": 1,"auth": "%s"}' % (
+                "60288", int(timestamp_from), int(timestamp_till), token)
+            history_response = requests.post(zabbix_url, data=zabbix_get_history_data,
+                                             headers={"Content-Type": "application/json"})
+            history = history_response.json()
+            del_query = "DELETE FROM zabbix_history"
+            cursor = connection.cursor()
+            cursor.execute(del_query)
+
+            for val in history['result']:
+                query = "INSERT INTO zabbix_history VALUES ('{0}', '{1}', '{2}', '{3}')".format(val['itemid'],
+                                                                                                val['ns'], val['value'],
+                                                                                                val['clock'])
+                cursor = connection.cursor()
+                cursor.execute(query)
+
+            return JsonResponse({'item': history['result']})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetFiftyFivePercent(views.APIView):
+    def get(self, request, format=None):
+        try:
+            count_query = 'select count(*) from zabbix_history';
+            cursor = connection.cursor()
+            cursor.execute(count_query)
+            count = cursor.fetchall()
+            five_percent = (float(count[0][0]) * 5) / 100
+            query = 'SELECT * from(select *, ROW_NUMBER () OVER (order by "value" DESC) from zabbix_history) x WHERE ROW_NUMBER BETWEEN {0} AND {1}'.format(
+                str(five_percent - 1), str(five_percent));
+            cursor = connection.cursor()
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            return JsonResponse(
+                {'row': rows, 'five_percent': five_percent, 'Count': count[0][0], 'Losts': 8640 - int(count[0][0])})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class CheckPortConflict(views.APIView):
+
+    # def get_permissions(self):
+    #  return (permissions.IsAuthenticated(),)
+
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            fqdn = data.get('fqdn')
+            slot = data.get('slot')
+            port = data.get('port')
+            dslamObj = DSLAM.objects.get(fqdn=fqdn)
+            params = param2()
+            params.type = 'dslamport'
+            params.is_queue = False
+            params.fqdn = dslamObj.fqdn
+            params.command = ''
+            params.port_conditions = port_condition2()
+            params.port_conditions.slot_number = slot
+            params.port_conditions.port_number = port
+            params_json = json.dumps(params, default=lambda x: x.__dict__)
+            result = utility.dslam_port_run_command(dslamObj.pk, params.command, json.loads(params_json))
+            return JsonResponse({'row': json.loads(params_json)})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class LoadDslamPorts(views.APIView):
+
+    def get(self, request, format=None):
+        try:
+            data = request.data
+            print(request)
+            dslam_id = request.query_params['dslam_id']
+            slot_count = request.query_params['slot_count']
+            port_count = request.query_params['port_count']
+            del_query = 'DELETE from "portInfo"'
+            cursor = connection.cursor()
+            cursor.execute(del_query)
+            query = 'INSERT INTO "public"."portInfo"("Card", "Port", "dslam_id") select card.c, port.p,{0} from (select generate_series(1, {1}) as c) card cross join (select generate_series(1, {2}) as p) port'.format(
+                dslam_id, slot_count, port_count)
+            cursor = connection.cursor()
+            cursor.execute(query)
+            fd = open('dslam/insert_dslam_port.sql', 'r')
+            sqlFile = fd.read()
+            fd.close()
+            insert_query = sqlFile
+            cursor = connection.cursor()
+            cursor.execute(insert_query)
+            return JsonResponse({'row': port_count})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetDslamPorts(views.APIView):
+
+    def post(self, request, format=None):
+        try:
+            data = request.data
+            dslam_id = data.get('dslam_id')
+            slot = data.get('slot_number')
+            port = data.get('port_number')
+            dslamObj = DSLAM.objects.get(id=dslam_id)
+            params = param2()
+            params.type = 'dslamport'
+            params.is_queue = False
+            params.fqdn = dslamObj.fqdn
+            params.command = 'lcman show'
+            params.port_conditions = port_condition2()
+            params.port_conditions.slot_number = slot
+            params.port_conditions.port_number = port
+            params_json = json.dumps(params, default=lambda x: x.__dict__)
+            result = utility.dslam_port_run_command(dslamObj.pk, params.command, json.loads(params_json))
+            return JsonResponse({'row': result})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return str(ex) + "  // " + str(exc_tb.tb_lineno)
+
+
+class DslamCommandsV2APIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        device_ip = str(get_device_ip(request))
+        data = request.data
+        command = data.get('command', None)
+        command = command_recognise(command)
+        dslam_id = request.data.get('dslam_id')
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        params['device_ip'] = device_ip
+        dslam_type = dslamObj.dslam_type_id
+        try:
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            # if dslam_type == 1:  ################################### zyxel ###################################
+            #     return JsonResponse({'Result': dslam_type})
+            if dslam_type == 1:  ################################### zyxel ###################################
+                if not command:
+                    return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
+                if result:
+                    if 'Busy' in result:
+                        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
+                    else:
+                        description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
+
+                        add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
+
+                return JsonResponse({'response': result})
+
+            elif dslam_type == 2:  # huawei
+                return JsonResponse({'Result': dslam_type})
+            elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                if command == 'show mac by slot port':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
+                return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+
+                return JsonResponse({'Result': result})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                if command == 'Show VLAN':
+                    return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
+                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
+
+            elif dslam_type == 7:  ########################### zyxel1248 ##########################
+                return JsonResponse({'Result': dslam_type})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+class UploadRentedPort(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, forman=None):
+        # Read excel file items
+        excel_file = request.FILES['hamyarnet']
+        if ".xlsx" not in excel_file.name:
+            return Response({"result": "File is not a excel(xlsx). Please upload only xlsx files."})
+        wb = openpyxl.load_workbook(excel_file)
+        worksheet = wb["sadra-salman-ghadir"]
+
+        excel_data = list()
+        for row in worksheet.iter_rows():
+            row_data = list()
+            for cell in row:
+                row_data.append(str(cell.value))
+            excel_data.append(row_data)
+        try:
+            i = 1
+            for val in excel_data[1:]:
+                rented_port = Rented_port()
+                rented_port.agent_name = val[0]
+                rented_port.city_name = val[1]
+                rented_port.telecom_name = val[2]
+                rented_port.dslam_number = val[3]
+                rented_port.card = val[4]
+                rented_port.port = val[5]
+                rented_port.telco_row = val[6]
+                rented_port.telco_column = val[7]
+                rented_port.telco_connection = val[8]
+                rented_port.save()
+                i = i + 1
+        except Exception as ex:
+            # return Response({"result": str(ex) + str(i)})
+            return Response({"result": "Excel format has a problem."})
+
+        return Response({"result": "Upload Completed."})
+
+
+class RentedPortAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        device_ip = get_device_ip(request)
+        data = request.data
+        command = data.get('command', None)
+        command = command_recognise(command)
+        params = data.get('params', None)
+        try:
+            dslam_obj = Rented_port.objects.get(agent_name=data.get('agent_name'),
+                                                city_name=data.get('city_name'),
+                                                telecom_name=data.get('telecom_name'),
+                                                dslam_number=data.get('dslam_number'),
+                                                card=params['port_conditions']['slot_number'],
+                                                port=params['port_conditions']['port_number'])
+        except ObjectDoesNotExist:
+            return Response({"Result": "You don't have access to this Card & Port. Please check parameters."})
+        fqdn = dslam_obj.fqdn
+        dslamObj = DSLAM.objects.get(fqdn=fqdn)
+        dslam_type = dslamObj.dslam_type_id
+        try:
+            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            # if dslam_type == 1:  ################################### zyxel ###################################
+            #     return JsonResponse({'Result': dslam_type})
+            if dslam_type == 1:  ################################### zyxel ###################################
+                if not command:
+                    return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
+                if result:
+                    if 'Busy' in result:
+                        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
+                    else:
+                        description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
+
+                        add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
+
+                return JsonResponse({'response': result})
+
+            elif dslam_type == 2:  # huawei
+                return JsonResponse({'Result': dslam_type})
+            elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+                if command == 'show mac by slot port':
+                    result = result.split("\\r\\n")
+                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
+                return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
+
+            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
+
+                return JsonResponse({'Result': result})
+
+            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
+                if command == 'Show VLAN':
+                    return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
+                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
+
+            elif dslam_type == 7:  ########################### zyxel1248 ##########################
+                return JsonResponse({'Result': dslam_type})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})

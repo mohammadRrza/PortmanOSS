@@ -105,3 +105,109 @@ Method Not Allowed: /api/v1/contact/get_ordr_port_info/
 Method Not Allowed: /api/v1/contact/get_ordr_port_info/
 Unauthorized: /api/v1/contact/update_status_ports/
 Internal Server Error: /api/v1/contact/update_status_ports/
+Internal Server Error: /api/v1/dslamport/register-port/
+Traceback (most recent call last):
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 3607, in post
+    result = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/jsonrpclib/jsonrpc.py", line 263, in __call__
+    return self.__send(self.__name, args)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/jsonrpclib/jsonrpc.py", line 213, in _request
+    check_for_errors(response)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/jsonrpclib/jsonrpc.py", line 542, in check_for_errors
+    raise ProtocolError((code, message))
+jsonrpclib.jsonrpc.ProtocolError: (-32603, 'Server error:   File "/usr/lib/python3.9/multiprocessing/connection.py", line 635, in SocketClient | ConnectionRefusedError: [Errno 111] Connection refused')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 3648, in post
+    Mail.Send_Mail(mail_info)
+  File "/opt/portmanv3/portman_web/dslam/mail.py", line 20, in Send_Mail
+    server.login("oss-problems@pishgaman.net", "Oss_9r0@123")
+  File "/usr/lib/python3.9/smtplib.py", line 730, in login
+    raise SMTPException("No suitable authentication method found.")
+smtplib.SMTPException: No suitable authentication method found.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 3727, in post
+    Mail.Send_Mail(mail_info)
+  File "/opt/portmanv3/portman_web/dslam/mail.py", line 20, in Send_Mail
+    server.login("oss-problems@pishgaman.net", "Oss_9r0@123")
+  File "/usr/lib/python3.9/smtplib.py", line 730, in login
+    raise SMTPException("No suitable authentication method found.")
+smtplib.SMTPException: No suitable authentication method found.
+Internal Server Error: /api/v1/dslamport/register-port/
+Traceback (most recent call last):
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 3605, in post
+    result = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
+  File "/opt/portmanv3/portman_web/dslam/utility.py", line 21, in dslam_port_run_command
+    return c.add_command(dslam_id, command, params)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/jsonrpclib/jsonrpc.py", line 263, in __call__
+    return self.__send(self.__name, args)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/jsonrpclib/jsonrpc.py", line 213, in _request
+    check_for_errors(response)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/jsonrpclib/jsonrpc.py", line 542, in check_for_errors
+    raise ProtocolError((code, message))
+jsonrpclib.jsonrpc.ProtocolError: (-32603, 'Server error:   File "/usr/lib/python3.9/multiprocessing/connection.py", line 635, in SocketClient | ConnectionRefusedError: [Errno 111] Connection refused')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 3646, in post
+    Mail.Send_Mail(mail_info)
+  File "/opt/portmanv3/portman_web/dslam/mail.py", line 20, in Send_Mail
+    server.login("oss-problems@pishgaman.net", "Oss_9r0@123")
+  File "/usr/lib/python3.9/smtplib.py", line 730, in login
+    raise SMTPException("No suitable authentication method found.")
+smtplib.SMTPException: No suitable authentication method found.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/mrtbadboy/.local/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/opt/portmanv3/portman_web/dslam/views.py", line 3725, in post
+    Mail.Send_Mail(mail_info)
+  File "/opt/portmanv3/portman_web/dslam/mail.py", line 20, in Send_Mail
+    server.login("oss-problems@pishgaman.net", "Oss_9r0@123")
+  File "/usr/lib/python3.9/smtplib.py", line 730, in login
+    raise SMTPException("No suitable authentication method found.")
+smtplib.SMTPException: No suitable authentication method found.
+Bad Request: /api/v1/dslamport/register-port/
+Bad Request: /api/v1/dslamport/register-port/
+Bad Request: /api/v1/dslamport/register-port/
+Bad Request: /api/v1/dslamport/register-port/

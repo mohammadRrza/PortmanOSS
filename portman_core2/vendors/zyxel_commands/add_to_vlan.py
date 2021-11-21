@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -55,7 +57,7 @@ class AddToVlan(BaseCommand):
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until('Password:')
+            tn.read_until(b'Password:')
             # port pvc set <slot-port-vpi/vci> <profile> <mux> <pvlan_id> <priority>
             time.sleep(1)
             if self.__vlan_name:
@@ -74,12 +76,12 @@ class AddToVlan(BaseCommand):
                         self.__vlan_id,
                         self.__priority).encode('utf-8'))
                 time.sleep(1)
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
-            if 'example' in result:
+            if b'example' in result:
                 return {"result" : "add to valn {1} give error".format(self.__vlan_id), "port_indexes": self.__port_indexes}
             print(("{0} added to vlan {1}".format(self.__port_indexes, self.__vlan_id)))
             return dict(result="added to vlan {0}".format(self.__vlan_id), port_indexes=self.__port_indexes)
@@ -90,6 +92,9 @@ class AddToVlan(BaseCommand):
                 return self.run_command()
         except Exception as e:
             print(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(str(exc_tb.tb_lineno))
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
