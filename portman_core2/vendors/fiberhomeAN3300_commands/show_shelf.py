@@ -72,7 +72,14 @@ class ShowShelf(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             tn.close()
+            print('*****************************************************')
+            print(self.device_ip)
+            print('*****************************************************')
+            print(self.device_ip)
+
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                print('*****************************************************')
+                print(self.device_ip)
                 return str(result)
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
