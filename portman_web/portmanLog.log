@@ -211,3 +211,5 @@ Bad Request: /api/v1/dslamport/register-port/
 Bad Request: /api/v1/dslamport/register-port/
 Bad Request: /api/v1/dslamport/register-port/
 Bad Request: /api/v1/dslamport/register-port/
+Not Found: /api/v1/dslamport/run-commandV3/
+Not Found: /api/v1/dslamport/run-commandV3/
