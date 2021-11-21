@@ -48,6 +48,7 @@ from .zyxel_commands.removeFromVlan import RemoveFromVlan
 from .zyxel_commands.get_backup import GetBackUp
 from .zyxel_commands.set_time import SetTime
 from .zyxel_commands.show_slot_port_with_mac import ShowSlotPortWithMac
+from .zyxel_commands.port_pvc_show import PortPvcShow
 
 
 
@@ -93,6 +94,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('disable annexm', DisableAnnexm)
     command_factory.register_type('show pvc by port', PortPvcShow)
     command_factory.register_type('port Info', PortInfo)
+    command_factory.register_type('port pvc show', PortPvcShow)
     command_factory.register_type('delete from vlan', RemoveFromVlan)
     command_factory.register_type('get config', GetBackUp)
     command_factory.register_type('set time', SetTime)
