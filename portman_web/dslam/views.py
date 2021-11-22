@@ -3704,12 +3704,19 @@ class RegisterPortAPIView(views.APIView):
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
             if dslam_obj.dslam_type_id == 1:
+                print(PVC)
+                if isinstance(PVC, str):
+                    if 'between' in PVC or 'inactive' in PVC[0]:
+                        return JsonResponse({'PVC': PVC, 'id': 400, 'msg': 'port config has not been done.'},
+                                                status=status.HTTP_201_CREATED)
                 if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'), port_data.get('port_number'), reseller_obj.vpi,
                                                                                        reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:
                     return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
                                         status=status.HTTP_201_CREATED)
+
+
                 else:
-                    return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
+                    return JsonResponse({'PVC': PVC, 'id': 400, 'res': sid, 'msg': 'port config has not been done.'},
                                         status=status.HTTP_201_CREATED)
                 # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
         except Exception as ex:
@@ -3726,7 +3733,7 @@ class RegisterPortAPIView(views.APIView):
 
             # return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
             return JsonResponse(
-                {'result': str('an error occurred. please try again. {0}'.format(str(exc_tb.tb_lineno)))},
+                {'result': str('an error occurred. please try again. {0}-{1}'.format(str(ex),str(exc_tb.tb_lineno)))},
                 status=status.HTTP_202_ACCEPTED)
 
 
