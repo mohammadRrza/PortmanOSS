@@ -149,3 +149,11 @@ Traceback (most recent call last):
   File "/opt/portmanv3/portman_core2/vendors/zyxel_commands/add_to_vlan.py", line 102, in run_command
     print(("error : add to valn {1}".format(self.__vlan_id)))
 IndexError: Replacement index 1 out of range for positional args tuple
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand
+INFO:root:AddCommand

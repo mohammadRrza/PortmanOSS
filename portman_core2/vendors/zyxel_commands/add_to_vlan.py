@@ -82,7 +82,7 @@ class AddToVlan(BaseCommand):
             tn.write(b"y\r\n")
             tn.close()
             if b'example' in result:
-                return {"result" : "add to valn {1} give error".format(self.__vlan_id), "port_indexes": self.__port_indexes}
+                return {"result" : "add to valn {0} give error".format(self.__vlan_id), "port_indexes": self.__port_indexes}
             print(("{0} added to vlan {1}".format(self.__port_indexes, self.__vlan_id)))
             return dict(result="added to vlan {0}".format(self.__vlan_id), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
