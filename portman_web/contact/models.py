@@ -101,6 +101,7 @@ class Order(models.Model):
     fqdn = models.CharField(max_length=256, blank=True, null=True)
     status = models.ForeignKey(PortmapState, on_delete=models.CASCADE)
     telecom = models.ForeignKey(TelecommunicationCenters, on_delete=models.CASCADE)
+    dslam = models.ForeignKey(DSLAM, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.rastin_order_id

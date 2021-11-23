@@ -62,6 +62,7 @@ class PortPvcShow(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             if "example:" in str(result):
+                return 'slot must be between 1 and 17'
                 result = str(result).split("\\r\\n")
                 result = [val for val in result if re.search(r'example|between', val)]
                 return result
@@ -78,6 +79,7 @@ class PortPvcShow(BaseCommand):
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}|--{3,}', val)]
             result = result[-1]
+            print(result)
             result = [re.sub(r'\s{3,}', ',', result)][0].split(",")
             return dict(pvc=result[0], type=result[1], mux=result[2], pvid=result[3], pri=result[4], mvlan=result[5],
                         profile=result[6])
