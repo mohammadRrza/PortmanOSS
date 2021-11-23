@@ -78,6 +78,7 @@ class PortPvcShow(BaseCommand):
             print('******************************************')
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}|--{3,}', val)]
+            return result
             result = result[-1]
             print(result)
             result = [re.sub(r'\s{3,}', ',', result)][0].split(",")

@@ -3704,7 +3704,7 @@ class RegisterPortAPIView(views.APIView):
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
             if dslam_obj.dslam_type_id == 1:
-                print(PVC)
+                return JsonResponse({"result": PVC})
                 if isinstance(PVC, str):
                     if 'between' in PVC or 'inactive' in PVC[0]:
                         return JsonResponse({'PVC': PVC, 'id': 400, 'msg': 'port config has not been done.'},
