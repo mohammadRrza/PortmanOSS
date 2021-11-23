@@ -62,14 +62,15 @@ class PortPvcShow(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             if "example:" in str(result):
-                return 'slot must be between 1 and 17'
-                result = str(result).split("\\r\\n")
-                result = [val for val in result if re.search(r'example|between', val)]
-                return result
+                return 'slot number or port number is out of range.'
+                # result = str(result).split("\\r\\n")
+                # result = [val for val in result if re.search(r'example|between', val)]
+                # return result
             if "inactive" in str(result):
-                result = str(result).split("\\r\\n")
-                result = [val for val in result if re.search(r'inactive', val)]
-                return result
+                return f"slot {self.__port_indexes[0]['slot_number']} is inactive."
+                # result = str(result).split("\\r\\n")
+                # result = [val for val in result if re.search(r'inactive', val)]
+                # return result
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
@@ -78,12 +79,14 @@ class PortPvcShow(BaseCommand):
             print('******************************************')
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}|--{3,}', val)]
-            return result
-            result = result[-1]
-            print(result)
-            result = [re.sub(r'\s{3,}', ',', result)][0].split(",")
-            return dict(pvc=result[0], type=result[1], mux=result[2], pvid=result[3], pri=result[4], mvlan=result[5],
-                        profile=result[6])
+
+            result = result[2:]
+            result = [re.sub(r'\s{3,}', ',', line).split(",") for line in result]
+            res = []
+            for line in result:
+                res.append(dict(pvc=line[0], type=line[1], mux=line[2], pvid=line[3], pri=line[4], mvlan=line[5],
+                                profile=line[6]))
+            return res
             # return dict(res1 = result[5].split('-')[2].split()[0] ,res2 = result[5].split('-')[2].split()[3],result = '')
         except (EOFError, socket_error) as e:
             print(e)
