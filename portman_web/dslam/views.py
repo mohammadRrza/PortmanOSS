@@ -3605,7 +3605,7 @@ class RegisterPortAPIView(views.APIView):
                 else:
                     # res = utility.dslam_port_run_command(dslam_obj.id, 'delete from vlan', pishParams)
                     result = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
-                    PVC = utility.dslam_port_run_command(dslam_obj.id, 'port pvc show', params)
+                    pvc = utility.dslam_port_run_command(dslam_obj.id, 'port pvc show', params)
 
                     # result2 = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
 
@@ -3704,7 +3704,8 @@ class RegisterPortAPIView(views.APIView):
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
             if dslam_obj.dslam_type_id == 1:
-                print(PVC)
+<<<<<<< HEAD
+                return JsonResponse({"result": PVC})
                 if isinstance(PVC, str):
                     if 'between' in PVC or 'inactive' in PVC[0]:
                         return JsonResponse({'PVC': PVC, 'id': 400, 'msg': 'port config has not been done.'},
@@ -3712,11 +3713,21 @@ class RegisterPortAPIView(views.APIView):
                 if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'), port_data.get('port_number'), reseller_obj.vpi,
                                                                                        reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:
                     return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
+=======
+                # return JsonResponse({'PVC': pvc}, status=status.HTTP_201_CREATED)
+                if isinstance(pvc, str):
+                    return JsonResponse({'PVC': pvc, 'id': 400, 'msg': 'port config has not been done.'},
+>>>>>>> 0d6034e3535402008c123045c7fd2e69a773120b
                                         status=status.HTTP_201_CREATED)
-
+                for PVC in pvc:
+                    if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'),
+                                                              port_data.get('port_number'), reseller_obj.vpi,
+                                                              reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:
+                        return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
+                                            status=status.HTTP_201_CREATED)
 
                 else:
-                    return JsonResponse({'PVC': PVC, 'id': 400, 'res': sid, 'msg': 'port config has not been done.'},
+                    return JsonResponse({'PVC': pvc, 'id': 400, 'res': sid, 'msg': 'port config has not been done.'},
                                         status=status.HTTP_201_CREATED)
                 # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
         except Exception as ex:
