@@ -3704,20 +3704,10 @@ class RegisterPortAPIView(views.APIView):
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
             if dslam_obj.dslam_type_id == 1:
-<<<<<<< HEAD
-                return JsonResponse({"result": PVC})
-                if isinstance(PVC, str):
-                    if 'between' in PVC or 'inactive' in PVC[0]:
-                        return JsonResponse({'PVC': PVC, 'id': 400, 'msg': 'port config has not been done.'},
-                                                status=status.HTTP_201_CREATED)
-                if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'), port_data.get('port_number'), reseller_obj.vpi,
-                                                                                       reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:
-                    return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
-=======
+
                 # return JsonResponse({'PVC': pvc}, status=status.HTTP_201_CREATED)
                 if isinstance(pvc, str):
                     return JsonResponse({'PVC': pvc, 'id': 400, 'msg': 'port config has not been done.'},
->>>>>>> 0d6034e3535402008c123045c7fd2e69a773120b
                                         status=status.HTTP_201_CREATED)
                 for PVC in pvc:
                     if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'),
@@ -3744,7 +3734,7 @@ class RegisterPortAPIView(views.APIView):
 
             # return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
             return JsonResponse(
-                {'result': str('an error occurred. please try again. {0}-{1}'.format(str(ex),str(exc_tb.tb_lineno)))},
+                {'result': str('an error occurred. please try again. {0}-{1}'.format(str(ex), str(exc_tb.tb_lineno)))},
                 status=status.HTTP_202_ACCEPTED)
 
 
@@ -3875,7 +3865,7 @@ class RunCommandAPIView(views.APIView):
                         if (
                                 command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'change lineprofile port'):
                             fiber.command = 'setPortProfiles'
-                        url = 'http://5.202.129.88:9096/api/Telnet/telnet'
+                        url = 'http://5.202.129.61:9096/api/Telnet/telnet'
                         data = "{'type':'Fiberhome','dslam':'%s','telnetPort':'23','userName':'%s','password':'%s','access':'%s','card':'%s','port':'%s','command':'%s','profile':'%s','terminalDelay':'600','requestTimeOut':'1500'}" % (
                             fiber.dslam, fiber.userName, fiber.password, fiber.access, fiber.card, fiber.port,
                             fiber.command,
