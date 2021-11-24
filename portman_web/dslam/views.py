@@ -3554,7 +3554,7 @@ class RegisterPortAPIView(views.APIView):
                         if (vlanName == 'badrrayan'):
                             vlanName = 'badrray'
 
-                        url = 'http://5.202.129.88:9096/api/Telnet/telnet'
+                        url = 'http://5.202.129.61:9096/api/Telnet/telnet'
                         data = "{'type':'%s','dslam':'%s','telnetPort':'23','userName':'%s','password':'%s','access':'%s','sourceVlanId':'%s','vlanName':'%s','vlanId':'%s','untaggedPortList':'%s','vpiVci':'%s','card':'%s','port':'%s','command':'%s','terminalDelay':'600','requestTimeOut':'1500'}" % (
                             dslamType, dslam_obj.ip, dslam_obj.telnet_username, dslam_obj.telnet_password,
                             dslam_obj.access_name, sourceVlanId, vlanName, vlan_objs[0].vlan_id,
@@ -3868,7 +3868,7 @@ class RunCommandAPIView(views.APIView):
                         if (
                                 command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'change lineprofile port'):
                             fiber.command = 'setPortProfiles'
-                        url = 'http://5.202.129.61:9096/api/Telnet/telnet'
+                        url = 'http://5.202.129.88:9096/api/Telnet/telnet'
                         data = "{'type':'Fiberhome','dslam':'%s','telnetPort':'23','userName':'%s','password':'%s','access':'%s','card':'%s','port':'%s','command':'%s','profile':'%s','terminalDelay':'600','requestTimeOut':'1500'}" % (
                             fiber.dslam, fiber.userName, fiber.password, fiber.access, fiber.card, fiber.port,
                             fiber.command,
