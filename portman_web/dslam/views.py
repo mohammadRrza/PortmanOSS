@@ -3359,6 +3359,7 @@ class RegisterPortAPIView(views.APIView):
             identifier_key = str(random.randint(10000000, 9999999999999999))
         port_data = data.get('port')
         try:
+            print(data)
             fqdn = port_data.get('fqdn')
             # return JsonResponse({'Result':'', 'id':201,}, status=status.HTTP_201_OK)
 
@@ -3575,7 +3576,8 @@ class RegisterPortAPIView(views.APIView):
                             str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
                             port_data.get('card_number'), port_data.get('port_number'), ip)
                         mail_info.msg_subject = 'Error in RegisterPortAPIView'
-                        Mail.Send_Mail(mail_info)
+                        # Mail.Send_Mail(mail_info)
+                        print(str(ex))
                         return JsonResponse(
                             {'result': str('an error occurred. please try again. {0}'.format(str(exc_tb.tb_lineno)))})
                 elif (dslam_obj.dslam_type_id == 7):
@@ -3704,31 +3706,22 @@ class RegisterPortAPIView(views.APIView):
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
             if dslam_obj.dslam_type_id == 1:
-<<<<<<< HEAD
-                return JsonResponse({"result": PVC})
-                if isinstance(PVC, str):
-                    if 'between' in PVC or 'inactive' in PVC[0]:
-                        return JsonResponse({'PVC': PVC, 'id': 400, 'msg': 'port config has not been done.'},
-                                                status=status.HTTP_201_CREATED)
-                if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'), port_data.get('port_number'), reseller_obj.vpi,
-                                                                                       reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:
-                    return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
-=======
-                # return JsonResponse({'PVC': pvc}, status=status.HTTP_201_CREATED)
+                #return JsonResponse({"result": PVC})
+
                 if isinstance(pvc, str):
                     return JsonResponse({'PVC': pvc, 'id': 400, 'msg': 'port config has not been done.'},
->>>>>>> 0d6034e3535402008c123045c7fd2e69a773120b
-                                        status=status.HTTP_201_CREATED)
+                                        status=status.HTTP_400_BAD_REQUEST)
                 for PVC in pvc:
                     if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'),
                                                               port_data.get('port_number'), reseller_obj.vpi,
                                                               reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:
+                        print(PVC['pvc'])
                         return JsonResponse({'PVC': PVC, 'id': 201, 'res': sid, 'msg': 'port config has been done.'},
                                             status=status.HTTP_201_CREATED)
 
                 else:
                     return JsonResponse({'PVC': pvc, 'id': 400, 'res': sid, 'msg': 'port config has not been done.'},
-                                        status=status.HTTP_201_CREATED)
+                                        status=status.HTTP_400_BAD_REQUEST)
                 # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -5911,6 +5904,9 @@ class FiberHomeCommandAPIView(views.APIView):
     def post(self, request, format=None):
         device_ip = get_device_ip(request)
         data = request.data
+        print('============================================================================')
+        print(data)
+        print('============================================================================')
         command = data.get('command', None)
         command = command_recognise(command)
         fqdn = request.data.get('fqdn')
