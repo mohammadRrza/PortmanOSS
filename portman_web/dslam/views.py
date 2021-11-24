@@ -3737,7 +3737,7 @@ class RegisterPortAPIView(views.APIView):
 
             # return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
             return JsonResponse(
-                {'result': str('an error occurred. please try again. {0}-{1}'.format(str(ex),str(exc_tb.tb_lineno)))},
+                {'result': str('an error occurred. please try again. {0}-{1}'.format(str(ex), str(exc_tb.tb_lineno)))},
                 status=status.HTTP_202_ACCEPTED)
 
 
@@ -3868,7 +3868,7 @@ class RunCommandAPIView(views.APIView):
                         if (
                                 command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'change lineprofile port'):
                             fiber.command = 'setPortProfiles'
-                        url = 'http://5.202.129.88:9096/api/Telnet/telnet'
+                        url = 'http://5.202.129.61:9096/api/Telnet/telnet'
                         data = "{'type':'Fiberhome','dslam':'%s','telnetPort':'23','userName':'%s','password':'%s','access':'%s','card':'%s','port':'%s','command':'%s','profile':'%s','terminalDelay':'600','requestTimeOut':'1500'}" % (
                             fiber.dslam, fiber.userName, fiber.password, fiber.access, fiber.card, fiber.port,
                             fiber.command,
