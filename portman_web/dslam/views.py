@@ -3564,6 +3564,7 @@ class RegisterPortAPIView(views.APIView):
                             port_data.get('card_number'), port_data.get('port_number'), 'addToVlan')
                         # return JsonResponse({'result':data })
                         fhresponse = requests.post(url, data=data, headers={"Content-Type": "application/json"})
+                        print(fhresponse.json())
                         sid = fhresponse.json()
 
                     except Exception as ex:
@@ -3808,6 +3809,7 @@ class RunCommandAPIView(views.APIView):
 
             user = request.user
             data = request.data
+            print(ip)
             # return JsonResponse({'Result': request.data.get('fqdn')}, status=status.HTTP_200_OK)
             s = []
             command = data.get('command', None)
@@ -3868,7 +3870,7 @@ class RunCommandAPIView(views.APIView):
                         if (
                                 command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'change lineprofile port'):
                             fiber.command = 'setPortProfiles'
-                        url = 'http://5.202.129.88:9096/api/Telnet/telnet'
+                        url = 'http://5.202.129.61:9096/api/Telnet/telnet'
                         data = "{'type':'Fiberhome','dslam':'%s','telnetPort':'23','userName':'%s','password':'%s','access':'%s','card':'%s','port':'%s','command':'%s','profile':'%s','terminalDelay':'600','requestTimeOut':'1500'}" % (
                             fiber.dslam, fiber.userName, fiber.password, fiber.access, fiber.card, fiber.port,
                             fiber.command,
@@ -5905,6 +5907,7 @@ class FiberHomeCommandAPIView(views.APIView):
         device_ip = get_device_ip(request)
         data = request.data
         print('============================================================================')
+        print(device_ip)
         print(data)
         print('============================================================================')
         command = data.get('command', None)
