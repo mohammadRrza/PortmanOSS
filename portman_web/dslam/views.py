@@ -3636,7 +3636,7 @@ class RegisterPortAPIView(views.APIView):
                     # return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
                     return JsonResponse(
                         {'result': str('An Error Ocurred for add to vlan Command. Email Sent To rt-network-access!!!')},
-                        status=status.HTTP_202_ACCEPTED)
+                        status=status.HTTP_201_CREATED)
 
                 else:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
