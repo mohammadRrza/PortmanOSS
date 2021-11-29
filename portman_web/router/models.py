@@ -34,6 +34,7 @@ class Router(models.Model):
     SSH_password = models.CharField(max_length=256)
     SSH_port = models.IntegerField(null=True, blank=True, default=0)
     SSH_timeout = models.IntegerField(null=True, blank=True, default=0)
+    last_update = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.device_name
