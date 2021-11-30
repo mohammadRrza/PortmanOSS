@@ -43,7 +43,7 @@ def ldap_auth(username, password):
 
 
 if __name__ == "__main__":
-    user = ldap_auth('174', 'Saida@71@')
+    user = ldap_auth('', '')
     print(user)
     # x = MyLDAPBackend()
     # x.authenticate('sajad saedi', 'Saida@71@')
