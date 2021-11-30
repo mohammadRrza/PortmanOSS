@@ -3707,7 +3707,7 @@ class RegisterPortAPIView(views.APIView):
                 # return JsonResponse({'PVC': pvc}, status=status.HTTP_201_CREATED)
                 if isinstance(pvc, str):
                     return JsonResponse({'PVC': pvc, 'id': 400, 'msg': 'port config has not been done.'},
-                                        status=status.HTTP_201_CREATED)
+                                        status=status.HTTP_400_BAD_REQUEST)
                 for PVC in pvc:
                     if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'),
                                                               port_data.get('port_number'), reseller_obj.vpi,
@@ -3717,7 +3717,7 @@ class RegisterPortAPIView(views.APIView):
 
                 else:
                     return JsonResponse({'PVC': pvc, 'id': 400, 'res': sid, 'msg': 'port config has not been done.'},
-                                        status=status.HTTP_201_CREATED)
+                                        status=status.HTTP_400_BAD_REQUEST)
                 # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()

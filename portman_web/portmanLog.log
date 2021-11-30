@@ -214,3 +214,13 @@ Bad Request: /api/v1/dslamport/register-port/
 Not Found: /api/v1/dslamport/run-commandV3/
 Not Found: /api/v1/dslamport/run-commandV3/
 Unauthorized: /api/v1/dslamport/register-port/
+Not Found: /favicon.ico
+Not Found: /logout/
+Not Found: /logout/
+Not Found: /
+Not Found: /favicon.ico
+Not Found: /logout/
+Not Found: /logout/
+Not Found: /login
+Unauthorized: /api/v1/users/login/
+Unauthorized: /api/v1/users/login/
