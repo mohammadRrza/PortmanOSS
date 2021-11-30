@@ -46,4 +46,4 @@ if __name__ == "__main__":
     user = ldap_auth('', '')
     print(user)
     # x = MyLDAPBackend()
-    # x.authenticate('sajad saedi', 'Saida@71@')
+    # x.authenticate('', '')
