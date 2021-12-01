@@ -5932,8 +5932,9 @@ class FiberHomeCommandAPIView(views.APIView):
                         add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
                 for item in port_info:
+                    current_userProfile = ""
                     if '  prof' in item:
-                        current_userProfile: item
+                        current_userProfile = item
 
                 return JsonResponse({'response': result, 'current_userProfile': current_userProfile})
 
