@@ -3739,7 +3739,7 @@ class RegisterPortAPIView(views.APIView):
             # return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
             return JsonResponse(
                 {'result': str('an error occurred. please try again. {0}-{1}'.format(str(ex), str(exc_tb.tb_lineno)))},
-                status=status.HTTP_202_ACCEPTED)
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class showPort():
@@ -5930,8 +5930,12 @@ class FiberHomeCommandAPIView(views.APIView):
                         description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
 
                         add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
+                port_info = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
+                for item in port_info:
+                    if '  prof' in item:
+                        current_userProfile: item
 
-                return JsonResponse({'response': result})
+                return JsonResponse({'response': result, 'current_userProfile': current_userProfile})
 
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})

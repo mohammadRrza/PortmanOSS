@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 import telnetlib
@@ -77,9 +78,9 @@ class ShowLineRate(BaseCommand):
             print('*******************************************')
             result = str(result).split("\\r\\n")
 
-            res = {'current_userProfile': "",
+            res = {
                    'dslamName/cammandName': "",
-                   'date': "",
+                   'date': str(datetime.datetime.now()),
                    'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
                        self.port_conditions['port_number']),
                    # 'OP_State' : res[4].split(":")[1],
