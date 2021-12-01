@@ -55,7 +55,6 @@ LOGGING = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    'portman_web.users.backends.MyLDAPBackend',
     'django.contrib.auth.backends.ModelBackend'
 ]
 

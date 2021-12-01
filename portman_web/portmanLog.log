@@ -224,3 +224,12 @@ Not Found: /logout/
 Not Found: /login
 Unauthorized: /api/v1/users/login/
 Unauthorized: /api/v1/users/login/
+Not Found: /api/v1/user/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
