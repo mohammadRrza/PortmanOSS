@@ -5934,7 +5934,7 @@ class FiberHomeCommandAPIView(views.APIView):
                 for item in port_info:
                     current_userProfile = ""
                     if 'prof' in item:
-                        current_userProfile = item
+                        current_userProfile = item.split(':')[1]
                         break
 
                 return JsonResponse({'response': result, 'current_userProfile': current_userProfile})
