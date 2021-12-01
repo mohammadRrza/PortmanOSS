@@ -5933,8 +5933,9 @@ class FiberHomeCommandAPIView(views.APIView):
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
                 for item in port_info:
                     current_userProfile = ""
-                    if '  prof' in item:
+                    if 'prof' in item:
                         current_userProfile = item
+                        break
 
                 return JsonResponse({'response': result, 'current_userProfile': current_userProfile})
 
