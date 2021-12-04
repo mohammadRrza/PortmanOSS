@@ -16,43 +16,6 @@ import os
 from datetime import timedelta
 import posixpath
 
-import ldap
-from django_auth_ldap.config import LDAPSearch
-from django_auth_ldap.config import ActiveDirectoryGroupType
-
-AUTH_LDAP_SERVER_URI = 'ldap://172.28.238.238:389'
-# AUTH_LDAP_CONNECTION_OPTIONS = {ldap.OPT_REFERRALS: 0}
-# AUTH_LDAP_START_TLS = True
-# AUTH_LDAP_USER_DN_TEMPLATE = "uid=%(user)s, OU=PTE-Staff,DC=pishgaman,DC=local"
-# AUTH_LDAP_BIND_DN = "CN=test-bd,OU=Users,OU=DevOps,OU=PTE-Staff,DC=pishgaman,DC=local"
-# AUTH_LDAP_BIND_PASSWORD = "P@ss12345"
-# AUTH_LDAP_USER_QUERY_FIELD = 'uid'
-# AUTH_LDAP_USER_SEARCH = LDAPSearch("OU=PTE-Staff,DC=pishgaman,DC=local", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
-#
-# AUTH_LDAP_USER_ATTR_MAP = {
-#     "username": "uid",
-#     "first_name": "givenName",
-#     "last_name": "sn",
-#     "email": "mail",
-# }
-# AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
-#     "ou=DevOps,ou=PTE-Staff,dc=pishgaman,dc=local", ldap.SCOPE_SUBTREE, "(objectClass=GroupOfNames)")
-# AUTH_LDAP_GROUP_TYPE = ActiveDirectoryGroupType(name_attr="cn")
-# AUTH_LDAP_REQUIRE_GROUP = "cn=DevOps,ou=DevOps,ou=PTE-Staff,dc=pishgaman,dc=local"
-# AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-#     "is_superuser": "cn=DevOps,ou=DevOps,ou=PTE-Staff,dc=pishgaman,dc=local",
-#     "is_staff": "cn=DevOps,ou=DevOps,ou=PTE-Staff,dc=pishgaman,dc=local",
-# }
-AUTH_LDAP_FIND_GROUP_PERMS = True
-AUTH_LDAP_CACHE_GROUPS = True
-AUTH_LDAP_GROUP_CACHE_TIMEOUT = 1  # 1 hour cache
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler"}},
-    "loggers": {"django_auth_ldap": {"level": "DEBUG", "handlers": ["console"]}},
-}
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
