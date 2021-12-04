@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from requests import Response
 from rest_framework import status
 
+sys.path.append('/opt/portmanv3/portman_web/')
+os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings'
 
 class ZabbixHosts:
     def __init__(self):
