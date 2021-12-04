@@ -233,3 +233,4 @@ Internal Server Error: /api/v1/users/login/
 Internal Server Error: /api/v1/users/login/
 Internal Server Error: /api/v1/users/login/
 Internal Server Error: /api/v1/users/login/
+Unauthorized: /api/v1/users/ldap_login/

@@ -8,14 +8,12 @@ from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
-# from backends import ldap_auth
 
 from rest_framework import viewsets, status, views, mixins
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
-from django.conf import settings
 
 from users.serializers import *
 from users.models import UserAuditLog
@@ -27,6 +25,9 @@ from khayyam import *
 from datetime import date, datetime
 
 from dslam.views import LargeResultsSetPagination
+
+# from portman_web.users.backends import ldap_auth
+from .backends import ldap_auth
 
 User = get_user_model()
 
@@ -177,49 +178,36 @@ class UserViewSet(viewsets.ModelViewSet):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line:': str(exc_tb.tb_lineno)},
                                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    # @action(methods=['POST'], detail=False, permission_classes=[], authentication_classes=[])
-    # def ldap_login(self, request):
-    #     """
-    #     Login User
-    #     ---
-    #     parameters:
-    #         - username:
-    #             type: string
-    #             paramType: form
-    #             required: true
-    #         - password:
-    #             type: string
-    #             paramType: form
-    #             required: true
-    #     """
-    #
-    #     try:
-    #         data = request.data
-    #         username = data.get('username', '')
-    #         password = data.get('password', '')
-    #         user = ldap_auth(username=username, password=password)
-    #         if user is not None:
-    #             if user.is_active:
-    #                 login(request, user)
-    #
-    #                 # create token
-    #                 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-    #                 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-    #                 payload = jwt_payload_handler(user)
-    #                 token = jwt_encode_handler(payload)
-    #
-    #                 response = serializer = UserSerializer(user).data
-    #                 response['token'] = token
-    #
-    #                 return Response(response, status=status.HTTP_200_OK)
-    #             else:
-    #                 return Response({'msg': 'User is inactive'}, status=status.HTTP_401_UNAUTHORIZED)
-    #         else:
-    #             return Response({'msg': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
-    #     except Exception as ex:
-    #         exc_type, exc_obj, exc_tb = sys.exc_info()
-    #         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    #         return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+    @action(methods=['POST'], detail=False, permission_classes=[], authentication_classes=[])
+    def ldap_login(self, request):
+        """
+        Login User
+        ---
+        parameters:
+            - username:
+                type: string
+                paramType: form
+                required: true
+            - password:
+                type: string
+                paramType: form
+                required: true
+        """
+
+        try:
+            data = request.data
+            username = data.get('username', '')
+            password = data.get('password', '')
+            user = ldap_auth(username=username, password=password)
+            if user['message'] == "Success":
+                return Response({'result': user}, status=status.HTTP_200_OK)
+            else:
+                return Response({'result': 'Failed to authenticate'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
     @action(methods=['POST'], detail=False, permission_classes=[], authentication_classes=[])
     def SendResetPasswordLink(self, request):
