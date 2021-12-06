@@ -5935,9 +5935,11 @@ class FiberHomeCommandAPIView(views.APIView):
                     current_userProfile = ""
                     if 'prof' in item:
                         current_userProfile = item.split(':')[1]
-                        break
+                    if 'state' in item:
+                        port_state = item.split(':')[1]
 
-                return JsonResponse({'response': result, 'current_userProfile': current_userProfile})
+
+                return JsonResponse({'response': result, 'current_userProfile': current_userProfile,'port_state': port_state})
 
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})
