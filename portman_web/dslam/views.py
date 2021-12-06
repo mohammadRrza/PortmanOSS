@@ -5933,6 +5933,7 @@ class FiberHomeCommandAPIView(views.APIView):
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
                 for item in port_info:
                     current_userProfile = ""
+                    port_state = ""
                     if 'prof' in item and 'alarm prof' not in item:
                         current_userProfile = item.split(':')[1]
                     if 'state' in item:
