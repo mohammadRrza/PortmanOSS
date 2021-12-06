@@ -420,9 +420,11 @@ class PortmanLog(models.Model):
     command = models.CharField(max_length=32, null=True, blank=True)
     request = models.TextField(null=True, blank=True)
     response = models.TextField(null=True, blank=True)
-    log_date = models.DateTimeField(null=True, blank=True)
+    log_date = models.DateTimeField(null=True, blank=True, auto_now=True)
     source_ip = models.CharField(max_length=20, null=True, blank=True)
     method_name = models.CharField(max_length=32, null=True, blank=True)
+    status = models.BooleanField(null=True, blank=True)
+    exception_result = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.username
