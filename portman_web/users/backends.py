@@ -28,5 +28,5 @@ def ldap_auth(username, password):
 
 
 if __name__ == "__main__":
-    user = ldap_auth('1741298148@pishgaman.local', 'Saida@71@')
+    user = ldap_auth('0422094080@pishgaman.local', 'Nahid_1414')
     print(user)
