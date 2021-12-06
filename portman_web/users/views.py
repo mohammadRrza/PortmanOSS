@@ -200,6 +200,7 @@ class UserViewSet(viewsets.ModelViewSet):
             password = data.get('password', '')
             user = ldap_auth(username=username+'@pishgaman.local', password=password)
             if user['message'] == "Success":
+                user = authenticate(username='admin', password='1234!@#$asdfASDF')
                 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
                 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
                 payload = jwt_payload_handler(user)
