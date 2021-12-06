@@ -3707,7 +3707,7 @@ class RegisterPortAPIView(views.APIView):
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
             if dslam_obj.dslam_type_id == 1:
-                #return JsonResponse({"result": PVC})
+                # return JsonResponse({"result": PVC})
 
                 if isinstance(pvc, str):
                     return JsonResponse({'PVC': pvc, 'id': 400, 'msg': 'port config has not been done.'},
@@ -5940,10 +5940,10 @@ class FiberHomeCommandAPIView(views.APIView):
                         continue
                     if 'state' in item:
                         port_state = item.split(':')[1]
-                    break
+                        break
 
-
-                return JsonResponse({'response': result, 'current_userProfile': current_userProfile,'port_state': port_state})
+                return JsonResponse(
+                    {'response': result, 'current_userProfile': current_userProfile, 'port_state': port_state})
 
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'Result': dslam_type})
