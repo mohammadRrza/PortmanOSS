@@ -198,7 +198,7 @@ class UserViewSet(viewsets.ModelViewSet):
             data = request.data
             username = data.get('username', '')
             password = data.get('password', '')
-            user = ldap_auth(username=username, password=password)
+            user = ldap_auth(username=username+'@pishgaman.local', password=password)
             if user['message'] == "Success":
                 return Response({'result': user}, status=status.HTTP_200_OK)
             else:
