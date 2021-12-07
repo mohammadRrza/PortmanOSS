@@ -62,6 +62,8 @@ class ShowPort(BaseCommand):
             if "status:" not in str(result):
                 return "Port number is out of range."
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return result.decode('utf-8')
             result = str(result).split("\\r\\n")
             ''' result = [val for val in result if re.search(r':\s', val)]
             d = {}

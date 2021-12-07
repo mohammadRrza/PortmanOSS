@@ -56,6 +56,8 @@ class ShowProfileByPort(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return result.decode('utf-8')
             if "SlotNoPortConvertObjIndex" in str(result):
                 return "The Card number maybe unavailable or does not exist."
             elif "ifStr" in str(result):

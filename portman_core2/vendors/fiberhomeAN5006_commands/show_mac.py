@@ -71,6 +71,8 @@ class ShowMac(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return result.decode('utf-8')
             if "invalid interface" in str(result):
                 str_res = ["There is one of the following problems:",
                            "This card is not configured or not available", "Card number is out of range."]

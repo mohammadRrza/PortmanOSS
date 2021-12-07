@@ -62,7 +62,8 @@ class ShowAllVLANs(BaseCommand):
             result = tn.read_until(b"end")
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return str(result)
+                return result.decode('utf-8')
+            result = str(result).split("\\r\\n")
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{4,}', val)]
             return result

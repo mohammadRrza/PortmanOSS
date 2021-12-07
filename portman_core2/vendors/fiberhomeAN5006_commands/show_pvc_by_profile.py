@@ -78,6 +78,8 @@ class ShowPVCByProfile(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end", 1)
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return result.decode('utf-8')
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
                       re.search(r'\s{4,}', val)]
