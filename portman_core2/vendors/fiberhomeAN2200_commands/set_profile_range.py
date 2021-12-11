@@ -93,6 +93,8 @@ class SetProfileRange(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end")
             res = tn.read_until(b'end')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res.decode('utf-8')
             if "The port ID is 1~32" in str(res):
                 return f"Port list is out of range. Please insert a list between 1-32"
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s', val)]

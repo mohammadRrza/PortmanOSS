@@ -74,6 +74,8 @@ class ShowProfileByPort(BaseCommand):
             time.sleep(0.5)
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res.decode('utf-8')
             if "not config" in str(res):
                 return f"Card number '{self.port_conditions['slot_number']}' is not configured."
             if "error card number!" in str(res):
