@@ -79,7 +79,7 @@ class ShowMac(BaseCommand):
                 return f"No MAC address is assigned to port '{self.port_conditions['port_number']}'"
             tn.close()
             result = str(result).split("\\r\\n")
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

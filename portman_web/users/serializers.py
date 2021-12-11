@@ -7,7 +7,7 @@ from users.models import *
 
 from khayyam import JalaliDatetime
 
-from portman_web.users.models import PortmanLog
+from users.models import PortmanLog
 
 User = get_user_model()
 

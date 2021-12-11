@@ -97,7 +97,7 @@ class CreateVlan(BaseCommand):
             print('===================================')
             tn.write(b"exit\r\n\r\n")
             tn.close()
-            return "{0} created valn".format(self.__vlan_name)
+            return dict(result="{0} created vlan".format(self.__vlan_name), status=200)
         except Exception as ex:
             print(ex)
-            return "error: {0} created valn".format(self.__vlan_name)
+            return "error: {0} created vlan".format(self.__vlan_name)

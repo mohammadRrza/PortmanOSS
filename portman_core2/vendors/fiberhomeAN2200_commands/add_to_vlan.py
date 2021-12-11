@@ -104,8 +104,10 @@ class AddToVlan(BaseCommand):
             tn.write(b"exit\r\n\r\n")
             tn.close()
             if 'Continue to add port' in str(result):
-                return 'port {0}-{1} added to vlan {2}'.format(self.port_conditions[0]['slot_number'],
-                                                               self.port_conditions[0]['port_number'], self.__vlan_name)
+                result = 'port {0}-{1} added to vlan {2}'.format(self.port_conditions[0]['slot_number'],
+                                                                 self.port_conditions[0]['port_number'],
+                                                                 self.__vlan_name)
+                return dict(result=result, status=200)
 
         except Exception as ex:
              exc_type, exc_obj, exc_tb = sys.exc_info()

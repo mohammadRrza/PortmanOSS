@@ -425,6 +425,7 @@ class PortmanLog(models.Model):
     method_name = models.CharField(max_length=32, null=True, blank=True)
     status = models.BooleanField(null=True, blank=True)
     exception_result = models.TextField(null=True, blank=True)
+    reseller_name = models.CharField(max_length=32, null=True, blank=True)
 
     def __str__(self):
         return self.username
