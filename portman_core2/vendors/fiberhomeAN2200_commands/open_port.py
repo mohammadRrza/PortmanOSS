@@ -94,7 +94,7 @@ class OpenPort(BaseCommand):
             tn.write(b"exit\r\n")
             tn.close()
 
-            return result
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

@@ -94,7 +94,7 @@ class DelFromVlan(BaseCommand):
             print('===================================')
             tn.write(b"exit\r\n\r\n")
             tn.close()
-            return "{0} deleted to valn {1}".format(self.__port_name, self.__vlan_name)
+            return dict(result="{0} deleted to valn {1}".format(self.__port_name, self.__vlan_name), status=200)
         except Exception as e:
             print(e)
             return "error: {0} deleted to valn {1}".format(self.__port_name, self.__vlan_name)

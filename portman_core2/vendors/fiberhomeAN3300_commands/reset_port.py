@@ -71,7 +71,7 @@ class ResetPort(BaseCommand):
                 return "The port list is out of range!"
             else:
                 tn.close()
-                return "Port restarted successfully."
+                return dict(result="Port restarted successfully.", status=200)
             # return str(result)
 
         except (EOFError, socket_error) as e:

@@ -77,7 +77,7 @@ class SwitchPortShow(BaseCommand):
             res = tn.read_until(b'end')
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\s{4,}|--+|Bridge', val)]
 
-            return result
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

@@ -71,7 +71,7 @@ class SaveConfig(BaseCommand):
             print('password sent ...')
             tn.write(b"wf\r\n")
             tn.read_until(b'Verifying Flash SST...')
-            return "Save config successfully completed."
+            return dict(result="Save config successfully completed.", status=200)
             # result = str(res).split("\\n\\r")
             # result = [val for val in result if 'ok!' in val]
             #

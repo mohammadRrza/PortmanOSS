@@ -70,7 +70,7 @@ class ClosePort(BaseCommand):
                 return "The port list is out of range!"
             else:
                 tn.close()
-                return "Port disabled successfully."
+                return dict(result="Port disabled successfully.", status=200)
             # return str(result)
 
         except (EOFError, socket_error) as e:

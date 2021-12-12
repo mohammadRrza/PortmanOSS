@@ -79,12 +79,12 @@ class ShowAllVLANs(BaseCommand):
             result = tn.read_until(b"end")
             res += str(result)
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return res
+                return dict(result=res, status=200)
             result = str(res).split("\\r\\n")
             result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;-]+('b')[a-zA-Z +\\1-9[;-]+H", '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}', val)]
             tn.close()
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

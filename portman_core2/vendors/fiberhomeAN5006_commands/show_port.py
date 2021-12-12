@@ -128,7 +128,7 @@ class ShowPort(BaseCommand):
                     res['actualrateUp'] = val.split(":")[2].strip()
                     res['actualrateDown'] = val.split(":")[1].split()[0]
 
-            return res
+            return dict(result=res, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

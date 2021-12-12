@@ -55,7 +55,7 @@ class AddToVlan(BaseCommand):
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until('Password:')
+            tn.read_until(b'Password:')
             # port pvc set <slot-port-vpi/vci> <profile> <mux> <pvlan_id> <priority>
             tn.write("vlan set {0} all fix untag\r\n\r\n".format(
                 self.__vlan_id,
@@ -77,15 +77,15 @@ class AddToVlan(BaseCommand):
                         self.__vlan_id,
                         self.__priority).encode('utf-8'))
                 time.sleep(1)
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
-            if 'example' in result:
-                return {"result" : "add to valn {1} give error".format(self.__vlan_id), "port_indexes": self.__port_indexes}
+            if 'example' in str(result):
+                return {"result": "add to vlan {0} give error".format(self.__vlan_id), "port_indexes": self.__port_indexes}
             print(("{0} added to vlan {1}".format(self.__port_indexes, self.__vlan_id)))
-            return dict(result="added to vlan {0}".format(self.__vlan_id), port_indexes=self.__port_indexes)
+            return dict(result="added to vlan {0}".format(self.__vlan_id), port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
@@ -97,5 +97,5 @@ class AddToVlan(BaseCommand):
             if self.retry < 4:
                 return self.run_command()
             else:
-                print(("error : add to valn {1}".format(self.__vlan_id)))
-                return {"result" : "add to valn {1}".format(self.__vlan_id)}
+                print(("error : add to vlan {0}".format(self.__vlan_id)))
+                return {"result" : "add to vlan {0}".format(self.__vlan_id)}

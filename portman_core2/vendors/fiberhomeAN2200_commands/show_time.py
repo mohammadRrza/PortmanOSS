@@ -74,10 +74,10 @@ class ShowTime(BaseCommand):
             tn.write("end\r\n".encode('utf-8'))
             res = tn.read_until(b'end')
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return str(res)
+                return dict(result=str(res), status=200)
             result = [val for val in str(res).split("\\n\\r") if re.search(r'Current|running', val)]
 
-            return result
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

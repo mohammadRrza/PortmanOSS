@@ -136,7 +136,7 @@ class SetProfileRange(BaseCommand):
             tn.write(b"exit\r\n")
             tn.close()
 
-            return "Profiles range set successfully"
+            return dict(result="Profiles range set successfully", status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

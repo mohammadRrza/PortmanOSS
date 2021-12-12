@@ -83,7 +83,7 @@ class ShowPortWithMac(BaseCommand):
                 if self.__mac in i:
                     port_number = i.split()[1].split(":")[1].strip()
                     return f"Port number of MAC '{self.__mac}' is: {port_number}"
-            return f"MAC address '{self.__mac}' does not exits"
+            return dict(result=f"MAC address '{self.__mac}' does not exits", status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

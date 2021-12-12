@@ -82,7 +82,7 @@ class ShowSlotPortByMac(BaseCommand):
             for inx, val in enumerate(result):
                 if self.__mac in val:
                     res = "".join(result[inx + 1].split("  ")[-1])
-                    return f"Port number of the current MAC address is: {res}"
+                    return dict(result=f"Port number of the current MAC address is: {res}", status=200)
                 else:
                     return f"MAC Address: {self.__mac} does not exist."
 

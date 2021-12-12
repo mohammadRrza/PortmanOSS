@@ -73,9 +73,10 @@ class ShowShelf(BaseCommand):
             tn.write(b"exit\r\n")
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return str(res)
+                return dict(result=str(res), status=200)
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s{4,}|SHELF|Polling|Current|--+', val)]
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

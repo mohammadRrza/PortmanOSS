@@ -101,7 +101,7 @@ class ResetPort(BaseCommand):
             if "finished." in str(res):
                 tn.write(b"exit\r\n")
                 tn.close()
-                return f"Port {self.port_conditions['port_number']} reset successfully."
+                return dict(result=f"Port {self.port_conditions['port_number']} reset successfully.", status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

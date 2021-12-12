@@ -81,7 +81,7 @@ class ShowMacBySlotPort(BaseCommand):
                 return "No Up port!"
             result = str(res).split("\\n\\r")
             result = [re.sub(r'\\t', '    ', val) for val in result if re.search(r'\s{2,}|--{4,}', val)]
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)
