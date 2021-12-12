@@ -113,3 +113,8 @@ Traceback (most recent call last):
   File "/home/sajad/Project/portmanv3/portman_web/classes/portman_logging.py", line 20, in save_to_db
     return PortmanLog.objects.create(request=self.log_params['log_port_data'],
 KeyError: 'log_port_data'
+Not Found: /api/v1/dslamport/portman-log/
+Not Found: /api/v1/dslamport/portman-log/
+Unauthorized: /api/v1/portman-log/
+Method Not Allowed: /api/v1/portman-log/
+Not Found: /api/v1/portman-log/

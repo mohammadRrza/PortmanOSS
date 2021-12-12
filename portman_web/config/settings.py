@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'qepv7vyyu4-&un2-9opv6n&dwwi9p2nn14kh_dggzjyfu%on#n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['172.28.238.114', '5.202.129.160', 'localhost', '127.0.0.1', 'portman.pishgaman.net']
