@@ -78,7 +78,7 @@ class ShowMac(BaseCommand):
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
             tn.close()
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

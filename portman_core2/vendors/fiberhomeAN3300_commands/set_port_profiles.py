@@ -75,7 +75,7 @@ class SetPortProfile(BaseCommand):
                 return f"Profile '{self.__lineprofile}' does not exist."
             tn.close()
 
-            return f"Port profile has been changed to {self.__lineprofile}"
+            return dict(result=f"Port profile has been changed to {self.__lineprofile}", status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

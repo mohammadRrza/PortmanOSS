@@ -73,7 +73,7 @@ class StartSelt(BaseCommand):
                 return f"Invalid port number '{self.port_conditions['port_number']}'"
             if "started" in str(result):
                 return "Selt successfully started"
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

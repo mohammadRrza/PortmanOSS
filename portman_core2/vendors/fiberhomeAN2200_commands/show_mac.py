@@ -89,7 +89,7 @@ class ShowMac(BaseCommand):
                       re.search(r'\s{4,}|\d{2}|MAC|--+', val)]
             tn.close()
 
-            return dict(res=result, port_indexes=self.__port_indexes)
+            return dict(result=result, port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

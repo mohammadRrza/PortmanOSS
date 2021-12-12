@@ -94,7 +94,7 @@ class ShowPVCByProfile(BaseCommand):
                     d[temp] = {}
                     d[temp]['vpi'] = result[inx + 1].split(':')[1]
                     d[temp]['vci'] = result[inx + 2].split(':')[1]
-            return d
+            return dict(result=d, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

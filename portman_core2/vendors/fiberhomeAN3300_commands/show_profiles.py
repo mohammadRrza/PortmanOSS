@@ -67,13 +67,13 @@ class ShowProfiles(BaseCommand):
             result = result1 + result2
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return str(result)
+                return dict(result=str(result), status=200)
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}', val)][1:]
             temp_res = []
             for i in result:
                 temp_res += i.split()
-            return temp_res
+            return dict(result=temp_res, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

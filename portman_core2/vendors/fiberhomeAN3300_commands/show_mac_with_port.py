@@ -48,13 +48,19 @@ class ShowMacWithPort(BaseCommand):
             tn.write(b"admin\r\n")
             tn.write(b"an3300\r\n")
             tn.write(b"cd fdb\r\n")
+            tn.read_until(b"fdb#")
             tn.write("sh fdb slot {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-            time.sleep(0.5)
-            tn.write(b"\r\n")
-            tn.write(b"end\r\n")
-            result = tn.read_until(b"end")
+            result = tn.read_until(b"fdb#", 0.5)
+            output = str(result)
+            while 'fdb#' not in str(result):
+                result = tn.read_until(b"fdb#", 1)
+                output += str(result)
+                tn.write(b"\r\n")
             tn.close()
-            return str(result)
+            result = str(output).split("\\r\\n")
+            result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;'-]+H", "", val) for val in result if
+                      re.search(r"\s{4,}[-\d\w]|-{5,}|Total", val)]
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

@@ -106,7 +106,7 @@ class ShowSelt(BaseCommand):
             result = [val for val in result if re.search(r'=|Loop', val)]
             tn.close()
 
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

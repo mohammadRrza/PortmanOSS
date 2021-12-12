@@ -1,6 +1,7 @@
 import os
 import sys
 
+from django.core.serializers import serialize
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -9,14 +10,14 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 
-from rest_framework import viewsets, status, views, mixins
+from rest_framework import viewsets, status, views, mixins, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from users.serializers import *
-from users.models import UserAuditLog
+from users.models import UserAuditLog, PortmanLog
 from dslam.mail import Mail
 
 from django.http import JsonResponse, HttpResponse
@@ -28,6 +29,7 @@ from dslam.views import LargeResultsSetPagination
 
 # from portman_web.users.backends import ldap_auth
 from .backends import ldap_auth
+from .serializers import PortmanLogSerializer
 
 User = get_user_model()
 
@@ -493,3 +495,123 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
         UserPermissionProfileObject.objects.filter(user_permission_profile=instance).delete()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PortmanLogAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        data = request.data
+        queryset = PortmanLog.objects.all()
+        username = data.get('username', None)
+        command = data.get('command', None)
+        request = data.get('request', None)
+        response = data.get('response', None)
+        log_date = data.get('log_date', None)
+        source_ip = data.get('source_ip', None)
+        method_name = data.get('method_name', None)
+        status = data.get('status', None)
+        exception_result = data.get('exception_result', None)
+        try:
+            if username:
+                queryset = queryset.filter(username__icontains=username)
+
+            if command:
+                queryset = queryset.filter(command__icontains=command)
+
+            if request:
+                queryset = queryset.filter(request__icontains=request)
+
+            if response:
+                queryset = queryset.filter(response__icontains=response)
+
+            if log_date:
+                queryset = queryset.filter(log_date__icontains=log_date)
+
+            if source_ip:
+                queryset = queryset.filter(source_ip__icontains=source_ip)
+
+            if method_name:
+                queryset = queryset.filter(method_name__icontains=method_name)
+
+            if status:
+                queryset = queryset.filter(method_name__icontains=status)
+
+            if exception_result:
+                queryset = queryset.filter(method_name__icontains=exception_result)
+
+            result = serialize('json', queryset)
+            return HttpResponse(result, content_type='application/json')
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class PortmanLogViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = PortmanLog.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PortmanLogSerializer
+
+    @action(methods=['GET'], detail=False)
+    def get_queryset(self, request):
+        queryset = self.queryset
+        request = self.request.query_params.get('request', None)
+        username = self.request.query_params.get('username', None)
+        command = self.request.query_params.get('command', None)
+        response = self.request.query_params.get('response', None)
+        log_date = self.request.query_params.get('log_date', None)
+        source_ip = self.request.query_params.get('source_ip', None)
+        method_name = self.request.query_params.get('method_name', None)
+        status = self.request.query_params.get('status', None)
+        exception_result = self.request.query_params.get('exception_result', None)
+
+        try:
+            if username:
+                queryset = queryset.filter(username__icontains=username)
+
+            if command:
+                queryset = queryset.filter(command__icontains=command)
+
+            if request:
+                queryset = queryset.filter(request__icontains=request)
+
+            if response:
+                queryset = queryset.filter(response__icontains=response)
+
+            if log_date:
+                queryset = queryset.filter(log_date__icontains=log_date)
+
+            if source_ip:
+                queryset = queryset.filter(source_ip__icontains=source_ip)
+
+            if method_name:
+                queryset = queryset.filter(method_name__icontains=method_name)
+
+            if status:
+                queryset = queryset.filter(status__icontains=status)
+
+            if exception_result:
+                queryset = queryset.filter(exception_result__icontains=exception_result)
+
+            result = serialize('json', queryset)
+            return HttpResponse(result, content_type='application/json')
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+    @action(methods=['GET'], detail=False)
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

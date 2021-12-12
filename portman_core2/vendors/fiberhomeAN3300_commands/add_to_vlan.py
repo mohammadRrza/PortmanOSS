@@ -200,9 +200,13 @@ class AddToVlan(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if "has been add" in str(result):
-                return f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {vlan_info['pvc_num']} has been successfully add to vlan {vlan_info['vlan_name']}"
+                return dict(
+                    result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {vlan_info['pvc_num']} has been successfully add to vlan {vlan_info['vlan_name']}",
+                    status=200)
             tn.close()
-            return f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {vlan_info['pvc_num']} has been successfully add to vlan {vlan_info['vlan_name']}"
+            return dict(
+                result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {vlan_info['pvc_num']} has been successfully add to vlan {vlan_info['vlan_name']}",
+                status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

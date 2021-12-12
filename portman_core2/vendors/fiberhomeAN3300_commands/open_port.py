@@ -70,7 +70,7 @@ class OpenPort(BaseCommand):
                 return "The port list is out of range!"
             else:
                 tn.close()
-                return "Port enabled successfully."
+                return dict(result="Port enabled successfully.", status=200)
             # return str(result)
 
         except (EOFError, socket_error) as e:

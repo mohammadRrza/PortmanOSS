@@ -90,7 +90,8 @@ class ShowProfileByPort(BaseCommand):
             for inx, val in enumerate(result):
                 if profile_id in val:
                     prf_name = result[inx + 1].split(":")[1].strip()
-                    return f"Profile set to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: '{prf_name}'"
+                    result = f"Profile set to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: '{prf_name}'"
+                    return dict(result=result, status=200)
             else:
                 return "Profile not found."
 

@@ -7,6 +7,8 @@ from users.models import *
 
 from khayyam import JalaliDatetime
 
+from users.models import PortmanLog
+
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -123,3 +125,9 @@ class UserPermissionProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPermissionProfile
         fields = ('id', 'user', 'user_info', 'action', 'is_active', 'permission_profile', 'permission_profile_name')
+
+
+class PortmanLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PortmanLog
+        fields = '__all__'

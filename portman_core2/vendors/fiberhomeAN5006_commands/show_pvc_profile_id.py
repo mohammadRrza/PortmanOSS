@@ -66,7 +66,7 @@ class ShowPVCProfileID(BaseCommand):
                 return result.decode('utf-8')
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}', val)]
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

@@ -141,7 +141,7 @@ class ShowPort(BaseCommand):
                     res['attenuationUp'] = val.split(":")[2].strip()
                     res['attenuationDown'] = val.split(":")[1].split()[0]
 
-            return res
+            return dict(result=res, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)
