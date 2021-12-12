@@ -556,7 +556,7 @@ class PortmanLogViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
     serializer_class = PortmanLogSerializer
 
     @action(methods=['GET'], detail=False)
-    def get_queryset(self, request):
+    def get_queryset(self):
         queryset = self.queryset
         request = self.request.query_params.get('request', None)
         username = self.request.query_params.get('username', None)
@@ -567,16 +567,17 @@ class PortmanLogViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
         method_name = self.request.query_params.get('method_name', None)
         status = self.request.query_params.get('status', None)
         exception_result = self.request.query_params.get('exception_result', None)
+        reseller_name = self.request.query_params.get('reseller_name', None)
 
         try:
+            if request:
+                queryset = queryset.filter(request__icontains=request)
+
             if username:
                 queryset = queryset.filter(username__icontains=username)
 
             if command:
                 queryset = queryset.filter(command__icontains=command)
-
-            if request:
-                queryset = queryset.filter(request__icontains=request)
 
             if response:
                 queryset = queryset.filter(response__icontains=response)
@@ -596,22 +597,14 @@ class PortmanLogViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
             if exception_result:
                 queryset = queryset.filter(exception_result__icontains=exception_result)
 
-            result = serialize('json', queryset)
-            return HttpResponse(result, content_type='application/json')
+            if reseller_name:
+                queryset = queryset.filter(reseller_name__icontains=reseller_name)
+
+            # result = serialize('json', queryset)
+            # return HttpResponse(result, content_type='application/json')
+            return queryset
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
-
-    @action(methods=['GET'], detail=False)
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
