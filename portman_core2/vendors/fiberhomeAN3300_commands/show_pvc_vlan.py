@@ -83,7 +83,7 @@ class ShowVLAN(BaseCommand):
             if "not exist." in str(result):
                 return f"VLAN '{self.__vlan_name['vlan_name']}' does not exist."
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=str(result), status=200)
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}', val)]

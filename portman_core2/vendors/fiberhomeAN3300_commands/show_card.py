@@ -67,6 +67,8 @@ class ShowCard(BaseCommand):
             time.sleep(0.5)
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             if "Invalid port list" in str(result):
                 str_res = ["There is one of the following problems:", "This card is disable",
                            "Card number is out of range.", "Port number is out of range."]
