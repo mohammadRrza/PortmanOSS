@@ -128,7 +128,7 @@ class DSLAMSerializer(serializers.ModelSerializer):
             for field_name in remove_fields:
                 self.fields.pop(field_name)
 
-    dslam_type_info = DSLAMTypeSerializer(source="dslam_ty pe", read_only=True, required=False)
+    dslam_type_info = DSLAMTypeSerializer(source="dslam_type", read_only=True, required=False)
     telecom_center_info = TelecomCenterSerializer(source="telecom_center", read_only=True, required=False)
     text = serializers.CharField(source='name', read_only=True, required=False)
 
