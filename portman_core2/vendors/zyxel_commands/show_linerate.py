@@ -118,8 +118,8 @@ class ShowLineRate(BaseCommand):
                    # 'Interleaved Delay(U) ' : res[21].split(":")[1].split("/")[1],
                    # 'Remote loss of link' : res[22].split(":")[1],
                    }
-            if self.device_ip == '127.0.0.1':
-                return result
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             for inx, val in enumerate(result):
                 if "noise margin" in val:
                     res['noisemarginUp'] = val.split("=")[1].split()[0]
