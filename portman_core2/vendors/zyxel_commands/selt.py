@@ -96,6 +96,8 @@ class Selt(BaseCommand):
                 tn.write((str(prompt)+str(c_n)+"\r\n").encode('utf-8'))
                 output = tn.read_until((str(prompt)+str(c_n)).encode('utf-8'))
             # output = output.replace(self.__clear_port_name(output),'')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(output).split("\\r\\n")
             result = [val for val in result if re.search(r'kFt', val)]
             result = [re.sub(r'\s{2,}', ',', val) for val in result][0].split(",")

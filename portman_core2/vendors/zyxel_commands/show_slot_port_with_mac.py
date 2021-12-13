@@ -67,6 +67,8 @@ class ShowSlotPortWithMac(BaseCommand):
             if "vid" not in str(result):
                 return "There is no port on this MAC address"
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             print('******************************************')
             print(("show mac {0}\r\n\r\n".format(self.__mac)))
             print('******************************************')
