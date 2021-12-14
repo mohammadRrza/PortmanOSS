@@ -19,6 +19,7 @@ from .huawei_commands.show_linerate import ShowLineRate
 from .huawei_commands.lcman_show_slot import LcmanShowSlot
 from .huawei_commands.lcman_show import LcmanShow
 from .huawei_commands.show_linestat_port import ShowLineStatPort
+
 '''
 from huawei_commands.selt import Selt
 from huawei_commands.create_profile import CreateProfile
@@ -51,7 +52,7 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('port enable', PortEnable)
     command_factory.register_type('change lineprofile port', ChangeLineProfilePort)
     command_factory.register_type('port disable', PortDisable)
-    command_factory.register_type('show mac slot port', ShowMacSlotPort)
+    command_factory.register_type('show mac by slot port', ShowMacSlotPort)
     command_factory.register_type('show linerate', ShowLineRate)
     command_factory.register_type('lcman show', LcmanShow)
     command_factory.register_type('lcman show slot', LcmanShowSlot)
