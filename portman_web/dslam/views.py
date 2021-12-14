@@ -5996,7 +5996,7 @@ class FiberHomeCommandAPIView(views.APIView):
 
             elif dslam_type == 2:  # huawei
 
-                return JsonResponse({'Result': dslam_type})
+                return JsonResponse({'Result': result, 'DslamType': 'huawei'})
 
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
 
