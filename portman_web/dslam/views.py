@@ -23,6 +23,8 @@ from rest_framework.parsers import FileUploadParser
 
 from classes.portman_logging import PortmanLogging
 
+from .models import Rented_port
+
 """from rtkit.resource import RTResource
 from rtkit.resource import RTResource
 from rtkit.authenticators import BasicAuthenticator, CookieAuthenticator
@@ -7836,36 +7838,37 @@ class UploadRentedPort(views.APIView):
 
     def post(self, request, forman=None):
         # Read excel file items
-        excel_file = request.FILES['hamyarnet']
+        excel_file = request.FILES['file']
         if ".xlsx" not in excel_file.name:
             return Response({"result": "File is not a excel(xlsx). Please upload only xlsx files."})
         wb = openpyxl.load_workbook(excel_file)
-        worksheet = wb["sadra-salman-ghadir"]
+        for sheet in wb.sheetnames:
+            worksheet = wb[sheet]
 
-        excel_data = list()
-        for row in worksheet.iter_rows():
-            row_data = list()
-            for cell in row:
-                row_data.append(str(cell.value))
-            excel_data.append(row_data)
-        try:
-            i = 1
-            for val in excel_data[1:]:
-                rented_port = Rented_port()
-                rented_port.agent_name = val[0]
-                rented_port.city_name = val[1]
-                rented_port.telecom_name = val[2]
-                rented_port.dslam_number = val[3]
-                rented_port.card = val[4]
-                rented_port.port = val[5]
-                rented_port.telco_row = val[6]
-                rented_port.telco_column = val[7]
-                rented_port.telco_connection = val[8]
-                rented_port.save()
-                i = i + 1
-        except Exception as ex:
-            # return Response({"result": str(ex) + str(i)})
-            return Response({"result": "Excel format has a problem."})
+            excel_data = list()
+            for row in worksheet.iter_rows():
+                row_data = list()
+                for cell in row:
+                    row_data.append(str(cell.value))
+                excel_data.append(row_data)
+            try:
+                i = 1
+                for val in excel_data[1:]:
+                    rented_port = Rented_port()
+                    rented_port.agent_name = val[0]
+                    rented_port.city_name = val[1]
+                    rented_port.telecom_name = val[2]
+                    rented_port.dslam_number = val[3]
+                    rented_port.card = val[4]
+                    rented_port.port = val[5]
+                    rented_port.telco_row = val[6]
+                    rented_port.telco_column = val[7]
+                    rented_port.telco_connection = val[8]
+                    rented_port.save()
+                    i = i + 1
+            except Exception as ex:
+                # return Response({"result": str(ex) + str(i), "sheet": sheet})
+                return Response({"result": "Excel format has a problem.", "sheet": sheet, "row": str(i)})
 
         return Response({"result": "Upload Completed."})
 
