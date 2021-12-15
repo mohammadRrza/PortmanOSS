@@ -118,3 +118,4 @@ Not Found: /api/v1/dslamport/portman-log/
 Unauthorized: /api/v1/portman-log/
 Method Not Allowed: /api/v1/portman-log/
 Not Found: /api/v1/portman-log/
+Unauthorized: /api/v1/dslamport/run-command/
