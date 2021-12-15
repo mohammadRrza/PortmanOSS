@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -74,10 +76,16 @@ class ShowProfiles(BaseCommand):
 
         except (EOFError, socket_error) as e:
             print(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return str(exc_tb.tb_lineno)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
 
         except Exception as e:
             print(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return str(exc_tb.tb_lineno)
             return str(e)
