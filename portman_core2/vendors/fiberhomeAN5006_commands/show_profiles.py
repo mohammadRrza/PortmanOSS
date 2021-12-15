@@ -50,25 +50,19 @@ class ShowProfiles(BaseCommand):
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd qos\r\n")
+            tn.read_until(b'qos#')
             time.sleep(0.1)
             tn.write(b"show rate-limit profile all\r\n")
-            time.sleep(1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"end")
-            result = tn.read_until(b"end")
+            result = tn.read_until(b"fdb#", 0.5)
+            output = str(result)
+            while 'qos#' not in str(result):
+                result = tn.read_until(b"qos#", 1)
+                output += str(result)
+                tn.write(b"\r\n")
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
-            result = str(result).split("\\r\\n")
+            result = str(output).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
                       re.search(r'name:\s', val)]
             result = [val.replace("name: ", '').strip() for val in result]
