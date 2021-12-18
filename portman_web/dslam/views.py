@@ -7954,6 +7954,6 @@ class GetUserPortInfoFromPartakAPIView(views.APIView):
             url_response = requests.get(url, headers={"Content-Type": "application/json"})
             response = url_response.json()
             print(response)
-            return response
+            return JsonResponse({'response': response})
         except Exception as ex:
             print(ex)
