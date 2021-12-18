@@ -3714,7 +3714,6 @@ class RegisterPortAPIView(views.APIView):
                 # return JsonResponse({"result": PVC})
 
                 if isinstance(pvc, str):
-
                     return JsonResponse({'PVC': pvc, 'id': 400, 'msg': 'port config has not been done.'},
                                         status=status.HTTP_400_BAD_REQUEST)
                 for PVC in pvc:
@@ -7941,3 +7940,20 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+class GetUserPortInfoFromPartakAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            username = request.query_params.get('username', None)
+            url = 'https://my.pishgaman.net/api/pte/getCustomerInfo?Adsltel={0}'.format(username)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return response
+        except Exception as ex:
+            print(ex)
