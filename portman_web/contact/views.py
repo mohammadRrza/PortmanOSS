@@ -14,6 +14,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
 from django.core.serializers import serialize
+from classes.mellat_bank_scrapping import get_captcha
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -326,6 +327,18 @@ class GetOrdrPortInfo(views.APIView):
 
             return JsonResponse({"username": str(order_port.username), "status": str(order_port.status),
                                  "telecom": str(order_port.telecom), "telecom_id": str(order_port.telecom_id)})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class GetCaptchaAPIView(views.APIView):
+    def get(self, request, format=None):
+        try:
+            get_captcha()
+            with open('/home/sajad/Project/portmanv3/portman_web/classes/screenshot.png', 'rb') as f:
+                return HttpResponse(f.read(), content_type='image/png')
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()

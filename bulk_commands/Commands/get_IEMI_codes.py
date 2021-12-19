@@ -1,6 +1,6 @@
 from selenium import webdriver
 
-driver = webdriver.Firefox()
+driver = webdriver.Chrome()
 # driver.get('http://0422094080:Nahid_1212@sharepoint.pishgaman.net/')
 driver.get('https://dyrk.org/tools/imei/')
 print(driver.title)
