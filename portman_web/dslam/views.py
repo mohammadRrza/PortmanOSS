@@ -7954,8 +7954,8 @@ class GetUserPortInfoFromPartakAPIView(views.APIView):
             url_response = requests.get(url, headers={"Content-Type": "application/json"})
             response = url_response.json()
             print(response)
-            return Response(response=response, status = status.HTTP_200_OK)
+            return Response(response, status=status.HTTP_200_OK)
         except Exception as ex:
             print(ex)
-            return Response(response=str(ex), status = status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(str(ex), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
