@@ -154,7 +154,6 @@ urlpatterns = [
     url(r'^api/v1/dslamport/get_pvc_vlan/$', GetPVCVlanAPIView.as_view(), name='get_pvc_vlan'),
     url(r'^api/v1/dslamport/add_to_vlan/$', AddToVlanAPIView.as_view(), name='add_to_vlan'),
     url(r'^api/v1/dslamport/portmap/$', PortmapAPIView.as_view(), name='portmap'),
-    url(r'^api/v1/dslamport/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='portmap'),
 
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
@@ -212,6 +211,8 @@ urlpatterns = [
         name='update_status_ports'),
     url(r'^api/v1/contact/get_ordr_port_info/$', GetOrdrPortInfo.as_view(),
         name='get_ordr_port_info'),
+#portman_cdms
+    url(r'^api/v1/portman_cdms/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='portmap'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 
