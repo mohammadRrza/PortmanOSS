@@ -7959,3 +7959,17 @@ class GetUserPortInfoFromPartakAPIView(views.APIView):
             print(ex)
             return Response(str(ex), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+class GetDslamIdByFqdnAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            fqdn = request.query_params.get('fqdn', None)
+            dslam_id = DSLAM.objects.get(fqdn=fqdn).id
+            return Response(dslam_id, status=status.HTTP_200_OK)
+        except Exception as ex:
+            print(ex)
+            return Response(str(ex), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
