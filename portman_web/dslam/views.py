@@ -7969,7 +7969,7 @@ class GetDslamIdByFqdnAPIView(views.APIView):
         try:
             fqdn = request.query_params.get('fqdn', None)
             dslam_id = DSLAM.objects.get(fqdn=fqdn).id
-            return JsonResponse({'dslam_id': dslam_id},status=status.HTTP_200_OK)
+            return JsonResponse({'dslam_id': dslam_id}, status=status.HTTP_200_OK)
         except Exception as ex:
             print(ex)
-            return JsonResponse({'response': str(ex)}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
