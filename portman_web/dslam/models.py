@@ -104,6 +104,14 @@ class DSLAMType(models.Model):
         return self.name
 
 
+class FQDN(models.CharField):
+    def __init__(self, *args, **kwargs):
+        super(FQDN, self).__init__(*args, **kwargs)
+
+    def get_prep_value(self, value):
+        return str(value).lower()
+
+
 class DSLAM(models.Model):
     telecom_center = models.ForeignKey(TelecomCenter, verbose_name='Telecom Center', db_index=True,
                                        on_delete=models.CASCADE)
@@ -131,11 +139,13 @@ class DSLAM(models.Model):
     port_count = models.IntegerField(null=True, blank=True, default=72)
     availability_start_time = models.DateTimeField(auto_now_add=True)
     down_seconds = models.BigIntegerField(default=0)
-    fqdn = models.CharField(max_length=1024, null=True, blank=True)
+    fqdn = FQDN(max_length=1024, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.name
+
     @property
     def get_ports_count(self):
         return self.dslamport_set.count()
@@ -645,6 +655,7 @@ class TelecomCenterMDF(models.Model):
 
     class Meta:
         ordering = ('created_at',)
+
     def __str__(self):
         return self.telecom_center.name
 
