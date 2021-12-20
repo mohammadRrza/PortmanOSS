@@ -5957,7 +5957,7 @@ class FiberHomeCommandAPIView(views.APIView):
         command = data.get('command', None)
         command = command_recognise(command)
         fqdn = request.data.get('fqdn')
-        dslamObj = DSLAM.objects.get(fqdn=fqdn)
+        dslamObj = DSLAM.objects.get(fqdn=str(fqdn).lower())
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
         log_port_data = f"{fqdn}/{params['port_conditions']['slot_number']}/{params['port_conditions']['port_number']}"
