@@ -75,7 +75,7 @@ class ProfileADSLShow(BaseCommand):
             result = tn.read_until(b"end")
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\d+[.]\s', '', val) for val in result if re.search(r'\d+[.]\s', val)]
-            return result
+            return dict(result=result, status=200)
 
             lstProfile = re.findall(r'\d+\.\s(\S*)',result)
             for profilename in lstProfile:
@@ -131,7 +131,7 @@ class ProfileADSLShow(BaseCommand):
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            return {"result": lstresult}
+            return {"result": dict(result=lstresult)}
         # except Exception as ex:
         #     print('????????????????????????????')
         #     print((self.__HOST, self.__telnet_username, self.__telnet_password))
