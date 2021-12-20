@@ -85,3 +85,4 @@ urllib3==1.26.7
 vine==5.0.0
 wcwidth==0.2.5
 Werkzeug==2.0.2
+selenium~=4.1.0

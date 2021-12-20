@@ -42,4 +42,3 @@ from switch.models import Switch
 
 #RadioModels
 from radio.models import Radio
-
