@@ -7968,7 +7968,7 @@ class GetDslamIdByFqdnAPIView(views.APIView):
     def get(self, request, format=None):
         try:
             fqdn = request.query_params.get('fqdn', None)
-            dslam_id = DSLAM.objects.get(fqdn=fqdn).id
+            dslam_id = DSLAM.objects.get(fqdn=str(fqdn).lower()).id
             return JsonResponse({'dslam_id': dslam_id}, status=status.HTTP_200_OK)
         except Exception as ex:
             print(ex)
