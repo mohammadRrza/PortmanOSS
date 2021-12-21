@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class AclMaccountSet(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -40,6 +41,7 @@ class AclMaccountSet(BaseCommand):
         self.__telnet_password = value
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
@@ -47,18 +49,18 @@ class AclMaccountSet(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             results = []
             for port_item in self.__port_indexes:
-                tn.write(("acl maccount set {slot_number}-{port_number}-{vpi}/{vci} {count}\r\n".format(\
-                        slot_number = port_item['slot_number'],
-                        port_number = port_item['port_number'],
-                        vpi = self.__vpi,
-                        vci = self.__vci,
-                        count = self.__count
-                        )).encode("utf-8"))
+                tn.write(("acl maccount set {slot_number}-{port_number}-{vpi}/{vci} {count}\r\n".format( \
+                    slot_number=port_item['slot_number'],
+                    port_number=port_item['port_number'],
+                    vpi=self.__vpi,
+                    vci=self.__vci,
+                    count=self.__count
+                )).encode("utf-8"))
                 time.sleep(1)
-                tn.write(("acl maccount set {slot_number}-{port_number} {count}\r\n".format(\
-                        slot_number = port_item['slot_number'],
-                        port_number = port_item['port_number'],
-                        count = self.__count
+                tn.write(("acl maccount set {slot_number}-{port_number} {count}\r\n".format(
+                    slot_number=port_item['slot_number'],
+                    port_number=port_item['port_number'],
+                    count=self.__count
                     )).encode("utf-8"))
                 time.sleep(1)
             tn.write("end\r\n")
@@ -66,12 +68,12 @@ class AclMaccountSet(BaseCommand):
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            return {'result': "acl maccount set {slot_number}-{port_number} {count}\r\n".format(\
-                        slot_number = port_item['slot_number'],
-                        port_number = port_item['port_number'],
-                        count = self.__count
-                    )}
-        except (EOFError,socket_error) as e:
+            return {'result': "acl maccount set {slot_number}-{port_number} {count}\r\n".format(
+                slot_number=port_item['slot_number'],
+                port_number=port_item['port_number'],
+                count=self.__count
+                )}
+        except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
             if self.retry < 4:

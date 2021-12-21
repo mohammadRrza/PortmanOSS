@@ -89,14 +89,14 @@ class ShowVLAN(BaseCommand):
             if "No specified vlan" in str(res):
                 return "No specified vlan. Please try another vlan."
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return str(res)
+                return dict(result=res.decode('utf-8'), status=200)
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\s+:', val)]
             d = {}
             for b in result:
                 i = b.split(' :')
                 d[i[0].strip()] = i[1].replace("\\r", "").strip()
             result = d
-            return result
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

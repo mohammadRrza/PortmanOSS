@@ -60,7 +60,7 @@ class OpenPort(BaseCommand):
                 return "Card number or Port number is out of range."
             else:
                 tn.close()
-                return "Port enabled successfully."
+                return dict(result="Port enabled successfully.", status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

@@ -74,11 +74,13 @@ class ShowMac(BaseCommand):
                 return "The Card number maybe unavailable or does not exist."
             if "Can not get the fdb information." in str(result):
                 return "This Card is not connected."
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
             tn.close()
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

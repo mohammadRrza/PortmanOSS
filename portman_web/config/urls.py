@@ -71,6 +71,7 @@ portman_router.register(r'router-command', RouterCommandViewSet, basename='route
 portman_router.register(r'contact/portmap', PortMapViewSet, basename='contact')
 portman_router.register(r'radio', RadioViewSet, basename='radio')
 portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
+portman_router.register(r'portman-log', PortmanLogViewSet, basename='portman-log')
 
 urlpatterns = [
     url(r'^users/get-token', obtain_jwt_token),
@@ -211,6 +212,9 @@ urlpatterns = [
         name='update_status_ports'),
     url(r'^api/v1/contact/get_ordr_port_info/$', GetOrdrPortInfo.as_view(),
         name='get_ordr_port_info'),
+#portman_cdms
+    url(r'^api/v1/portman_cdms/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='portmap'),
+    url(r'^api/v1/portman_cdms/get_dslam_id_by_fqdn/$', GetDslamIdByFqdnAPIView.as_view(), name='portmap'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 

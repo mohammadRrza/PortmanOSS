@@ -135,7 +135,7 @@ class SetProfile(BaseCommand):
             tn.write(b"exit\r\n")
             tn.close()
 
-            return "Profile set successfully"
+            return dict(result="Profile set successfully", status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

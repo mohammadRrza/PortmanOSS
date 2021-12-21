@@ -16,7 +16,7 @@ def command_recognise(command):
     elif command == 'show linestat port' or command == 'Show Linestat Port':
         command = 'show linestat port'
 
-    elif command == 'open port' or command == 'port enable':
+    elif command == 'open port' or command == 'port enable' or command == 'openPort':
         command = 'port enable'
     elif command == 'close port' or command == 'port disable':
         command = 'port disable'

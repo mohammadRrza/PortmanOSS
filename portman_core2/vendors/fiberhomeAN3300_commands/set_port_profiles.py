@@ -69,13 +69,15 @@ class SetPortProfile(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             if "Incorrect  port number here." in str(result):
                 return "Card number or Port number is out of range."
             if "not exist." in str(result):
                 return f"Profile '{self.__lineprofile}' does not exist."
             tn.close()
 
-            return f"Port profile has been changed to {self.__lineprofile}"
+            return dict(result=f"Port profile has been changed to {self.__lineprofile}", status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

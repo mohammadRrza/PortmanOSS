@@ -76,6 +76,8 @@ class ShowCard(BaseCommand):
             tn.write(b"exit\r\n")
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res.decode('utf-8')
             tn.close()
             if "not config" in str(res):
                 return "This card is not configured"
@@ -84,7 +86,7 @@ class ShowCard(BaseCommand):
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s{4,}|--+', val)]
 
-            return result
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

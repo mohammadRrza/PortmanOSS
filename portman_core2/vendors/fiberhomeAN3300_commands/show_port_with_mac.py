@@ -76,6 +76,8 @@ class ShowPortWithMac(BaseCommand):
                 return "The Card number maybe unavailable or does not exist."
             if "Can not get the fdb information." in str(result):
                 return "This Card is not connected."
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
@@ -83,7 +85,7 @@ class ShowPortWithMac(BaseCommand):
                 if self.__mac in i:
                     port_number = i.split()[1].split(":")[1].strip()
                     return f"Port number of MAC '{self.__mac}' is: {port_number}"
-            return f"MAC address '{self.__mac}' does not exits"
+            return dict(result=f"MAC address '{self.__mac}' does not exits", status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

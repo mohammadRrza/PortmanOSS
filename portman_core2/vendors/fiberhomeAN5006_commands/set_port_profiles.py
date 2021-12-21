@@ -60,7 +60,7 @@ class SetPortProfiles(BaseCommand):
             if "not profile named" in str(result):
                 return f"there's not profile named '{self.__lineprofile}'"
             tn.close()
-            return f"Port profile has been changed to '{self.__lineprofile}'"
+            return dict(result=f"Port profile has been changed to '{self.__lineprofile}'", status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

@@ -69,14 +69,14 @@ class AddToVlan(BaseCommand):
                     self.__vlan_name, self.__vlan_id, uplink_card_port).encode('utf-8'))
 
             ######################## Remove Card and Port from specific vlan ########################
-            tn.write("clear vlan service interface {0}/{1}".format(self.port_index['slot_number'],
-                                                                   self.port_index['port_number']).encode('utf-8'))
+            tn.write("clear vlan service interface {0}/{1}\r\n".format(self.port_index['slot_number'],
+                                                                       self.port_index['port_number']).encode('utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
-            if "SlotNoPortConvertObjIndex" in str(result):
-                return "The Card number maybe does not exist or is out of range."
-            elif "invalid" in str(result):
-                return "The Port number maybe does not exist or is out of range."
+            if "unknown input" in str(result):
+                str_res = ["There is one of the following problems:", "This card is not configured",
+                           "Card number is out of range.", "Port number is out of range."]
+                return str_res
 
             ########################### Add card and port to the new Vlan ###########################
             tn.write("add vlan service type unicast mode tag vid {0} cos 0 interface {1}/{2}/0\r\n".format(
@@ -96,7 +96,8 @@ class AddToVlan(BaseCommand):
             tn.write(b"end\r\n")
             tn.write(b"exit\r\n")
             tn.close()
-            return f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc 0 has been successfully added to vlan {self.__vlan_name}"
+            final_result = f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc 0 has been successfully added to vlan {self.__vlan_name}"
+            return dict(result=final_result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

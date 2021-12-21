@@ -100,11 +100,13 @@ class ShowSelt(BaseCommand):
 
             tn.write("end\r\n".encode('utf-8'))
             result = tn.read_until(b"end", 1)
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return result.decode('utf-8')
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'=|Loop', val)]
             tn.close()
 
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

@@ -78,6 +78,8 @@ class ShowMac(BaseCommand):
             tn.write(b"exit\r\n")
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res.decode('utf-8')
             if "incorrect port!" in str(res):
                 str_res = ["There is one of the following problems:", "This card is not configured",
                            "No card is defined on this port", "Card number is out of range."]
@@ -87,7 +89,7 @@ class ShowMac(BaseCommand):
                       re.search(r'\s{4,}|\d{2}|MAC|--+', val)]
             tn.close()
 
-            return dict(res=result, port_indexes=self.__port_indexes)
+            return dict(result=result, port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

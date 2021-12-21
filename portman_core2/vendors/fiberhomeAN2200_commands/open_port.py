@@ -89,12 +89,14 @@ class OpenPort(BaseCommand):
                 return "Timeout! Please try again."
             if "The port is" in str(res):
                 return f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32"
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res.decode('utf-8')
             result = str(res).split("\\n\\r")
             result = [val for val in result if 'The port' in val]
             tn.write(b"exit\r\n")
             tn.close()
 
-            return result
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

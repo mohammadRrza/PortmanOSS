@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -62,6 +64,8 @@ class ShowPort(BaseCommand):
             if "status:" not in str(result):
                 return "Port number is out of range."
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return result.decode('utf-8')
             result = str(result).split("\\r\\n")
             ''' result = [val for val in result if re.search(r':\s', val)]
             d = {}
@@ -128,14 +132,21 @@ class ShowPort(BaseCommand):
                     res['actualrateUp'] = val.split(":")[2].strip()
                     res['actualrateDown'] = val.split(":")[1].split()[0]
 
-            return res
+            return dict(result=res, status=200)
 
         except (EOFError, socket_error) as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)+'//1'))
             print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
 
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)+'//2'))
+            print(e)
             print(e)
             return str(e)

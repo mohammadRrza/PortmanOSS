@@ -70,6 +70,8 @@ class ShowSlotPortByMac(BaseCommand):
             time.sleep(2)
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res.decode('utf-8')
             if "incorrect port!" in str(res):
                 str_res = ["There is one of the following problems:", "This card is not configured",
                            "No card is defined on this port", "Card number is out of range."]
@@ -82,7 +84,7 @@ class ShowSlotPortByMac(BaseCommand):
             for inx, val in enumerate(result):
                 if self.__mac in val:
                     res = "".join(result[inx + 1].split("  ")[-1])
-                    return f"Port number of the current MAC address is: {res}"
+                    return dict(result=f"Port number of the current MAC address is: {res}", status=200)
                 else:
                     return f"MAC Address: {self.__mac} does not exist."
 

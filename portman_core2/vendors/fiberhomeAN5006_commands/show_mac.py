@@ -65,6 +65,8 @@ class ShowMac(BaseCommand):
                 if "total: 0." in str(result):
                     return f"No MAC address is assigned to port '{self.port_conditions['port_number']}'"
                 tn.close()
+                if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                    return result.decode('utf-8')
                 result = str(result).split("\\r\\n")
                 result = [val for val in result if re.search(r'\s{3,}|--{4,}|:|learning', val)]
                 return result
@@ -79,7 +81,7 @@ class ShowMac(BaseCommand):
                 return f"No MAC address is assigned to port '{self.port_conditions['port_number']}'"
             tn.close()
             result = str(result).split("\\r\\n")
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

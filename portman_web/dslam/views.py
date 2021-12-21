@@ -21,6 +21,10 @@ from dslam.mail import Mail
 from dslam.mail import Ticket
 from rest_framework.parsers import FileUploadParser
 
+from classes.portman_logging import PortmanLogging
+
+from .models import Rented_port
+
 """from rtkit.resource import RTResource
 from rtkit.resource import RTResource
 from rtkit.authenticators import BasicAuthenticator, CookieAuthenticator
@@ -3707,7 +3711,7 @@ class RegisterPortAPIView(views.APIView):
                     return JsonResponse({'result': 'Error', 'ErrorDesc': sid, 'id': 400, 'res': 'Error'},
                                         status=status.HTTP_400_BAD_REQUEST)
             if dslam_obj.dslam_type_id == 1:
-                #return JsonResponse({"result": PVC})
+                # return JsonResponse({"result": PVC})
 
                 if isinstance(pvc, str):
                     return JsonResponse({'PVC': pvc, 'id': 400, 'msg': 'port config has not been done.'},
@@ -5757,6 +5761,10 @@ class AddToVlanAPIView(views.APIView):  # 000000
             ip = x_forwarded_for.split(',')[0]
         else:
             ip = request.META.get('REMOTE_ADDR')
+        log_port_data = "/".join([val for val in port_data.values()])
+        log_username = customer_data.get('username')
+        log_date = datetime.now()
+        log_reseller_name = reseller_data.get('name')
         try:
             if '.z6' in fqdn:
                 fqdn = fqdn.replace('.z6', '.Z6')
@@ -5768,6 +5776,12 @@ class AddToVlanAPIView(views.APIView):  # 000000
                 telecom_id = dslam_obj.telecom_center_id
                 city_id = TelecomCenter.objects.get(id=telecom_id).city_id
             except ObjectDoesNotExist as ex:
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                                                              ip, 'Register Port', False,
+                                                              str(ex) + '/' + str(exc_tb.tb_lineno),
+                                                              log_reseller_name)
+                PortmanLogging('', log_params)
                 try:
                     if '.Z6' in fqdn:
                         fqdn = fqdn.replace('.Z6', '.z6')
@@ -5778,6 +5792,12 @@ class AddToVlanAPIView(views.APIView):  # 000000
 
                 except ObjectDoesNotExist as ex:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
+                    log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '',
+                                                                  log_date,
+                                                                  ip, 'Register Port', False,
+                                                                  str(ex) + '/' + str(exc_tb.tb_lineno),
+                                                                  log_reseller_name)
+                    PortmanLogging('', log_params)
                     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                     mail_info = Mail()
                     mail_info.from_addr = 'oss-problems@pishgaman.net'
@@ -5812,13 +5832,30 @@ class AddToVlanAPIView(views.APIView):  # 000000
             #    mdf_dslam.save()
             # identifier_key = mdf_dslam.identifier_key
         except ObjectDoesNotExist as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                                                          ip, 'Register Port', False,
+                                                          str(ex) + '/' + str(exc_tb.tb_lineno),
+                                                          log_reseller_name)
+            PortmanLogging('', log_params)
             return JsonResponse({'result': str(ex), 'id': -1})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
+            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                                                          ip, 'Register Port', False,
+                                                          str(ex) + '/' + str(exc_tb.tb_lineno),
+                                                          log_reseller_name)
+            PortmanLogging('', log_params)
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             try:
                 return JsonResponse({'result': 'Error is {0}--{1}'.format(ex, exc_tb.tb_lineno)})
             except ObjectDoesNotExist as ex:
+                exc_type, exc_obj, exc_tb = sys.exc_info()
+                log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                                                              ip, 'Register Port', False,
+                                                              str(ex) + '/' + str(exc_tb.tb_lineno),
+                                                              log_reseller_name)
+                PortmanLogging('', log_params)
                 mail_info = Mail()
                 mail_info.from_addr = 'oss-problems@pishgaman.net'
                 mail_info.to_addr = 'oss-problems@pishgaman.net'
@@ -5889,12 +5926,19 @@ class AddToVlanAPIView(views.APIView):  # 000000
             # PVC = utility.dslam_port_run_command(dslam_obj.id, 'port pvc show', params)
 
             # result2 = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
-
+            log_status = True if isinstance(result, dict) else False
+            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', result, log_date,
+                                                          ip, 'Register Port', log_status, '', log_reseller_name)
+            PortmanLogging(result, log_params)
             return Response({'result': result})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                                                          ip, 'Register Port', False,
+                                                          str(ex) + '/' + str(exc_tb.tb_lineno),
+                                                          log_reseller_name)
+            PortmanLogging('', log_params)
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
@@ -5913,11 +5957,18 @@ class FiberHomeCommandAPIView(views.APIView):
         command = data.get('command', None)
         command = command_recognise(command)
         fqdn = request.data.get('fqdn')
-        dslamObj = DSLAM.objects.get(fqdn=fqdn)
+        dslamObj = DSLAM.objects.get(fqdn=str(fqdn).lower())
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
+        log_port_data = f"{fqdn}/{params['port_conditions']['slot_number']}/{params['port_conditions']['port_number']}"
+        log_username = params.get('username')
+        log_date = datetime.now()
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            log_status = True if isinstance(result, dict) else False
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, result, log_date,
+                                                          device_ip, 'Run Command', log_status, '', '')
+            PortmanLogging(result, log_params)
             # if dslam_type == 1:  ################################### zyxel ###################################
             #     return JsonResponse({'Result': dslam_type})
             if dslam_type == 1:  ################################### zyxel ###################################
@@ -5931,20 +5982,25 @@ class FiberHomeCommandAPIView(views.APIView):
 
                         add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
+                current_userProfile = ""
+                alarm_prof = ""
+                port_state = ""
                 for item in port_info:
-                    current_userProfile = ""
-                    if 'prof' in item:
+                    if 'prof' in item and 'alarm prof' not in item:
                         current_userProfile = item.split(':')[1]
+                    if 'state' in item:
+                        port_state = item.split(':')[1]
                         break
 
-                return JsonResponse({'response': result, 'current_userProfile': current_userProfile})
+                return JsonResponse(
+                    {'response': result, 'current_userProfile': current_userProfile, 'port_state': port_state})
 
             elif dslam_type == 2:  # huawei
-                return JsonResponse({'Result': dslam_type})
+
+                return JsonResponse({'Result': result, 'DslamType': 'huawei'})
+
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-                if command == 'show mac by slot port':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
+
                 return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
@@ -5952,14 +6008,17 @@ class FiberHomeCommandAPIView(views.APIView):
                 return JsonResponse({'Result': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                if command == 'Show VLAN':
-                    return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
+
                 return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
                 return JsonResponse({'Result': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, '', log_date,
+                                                          device_ip, 'Run Command', False,
+                                                          str(ex) + '/' + str(exc_tb.tb_lineno), '')
+            PortmanLogging('', log_params)
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
@@ -7783,36 +7842,37 @@ class UploadRentedPort(views.APIView):
 
     def post(self, request, forman=None):
         # Read excel file items
-        excel_file = request.FILES['hamyarnet']
+        excel_file = request.FILES['file']
         if ".xlsx" not in excel_file.name:
             return Response({"result": "File is not a excel(xlsx). Please upload only xlsx files."})
         wb = openpyxl.load_workbook(excel_file)
-        worksheet = wb["sadra-salman-ghadir"]
+        for sheet in wb.sheetnames:
+            worksheet = wb[sheet]
 
-        excel_data = list()
-        for row in worksheet.iter_rows():
-            row_data = list()
-            for cell in row:
-                row_data.append(str(cell.value))
-            excel_data.append(row_data)
-        try:
-            i = 1
-            for val in excel_data[1:]:
-                rented_port = Rented_port()
-                rented_port.agent_name = val[0]
-                rented_port.city_name = val[1]
-                rented_port.telecom_name = val[2]
-                rented_port.dslam_number = val[3]
-                rented_port.card = val[4]
-                rented_port.port = val[5]
-                rented_port.telco_row = val[6]
-                rented_port.telco_column = val[7]
-                rented_port.telco_connection = val[8]
-                rented_port.save()
-                i = i + 1
-        except Exception as ex:
-            # return Response({"result": str(ex) + str(i)})
-            return Response({"result": "Excel format has a problem."})
+            excel_data = list()
+            for row in worksheet.iter_rows():
+                row_data = list()
+                for cell in row:
+                    row_data.append(str(cell.value))
+                excel_data.append(row_data)
+            try:
+                i = 1
+                for val in excel_data[1:]:
+                    rented_port = Rented_port()
+                    rented_port.agent_name = val[0]
+                    rented_port.city_name = val[1]
+                    rented_port.telecom_name = val[2]
+                    rented_port.dslam_number = val[3]
+                    rented_port.card = val[4]
+                    rented_port.port = val[5]
+                    rented_port.telco_row = val[6]
+                    rented_port.telco_column = val[7]
+                    rented_port.telco_connection = val[8]
+                    rented_port.save()
+                    i = i + 1
+            except Exception as ex:
+                # return Response({"result": str(ex) + str(i), "sheet": sheet})
+                return Response({"result": "Excel format has a problem.", "sheet": sheet, "row": str(i)})
 
         return Response({"result": "Upload Completed."})
 
@@ -7880,3 +7940,36 @@ class RentedPortAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+class GetUserPortInfoFromPartakAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            username = request.query_params.get('username', None)
+            url = 'https://my.pishgaman.net/api/pte/getCustomerInfo?Adsltel={0}'.format(username)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+        except Exception as ex:
+            print(ex)
+            return Response(str(ex), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetDslamIdByFqdnAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            fqdn = request.query_params.get('fqdn', None)
+            dslam_id = DSLAM.objects.get(fqdn=str(fqdn).lower()).id
+            return JsonResponse({'dslam_id': dslam_id}, status=status.HTTP_200_OK)
+        except Exception as ex:
+            print(ex)
+            return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

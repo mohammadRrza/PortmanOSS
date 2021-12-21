@@ -74,6 +74,8 @@ class ShowProfileByPort(BaseCommand):
             time.sleep(0.5)
             tn.write(b"end\r\n")
             res = tn.read_until(b'end')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res.decode('utf-8')
             if "not config" in str(res):
                 return f"Card number '{self.port_conditions['slot_number']}' is not configured."
             if "error card number!" in str(res):
@@ -81,8 +83,8 @@ class ShowProfileByPort(BaseCommand):
             res = [val for val in str(res).split("\\n\\r") if re.search(r'\s{4,}|--+', val)]
             res = re.findall(r'\d+(?:k|m)\d+(?:k|m).prf',
                              [val for val in res if f" {self.port_conditions['port_number']}  " in val][0])
-
-            return f"Profile assigned to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: {res[0]}"
+            result = f"Profile assigned to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: {res[0]}"
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -48,36 +50,36 @@ class ShowProfiles(BaseCommand):
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd qos\r\n")
+            tn.read_until(b'qos#')
             time.sleep(0.1)
             tn.write(b"show rate-limit profile all\r\n")
-            time.sleep(1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"end")
-            result = tn.read_until(b"end")
+            result = tn.read_until(b"fdb#", 0.5)
+            output = str(result)
+            while 'qos#' not in str(result):
+                result = tn.read_until(b"qos#", 1)
+                output += str(result)
+                tn.write(b"\r\n")
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return str(result)
-            result = str(result).split("\\r\\n")
+                return dict(result=result.decode('utf-8'), status=200)
+            result = str(output).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
                       re.search(r'name:\s', val)]
             result = [val.replace("name: ", '').strip() for val in result]
-            return result
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(str(exc_tb.tb_lineno))
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
 
         except Exception as e:
             print(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(str(exc_tb.tb_lineno))
             return str(e)

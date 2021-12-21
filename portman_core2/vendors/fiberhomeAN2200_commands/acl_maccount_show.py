@@ -86,12 +86,14 @@ class ACLMaccountShow(BaseCommand):
                 return str_res
             if "No Up port!" in str(res):
                 return "No Up port!"
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return res.decode('utf-8')
             result = str(res).split("\\n\\r")
             # result = [val for val in result if re.search(r'\s{3,}|--{4,}', val)]
             result = [re.sub(r'\\t', '    ', val) for val in result if
                       re.search(r'\s{3,}|--{4,}', val)]
 
-            return result
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
