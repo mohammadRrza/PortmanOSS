@@ -31,3 +31,4 @@ dslam.models.DSLAM.DoesNotExist: DSLAM matching query does not exist.
 Method Not Allowed: /api/v1/dslamport/run-command/
 Method Not Allowed: /api/v1/dslamport/run-command/
 Method Not Allowed: /api/v1/dslamport/run-command/
+Unauthorized: /api/v1/dslamport/upload_rented_port/
