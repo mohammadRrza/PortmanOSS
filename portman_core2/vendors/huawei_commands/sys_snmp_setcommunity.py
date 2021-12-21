@@ -52,7 +52,7 @@ class SysSnmpSetCommunity(BaseCommand):
             print('*************************************')
             print(("add set snmp community {0}".format(self.__snmp_name)))
             print('*************************************')
-            return "add set snmp community {0}".format(self.__snmp_name)
+            return dict(result="add set snmp community {0}".format(self.__snmp_name), status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

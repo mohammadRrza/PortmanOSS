@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ChangeProfile(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -13,7 +14,6 @@ class ChangeProfile(BaseCommand):
         self.__lineprofile = params.get('new_lineprofile')
         self.__port_indexes = params.get('port_indexes')
         self.device_ip = params.get('device_ip')
-
 
     @property
     def HOST(self):
@@ -45,19 +45,22 @@ class ChangeProfile(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             for port_item in self.__port_indexes:
-                tn.write("port enable {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
+                tn.write(
+                    "port enable {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode(
+                        'utf-8'))
                 time.sleep(1)
-            tn.write("end\r\n")
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"end\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('******************************************')
             print(("port enable {0}".format(self.__port_indexes)))

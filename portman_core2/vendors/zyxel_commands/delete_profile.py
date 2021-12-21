@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class DeleteProfile(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -50,19 +51,20 @@ class DeleteProfile(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until('Password:')
+            tn.read_until(b'Password:')
             tn.write("profile adsl delete {0}\r\n\r\n".format(self.__profile).encode('utf-8'))
             time.sleep(1)
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('***********************************************')
             print(("{0} profile adsl deleted".format(self.__profile)))

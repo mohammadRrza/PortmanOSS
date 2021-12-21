@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class LcmanResetSlot(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -42,23 +43,24 @@ class LcmanResetSlot(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             tn.write("lcman reset {0}\r\n\r\n".format(self.__slot).encode('utf-8'))
             time.sleep(1)
-            tn.write("end\r\n")
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"end\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('*************************************')
             print(("reset slot {0}".format(self.__slot)))
             print('*************************************')
-            return "reset slot {0}".format(self.__slot)
+            return dict(result="reset slot {0}".format(self.__slot), status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

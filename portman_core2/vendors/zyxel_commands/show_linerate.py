@@ -140,7 +140,7 @@ class ShowLineRate(BaseCommand):
                 if "link" in val:
                     res['link'] = val.split("=")[1].strip()
 
-            return res
+            return dict(result=res, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

@@ -53,20 +53,20 @@ class LcmanShow(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if self.__telnet_password:
-                tn.read_until("Password: ")
+                tn.read_until(b"Password: ")
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
                 time.sleep(2)
             tn.write("lcman show\r\n".encode('utf-8'))
-            tn.read_until("lcman show", 1000)
+            tn.read_until(b"lcman show")
             time.sleep(2)
-            tn.write("end\r\n")
-            result = tn.read_until("end").split('\r\n')
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end").split(b'\r\n')
             result = result[1:len(result)-2]
-            result = '\n'.join(result)
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            result = b'\n'.join(result)
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('**************************************')
             print(result)

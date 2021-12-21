@@ -70,7 +70,7 @@ class ShowPerformance(BaseCommand):
             print('******************************************')
             print(("show performance {0}".format(results)))
             print('******************************************')
-            return dict(result=results)
+            return dict(result=results, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

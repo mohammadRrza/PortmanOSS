@@ -51,6 +51,8 @@ class ChangeLineProfilePort(BaseCommand):
         st = re.search(pattern, port_name, re.M | re.DOTALL)
         return st.group()
 
+    retry = 1
+
     def run_command(self):
         # return {"result":self.__lineprofile}
         # command_class = CreateProfile(self.params)

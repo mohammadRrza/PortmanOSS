@@ -65,7 +65,7 @@ class LcmanEnableSlot(BaseCommand):
             print('************************************')
             print(("enable slot {0}".format(self.__slot)))
             print('************************************')
-            return "enable slot {0}".format(self.__slot)
+            return dict(result="enable slot {0}".format(self.__slot), status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
