@@ -80,7 +80,7 @@ class ShowMacBySlotPort(BaseCommand):
             if "No Up port!" in str(res):
                 return "No Up port!"
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return res.decode('utf-8')
+                return dict(result=res.decode('utf-8'), status=200)
             result = str(res).split("\\n\\r")
             result = [re.sub(r'\\t', '    ', val) for val in result if re.search(r'\s{2,}|--{4,}', val)]
             return dict(result=result, status=200)

@@ -49,13 +49,14 @@ class PortPvcSet(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             for port_item in self.__port_indexes:
                 tn.write("port pvc set {0}-{1}-{2}/{3} {4} {5} {6} {7}\r\n\r\n".format(
                     port_item['slot_number'], port_item['port_number'],
@@ -67,11 +68,11 @@ class PortPvcSet(BaseCommand):
                     self.__priority
                 ).encode('utf-8'))
             time.sleep(1)
-            tn.write("config save")
+            tn.write(b"config save")
             time.sleep(1)
-            tn.write("end\r\n")
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"end\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('***********************************************')
             print(("port pvc set 0/35 DEFVAL llc  1 0 for {0}".format(self.__port_indexes)))

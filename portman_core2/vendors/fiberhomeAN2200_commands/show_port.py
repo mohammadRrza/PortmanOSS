@@ -92,7 +92,7 @@ class ShowPort(BaseCommand):
             if "handshake" in str(res):
                 return "Port is Down"
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return res.decode('utf-8')
+                return dict(result=res.decode('utf-8'), status=200)
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s+:|--+', val)]
             tn.close()

@@ -6,6 +6,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class AddToVlan(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -51,6 +52,7 @@ class AddToVlan(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
@@ -68,13 +70,13 @@ class AddToVlan(BaseCommand):
                 time.sleep(1)
             for port_item in self.__port_indexes:
                 tn.write("port pvc set {0}-{1}-{2}/{3} {4} {5} {6} {7}\r\n\r\n".format(
-                        port_item['slot_number'], port_item['port_number'],
-                        self.__vpi,
-                        self.__vci,
-                        self.__profile,
-                        self.__mux,
-                        self.__vlan_id,
-                        self.__priority).encode('utf-8'))
+                    port_item['slot_number'], port_item['port_number'],
+                    self.__vpi,
+                    self.__vci,
+                    self.__profile,
+                    self.__mux,
+                    self.__vlan_id,
+                    self.__priority).encode('utf-8'))
                 time.sleep(1)
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
@@ -82,7 +84,8 @@ class AddToVlan(BaseCommand):
             tn.write(b"y\r\n")
             tn.close()
             if b'example' in result:
-                return {"result" : "add to valn {0} give error".format(self.__vlan_id), "port_indexes": self.__port_indexes}
+                return {"result": "add to valn {0} give error".format(self.__vlan_id),
+                        "port_indexes": self.__port_indexes}
             print(("{0} added to vlan {1}".format(self.__port_indexes, self.__vlan_id)))
             return dict(result="added to vlan {0}".format(self.__vlan_id), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
@@ -100,4 +103,4 @@ class AddToVlan(BaseCommand):
                 return self.run_command()
             else:
                 print(("error : add to valn {1}".format(self.__vlan_id)))
-                return {"result" : "add to valn {1}".format(self.__vlan_id)}
+                return {"result": "add to valn {1}".format(self.__vlan_id)}

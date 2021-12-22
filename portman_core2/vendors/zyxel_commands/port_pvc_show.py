@@ -6,6 +6,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class PortPvcShow(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -45,7 +46,7 @@ class PortPvcShow(BaseCommand):
         return st.group()
 
     retry = 1
-    
+
     def run_command(self):
         try:
             print('run_command')
@@ -57,7 +58,9 @@ class PortPvcShow(BaseCommand):
             if "Password:" in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             for port_item in self.__port_indexes:
-                tn.write("port pvc show {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
+                tn.write(
+                    "port pvc show {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode(
+                        'utf-8'))
             time.sleep(0.5)
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
@@ -77,6 +80,8 @@ class PortPvcShow(BaseCommand):
             print('******************************************')
             print(("port enable {0}".format(self.port_conditions)))
             print('******************************************')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}|--{3,}', val)]
 
@@ -86,7 +91,7 @@ class PortPvcShow(BaseCommand):
             for line in result:
                 res.append(dict(pvc=line[0], type=line[1], mux=line[2], pvid=line[3], pri=line[4], mvlan=line[5],
                                 profile=line[6]))
-            return res
+            return dict(result=res, status=200)
             # return dict(res1 = result[5].split('-')[2].split()[0] ,res2 = result[5].split('-')[2].split()[3],result = '')
         except (EOFError, socket_error) as e:
             print(e)

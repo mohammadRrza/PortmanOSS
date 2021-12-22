@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ShowLineStatSlot(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -42,27 +43,28 @@ class ShowLineStatSlot(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             for port_item in self.__port_indexes:
                 tn.write("show linestat {0}\r\n\r\n n".format(port_item['slot_number']).encode('utf-8'))
                 time.sleep(1)
 
-            tn.write("end\r\n")
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
-            result = tn.read_until('72')
+            tn.write(b"end\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
+            result = tn.read_until(b'72')
 
             tn.close()
             print('******************************************')
             print(("port {0}".format(self.__port_indexes)))
             print('******************************************')
-            return dict(result= result)
+            return dict(result=result)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

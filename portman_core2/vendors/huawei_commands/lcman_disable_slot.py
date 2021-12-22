@@ -65,7 +65,7 @@ class LcmanDisableSlot(BaseCommand):
             print('*************************************')
             print(("disable slot {0}".format(self.__slot)))
             print('*************************************')
-            return "disable slot {0}".format(self.__slot)
+            return dict(result="disable slot {0}".format(self.__slot), status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class GetBackUp(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -42,25 +43,26 @@ class GetBackUp(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             for port_item in self.__port_indexes:
-              tn.write("show config-0\r\n\r\n n".encode('utf-8'))
-              time.sleep(1)
-            tn.write("end\r\n")
-            tn.write("exit\r\n")
-            output = tn.read_until("configuration has been changed, save it? ('y' to save)")
-            tn.write("y\r\n")
+                tn.write("show config-0\r\n\r\n n".encode('utf-8'))
+                time.sleep(1)
+            tn.write(b"end\r\n")
+            tn.write(b"exit\r\n")
+            output = tn.read_until(b"configuration has been changed, save it? ('y' to save)")
+            tn.write(b"y\r\n")
             tn.close()
             print('******************************************')
             print("show config")
             print('******************************************')
-            return dict(results = output)
+            return dict(result=output)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

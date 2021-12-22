@@ -72,8 +72,7 @@ class PortInfo(BaseCommand):
             print('******************************************')
             print(("port enable {0}".format(self.port_conditions)))
             print('******************************************')
-            return result
-            return dict(result=result)
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

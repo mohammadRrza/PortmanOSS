@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class CreateProfile(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -37,6 +38,7 @@ class CreateProfile(BaseCommand):
         self.__telnet_password = value
 
     retry = 1
+
     def run_command(self):
         # Initial Parameters
         profile_name = self.__params.get('name')
@@ -69,7 +71,7 @@ class CreateProfile(BaseCommand):
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until('Password:')
+            tn.read_until(b'Password:')
             command_template = "profile adsl set {profile_name} {max_us_transmit_rate} {max_ds_transmit_rate} \
             {channel_mode} minrate {min_us_transmit_rate} {min_ds_transmit_rate} \
             usmgn {max_us_snr_margin} {min_us_snr_margin} {us_snr_margin} \
@@ -79,50 +81,50 @@ class CreateProfile(BaseCommand):
 
             if channel_mode == 'fast':
                 command = command_template.format(
-                        profile_name = profile_name,
-                        max_us_transmit_rate = max_us_transmit_rate,
-                        max_ds_transmit_rate = max_ds_transmit_rate,
-                        channel_mode = channel_mode,
-                        min_us_transmit_rate = min_us_transmit_rate,
-                        min_ds_transmit_rate = min_ds_transmit_rate,
-                        max_us_snr_margin = max_us_snr_margin,
-                        min_us_snr_margin = min_us_snr_margin,
-                        us_snr_margin = us_snr_margin,
-                        max_ds_snr_margin = max_ds_snr_margin,
-                        min_ds_snr_margin = min_ds_snr_margin,
-                        ds_snr_margin = ds_snr_margin,
-                        usra = usra,
-                        usra_us_mgn = usra_us_mgn,
-                        usra_ds_mgn = usra_ds_mgn
-                        )
+                    profile_name=profile_name,
+                    max_us_transmit_rate=max_us_transmit_rate,
+                    max_ds_transmit_rate=max_ds_transmit_rate,
+                    channel_mode=channel_mode,
+                    min_us_transmit_rate=min_us_transmit_rate,
+                    min_ds_transmit_rate=min_ds_transmit_rate,
+                    max_us_snr_margin=max_us_snr_margin,
+                    min_us_snr_margin=min_us_snr_margin,
+                    us_snr_margin=us_snr_margin,
+                    max_ds_snr_margin=max_ds_snr_margin,
+                    min_ds_snr_margin=min_ds_snr_margin,
+                    ds_snr_margin=ds_snr_margin,
+                    usra=usra,
+                    usra_us_mgn=usra_us_mgn,
+                    usra_ds_mgn=usra_ds_mgn
+                )
             else:
                 command = command_template.format(
-                        profile_name = profile_name,
-                        max_us_transmit_rate = max_us_transmit_rate,
-                        max_ds_transmit_rate = max_ds_transmit_rate,
-                        channel_mode = 'delay {max_us_interleaved} {max_ds_interleaved}',
-                        min_us_transmit_rate = min_us_transmit_rate,
-                        min_ds_transmit_rate = min_ds_transmit_rate,
-                        max_us_snr_margin = max_us_snr_margin,
-                        min_us_snr_margin = min_us_snr_margin,
-                        us_snr_margin = us_snr_margin,
-                        max_ds_snr_margin = max_ds_snr_margin,
-                        min_ds_snr_margin = min_ds_snr_margin,
-                        ds_snr_margin = ds_snr_margin,
-                        usra = usra,
-                        usra_us_mgn = usra_us_mgn,
-                        usra_ds_mgn = usra_ds_mgn
-                        ).format(
-                                max_us_interleaved = max_us_interleaved,
-                                max_ds_interleaved = max_ds_interleaved
-                                )
+                    profile_name=profile_name,
+                    max_us_transmit_rate=max_us_transmit_rate,
+                    max_ds_transmit_rate=max_ds_transmit_rate,
+                    channel_mode='delay {max_us_interleaved} {max_ds_interleaved}',
+                    min_us_transmit_rate=min_us_transmit_rate,
+                    min_ds_transmit_rate=min_ds_transmit_rate,
+                    max_us_snr_margin=max_us_snr_margin,
+                    min_us_snr_margin=min_us_snr_margin,
+                    us_snr_margin=us_snr_margin,
+                    max_ds_snr_margin=max_ds_snr_margin,
+                    min_ds_snr_margin=min_ds_snr_margin,
+                    ds_snr_margin=ds_snr_margin,
+                    usra=usra,
+                    usra_us_mgn=usra_us_mgn,
+                    usra_ds_mgn=usra_ds_mgn
+                ).format(
+                    max_us_interleaved=max_us_interleaved,
+                    max_ds_interleaved=max_ds_interleaved
+                )
 
             tn.write(command.encode('utf-8'))
             time.sleep(1)
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('*******************************************')
             print(("{0} profile created".format(profile_name)))

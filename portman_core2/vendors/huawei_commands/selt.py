@@ -78,7 +78,7 @@ class Selt(BaseCommand):
             print('**********************************')
             print({'result': results})
             print('**********************************')
-            return results
+            return dict(result=results, status=200)
         except Exception as e:
             print(e)
             self.retry += 1

@@ -3,6 +3,7 @@ import time
 from .command_base import BaseCommand
 import re
 
+
 class ShowMac(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -48,32 +49,35 @@ class ShowMac(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             time.sleep(1)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if self.__telnet_password:
-                tn.read_until("Password: ")
+                tn.read_until(b"Password: ")
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.write(("show mac\r\n").encode('utf-8'))
+            tn.write("show mac\r\n".encode('utf-8'))
             time.sleep(1)
             quit = False
-            output = '';
+            output = ''
             while not quit:
-                tn.write("n\r\n")
-                tn.write("quit\r\n")
-                output = tn.read_until("quit")
-                if 'quit' in output:
+                tn.write(b"n\r\n")
+                tn.write(b"quit\r\n")
+                output = tn.read_until(b"quit")
+                if 'quit' in str(output):
                     quit = True
                     break
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             results = output.split('\n')
             lst_result = []
-            com = re.compile(r"(?P<vlan_id>(\d))?(\s)*(?P<mac>([0-9A-F]{2}[:-]){5}([0-9A-F]{2}))(\s)*(?P<port>(\d+(\s)?-(\s)?\d+))$", re.MULTILINE | re.I)
+            com = re.compile(
+                r"(?P<vlan_id>(\d))?(\s)*(?P<mac>([0-9A-F]{2}[:-]){5}([0-9A-F]{2}))(\s)*(?P<port>(\d+(\s)?-(\s)?\d+))$",
+                re.MULTILINE | re.I)
             for line in results:
                 try:
                     lst_result.append({
@@ -81,7 +85,7 @@ class ShowMac(BaseCommand):
                         'mac': com.search(line.strip()).group('mac'),
                         'port_number': com.search(line.strip()).group('port').split('-')[0].strip(),
                         'slot_number': com.search(line.strip()).group('port').split('-')[1].strip()
-                        })
+                    })
                 except:
                     pass
             return {"result": lst_result}

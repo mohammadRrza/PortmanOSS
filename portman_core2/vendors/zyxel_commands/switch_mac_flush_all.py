@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class SwitchMacFlushAll(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -44,18 +45,19 @@ class SwitchMacFlushAll(BaseCommand):
         self.__telnet_password = value
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             tn.write("switch mac flush all\r\n\r\n".encode('utf-8'))
             time.sleep(1)
-            tn.write("end\r\n")
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"end\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('*******************************************')
             print("switch mac flush all")
