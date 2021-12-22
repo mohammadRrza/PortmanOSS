@@ -1,5 +1,5 @@
 from io import BytesIO
-import cv2
+# import cv2
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from pytesseract import image_to_string
@@ -29,14 +29,14 @@ def get_captcha():
     im = im.crop((left, top, right, bottom))  # defines crop points
     im.save('/home/sajad/Project/portmanv3/portman_web/classes/screenshot.png')  # saves new cropped image
 
-    img = cv2.imread("/home/sajad/Project/portmanv3/portman_web/classes/screenshot.png")
-    gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    (h, w) = gry.shape[:2]
-    gry = cv2.resize(gry, (w * 2, h * 2))
-    cls = cv2.morphologyEx(gry, cv2.MORPH_CLOSE, None)
-    thr = cv2.threshold(cls, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    txt = image_to_string(thr)
-    print(txt)
+    # img = cv2.imread("/home/sajad/Project/portmanv3/portman_web/classes/screenshot.png")
+    # gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # (h, w) = gry.shape[:2]
+    # gry = cv2.resize(gry, (w * 2, h * 2))
+    # cls = cv2.morphologyEx(gry, cv2.MORPH_CLOSE, None)
+    # thr = cv2.threshold(cls, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+    # txt = image_to_string(thr)
+    # print(txt)
 
 # text = pytesseract.image_to_string(Image.open('screenshot.png'))
 # print(text)
