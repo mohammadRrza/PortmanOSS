@@ -8010,7 +8010,7 @@ class GetDSLAMIdByIPAPIView(views.APIView):
             cursor.execute(query)
             rows = cursor.fetchall()
             if cursor.rowcount > 0:
-                return JsonResponse({'dslam_ip': rows[0]}, status=status.HTTP_200_OK)
+                return JsonResponse({'dslam_id': rows[0]}, status=status.HTTP_200_OK)
             else:
                 return JsonResponse({'response': 'No matching dslam with this IP were found.'},
                                     status=status.HTTP_404_NOT_FOUND)
