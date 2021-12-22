@@ -3,6 +3,7 @@ from pysnmp.proto import rfc1902
 from .command_base import BaseCommand
 import re
 
+
 class ChangeLineProfilePort(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -68,7 +69,8 @@ tn.close()
         '''
         target_oids_value = []
         for index, port_item in enumerate(self.__port_indexes, 1):
-            target_oids_value.append(('.{0}.{1}'.format(self.__LINE_PROFILE_OID, port_item['port_index']), rfc1902.OctetString(self.__lineprofile)))
+            target_oids_value.append(('.{0}.{1}'.format(self.__LINE_PROFILE_OID, port_item['port_index']),
+                                      rfc1902.OctetString(self.__lineprofile)))
             if index % 40 == 0 or index == len(self.__port_indexes):
                 target_oids_value_tupple = tuple(target_oids_value)
                 cmd_gen = cmdgen.CommandGenerator()
@@ -87,12 +89,13 @@ tn.close()
                     if error_status:
                         Exception('%s at %s' % (
                             error_status.prettyPrint(),
-                            error_index and var_binds[int(error_index)-1][0] or '?'
+                            error_index and var_binds[int(error_index) - 1][0] or '?'
                         ))
         print('++++++++++++++++++++++')
         print((error_indication, error_status, error_index, var_binds))
         print('++++++++++++++++++++++')
-        #print '------------------------------------------------------'
-        #print {"result": "ports line profile changed to {0}".format(self.__lineprofile), "port_indexes": self.__port_indexes}
-        #print '------------------------------------------------------'
-        return {"result": "ports line profile changed to {0}".format(self.__lineprofile), "port_indexes": self.__port_indexes}
+        # print '------------------------------------------------------'
+        # print {"result": "ports line profile changed to {0}".format(self.__lineprofile), "port_indexes": self.__port_indexes}
+        # print '------------------------------------------------------'
+        return {"result": "ports line profile changed to {0}".format(self.__lineprofile),
+                "port_indexes": self.__port_indexes}

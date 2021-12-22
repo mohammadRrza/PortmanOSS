@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ShowPerformance(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -43,34 +44,37 @@ class ShowPerformance(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             results = []
             for port_item in self.__port_indexes:
-                tn.write("show performance {0}-{1} {2}\r\n\r\n".format(port_item['slot_number'], port_item['port_number'], self.__time_elapsed).encode('utf-8'))
+                tn.write(
+                    "show performance {0}-{1} {2}\r\n\r\n".format(port_item['slot_number'], port_item['port_number'],
+                                                                  self.__time_elapsed).encode('utf-8'))
                 time.sleep(1)
                 for item in range(7):
                     time.sleep(1)
-                    tn.write("n\r\n")
-                    tn.write("next\r\n")
-                    tn.read_until("Communications Corp.")
-                    result = tn.read_until("next")
-                    if 'next' in result:
+                    tn.write(b"n\r\n")
+                    tn.write(b"next\r\n")
+                    tn.read_until(b"Communications Corp.")
+                    result = tn.read_until(b"next")
+                    if b'next' in result:
                         results.append(result)
                         break
-            results = '\r\n'.join(results).split('n\r\nn: invalid command')[0]
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            results = b'\r\n'.join(results).split(b'n\r\nn: invalid command')[0]
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('******************************************')
             print(("show performance {0}".format(results)))
             print('******************************************')
-            return dict(result='\r\n'.join(results.split('\r\n')[:50]))
+            return dict(result=b'\r\n'.join(results.split(b'\r\n')[:50]))
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

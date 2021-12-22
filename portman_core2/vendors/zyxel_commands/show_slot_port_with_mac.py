@@ -74,7 +74,8 @@ class ShowSlotPortWithMac(BaseCommand):
             print('******************************************')
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\S:\S', val)][1].split("  ")
-            return dict(port={'card': result[-1].split("-")[0], 'port': result[-1].split("-")[1].strip()})
+            result = dict(port={'card': result[-1].split("-")[0], 'port': result[-1].split("-")[1].strip()})
+            return dict(result=result)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

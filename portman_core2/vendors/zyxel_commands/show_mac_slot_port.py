@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ShowMacSlotPort(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -88,8 +89,10 @@ class ShowMacSlotPort(BaseCommand):
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\S:\S', val)][0].split()
-            return dict(port={'card': self.port_conditions['slot_number'], 'port': self.port_conditions['port_number']},
-                        vid=result[0], mac=result[1])
+            result = dict(
+                port={'card': self.port_conditions['slot_number'], 'port': self.port_conditions['port_number']},
+                vid=result[0], mac=result[1])
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

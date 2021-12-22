@@ -73,6 +73,8 @@ class ProfileADSLShow(BaseCommand):
             tn.write(b"n\r\n")
             tn.write(b"end")
             result = tn.read_until(b"end")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\d+[.]\s', '', val) for val in result if re.search(r'\d+[.]\s', val)]
             return dict(result=result, status=200)

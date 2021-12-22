@@ -108,7 +108,7 @@ class Selt(BaseCommand):
             tn.write(b'exit\r\n')
             tn.write(b"y\r\n")
             tn.close()
-            return results
+            return dict(result=results, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

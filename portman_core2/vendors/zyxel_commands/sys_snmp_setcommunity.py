@@ -4,6 +4,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class SysSnmpSetCommunity(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -37,22 +38,23 @@ class SysSnmpSetCommunity(BaseCommand):
         self.__telnet_password = value
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.read_until("Password:")
+            tn.read_until(b"Password:")
             tn.write("sys snmp setcommunity {0}\r\n\r\n".format(self.__snmp_name).encode('utf-8'))
             time.sleep(1)
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('*************************************')
             print(("add set snmp community {0}".format(self.__snmp_name)))
             print('*************************************')
-            return "add set snmp community {0}".format(self.__snmp_name)
+            return dict(result="add set snmp community {0}".format(self.__snmp_name), status=200)
 
         except (EOFError, socket_error) as e:
             print(e)

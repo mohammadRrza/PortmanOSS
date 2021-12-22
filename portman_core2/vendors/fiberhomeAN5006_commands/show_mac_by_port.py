@@ -66,9 +66,11 @@ class ShowMacSlotPort(BaseCommand):
                 if "total: 0." in str(result):
                     return f"No MAC address is assigned to port '{self.port_conditions['port_number']}'"
                 tn.close()
+                if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                    return dict(result=result.decode('utf-8'), status=200)
                 result = str(result).split("\\r\\n")
                 result = [val for val in result if re.search(r'\s{3,}|--{4,}|:|learning', val)]
-                return result
+                return dict(result=result, status=200)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")

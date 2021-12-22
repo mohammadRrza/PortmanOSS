@@ -3,6 +3,7 @@ import time
 from .command_base import BaseCommand
 import re
 
+
 class VlanShow(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
@@ -48,6 +49,7 @@ class VlanShow(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
@@ -74,7 +76,7 @@ class VlanShow(BaseCommand):
             print('********************************')
             print(results)
             print('********************************')
-            return vlans
+            return dict(result=vlans, status=200)
         except Exception as e:
             print(e)
             self.retry += 1

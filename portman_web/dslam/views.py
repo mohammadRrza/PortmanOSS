@@ -5997,22 +5997,22 @@ class FiberHomeCommandAPIView(views.APIView):
 
             elif dslam_type == 2:  # huawei
 
-                return JsonResponse({'Result': result, 'DslamType': 'huawei'})
+                return JsonResponse({'response': result, 'DslamType': 'huawei'})
 
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
 
-                return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
+                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
 
-                return JsonResponse({'Result': result})
+                return JsonResponse({'response': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
 
                 return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
-                return JsonResponse({'Result': dslam_type})
+                return JsonResponse({'response': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, '', log_date,
