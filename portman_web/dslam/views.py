@@ -7990,7 +7990,30 @@ class GetFqdnFromZabbixByIpAPIView(views.APIView):
             if cursor.rowcount > 0:
                 return JsonResponse({'zabbix_fqdn': rows[0]}, status=status.HTTP_200_OK)
             else:
-                return JsonResponse({'response': 'No matching fqdn with this IP were found.'}, status=status.HTTP_404_NOT_FOUND)
+                return JsonResponse({'response': 'No matching fqdn with this IP were found.'},
+                                    status=status.HTTP_404_NOT_FOUND)
+        except Exception as ex:
+            print(ex)
+            return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class GetDSLAMIdByIPAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            ip = request.query_params.get('ip', None)
+            query = "select id from dslam_dslam where ip='{}'".format(ip)
+            cursor = connection.cursor()
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            if cursor.rowcount > 0:
+                return JsonResponse({'dslam_ip': rows[0]}, status=status.HTTP_200_OK)
+            else:
+                return JsonResponse({'response': 'No matching dslam with this IP were found.'},
+                                    status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
             print(ex)
             return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
