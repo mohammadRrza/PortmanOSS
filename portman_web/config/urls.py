@@ -213,8 +213,9 @@ urlpatterns = [
     url(r'^api/v1/contact/get_ordr_port_info/$', GetOrdrPortInfo.as_view(),
         name='get_ordr_port_info'),
 #portman_cdms
-    url(r'^api/v1/portman_cdms/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='portmap'),
-    url(r'^api/v1/portman_cdms/get_fqdn_from_zabbix_by_ip/$', GetFqdnFromZabbixByIpAPIView.as_view(), name='portmap'),
+    url(r'^api/v1/portman_cdms/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='get_user_port_info'),
+    url(r'^api/v1/portman_cdms/get_dslam_id_by_fqdn/$', GetDslamIdByFqdnAPIView.as_view(), name='get_dslam_id_by_fqdn'),
+    url(r'^api/v1/portman_cdms/get_fqdn_from_zabbix_by_ip/$', GetFqdnFromZabbixByIpAPIView.as_view(), name='get_fqdn_from_zabbix_by_ip'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 
