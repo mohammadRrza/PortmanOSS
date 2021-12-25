@@ -14,6 +14,7 @@ from .zyxel_commands.show_mac_slot_port import ShowMacSlotPort
 from .zyxel_commands.show_mac import ShowMac
 from .zyxel_commands.lcman_show import LcmanShow
 from .zyxel_commands.profile_adsl_show import ProfileADSLShow
+from .zyxel_commands.profile_vdsl_show import ProfileVDSLShow
 from .zyxel_commands.create_profile import CreateProfile
 from .zyxel_commands.delete_profile import DeleteProfile
 from .zyxel_commands.lcman_disable_slot import LcmanDisableSlot
@@ -50,6 +51,8 @@ from .zyxel_commands.set_time import SetTime
 from .zyxel_commands.show_slot_port_with_mac import ShowSlotPortWithMac
 from .zyxel_commands.port_pvc_show import PortPvcShow
 from .zyxel_commands.version import ShowVersion
+from .zyxel_commands.show_card_info import ShowCardInfo
+from .zyxel_commands.port_reset import PortReset
 
 from datetime import timedelta
 
@@ -62,10 +65,11 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('show lineinfo', ShowLineInfo)
     command_factory.register_type('show linerate', ShowLineRate)
     command_factory.register_type('show linestat port', ShowLineStatPort)
-    command_factory.register_type('show linestat slot', ShowLineStatSlot)
+    command_factory.register_type('Show Card', ShowLineStatSlot)
     command_factory.register_type('show performance', ShowPerformance)
     command_factory.register_type('profile adsl show', ProfileADSLShow)
-    command_factory.register_type('lcman show', LcmanShow)
+    command_factory.register_type('profile vdsl show', ProfileVDSLShow)
+    command_factory.register_type('Show Shelf', LcmanShow)
     # command_factory.register_type('profile adsl set', ChangeLineProfilePort)
     command_factory.register_type('profile adsl delete', DeleteProfile)
     command_factory.register_type('lcman disable slot', LcmanDisableSlot)
@@ -74,6 +78,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('lcman show slot', LcmanShowSlot)
     command_factory.register_type('port disable', PortDisable)
     command_factory.register_type('port enable', PortEnable)
+    command_factory.register_type('port reset', PortReset)
     command_factory.register_type('port pvc set', PortPvcSet)
     command_factory.register_type('port pvc delete', PortPvcDelete)
     command_factory.register_type('add to vlan', AddToVlan)
@@ -97,6 +102,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('set time', SetTime)
     command_factory.register_type('show port with mac', ShowSlotPortWithMac)
     command_factory.register_type('Version', ShowVersion)
+    command_factory.register_type('show card info', ShowCardInfo)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))

@@ -7,6 +7,8 @@ def command_recognise(command):
         command = 'show profile by port'
     elif command == 'setPortProfiles' or command == 'Set Port Profiles' or command == 'profile adsl set' or command == 'setProfiles' or command == 'change lineprofile port':
         command = 'setPortProfiles'
+    elif command == 'profile vdsl show' or command == 'showVdslProfiles' or command == 'Show VDSL':
+        command = 'profile vdsl show'
     elif command == 'selt show' or command == 'show selt' or command == 'selt' or command == 'showSelt':
         command = 'showSelt'
     elif command == 'selt start' or command == 'Selt Start' or command == 'start selt' or command == 'startSelt':
