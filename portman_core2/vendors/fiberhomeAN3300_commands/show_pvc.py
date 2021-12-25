@@ -86,7 +86,7 @@ class ShowPVC(BaseCommand):
                         temp[val.split(":")[0].strip()]['vpi'] = result[inx + 1].split(":")[1]
                         temp[val.split(":")[0].strip()]['vci'] = result[inx + 2].split(":")[1]
                         res.append(temp)
-                return res
+                return dict(result=res, status=200)
             else:
                 result = str(result).replace("\\t", "    ")
                 result = str(result).split("\\r\\n")

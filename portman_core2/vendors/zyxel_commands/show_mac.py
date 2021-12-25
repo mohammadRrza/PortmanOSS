@@ -59,21 +59,23 @@ class ShowMac(BaseCommand):
                 tn.read_until(b"Password: ")
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.write("show mac\r\n".encode('utf-8'))
-            time.sleep(1)
-            quit = False
+            tn.write(b"show mac\r\nn")
+            tn.read_until(b'show mac')
+            result = tn.read_until(b'#', 1)
             output = ''
-            while not quit:
-                tn.write(b"n\r\n")
-                tn.write(b"quit\r\n")
-                output = tn.read_until(b"quit")
-                if 'quit' in str(output):
-                    quit = True
-                    break
+            while '#' not in str(output):
+                output += result.decode()
+                result = tn.read_until(b'#', 1)
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            results = output.split('\n')
+
+            result = str(output).split('\r\n')
+            result = [val for val in result if re.search('--{4,}|:|Press', val)]
+            for inx, line in enumerate(result):
+                if "Press any key" in line:
+                    del result[inx:inx + 3]
+            return result
             lst_result = []
             com = re.compile(
                 r"(?P<vlan_id>(\d))?(\s)*(?P<mac>([0-9A-F]{2}[:-]){5}([0-9A-F]{2}))(\s)*(?P<port>(\d+(\s)?-(\s)?\d+))$",

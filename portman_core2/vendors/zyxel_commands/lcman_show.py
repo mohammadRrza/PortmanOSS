@@ -57,21 +57,19 @@ class LcmanShow(BaseCommand):
             if self.__telnet_password:
                 tn.read_until(b"Password: ")
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-                time.sleep(2)
             tn.write("lcman show\r\n".encode('utf-8'))
             tn.read_until(b"lcman show")
-            time.sleep(2)
             tn.write(b"end\r\n")
-            result = tn.read_until(b"end").split(b'\r\n')
-            result = result[1:len(result)-2]
-            result = b'\n'.join(result)
+            result = tn.read_until(b"end")
+            result = str(result).split('\\r\\n')
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
+            result = [val for val in result if re.search(r'\d+|--|\s{4,}', val)]
             print('**************************************')
             print(result)
             print('**************************************')
-            return {"result": result}
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
