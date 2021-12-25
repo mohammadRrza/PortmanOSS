@@ -1287,7 +1287,8 @@ class ResetAdminStatusView(views.APIView):
             dslam_obj.name,
             port_obj.slot_number,
             port_obj.port_number)
-        add_audit_log(request, 'DSLAMCommand', None, 'Reset Admin Status Port', description)
+        add_audit_log(request, 'DSLAMCommand', None, 'Reset Admin '
+                                                     'Status Port', description)
         return Response({'messege': result})
 
 
@@ -3716,7 +3717,10 @@ class RegisterPortAPIView(views.APIView):
                 if isinstance(pvc, str):
                     return JsonResponse({'PVC': pvc, 'id': 400, 'msg': 'port config has not been done.'},
                                         status=status.HTTP_400_BAD_REQUEST)
-                for PVC in pvc:
+                print('++++++++++++++++++++++++++++++++')
+                print(pvc)
+                print('++++++++++++++++++++++++++++++++')
+                for PVC in pvc['result']:
                     if PVC['pvc'] == '{0}-{1}-{2}/{3}'.format(port_data.get('card_number'),
                                                               port_data.get('port_number'), reseller_obj.vpi,
                                                               reseller_obj.vci) and PVC['pvid'] == vlan_objs[0].vlan_id:

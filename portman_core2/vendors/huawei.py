@@ -54,7 +54,7 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('port disable', PortDisable)
     command_factory.register_type('show mac by slot port', ShowMacSlotPort)
     command_factory.register_type('show linerate', ShowLineRate)
-    command_factory.register_type('lcman show', LcmanShow)
+    command_factory.register_type('Show Shelf', LcmanShow)
     command_factory.register_type('lcman show slot', LcmanShowSlot)
     command_factory.register_type('show linestat port', ShowLineStatPort)
     '''

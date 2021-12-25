@@ -7,7 +7,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowLineStatSlot(BaseCommand):
+class ShowCardInfo(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
@@ -53,7 +53,7 @@ class ShowLineStatSlot(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             tn.read_until(b"Password:", 1)
             print(self.__port_indexes)
-            tn.write("show linestat {0}\r\nn".format(self.__port_indexes['slot_number']).encode('utf-8'))
+            tn.write("sys monitor show {0}\r\n".format(self.__port_indexes['slot_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"end")
             result = tn.read_until(b"end")
@@ -61,10 +61,7 @@ class ShowLineStatSlot(BaseCommand):
             tn.write(b"y\r\n")
             tn.close()
             result = str(result).split('\\r\\n')
-            result = [val for val in result if re.search(r'--{4,}|\s{4,}', val)]
-            for inx, line in enumerate(result):
-                if "Press any key" in line:
-                    del result[inx:inx + 4]
+            result = [val for val in result if re.search(r'--{4,}|\s{4,}|:|indicates', val)]
             print('******************************************')
             print(("port {0}".format(self.__port_indexes)))
             print('******************************************')
