@@ -8031,7 +8031,8 @@ class GetFqdnFromZabbixAPIView(views.APIView):
     def get(self, request, format=None):
         try:
             fqdn = request.query_params.get('fqdn', None)
-            dslam_id = ZabbixHosts.objects.get(fqdn=str(fqdn).lower()).id
+            zabbix_hosts = ZabbixHosts.objects.filter(device_fqdn__icontains=str(fqdn).lower())
+            return JsonResponse({'zabbix_hosts': zabbix_hosts}, status=status.HTTP_200_OK)
 
         except Exception as ex:
             print(ex)
