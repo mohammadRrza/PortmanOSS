@@ -8036,7 +8036,7 @@ class GetFqdnFromZabbixAPIView(views.APIView):
             cursor.execute(query)
             rows = cursor.fetchall()
             if cursor.rowcount > 0:
-                return JsonResponse({'fqdn': rows[0]}, status=status.HTTP_200_OK)
+                return JsonResponse({'fqdn': rows}, status=status.HTTP_200_OK)
             else:
                 return JsonResponse({'response': 'No matching dslam with this IP were found.'},
                                     status=status.HTTP_404_NOT_FOUND)
