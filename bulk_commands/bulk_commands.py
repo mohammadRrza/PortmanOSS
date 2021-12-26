@@ -5,7 +5,7 @@ from Commands.get_cisco_switches_backup import GetCiscoSwitchbackUp
 from Commands.get_zabbix_hosts import ZabbixHosts
 from Commands.get_mikrotik_radio_backup import GetMikrotikRadiobackUp
 from Commands.ip_service_set import SetIPService
-from bulk_commands.Commands.get_dslam_port_params import GetDslamPortParams
+from Commands.get_dslam_port_params import GetDslamPortParams
 
 if __name__ == '__main__':
     '''back_up = GetbackUp()

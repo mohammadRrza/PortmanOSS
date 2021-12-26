@@ -52,6 +52,7 @@ class ShowPort(BaseCommand):
 
     def run_command(self):
         try:
+            print("+++++++++++++++++++++++++++")
             tn = telnetlib.Telnet(self.__HOST, timeout=5)
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
