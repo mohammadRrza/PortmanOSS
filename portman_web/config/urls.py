@@ -218,6 +218,8 @@ urlpatterns = [
     url(r'^api/v1/portman_cdms/get_fqdn_from_zabbix_by_ip/$', GetFqdnFromZabbixByIpAPIView.as_view(), name='get_fqdn_from_zabbix_by_ip'),
     url(r'^api/v1/portman_cdms/get_dslam_id_by_ip/$', GetDSLAMIdByIPAPIView.as_view(),
         name='get_fqdn_from_zabbix_by_ip'),
+    url(r'^api/v1/portman_cdms/get_fqdn_from_zabbix/$', GetFqdnFromZabbixAPIView.as_view(),
+        name='get_fqdn_from_zabbix_by_ip'),
 
     url(r'^api/v1/', include(portman_router.urls)),
 

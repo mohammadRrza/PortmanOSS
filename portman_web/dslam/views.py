@@ -8023,3 +8023,25 @@ class GetDSLAMIdByIPAPIView(views.APIView):
             return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class GetFqdnFromZabbixAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            fqdn = request.query_params.get('fqdn', None)
+            query = "SELECT * from zabbix_hosts where device_fqdn like '%{}%' limit 1".format(fqdn)
+            cursor = connection.cursor()
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            if cursor.rowcount > 0:
+                return JsonResponse({'fqdn': rows[0]}, status=status.HTTP_200_OK)
+            else:
+                return JsonResponse({'response': 'No matching dslam with this IP were found.'},
+                                    status=status.HTTP_404_NOT_FOUND)
+        except Exception as ex:
+            print(ex)
+            return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
