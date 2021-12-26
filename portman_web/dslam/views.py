@@ -23,7 +23,7 @@ from rest_framework.parsers import FileUploadParser
 
 from classes.portman_logging import PortmanLogging
 
-from .models import Rented_port
+from .models import Rented_port,ZabbixHosts
 
 """from rtkit.resource import RTResource
 from rtkit.resource import RTResource
@@ -8031,15 +8031,8 @@ class GetFqdnFromZabbixAPIView(views.APIView):
     def get(self, request, format=None):
         try:
             fqdn = request.query_params.get('fqdn', None)
-            query = "SELECT distinct * FROM zabbix_hosts where device_fqdn like '%{}%' and device_type = 'dslam' limit 10".format(fqdn)
-            cursor = connection.cursor()
-            cursor.execute(query)
-            rows = cursor.fetchall()
-            if cursor.rowcount > 0:
-                return JsonResponse({'zabbix_devices': rows}, status=status.HTTP_200_OK)
-            else:
-                return JsonResponse({'response': 'No matching dslam with this IP were found.'},
-                                    status=status.HTTP_404_NOT_FOUND)
+            dslam_id = ZabbixHosts.objects.get(fqdn=str(fqdn).lower()).id
+
         except Exception as ex:
             print(ex)
             return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

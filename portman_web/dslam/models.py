@@ -134,8 +134,10 @@ class DSLAM(models.Model):
     fqdn = models.CharField(max_length=1024, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.name
+
     @property
     def get_ports_count(self):
         return self.dslamport_set.count()
@@ -645,6 +647,7 @@ class TelecomCenterMDF(models.Model):
 
     class Meta:
         ordering = ('created_at',)
+
     def __str__(self):
         return self.telecom_center.name
 
@@ -931,3 +934,20 @@ class TestModel(models.Model):
     telco_row = models.IntegerField(max_length=256, null=True, blank=True)
     telco_column = models.IntegerField(max_length=256, null=True, blank=True)
     telco_connection = models.IntegerField(max_length=256, null=True, blank=True)
+
+
+class ZabbixHosts(models.Model):
+    host_id = models.IntegerField()
+    device_group = models.CharField(max_length=255)
+    device_ip = models.CharField(max_length=255)
+    device_fqdn = models.CharField(max_length=255)
+    last_updated = models.DateField()
+    device_type = models.CharField(max_length=255)
+    device_brand = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.device_fqdn
+
+    class Meta:
+        managed = False
+        db_table = 'zabbix_hosts'
