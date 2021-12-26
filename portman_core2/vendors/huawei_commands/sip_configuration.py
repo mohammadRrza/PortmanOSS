@@ -62,14 +62,14 @@ class SIPConfiguration(BaseCommand):
             tn.write("enable\r\n")
             tn.write("config\r\n")
             tn.write("interface sip 0\r\n")
-            tn.write(("If-sip attribute basic media-ip <IP DSLAM>signal-ip {} signal-port 5000\r\n".format(self.__HOST)).encode('utf-8'))
+            tn.write(("If-sip attribute basic media-ip {} signal-ip {} signal-port 5000\r\n".format(self.__HOST, self.__HOST)).encode('utf-8'))
             tn.write(("if-sip attribute basic primary-proxy-ip1 {} primary-proxy-port 5060\r\n".format('172.28.238.162')).encode('utf-8'))
             tn.write("display if-sip attribute running\r\n")
             tn.write("reset\r\n")
             tn.write("quit\r\n")
             tn.write("y\r\n")
             tn.close()
-            return dict(result="ports are disabled", port_indexes=self.__port_indexes)
+            return dict(result="", port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

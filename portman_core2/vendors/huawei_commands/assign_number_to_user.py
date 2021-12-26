@@ -66,13 +66,13 @@ class AssignNumberToUser(BaseCommand):
             tn.write(("sippstnuser add 0/{}/{} 0 telno {}\r\n".format('', '', '')).encode('utf-8'))
             tn.write(("sippstnuser attribute set 0/{}/{} dc-time 80\r\n".format('', '')).encode('utf-8'))
             tn.write(("sippstnuser rightflag set 0/{}/{}  telno {} cw disable\r\n".format('', '', '')).encode('utf-8'))
-            tn.write(("ippstnuser auth set 0/{}/{} telno {} password-mode password\r\n".format('', '', '')).encode('utf-8'))
+            tn.write(("sippstnuser auth set 0/{}/{} telno {} password-mode password\r\n".format('', '', '')).encode('utf-8'))
             tn.write(("display sippstnuser 0/{}\r\n".format('')).encode('utf-8'))
 
             tn.write("quit\r\n")
             tn.write("y\r\n")
             tn.close()
-            return dict(result="ports are disabled", port_indexes=self.__port_indexes)
+            return dict(result="", port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

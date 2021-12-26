@@ -68,7 +68,7 @@ class NGNRegisterPort(BaseCommand):
             tn.write("quit\r\n")
             tn.write("y\r\n")
             tn.close()
-            return dict(result="ports are disabled", port_indexes=self.__port_indexes)
+            return dict(result="", port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
