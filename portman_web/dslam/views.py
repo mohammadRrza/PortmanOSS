@@ -8031,7 +8031,7 @@ class GetFqdnFromZabbixAPIView(views.APIView):
     def get(self, request, format=None):
         try:
             fqdn = request.query_params.get('fqdn', None)
-            query = "SELECT * from zabbix_hosts where device_fqdn like '%{}%' limit 1".format(fqdn)
+            query = "SELECT distinct * FROM zabbix_hosts where device_fqdn like '%{}%' and device_type = 'dslam'".format(fqdn)
             cursor = connection.cursor()
             cursor.execute(query)
             rows = cursor.fetchall()
