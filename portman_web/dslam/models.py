@@ -949,5 +949,4 @@ class ZabbixHosts(models.Model):
         return self.device_fqdn
 
     class Meta:
-        managed = False
         db_table = 'zabbix_hosts'
