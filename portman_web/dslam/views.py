@@ -5989,7 +5989,7 @@ class FiberHomeCommandAPIView(views.APIView):
                 current_userProfile = ""
                 alarm_prof = ""
                 port_state = ""
-                for item in port_info:
+                for item in port_info['result']:
                     if 'prof' in item and 'alarm prof' not in item:
                         current_userProfile = item.split(':')[1]
                     if 'state' in item:
