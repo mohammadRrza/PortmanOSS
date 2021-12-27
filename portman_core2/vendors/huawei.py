@@ -19,6 +19,9 @@ from .huawei_commands.show_linerate import ShowLineRate
 from .huawei_commands.lcman_show_slot import LcmanShowSlot
 from .huawei_commands.lcman_show import LcmanShow
 from .huawei_commands.show_linestat_port import ShowLineStatPort
+from .huawei_commands.ngn_register_port import NGNRegisterPort
+from .huawei_commands.sip_configuration import SIPConfiguration
+from .huawei_commands.assign_number_to_user import AssignNumberToUser
 
 '''
 from huawei_commands.selt import Selt
@@ -57,6 +60,10 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('Show Shelf', LcmanShow)
     command_factory.register_type('lcman show slot', LcmanShowSlot)
     command_factory.register_type('show linestat port', ShowLineStatPort)
+    command_factory.register_type('ngn_register_port', NGNRegisterPort)
+    command_factory.register_type('sip_configuration', SIPConfiguration)
+    command_factory.register_type('assign_number_to_user', AssignNumberToUser)
+
     '''
     command_factory.register_type('selt', Selt)
     command_factory.register_type('show lineinfo', ShowLineInfo)

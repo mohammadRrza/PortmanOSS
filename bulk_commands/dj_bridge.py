@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.append('/opt/portmanv3/portman_web/')
+sys.path.insert(0, '/home/sajad/Project/portmanv3/portman_web/')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings'
 
 from django.core.wsgi import get_wsgi_application
@@ -27,6 +27,7 @@ from dslam.models import DSLAMPortMac
 from dslam.models import DSLAMBoard
 from dslam.models import LineProfileExtraSettings
 from dslam.models import DSLAMTypeCommand
+from dslam import utility
 
 
 

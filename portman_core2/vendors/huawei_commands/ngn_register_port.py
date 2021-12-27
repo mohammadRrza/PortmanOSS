@@ -1,16 +1,18 @@
 import telnetlib
 import time
+from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
 
-class VlanShow(BaseCommand):
+class NGNRegisterPort(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
+        self.__port_indexes = params.get('port_indexes')
         self.device_ip = params.get('device_ip')
-
+        self.Gateway = params.get('gateway')
     @property
     def HOST(self):
         return self.__HOST
@@ -53,32 +55,25 @@ class VlanShow(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:")
-            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            err1 = tn.read_until(b'Communications Corp.', 2)
-            if "Password:" in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.write(b"vlan show\r\n")
-            time.sleep(1)
-            tn.write(b"end\r\n")
-            result = tn.read_until(b'end')
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result.decode('utf-8'), status=200)
-            result = str(result).split('\\r\\n')
-            result = [val for val in result if re.search(r'\s{4,}', val)][1:]
-            vlans = {}
-            results = []
-            for line in result:
-                temp = line.split()
-                vlans[temp[0]] = temp[-1]
-            tn.write(b"exit\r\n")
-            tn.write(b"y\r\n")
+            if tn.read_until('>>User name:'):
+                tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            if tn.read_until('>>User password:'):
+                tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write("enable\r\n")
+            tn.write("config\r\n")
+            tn.write("voip\r\n")
+            tn.write(("ip address media {} {}\r\n".format(self.__HOST, self.Gateway)).encode('utf-8'))
+            tn.write(("ip address signaling {}\r\n".format(self.__HOST)).encode('utf-8'))
+            tn.write("display ip address media\r\n")
+            tn.write("quit\r\n")
+            tn.write("y\r\n")
             tn.close()
-            print('********************************')
-            print(results)
-            print('********************************')
-            return dict(result=vlans, status=200)
+            return dict(result="", port_indexes=self.__port_indexes)
+        except (EOFError, socket_error) as e:
+            print(e)
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()
         except Exception as e:
             print(e)
             self.retry += 1
