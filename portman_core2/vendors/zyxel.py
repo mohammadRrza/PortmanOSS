@@ -56,6 +56,9 @@ from .zyxel_commands.port_reset import PortReset
 from .zyxel_commands.profile_vdsl_set import ProfileVDSLSet
 from .zyxel_commands.show_snmp import ShowSNMP
 from .zyxel_commands.show_ip import ShowIP
+from .zyxel_commands.ip_arp_show import IPARPShow
+from .zyxel_commands.sys_info_show import SysInfoShow
+from .zyxel_commands.acl_maccount_show import ACLMacCountShow
 
 from datetime import timedelta
 
@@ -108,6 +111,9 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('Version', ShowVersion)
     command_factory.register_type('show card info', ShowCardInfo)
     command_factory.register_type('IP Show', ShowIP)
+    command_factory.register_type('ip arp show', IPARPShow)
+    command_factory.register_type('sys info show', SysInfoShow)
+    command_factory.register_type('show mac limit', ACLMacCountShow)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))

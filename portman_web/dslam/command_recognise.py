@@ -46,6 +46,8 @@ def command_recognise(command):
         command = 'save config'
     elif command == 'ip show' or command == 'show ip' or command == 'IP Show':
         command = 'IP Show'
+    elif command == 'ip arp show' or command == 'IP ARP Show':
+        command = 'ip arp show'
     elif command == 'show snmp community' or command == 'sys snmp show' or command == 'snmp show':
         command = 'show snmp community'
     elif command == 'show time' or command == 'show uptime' or command == 'Show UpTime':
@@ -64,7 +66,7 @@ def command_recognise(command):
         command = 'show pvc by profile'
     elif command == 'show pvc by port' or command == 'Show PVC By Port' or command == 'show pvc by port' or command == 'port pvc show':
         command = 'show pvc by port'
-    elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit':
+    elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit' or command == 'acl maccount Show':
         command = 'show mac limit'
     elif command == 'switch port show' or command == 'Switch Port Show':
         command = 'switch port show'
@@ -72,5 +74,7 @@ def command_recognise(command):
         command = 'show profile by port'
     elif command == 'port Info' or command == 'port info' or command == 'Port Info':
         command = 'port Info'
+    elif command == 'Sys Info Show' or command == 'sys info show' or command == 'SYS Info Show':
+        command = 'sys info show'
 
     return command
