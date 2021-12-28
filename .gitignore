@@ -1,6 +1,9 @@
 /opt/portmanv3/.gitignore
 /opt/portmanv3/*.pyc
+/opt/portmanv3/*.log
 portman_core2/dj_bridge.py
+portman_core2/example.log
+portman_web/portmanLog.log
 
 ### Django ###
 *.log

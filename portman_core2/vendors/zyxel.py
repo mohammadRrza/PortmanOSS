@@ -53,6 +53,16 @@ from .zyxel_commands.port_pvc_show import PortPvcShow
 from .zyxel_commands.version import ShowVersion
 from .zyxel_commands.show_card_info import ShowCardInfo
 from .zyxel_commands.port_reset import PortReset
+from .zyxel_commands.profile_vdsl_set import ProfileVDSLSet
+from .zyxel_commands.show_snmp import ShowSNMP
+from .zyxel_commands.show_ip import ShowIP
+from .zyxel_commands.ip_arp_show import IPARPShow
+from .zyxel_commands.sys_info_show import SysInfoShow
+from .zyxel_commands.acl_maccount_show import ACLMacCountShow
+from .zyxel_commands.acl_pktfilter_show import ACLPktfilterShow
+from .zyxel_commands.acl_pppoeagent_show import ACLPPPoEAgentShow
+from .zyxel_commands.switch_port_show import SwitchPortShow
+from .zyxel_commands.save_config import SaveConfig
 
 from datetime import timedelta
 
@@ -69,8 +79,8 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('show performance', ShowPerformance)
     command_factory.register_type('profile adsl show', ProfileADSLShow)
     command_factory.register_type('profile vdsl show', ProfileVDSLShow)
+    command_factory.register_type('profile vdsl set', ProfileVDSLSet)
     command_factory.register_type('Show Shelf', LcmanShow)
-    # command_factory.register_type('profile adsl set', ChangeLineProfilePort)
     command_factory.register_type('profile adsl delete', DeleteProfile)
     command_factory.register_type('lcman disable slot', LcmanDisableSlot)
     command_factory.register_type('lcman reset slot', LcmanResetSlot)
@@ -89,6 +99,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('reset admin status', ResetAdminStatus)
     command_factory.register_type('switch mac flush all', SwitchMacFlushAll)
     command_factory.register_type('get dslam board', GetDSLAMBoard)
+    command_factory.register_type('show snmp community', ShowSNMP)
     command_factory.register_type('sys snmp setcommunity', SysSnmpSetCommunity)
     command_factory.register_type('sys snmp getcommunity', SysSnmpGetCommunity)
     command_factory.register_type('acl maccount set', AclMaccountSet)
@@ -103,6 +114,14 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('show port with mac', ShowSlotPortWithMac)
     command_factory.register_type('Version', ShowVersion)
     command_factory.register_type('show card info', ShowCardInfo)
+    command_factory.register_type('IP Show', ShowIP)
+    command_factory.register_type('ip arp show', IPARPShow)
+    command_factory.register_type('sys info show', SysInfoShow)
+    command_factory.register_type('show mac limit', ACLMacCountShow)
+    command_factory.register_type('acl pktfilter show', ACLPktfilterShow)
+    command_factory.register_type('acl pppoeagent show', ACLPPPoEAgentShow)
+    command_factory.register_type('switch port show', SwitchPortShow)
+    command_factory.register_type('save config', SaveConfig)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))

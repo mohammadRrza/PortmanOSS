@@ -47,14 +47,13 @@ class EnableAnnexm(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            time.sleep(1)
             tn.read_until(b"Password:")
             for port_item in self.__port_indexes:
-                tn.write("port adsl annexm enable {0}-{1}\r\n\r\n".format(port_item['slot_number'],
-                                                                          port_item['port_number']).encode('utf-8'))
-                time.sleep(1)
+                tn.write("port adsl annexm enable {0}-{1}\r\n".format(port_item['slot_number'],
+                                                                      port_item['port_number']).encode('utf-8'))
+                time.sleep(0.5)
             tn.write(b"end\r\n")
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")

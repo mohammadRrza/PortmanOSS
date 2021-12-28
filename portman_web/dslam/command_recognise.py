@@ -9,6 +9,8 @@ def command_recognise(command):
         command = 'setPortProfiles'
     elif command == 'profile vdsl show' or command == 'showVdslProfiles' or command == 'Show VDSL':
         command = 'profile vdsl show'
+    elif command == 'profile vdsl set' or command == 'setVdslProfiles' or command == 'Set VDSL':
+        command = 'profile vdsl set'
     elif command == 'selt show' or command == 'show selt' or command == 'selt' or command == 'showSelt':
         command = 'showSelt'
     elif command == 'selt start' or command == 'Selt Start' or command == 'start selt' or command == 'startSelt':
@@ -40,10 +42,12 @@ def command_recognise(command):
         command = 'Show Card'
     elif command == 'port reset' or command == 'reset port':
         command = 'port reset'
-    elif command == 'save config':
+    elif command == 'save config' or command == 'Save Config' or command == 'config save':
         command = 'save config'
     elif command == 'ip show' or command == 'show ip' or command == 'IP Show':
         command = 'IP Show'
+    elif command == 'ip arp show' or command == 'IP ARP Show':
+        command = 'ip arp show'
     elif command == 'show snmp community' or command == 'sys snmp show' or command == 'snmp show':
         command = 'show snmp community'
     elif command == 'show time' or command == 'show uptime' or command == 'Show UpTime':
@@ -62,7 +66,7 @@ def command_recognise(command):
         command = 'show pvc by profile'
     elif command == 'show pvc by port' or command == 'Show PVC By Port' or command == 'show pvc by port' or command == 'port pvc show':
         command = 'show pvc by port'
-    elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit':
+    elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit' or command == 'acl maccount Show':
         command = 'show mac limit'
     elif command == 'switch port show' or command == 'Switch Port Show':
         command = 'switch port show'
@@ -70,5 +74,11 @@ def command_recognise(command):
         command = 'show profile by port'
     elif command == 'port Info' or command == 'port info' or command == 'Port Info':
         command = 'port Info'
+    elif command == 'Sys Info Show' or command == 'sys info show' or command == 'SYS Info Show':
+        command = 'sys info show'
+    elif command == 'acl pktfilter show' or command == 'ACL Pktfilter Show' or command == 'Acl Pktfilter Show':
+        command = 'acl pktfilter show'
+    elif command == 'acl pppoeagent show' or command == 'ACL PPPoEAgent Show' or command == 'Acl Pppoeagent Show':
+        command = 'acl pppoeagent show'
 
     return command
