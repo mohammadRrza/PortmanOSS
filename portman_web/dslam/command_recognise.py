@@ -42,7 +42,7 @@ def command_recognise(command):
         command = 'Show Card'
     elif command == 'port reset' or command == 'reset port':
         command = 'port reset'
-    elif command == 'save config':
+    elif command == 'save config' or command == 'Save Config' or command == 'config save':
         command = 'save config'
     elif command == 'ip show' or command == 'show ip' or command == 'IP Show':
         command = 'IP Show'
@@ -76,5 +76,9 @@ def command_recognise(command):
         command = 'port Info'
     elif command == 'Sys Info Show' or command == 'sys info show' or command == 'SYS Info Show':
         command = 'sys info show'
+    elif command == 'acl pktfilter show' or command == 'ACL Pktfilter Show' or command == 'Acl Pktfilter Show':
+        command = 'acl pktfilter show'
+    elif command == 'acl pppoeagent show' or command == 'ACL PPPoEAgent Show' or command == 'Acl Pppoeagent Show':
+        command = 'acl pppoeagent show'
 
     return command
