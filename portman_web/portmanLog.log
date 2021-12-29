@@ -1,1 +1,3 @@
 Unauthorized: /api/v1/dslamport/run-command/
+Not Found: /api/v1/dslamport/rented-port/
+Unauthorized: /api/v1/dslamport/rented_port/

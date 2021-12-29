@@ -7902,7 +7902,7 @@ class RentedPortAPIView(views.APIView):
         except ObjectDoesNotExist:
             return Response({"Result": "You don't have access to this Card & Port. Please check parameters."})
         fqdn = dslam_obj.fqdn
-        dslamObj = DSLAM.objects.get(fqdn=fqdn)
+        dslamObj = DSLAM.objects.get(fqdn=fqdn.lower())
         dslam_type = dslamObj.dslam_type_id
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
@@ -7918,28 +7918,37 @@ class RentedPortAPIView(views.APIView):
                         description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
 
                         add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
+                port_info = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
+                current_userProfile = ""
+                port_state = ""
+                for item in port_info['result']:
+                    if 'prof' in item and 'alarm prof' not in item:
+                        current_userProfile = item.split(':')[1]
+                    if 'state' in item:
+                        port_state = item.split(':')[1]
+                        break
 
-                return JsonResponse({'response': result})
+                return JsonResponse(
+                    {'response': result, 'current_userProfile': current_userProfile, 'port_state': port_state})
 
             elif dslam_type == 2:  # huawei
-                return JsonResponse({'Result': dslam_type})
+
+                return JsonResponse({'response': result, 'DslamType': 'huawei'})
+
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-                if command == 'show mac by slot port':
-                    result = result.split("\\r\\n")
-                    result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
-                return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
+
+                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
 
-                return JsonResponse({'Result': result})
+                return JsonResponse({'response': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                if command == 'Show VLAN':
-                    return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
+
                 return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
-                return JsonResponse({'Result': dslam_type})
+                return JsonResponse({'response': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
