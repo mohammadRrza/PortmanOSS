@@ -3488,7 +3488,7 @@ class RegisterPortAPIView(views.APIView):
             result = ''
 
             try:
-                if (cityId == 1637):
+                if (cityId == 11111111111):
                     # return JsonResponse({'result': str('Email Sent To rt-network-access!!!'), 'id': 201}, status=status.HTTP_202_ACCEPTED)
                     q = "select * from shabdizrt where agent = '{0}' and ip='{1}' and fqdn='{2}' and card = '{3}' and port= '{4}' and status= '{5}'".format(
                         reseller_obj, dslam_obj.ip, dslam_obj.fqdn, port_data.get('card_number'),
