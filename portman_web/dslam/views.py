@@ -23,7 +23,7 @@ from rest_framework.parsers import FileUploadParser
 
 from classes.portman_logging import PortmanLogging
 
-from .models import Rented_port,ZabbixHosts
+from .models import Rented_port,PortmanZabbixHosts
 
 """from rtkit.resource import RTResource
 from rtkit.resource import RTResource
@@ -8031,7 +8031,7 @@ class GetFqdnFromZabbixAPIView(views.APIView):
     def get(self, request, format=None):
         try:
             fqdn = request.query_params.get('fqdn', None)
-            zabbix_hosts = ZabbixHosts.objects.filter(device_fqdn__icontains=str(fqdn).lower())
+            zabbix_hosts = PortmanZabbixHosts.objects.filter(device_fqdn__icontains=str(fqdn).lower())
             return JsonResponse({'zabbix_hosts': list(zabbix_hosts)}, status=status.HTTP_200_OK)
 
         except Exception as ex:

@@ -32,3 +32,13 @@ where switch_switchgroup.title is not NULL and device_fqdn not like '%OLD%' and 
   LEFT JOIN radio_radiogroup on radio_radiogroup.title = zabbix_hosts.device_type
 	where radio_radiogroup.title is not NULL and device_fqdn not like '%OLD%'	ORDER BY zabbix_hosts.device_ip;
 -------------------------radio-------------------------------------------------
+
+-------------------------portman_zabbix_hosts-------------------------------------------------
+ALTER SEQUENCE portman_zabbix_hosts_id_seq RESTART WITH 2526;
+
+DELETE FROM portman_zabbix_hosts;
+
+INSERT INTO "public"."portman_zabbix_hosts"("host_id", "device_group", "device_ip", "device_fqdn", "last_updated", "device_type", "device_brand")
+
+select "host_id", "device_group", "device_ip", "device_fqdn", "last_updated", "device_type", "device_brand" from zabbix_hosts;
+-------------------------portman_zabbix_hosts-------------------------------------------------

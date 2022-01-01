@@ -936,7 +936,7 @@ class TestModel(models.Model):
     telco_connection = models.IntegerField(max_length=256, null=True, blank=True)
 
 
-class ZabbixHosts(models.Model):
+class PortmanZabbixHosts(models.Model):
     host_id = models.IntegerField()
     device_group = models.CharField(max_length=255)
     device_ip = models.CharField(max_length=255)
@@ -949,4 +949,4 @@ class ZabbixHosts(models.Model):
         return self.device_fqdn
 
     class Meta:
-        db_table = 'zabbix_hosts'
+        db_table = 'portman_zabbix_hosts'
