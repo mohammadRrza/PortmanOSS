@@ -8032,8 +8032,8 @@ class GetFqdnFromZabbixAPIView(views.APIView):
         try:
             fqdn = request.query_params.get('fqdn', None)
             portman_zabbix_hosts = PortmanZabbixHosts.objects.filter(device_fqdn__icontains=str(fqdn).lower()).values()
-            return JsonResponse({'zabbix_hosts': dict(portman_zabbix_hosts)}, status=status.HTTP_200_OK)
-
+            return Response({"posts": portman_zabbix_hosts},
+                            status=status.HTTP_200_OK)
         except Exception as ex:
             print(ex)
             return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
