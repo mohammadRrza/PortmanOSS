@@ -8032,7 +8032,7 @@ class GetFqdnFromZabbixAPIView(views.APIView):
         try:
             fqdn = request.query_params.get('fqdn', None)
             portman_zabbix_hosts = PortmanZabbixHosts.objects.filter(device_fqdn__icontains=str(fqdn).lower()).values()
-            return Response({"posts": portman_zabbix_hosts},
+            return Response({"zabbix_hosts": portman_zabbix_hosts},
                             status=status.HTTP_200_OK)
         except Exception as ex:
             print(ex)
