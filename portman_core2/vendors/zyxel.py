@@ -93,7 +93,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('port pvc delete', PortPvcDelete)
     command_factory.register_type('add to vlan', AddToVlan)
     command_factory.register_type('create vlan', CreateVlan)
-    command_factory.register_type('Show VLAN', VlanShow)
+    command_factory.register_type('Show All VLANs', VlanShow)
     command_factory.register_type('setPortProfiles', ChangeLineProfilePort)
     command_factory.register_type('change admin status', ChangeAdminStatus)
     command_factory.register_type('reset admin status', ResetAdminStatus)

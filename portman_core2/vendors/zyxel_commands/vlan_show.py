@@ -65,8 +65,8 @@ class VlanShow(BaseCommand):
             result += str(tn.read_until(b'#', 1))
             tn.write(b"show vlan\r\nn")
             result += str(tn.read_until(b'#', 1))
-            # if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-            #     return dict(result=result.decode('utf-8'), status=200)
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split('\\r\\n')
             result = [val for val in result if re.search(r'\s{3,}|--{4,}|vid', val)]
             for inx, line in enumerate(result):
