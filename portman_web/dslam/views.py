@@ -5986,18 +5986,18 @@ class FiberHomeCommandAPIView(views.APIView):
 
                         add_audit_log(request, 'DSLAMCommand', None, 'Run Command On DSLAM Port', description)
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'port Info', params)
-                current_userProfile = ""
+                current_user_profile = ""
                 alarm_prof = ""
                 port_state = ""
                 for item in port_info['result']:
                     if 'prof' in item and 'alarm prof' not in item:
-                        current_userProfile = item.split(':')[1]
+                        current_user_profile = item.split(':')[1]
                     if 'state' in item:
                         port_state = item.split(':')[1]
                         break
 
                 return JsonResponse(
-                    {'response': result, 'current_userProfile': current_userProfile, 'port_state': port_state})
+                    {'response': result, 'current_user_profile': current_user_profile, 'port_state': port_state})
 
             elif dslam_type == 2:  # huawei
 
@@ -6005,15 +6005,22 @@ class FiberHomeCommandAPIView(views.APIView):
 
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
 
-                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN3300'})
+                port_info = utility.dslam_port_run_command(dslamObj.pk, 'show linerate', params)
+                current_user_profile = port_info['profile_name']
+                return JsonResponse({'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
 
-                return JsonResponse({'response': result})
+                port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
+                current_user_profile = port_info['profile_name']
+                return JsonResponse({'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN2200'})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
 
-                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
+                port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
+                current_user_profile = port_info['profile_name']
+                return JsonResponse(
+                    {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN5006'})
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
                 return JsonResponse({'response': dslam_type})

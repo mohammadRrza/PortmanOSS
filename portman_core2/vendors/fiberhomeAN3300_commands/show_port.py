@@ -43,6 +43,7 @@ class ShowPort(BaseCommand):
 
     def run_command(self):
         try:
+            profile_name = None
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
@@ -142,8 +143,10 @@ class ShowPort(BaseCommand):
                 if "DownStream Attenuat" in val:
                     res['attenuationUp'] = val.split(":")[2].strip()
                     res['attenuationDown'] = val.split(":")[1].split()[0]
+                if "Profile Name" in val:
+                    profile_name = val.split(":")[1].strip()
 
-            return dict(result=res, status=200)
+            return dict(result=res, profile_name=profile_name, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)
