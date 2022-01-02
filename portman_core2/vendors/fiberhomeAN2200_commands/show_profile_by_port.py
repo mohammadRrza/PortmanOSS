@@ -81,10 +81,10 @@ class ShowProfileByPort(BaseCommand):
             if "error card number!" in str(res):
                 return f"Card number '{self.port_conditions['slot_number']}' is out of range."
             res = [val for val in str(res).split("\\n\\r") if re.search(r'\s{4,}|--+', val)]
-            res = re.findall(r'\d+(?:k|m)\d+(?:k|m).prf',
-                             [val for val in res if f" {self.port_conditions['port_number']}  " in val][0])
+            res = [val.split()[-1] for val in res if f" {self.port_conditions['port_number']}  " in val]
+            print(res)
             result = f"Profile assigned to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: {res[0]}"
-            return dict(result=result, status=200)
+            return dict(result=result, profile_name=res[0], status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
