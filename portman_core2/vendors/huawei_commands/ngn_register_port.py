@@ -66,7 +66,7 @@ class NGNRegisterPort(BaseCommand):
             tn.write(b"voip\r\n")
             tn.write(("ip address media {} {}\r\n".format(self.__HOST, '192.168.1.1')).encode('utf-8'))
             tn.write(("ip address signaling {}\r\n".format(self.__HOST)).encode('utf-8'))
-            tn.write("display ip address media\r\n")
+            tn.write(b"display ip address media\r\n")
             tn.write(b"end\r\n")
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
