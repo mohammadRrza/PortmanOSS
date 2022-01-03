@@ -23,7 +23,7 @@ from rest_framework.parsers import FileUploadParser
 
 from classes.portman_logging import PortmanLogging
 
-from .models import Rented_port,PortmanZabbixHosts
+from .models import Rented_port, PortmanZabbixHosts
 
 """from rtkit.resource import RTResource
 from rtkit.resource import RTResource
@@ -6001,21 +6001,22 @@ class FiberHomeCommandAPIView(views.APIView):
                 return JsonResponse(
                     {'response': result, 'current_user_profile': current_user_profile, 'port_state': port_state})
 
-            elif dslam_type == 2:  # huawei
 
+            elif dslam_type == 2:  ############################## huawei ##############################
                 return JsonResponse({'response': result, 'DslamType': 'huawei'})
 
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show linerate', params)
                 current_user_profile = port_info['profile_name']
-                return JsonResponse({'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN3300'})
+                return JsonResponse(
+                    {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
 
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
                 current_user_profile = port_info['profile_name']
-                return JsonResponse({'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN2200'})
+                return JsonResponse(
+                    {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN2200'})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
 
@@ -8049,11 +8050,11 @@ class GetFqdnFromZabbixAPIView(views.APIView):
     def get(self, request, format=None):
         try:
             fqdn = request.query_params.get('fqdn', None)
-            portman_zabbix_hosts = PortmanZabbixHosts.objects.filter(device_fqdn__icontains=str(fqdn).lower(), device_type='dslam').values().distinct('device_fqdn')
+            portman_zabbix_hosts = PortmanZabbixHosts.objects.filter(device_fqdn__icontains=str(fqdn).lower(),
+                                                                     device_type='dslam').values().distinct(
+                'device_fqdn')
             return Response({"zabbix_hosts": portman_zabbix_hosts},
                             status=status.HTTP_200_OK)
         except Exception as ex:
             print(ex)
             return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-

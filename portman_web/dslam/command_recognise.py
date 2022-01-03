@@ -80,5 +80,11 @@ def command_recognise(command):
         command = 'acl pktfilter show'
     elif command == 'acl pppoeagent show' or command == 'ACL PPPoEAgent Show' or command == 'Acl Pppoeagent Show':
         command = 'acl pppoeagent show'
+    elif command == 'ngn_register_port' or command == 'ngn register port' or command == 'NGN register port':
+        command = 'ngn_register_port'
+    elif command == 'sip_configuration' or command == 'sip configuration' or command == 'SIP Configuration':
+        command = 'sip_configuration'
+    elif command == 'assign_number_to_user' or command == 'assign number to user' or command == 'registerNumber':
+        command = 'assign_number_to_user'
 
     return command
