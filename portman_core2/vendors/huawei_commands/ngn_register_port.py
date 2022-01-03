@@ -66,7 +66,7 @@ class NGNRegisterPort(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"\r\n")
             tn.write(b"\r\n")
-            tn.write(b"enable\r\n")
+            tn.write(b"eenable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"voip\r\n")
             tn.write(("ip address media {} {}\r\n".format('192.168.1.2', '192.168.1.1')).encode('utf-8'))
