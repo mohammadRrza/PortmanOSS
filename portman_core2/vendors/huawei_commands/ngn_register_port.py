@@ -72,7 +72,7 @@ class NGNRegisterPort(BaseCommand):
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            return dict(result=str(result.split('\\r\\n')))
+            return dict(result=str(result))
         except (EOFError, socket_error) as e:
             print('============socket_error==========')
             print(e)
