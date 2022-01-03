@@ -62,20 +62,26 @@ class NGNRegisterPort(BaseCommand):
             tn.write("enable\r\n")
             tn.write("config\r\n")
             tn.write("voip\r\n")
-            tn.write(("ip address media {} {}\r\n".format(self.__HOST, self.Gateway)).encode('utf-8'))
+            tn.write(("ip address media {} {}\r\n".format(self.__HOST, '192.168.1.1')).encode('utf-8'))
             tn.write(("ip address signaling {}\r\n".format(self.__HOST)).encode('utf-8'))
             tn.write("display ip address media\r\n")
+            tn.write("end\r\n")
             tn.write("quit\r\n")
             tn.write("y\r\n")
             tn.close()
-            return dict(result="", port_indexes=self.__port_indexes)
+            result = tn.read_until('end')
+            return dict(result=result)
         except (EOFError, socket_error) as e:
+            print('============socket_error==========')
             print(e)
+            print('============socket_error==========')
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
+            print('============Exception==========')
             print(e)
+            print('============Exception==========')
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
