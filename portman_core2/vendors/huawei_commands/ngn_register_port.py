@@ -68,10 +68,10 @@ class NGNRegisterPort(BaseCommand):
             tn.write(("ip address signaling {}\r\n".format(self.__HOST)).encode('utf-8'))
             tn.write(b"display ip address media\r\n")
             tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            result = tn.read_until(b'end')
             return dict(result=str(result))
         except (EOFError, socket_error) as e:
             print('============socket_error==========')
