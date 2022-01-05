@@ -72,9 +72,9 @@ class AssignNumberToUser(BaseCommand):
             tn.write(("sippstnuser auth set 0/{}/{} telno {} password-mode password\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
             tn.write(("display sippstnuser 0/{}\r\n".format('3')).encode('utf-8'))
             if tn.read_until(b'User Name(<='):
-                tn.write(self.__phone_number+"\r\n")
+                tn.write((self.__phone_number+"\r\n").encode('utf-8'))
             if tn.read_until(b'User Password(<='):
-                tn.write(self.__sip_password+"\r\n")
+                tn.write((self.__sip_password+"\r\n").encode('utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             tn.write(b"quit\r\n")
