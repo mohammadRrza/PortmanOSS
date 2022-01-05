@@ -57,8 +57,10 @@ class NGNRegisterPort(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((b'root' + "\r\n").encode('utf-8'))
-            tn.write((b'mduadmin' + "\r\n").encode('utf-8'))
+            if tn.read_until(b'>>User name:'):
+                tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            if tn.read_until(b'>>User password:'):
+                tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             tn.write(b"\r\n")
             tn.write(b"\r\n")
             tn.write(b"\r\n")
