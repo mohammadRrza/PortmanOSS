@@ -62,6 +62,7 @@ class AssignNumberToUser(BaseCommand):
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write(b"eenable\r\n")
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"esl user\r\n")
