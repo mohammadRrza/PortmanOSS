@@ -73,8 +73,9 @@ class SIPConfiguration(BaseCommand):
             tn.write(("If-sip attribute basic media-ip {} signal-ip {} signal-port 5000\r\n".format('192.161.1.2', '192.161.1.2')).encode('utf-8'))
             tn.write(("if-sip attribute basic primary-proxy-ip1 {} primary-proxy-port 5060\r\n".format('172.28.238.162')).encode('utf-8'))
             tn.write(b"reset\r\n")
-            if tn.read_until(b'Are you sure to reset the SIP interface?'):
-                tn.write(b"y\r\n")
+            tn.write(b"y\r\n")
+            # if tn.read_until(b'Are you sure to reset the SIP interface?'):
+            #     tn.write(b"y\r\n")
             tn.write(b"display if-sip attribute running\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
