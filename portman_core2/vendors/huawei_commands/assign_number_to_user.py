@@ -12,7 +12,8 @@ class AssignNumberToUser(BaseCommand):
         self.__telnet_password = None
         self.__port_indexes = params.get('port_indexes')
         self.device_ip = params.get('device_ip')
-        self.Gateway = params.get('gateway')
+        self.__phone_number = '02191090108'
+        self.__sip_password = '78841031'
     @property
     def HOST(self):
         return self.__HOST
@@ -55,24 +56,29 @@ class AssignNumberToUser(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            if tn.read_until('>>User name:'):
+            if tn.read_until(b'>>User name:'):
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            if tn.read_until('>>User password:'):
+            if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write("enable\r\n")
-            tn.write("config\r\n")
-            tn.write("esl user\r\n")
-            tn.write("interface sip 0\r\n")
-            tn.write(("sippstnuser add 0/{}/{} 0 telno {}\r\n".format('', '', '')).encode('utf-8'))
-            tn.write(("sippstnuser attribute set 0/{}/{} dc-time 80\r\n".format('', '')).encode('utf-8'))
-            tn.write(("sippstnuser rightflag set 0/{}/{}  telno {} cw disable\r\n".format('', '', '')).encode('utf-8'))
-            tn.write(("sippstnuser auth set 0/{}/{} telno {} password-mode password\r\n".format('', '', '')).encode('utf-8'))
-            tn.write(("display sippstnuser 0/{}\r\n".format('')).encode('utf-8'))
-
-            tn.write("quit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"enable\r\n")
+            tn.write(b"config\r\n")
+            tn.write(b"esl user\r\n")
+            tn.write(b"interface sip 0\r\n")
+            tn.write(("sippstnuser add 0/{}/{} 0 telno {}\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
+            tn.write(("sippstnuser attribute set 0/{}/{} dc-time 80\r\n".format('3', '0')).encode('utf-8'))
+            tn.write(("sippstnuser rightflag set 0/{}/{}  telno {} cw disable\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
+            tn.write(("sippstnuser auth set 0/{}/{} telno {} password-mode password\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
+            tn.write(("display sippstnuser 0/{}\r\n".format('3')).encode('utf-8'))
+            if tn.read_until(b'User Name(<='):
+                tn.write(self.__phone_number+"\r\n")
+            if tn.read_until(b'User Password(<='):
+                tn.write(self.__sip_password+"\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            tn.write(b"quit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
-            return dict(result="", port_indexes=self.__port_indexes)
+            return dict(result=str(result), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

@@ -55,28 +55,35 @@ class SIPConfiguration(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            if tn.read_until('>>User name:'):
+            if tn.read_until(b'>>User name:'):
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            if tn.read_until('>>User password:'):
+            if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write("enable\r\n")
-            tn.write("config\r\n")
-            tn.write("interface sip 0\r\n")
-            tn.write(("If-sip attribute basic media-ip {} signal-ip {} signal-port 5000\r\n".format(self.__HOST, self.__HOST)).encode('utf-8'))
+            tn.write(b"enable\r\n")
+            tn.write(b"config\r\n")
+            tn.write(b"interface sip 0\r\n")
+            tn.write(("If-sip attribute basic media-ip {} signal-ip {} signal-port 5000\r\n".format('192.161.1.2', '192.161.1.2')).encode('utf-8'))
             tn.write(("if-sip attribute basic primary-proxy-ip1 {} primary-proxy-port 5060\r\n".format('172.28.238.162')).encode('utf-8'))
-            tn.write("display if-sip attribute running\r\n")
-            tn.write("reset\r\n")
-            tn.write("quit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"reset\r\n")
+            tn.write(b"display if-sip attribute running\r\n")
+            tn.write(b"reset\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            tn.write(b"quit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
-            return dict(result="", port_indexes=self.__port_indexes)
+            return dict(result=str(result), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
+            print('============socket_error==========')
             print(e)
+            print('============socket_error==========')
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
+            print('============Exception==========')
             print(e)
+            print('============Exception==========')
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
