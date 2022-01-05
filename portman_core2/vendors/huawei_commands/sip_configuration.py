@@ -70,6 +70,11 @@ class SIPConfiguration(BaseCommand):
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"interface sip 0\r\n")
+            time.sleep(1)
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            return dict(result=str(result))
+
             tn.write(b"reset\r\n")
             tn.write(b"y\r\n")
             tn.write(("If-sip attribute basic media-ip {} signal-ip {} signal-port 5000\r\n".format('192.161.1.2', '192.161.1.2')).encode('utf-8'))
