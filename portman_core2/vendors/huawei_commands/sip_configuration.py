@@ -56,8 +56,10 @@ class SIPConfiguration(BaseCommand):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             if tn.read_until(b'>>User name:'):
+                print(self.__telnet_username)
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
+                print(self.__telnet_password)
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             tn.write(b"\r\n")
             tn.write(b"\r\n")
