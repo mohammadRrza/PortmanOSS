@@ -59,7 +59,7 @@ class SIPConfiguration(BaseCommand):
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"enable\r\n")
+            time.sleep(0.5)
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"interface sip 0\r\n")
