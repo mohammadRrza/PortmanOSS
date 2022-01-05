@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -60,12 +62,7 @@ class AssignNumberToUser(BaseCommand):
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"eenable\r\n")
+            tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"esl user\r\n")
             tn.write(b"interface sip 0\r\n")
@@ -85,12 +82,20 @@ class AssignNumberToUser(BaseCommand):
             tn.close()
             return dict(result=str(result), port_indexes=self.__port_indexes)
         except (EOFError, socket_error) as e:
-            print(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print('============Exception==========')
+            print(str(e)+"///"+str(exc_tb.tb_lineno))
+            print('============Exception==========')
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
-            print(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print('============Exception==========')
+            print(str(e)+"///"+str(exc_tb.tb_lineno))
+            print('============Exception==========')
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
