@@ -75,9 +75,8 @@ class ResetSIPConfiguration(BaseCommand):
             print('config')
             tn.write(b"interface sip 0\r\n")
             print('interface sip 0')
-            if tn.read_until(b'(config-if-sip-0):'):
-                tn.write(b"reset\r\n")
-                print('reset')
+            tn.write(b"reset\r\n")
+            print('reset')
             if tn.read_until(b'Are you sure to reset the SIP interface?'):
                 print('Are you sure to reset the SIP interface?')
                 tn.write(b"y\r\n")
