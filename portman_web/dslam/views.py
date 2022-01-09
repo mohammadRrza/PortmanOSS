@@ -8091,7 +8091,7 @@ class NGNRegisterAPIView(views.APIView):
                 return JsonResponse({'result': 'Dslam Type Dont Support This Command.'},
                                     status=status.HTTP_400_BAD_REQUEST)
             result = ngn_registaration_runCommands(dslamObj, command, params)
-            return JsonResponse({'result': result}, status.HTTP_201_CREATED)
+            return JsonResponse({'result': result}, status=status.HTTP_201_CREATED)
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
