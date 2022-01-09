@@ -6011,7 +6011,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 if port_info['profile_name']:
                     current_user_profile = port_info['profile_name']
                     return JsonResponse(
-                        {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN3300'})
+                        {'response': result, 'current_user_profile': current_user_profile,
+                         'DslamType': 'fiberhomeAN3300'})
                 else:
                     return JsonResponse(
                         {'response': result, 'current_user_profile': '', 'DslamType': 'fiberhomeAN3300'})
@@ -8062,3 +8063,55 @@ class GetFqdnFromZabbixAPIView(views.APIView):
         except Exception as ex:
             print(ex)
             return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class NGNRegisterAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        device_ip = get_device_ip(request)
+        data = request.data
+        print('============================================================================')
+        print(device_ip)
+        print(data)
+        print('============================================================================')
+        command = data.get('command', None)
+        command = command_recognise(command)
+        dslam_id = request.data.get('dslam_id')
+        dslamObj = DSLAM.objects.get(id=dslam_id)
+        params = data.get('params', None)
+        dslam_type = dslamObj.dslam_type_id
+        log_port_data = f"{dslamObj.fqdn}/{params['port_conditions']['slot_number']}/{params['port_conditions']['port_number']}"
+        log_username = params.get('username')
+        log_date = datetime.now()
+        try:
+            if dslam_type != 2:
+                return JsonResponse({'result': 'Dslam Type Dont Support This Command.'},
+                                    status=status.HTTP_400_BAD_REQUEST)
+            result = ngn_registaration_runCommands(dslamObj, command, params)
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, '', log_date,
+                                                          device_ip, 'NGN Register', False,
+                                                          str(ex) + '/' + str(exc_tb.tb_lineno), '')
+            PortmanLogging('', log_params)
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+
+
+def ngn_registaration_runCommands(dslamObj, command, params):
+    result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+    if command == 'ngn_register_port':
+        return result
+    elif command == 'sip_configuration':
+        return result
+    elif command == 'assign_number_to_user':
+        return result
+    elif command == 'reset_sip_configuration':
+        return result
+    elif command == 'display_if_sip_attribute_running':
+        return result
+    else:
+        return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)

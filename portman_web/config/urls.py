@@ -130,12 +130,13 @@ urlpatterns = [
     url(r'^api/v1/dslamport/get_hosts_from_zabbix/$', GetHostsFromZabbixAPIView.as_view(), name='get_hosts_from_zabbix'),
     url(r'^api/v1/dslam/get_items_from_zabbix/$', GetItemsFromZabbixAPIView.as_view(), name='get_items_from_zabbix'),
     url(r'^api/v1/dslam/bulk-command/$', BulkCommand.as_view(), name='bulk-command'),
+    url(r'^api/v1/dslam/ngn_register/$', NGNRegisterAPIView.as_view(), name='bulk-command'),
 
     url(r'^api/v1/dslam/get_dslams_packet_loss_count/$', DslamIcmpSnapshotCount.as_view(), name='get_dslams_packet_loss_count'),
     url(r'^api/v1/dslam/get_interface_traffic_input/$', GetInterfaceTrafficInput.as_view(), name='get_interface_traffic_input'),
     url(r'^api/v1/dslam/zabbix_get_history/$', ZabbixGetHistory.as_view(), name='zabbix_get_history'),
     url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
-    url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_finety_five_precntage'),
+    url(r'^api/v1/dslam/get_fifty_five_precntage/$', GetFiftyFivePercent.as_view(), name='get_fifty_five_precntage'),
     url(r'^api/v1/quick-search/$', QuickSearchView.as_view(), name='quick-search'),
 
     url(r'^api/v1/dslamport/ranjeNumber-Inquiry/$', RanjeNumberInquiryAPIView.as_view(), name='ranjeNumberInquiry'),
