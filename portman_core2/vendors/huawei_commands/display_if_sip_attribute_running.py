@@ -98,7 +98,7 @@ class DisplayIfSipAttributeRunning(BaseCommand):
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            return dict(result=re.sub(r'-{2,}\sMore\s\(\s\w+\s\'\w\'\s\w+\s\w+\s\)\s-{2,}\\\w\d+\w\[\d+\w|\\\w\d+\w\[\d+\w', str(result)).decode('utf-8'), status=200)
+            return dict(result=re.sub(r'-{2,}\sMore\s\(\s\w+\s\'\w\'\s\w+\s\w+\s\)\s-{2,}\\\w\d+\w\[\d+\w|\\\w\d+\w\[\d+\w', '', str(result)).decode('utf-8'), status=200)
         except (EOFError, socket_error) as e:
             print('============socket_error==========')
             print(e)
