@@ -8106,14 +8106,14 @@ class NGNRegisterAPIView(views.APIView):
 def ngn_registaration_runCommands(dslamObj, command, params):
     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
     if command == 'ngn_register_port':
-        return result.split('\\r\\n')
+        return result
     elif command == 'sip_configuration':
-        return result.split('\\r\\n')
+        return result
     elif command == 'assign_number_to_user':
-        return result.split('\\r\\n')
+        return result
     elif command == 'reset_sip_configuration':
-        return result.split('\\r\\n')
+        return result
     elif command == 'display_if_sip_attribute_running':
-        return result.split('\\r\\n')
+        return result
     else:
         return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)
