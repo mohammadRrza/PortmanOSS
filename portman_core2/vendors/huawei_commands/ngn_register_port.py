@@ -70,6 +70,7 @@ class NGNRegisterPort(BaseCommand):
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"voip\r\n")
+            tn.read_until(b'(config-voip)#')
             tn.write(("ip address media {} {}\r\n".format('192.168.1.2', '192.168.1.1')).encode('utf-8'))
             tn.write(("ip address signaling {}\r\n".format('192.168.1.2')).encode('utf-8'))
             tn.write(b"display ip address media\r\n")
