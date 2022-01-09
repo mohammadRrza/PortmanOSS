@@ -80,7 +80,7 @@ class AssignNumberToUser(BaseCommand):
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            return dict(result=str(result), port_indexes=self.__port_indexes)
+            return dict(result=result.decode('utf-8'), status=200)
         except (EOFError, socket_error) as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
