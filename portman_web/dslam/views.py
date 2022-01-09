@@ -8114,6 +8114,6 @@ def ngn_registaration_runCommands(dslamObj, command, params):
     elif command == 'reset_sip_configuration':
         return result
     elif command == 'display_if_sip_attribute_running':
-        return re.sub(r'-{2,}\sMore\s\(\s\w+\s\'\w\'\s\w+\s\w+\s\)\s-{2,}\\\w\d+\w\[\d+\w|\\\w\d+\w\[\d+\w', '', result)
+        return re.sub(r'-{2,}\sMore\s\(\s\w+\s\'\w\'\s\w+\s\w+\s\)\s-{2,}\\\w\d+\w\[\d+\w|\\\w\d+\w\[\d+\w', '', result['result'])
     else:
         return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)
