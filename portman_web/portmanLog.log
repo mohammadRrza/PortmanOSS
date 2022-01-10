@@ -1,6 +1,7 @@
 Unauthorized: /api/v1/dslamport/run-command/
 Not Found: /api/v1/dslamport/rented-port/
 Unauthorized: /api/v1/dslamport/rented_port/
+<<<<<<< HEAD
 Unauthorized: /api/v1/contact/get_cities_from_pratak/
 Not Found: /favicon.ico
 Unauthorized: /api/v1/contact/get_cities_from_pratak/
@@ -19,3 +20,13 @@ Internal Server Error: /api/v1/contact/get_cities_from_pratak/
 Internal Server Error: /api/v1/contact/get_cities_from_pratak/
 Internal Server Error: /api/v1/contact/get_cities_from_pratak/
 Internal Server Error: /api/v1/contact/get_cities_from_pratak/
+=======
+Not Found: /favicon.ico
+Unauthorized: /api/v1/dslamport/run-command/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/dslamport/upload_rented_port/
+Unauthorized: /api/v1/dslamport/upload_rented_port/
+Unauthorized: /api/v1/dslamport/run-command/
+Unauthorized: /api/v1/dslamport/register-port/
+Unauthorized: /api/v1/dslamport/run-command/
+>>>>>>> 5a688f6af60750e593bf7f29d3d1c38fcb0c6abb
