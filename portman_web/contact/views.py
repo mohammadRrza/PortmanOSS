@@ -1,6 +1,8 @@
 import json
 import sys, os
 from datetime import time
+
+import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from django.db import connection
@@ -343,3 +345,38 @@ class GetCaptchaAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class GetCitiesFromPratakAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            table_name = '"partak_telecom"'
+            url = 'https://my.pishgaman.net/api/pte/getProvinceList'
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response['ProvinceList'])
+            for item in response['ProvinceList']:
+                p_url = 'https://my.pishgaman.net/api/pte/getCityList?ProvinceID={}'.format(item['ProvinceID'])
+                p_url_response = requests.get(p_url, headers={"Content-Type": "application/json"})
+                p_response = p_url_response.json()
+                for item2 in p_response['CityList']:
+                    p_url = 'https://my.pishgaman.net/api/pte/getMdfList?CityID={}'.format(item2['CityID'])
+                    p_url_response = requests.get(p_url, headers={"Content-Type": "application/json"})
+                    p_response = p_url_response.json()
+                    for item3 in p_response['MdfList']:
+                        query = "INSERT INTO public.{} VALUES ({}, '{}', '{}', '{}', '{}', '{}');".format(table_name, item['ProvinceID'], item['ProvinceName'], item2['CityID'], item2['CityName'], item3['MdfID'], item3['MdfName'])
+                        cursor = connection.cursor()
+                        cursor.execute(query)
+
+            # url = 'https://my.pishgaman.net/api/pte/getCityList?ProvinceID={0}'.format(username)
+            # url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            # response = url_response.json()
+            # print(response)
+            return Response(response, status=status.HTTP_200_OK)
+        except Exception as ex:
+            print(ex)
+            return Response(str(ex), status=status.HTTP_500_INTERNAL_SERVER_ERROR)

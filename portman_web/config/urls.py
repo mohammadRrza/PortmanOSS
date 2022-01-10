@@ -211,8 +211,9 @@ urlpatterns = [
         name='search_ports'),
     url(r'^api/v1/contact/update_status_ports/$', UpdateStatusPorts2.as_view(),
         name='update_status_ports'),
-    url(r'^api/v1/contact/get_ordr_port_info/$', GetOrdrPortInfo.as_view(),
-        name='get_ordr_port_info'),
+    url(r'^api/v1/contact/get_cities_from_pratak/$', GetCitiesFromPratakAPIView.as_view(),
+        name='get_cities_from_pratak'),
+
 #portman_cdms
     url(r'^api/v1/portman_cdms/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='get_user_port_info'),
     url(r'^api/v1/portman_cdms/get_dslam_id_by_fqdn/$', GetDslamIdByFqdnAPIView.as_view(), name='get_dslam_id_by_fqdn'),
