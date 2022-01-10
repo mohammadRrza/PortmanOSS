@@ -8115,5 +8115,9 @@ def ngn_registaration_runCommands(dslamObj, command, params):
         return result
     elif command == 'display_if_sip_attribute_running':
         return re.sub(r'-{2,}\sMore\s\(\s\w+\s\'\w\'\s\w+\s\w+\s\)\s\S+|\S+\W\d+\w', '', result['result'])
+    elif command == 'display_sippstnuser_reg_state':
+        return result
+    elif command == 'display_sippstnuser_call_state':
+        return result
     else:
         return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)
