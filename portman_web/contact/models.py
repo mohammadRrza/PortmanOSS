@@ -107,4 +107,11 @@ class Order(models.Model):
         return self.rastin_order_id
 
 
+class FarzaneganTDLTE(models.Model):
+    date_key = models.DateField()
+    provider = models.IntegerField()
+    customer_msisdn = models.IntegerField()
+    total_data_volume_income = models.FloatField()
+
+
 
