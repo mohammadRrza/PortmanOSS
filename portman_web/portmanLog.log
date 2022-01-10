@@ -1,3 +1,11 @@
 Unauthorized: /api/v1/dslamport/run-command/
 Not Found: /api/v1/dslamport/rented-port/
 Unauthorized: /api/v1/dslamport/rented_port/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/dslamport/run-command/
+Not Found: /favicon.ico
+Unauthorized: /api/v1/dslamport/upload_rented_port/
+Unauthorized: /api/v1/dslamport/upload_rented_port/
+Unauthorized: /api/v1/dslamport/run-command/
+Unauthorized: /api/v1/dslamport/register-port/
+Unauthorized: /api/v1/dslamport/run-command/
