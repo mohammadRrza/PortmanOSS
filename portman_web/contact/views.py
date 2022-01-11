@@ -17,7 +17,7 @@ from rest_framework.response import Response
 from django.db.models import Q
 from django.core.serializers import serialize
 from classes.mellat_bank_scrapping import get_captcha
-from classes.farzanegan_selenium import farzanegan_scrapping
+# from classes.farzanegan_selenium import farzanegan_scrapping
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -386,7 +386,7 @@ class GetCitiesFromPratakAPIView(views.APIView):
 class FarzaneganScrappingAPIView(views.APIView):
     def post(self, request, format=None):
         try:
-            farzanegan_scrapping()
+            # farzanegan_scrapping()
             return Response({'result': 'Data uploaded to data base successfully.'})
 
         except Exception as ex:
