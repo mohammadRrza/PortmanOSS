@@ -349,8 +349,8 @@ class GetCaptchaAPIView(views.APIView):
 class FarzaneganScrappingAPIView(views.APIView):
     def post(self, request, format=None):
         try:
-            farzanegan_scrapping()
-            return Response({'result': 'Data uploaded to data base successfully.'})
+            result = farzanegan_scrapping()
+            return Response({'result': result})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
