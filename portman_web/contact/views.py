@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from django.db.models import Q
 from django.core.serializers import serialize
 from classes.mellat_bank_scrapping import get_captcha
+from classes.farzanegan_selenium import farzanegan_scrapping
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -339,6 +340,17 @@ class GetCaptchaAPIView(views.APIView):
             get_captcha()
             with open('/home/sajad/Project/portmanv3/portman_web/classes/screenshot.png', 'rb') as f:
                 return HttpResponse(f.read(), content_type='image/png')
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class FarzaneganScrappingAPIView(views.APIView):
+    def post(self, request, format=None):
+        try:
+            farzanegan_scrapping()
+            return Response({'result': 'Data uploaded to data base successfully.'})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()

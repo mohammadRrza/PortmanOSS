@@ -109,9 +109,20 @@ class Order(models.Model):
 
 class FarzaneganTDLTE(models.Model):
     date_key = models.DateField()
-    provider = models.IntegerField()
-    customer_msisdn = models.IntegerField()
-    total_data_volume_income = models.FloatField()
+    provider = models.CharField(max_length=32)
+    customer_msisdn = models.CharField(max_length=32)
+    total_data_volume_income = models.CharField(max_length=32)
+
+
+class FarzaneganProvider(models.Model):
+    provider_name = models.CharField(max_length=250)
+    total_traffic = models.IntegerField()
+    used_traffic = models.IntegerField()
+    remain_traffic = models.IntegerField()
+    total_numbers = models.IntegerField()
+    used_numbers = models.IntegerField()
+    remain_numbers = models.IntegerField()
+    total_data_volume = models.FloatField()
 
 
 
