@@ -80,8 +80,8 @@ class AssignNumberToUser(BaseCommand):
             # if tn.read_until(b'User Password(<=64 characters, "-" indicates deletion):'):
             tn.write((self.__sip_password+"\r\n").encode('utf-8'))
             tn.write(("display sippstnuser 0/{}\r\n".format('3')).encode('utf-8'))
-            tn.write(b"end\r\n")
-            result = tn.read_until(b'end')
+            tn.write(b"end2\r\n")
+            result = tn.read_until(b'end2')
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
