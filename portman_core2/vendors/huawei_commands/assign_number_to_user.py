@@ -69,7 +69,7 @@ class AssignNumberToUser(BaseCommand):
             tn.write(("sippstnuser add 0/{}/{} 0 telno {}\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
             tn.write(("sippstnuser attribute set 0/{}/{} dc-time 80\r\n".format('3', '0')).encode('utf-8'))
             tn.write(("sippstnuser rightflag set 0/{}/{}  telno {} cw disable\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
-            tn.write(("sippstnuser auth set 0/{}/{} telno {} password-mode password\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
+            tn.write(("sippstnuser auth set 0/{}/{} telno {} password-mode password\r\n".format('3', '0', self.__sip_password)).encode('utf-8'))
             if tn.read_until(b'User Name(<=64 characters, "-" indicates deletion):'):
                 tn.write((self.__phone_number+"\r\n").encode('utf-8'))
             if tn.read_until(b'User Password(<=64 characters, "-" indicates deletion):'):
