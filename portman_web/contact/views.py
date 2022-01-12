@@ -17,7 +17,10 @@ from rest_framework.response import Response
 from django.db.models import Q
 from django.core.serializers import serialize
 from classes.mellat_bank_scrapping import get_captcha
+
+
 # from classes.farzanegan_selenium import farzanegan_scrapping
+# from portman_web.classes.farzanegan_selenium import farzanegan_scrapping
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -300,22 +303,26 @@ class UpdateStatusPorts2(views.APIView):
                 old_order = Order.objects.get(telecom_id=telecom_id, telco_row=telco_row, telco_column=telco_column,
                                               telco_connection=telco_connection)
             except ObjectDoesNotExist as ex:
-                return JsonResponse({"Message": "Old Bukht is not available in this telecommunication center."}, status=500)
+                return JsonResponse({"Message": "Old Bukht is not available in this telecommunication center."},
+                                    status=500)
             old_order.status_id = old_port_status_id
             old_order.username = 'NULL'
             old_order.ranjePhoneNumber = 'NULL'
             try:
-                new_order = Order.objects.get(telecom_id=telecom_id, telco_row=new_telco_row, telco_column=new_telco_column,
-                                telco_connection=new_telco_connection)
+                new_order = Order.objects.get(telecom_id=telecom_id, telco_row=new_telco_row,
+                                              telco_column=new_telco_column,
+                                              telco_connection=new_telco_connection)
             except ObjectDoesNotExist as ex:
-                return JsonResponse({"Message": "New Bukht is not available in this telecommunication center."}, status=500)
+                return JsonResponse({"Message": "New Bukht is not available in this telecommunication center."},
+                                    status=500)
             new_order.status_id = new_port_status_id
             new_order.username = username
             new_order.ranjePhoneNumber = ranjePhoneNumber
             old_order.save()
             new_order.save()
             return JsonResponse({"username": str(new_order.username), "status": str(new_order.status),
-                                 "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)}, status=200)
+                                 "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)},
+                                status=200)
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -369,7 +376,19 @@ class GetCitiesFromPratakAPIView(views.APIView):
                     p_url_response = requests.get(p_url, headers={"Content-Type": "application/json"})
                     p_response = p_url_response.json()
                     for item3 in p_response['MdfList']:
-                        query = "INSERT INTO public.{} VALUES ({}, '{}', '{}', '{}', '{}', '{}');".format(table_name, item['ProvinceID'], item['ProvinceName'], item2['CityID'], item2['CityName'], item3['MdfID'], item3['MdfName'])
+                        query = "INSERT INTO public.{} VALUES ({}, '{}', '{}', '{}', '{}', '{}');".format(table_name,
+                                                                                                          item[
+                                                                                                              'ProvinceID'],
+                                                                                                          item[
+                                                                                                              'ProvinceName'],
+                                                                                                          item2[
+                                                                                                              'CityID'],
+                                                                                                          item2[
+                                                                                                              'CityName'],
+                                                                                                          item3[
+                                                                                                              'MdfID'],
+                                                                                                          item3[
+                                                                                                              'MdfName'])
                         cursor = connection.cursor()
                         cursor.execute(query)
 
@@ -386,8 +405,10 @@ class GetCitiesFromPratakAPIView(views.APIView):
 class FarzaneganScrappingAPIView(views.APIView):
     def post(self, request, format=None):
         try:
-            # farzanegan_scrapping()
-            return Response({'result': 'Data uploaded to data base successfully.'})
+
+            # result = farzanegan_scrapping()
+            result = ''
+            return Response({'result': result})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()

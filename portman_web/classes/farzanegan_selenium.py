@@ -1,7 +1,8 @@
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 import cv2
+from django.core.exceptions import ObjectDoesNotExist
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import StaleElementReferenceException
@@ -72,7 +73,6 @@ def farzanegan_scrapping():
                                           total_numbers=int(total_numbers), used_numbers=int(used_numbers),
                                           remain_numbers=int(remain_numbers),
                                           total_data_volume=float(str(total_data_volume).replace(',', '')))
-        rows = str(total_records_number).split()[0]
         pages = str(total_records_number).split()[5]
         for page in range(1, int(pages) + 1):
             driver.get(
@@ -82,9 +82,12 @@ def farzanegan_scrapping():
                 for row_data in rows:
                     col = row_data.find_elements(By.TAG_NAME, "td")
                     # print(datetime.strptime(col[0].text, '%Y/%m/%d').date(), col[1].text, col[2].text, col[3].text)
+                    if datetime.strptime(col[0].text, '%Y/%m/%d').date() != datetime.now().date() - timedelta(3):
+                        return 'New Data successfully added'
                     FarzaneganTDLTE.objects.create(date_key=datetime.strptime(col[0].text, '%Y/%m/%d').date(),
                                                    provider=col[1].text, customer_msisdn=col[2].text,
                                                    total_data_volume_income=col[3].text)
+        return 'Data uploaded to data base successfully.'
     except Exception as e:
         print(e)
 
