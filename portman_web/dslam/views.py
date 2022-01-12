@@ -8109,6 +8109,11 @@ class NGNRegisterAPIView(views.APIView):
 def ngn_registaration_runCommands(dslamObj, command, params):
     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
     if command == 'ngn_register_port':
+        if 'Failure' in result['result']:
+            if 'IP existed already' in result['result']:
+                return dict({'result': result, 'msg': 'IP existed already'})
+            else:
+                return dict({'result': result, 'msg': 'Error'})
         return result
     elif command == 'sip_configuration':
         return result
