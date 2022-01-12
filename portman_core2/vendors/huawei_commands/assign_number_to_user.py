@@ -66,16 +66,14 @@ class AssignNumberToUser(BaseCommand):
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"esl user\r\n")
-            tn.write(b"end2\r\n")
-            result2 = tn.read_until(b'end2')
             tn.write(("sippstnuser add 0/{}/{} 0 telno {}\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
             tn.write(("sippstnuser attribute set 0/{}/{} dc-time 80\r\n".format('3', '0')).encode('utf-8'))
             tn.write(("sippstnuser rightflag set 0/{}/{}  telno {} cw disable\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
             tn.write(("sippstnuser auth set 0/{}/{} telno {} password-mode password\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
-            if tn.read_until(b'User Name(<=64 characters, "-" indicates deletion):'):
-                tn.write((self.__phone_number+"\r\n").encode('utf-8'))
-            if tn.read_until(b'User Password(<=64 characters, "-" indicates deletion):'):
-                tn.write((self.__sip_password+"\r\n").encode('utf-8'))
+            # if tn.read_until(b'User Name(<=64 characters, "-" indicates deletion):'):
+            tn.write((self.__phone_number+"\r\n").encode('utf-8'))
+            # if tn.read_until(b'User Password(<=64 characters, "-" indicates deletion):'):
+            tn.write((self.__sip_password+"\r\n").encode('utf-8'))
             tn.write(("display sippstnuser 0/{}\r\n".format('3')).encode('utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
