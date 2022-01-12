@@ -66,6 +66,8 @@ class AssignNumberToUser(BaseCommand):
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"esl user\r\n")
+            tn.write(b"end2\r\n")
+            result2 = tn.read_until(b'end2')
             tn.write(("sippstnuser add 0/{}/{} 0 telno {}\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
             tn.write(("sippstnuser attribute set 0/{}/{} dc-time 80\r\n".format('3', '0')).encode('utf-8'))
             tn.write(("sippstnuser rightflag set 0/{}/{}  telno {} cw disable\r\n".format('3', '0', self.__phone_number)).encode('utf-8'))
@@ -80,7 +82,7 @@ class AssignNumberToUser(BaseCommand):
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            return dict(result=result.decode('utf-8'), status=200)
+            return dict(result=result.decode('utf-8')+result2.decode('utf-8'), status=200)
         except (EOFError, socket_error) as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
