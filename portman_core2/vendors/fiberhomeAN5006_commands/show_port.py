@@ -81,8 +81,7 @@ class ShowPort(BaseCommand):
             #     d[i[0].strip()] = i[1].replace("\\t", "    ")
             # result = d
 
-            res = {'current_userProfile': "",
-                   'dslamName/cammandName': "",
+            res = {'dslamName/cammandName': "",
                    'date': "",
                    'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
                        self.port_conditions['port_number']),
@@ -131,6 +130,9 @@ class ShowPort(BaseCommand):
                 if "Actual Line bit rate" in val:
                     res['actualrateUp'] = val.split(":")[2].strip()
                     res['actualrateDown'] = val.split(":")[1].split()[0]
+                if "Actual bit rate" in val:
+                    res['payloadrateUp'] = val.split(":")[2].strip()
+                    res['payloadrateDown'] = val.split(":")[1].split()[0]
 
             return dict(result=res, status=200)
 

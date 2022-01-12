@@ -90,8 +90,7 @@ class ShowPort(BaseCommand):
             #         d[i[0].strip()] = i[1].strip()
             # result = d
 
-            res = {'current_userProfile': "",
-                   'dslamName/cammandName': "",
+            res = {'dslamName/cammandName': "",
                    'date': "",
                    'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
                        self.port_conditions['port_number']),
