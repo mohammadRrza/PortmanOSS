@@ -5,10 +5,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from django.db import connection
 from rest_framework import status, views, mixins, viewsets, permissions
-from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState
+from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState, FarzaneganTDLTE
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
-from contact.serializers import OrderSerializer
+from contact.serializers import OrderSerializer, FarzaneganSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -298,22 +298,26 @@ class UpdateStatusPorts2(views.APIView):
                 old_order = Order.objects.get(telecom_id=telecom_id, telco_row=telco_row, telco_column=telco_column,
                                               telco_connection=telco_connection)
             except ObjectDoesNotExist as ex:
-                return JsonResponse({"Message": "Old Bukht is not available in this telecommunication center."}, status=500)
+                return JsonResponse({"Message": "Old Bukht is not available in this telecommunication center."},
+                                    status=500)
             old_order.status_id = old_port_status_id
             old_order.username = 'NULL'
             old_order.ranjePhoneNumber = 'NULL'
             try:
-                new_order = Order.objects.get(telecom_id=telecom_id, telco_row=new_telco_row, telco_column=new_telco_column,
-                                telco_connection=new_telco_connection)
+                new_order = Order.objects.get(telecom_id=telecom_id, telco_row=new_telco_row,
+                                              telco_column=new_telco_column,
+                                              telco_connection=new_telco_connection)
             except ObjectDoesNotExist as ex:
-                return JsonResponse({"Message": "New Bukht is not available in this telecommunication center."}, status=500)
+                return JsonResponse({"Message": "New Bukht is not available in this telecommunication center."},
+                                    status=500)
             new_order.status_id = new_port_status_id
             new_order.username = username
             new_order.ranjePhoneNumber = ranjePhoneNumber
             old_order.save()
             new_order.save()
             return JsonResponse({"username": str(new_order.username), "status": str(new_order.status),
-                                 "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)}, status=200)
+                                 "telecom": str(new_order.telecom), "telecom_id": str(new_order.telecom_id)},
+                                status=200)
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -361,3 +365,16 @@ class FarzaneganScrappingAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class FarzaneganViewSet(mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin,
+                        viewsets.GenericViewSet):
+    queryset = FarzaneganTDLTE.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = FarzaneganSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        return queryset

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from khayyam import JalaliDatetime
 from datetime import datetime
-from contact.models import Order, PortmapState, Province, City, TelecommunicationCenters
+from contact.models import Order, PortmapState, Province, City, TelecommunicationCenters, FarzaneganTDLTE
 
 
 class PortStatusSerializer(serializers.ModelSerializer):
@@ -57,3 +57,10 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ['username', 'ranjePhoneNumber', 'slot_number', 'port_number', 'telecomCenter_info',
                   'telco_row', 'telco_column', 'telco_connection', 'fqdn', 'port_status_info']
+
+
+class FarzaneganSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FarzaneganTDLTE
+        fields = '__all__'
