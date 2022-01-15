@@ -79,8 +79,7 @@ class ShowLineRate(BaseCommand):
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
-            res = {
-                   'dslamName/cammandName': "",
+            res = {'dslamName/cammandName': "",
                    'date': str(datetime.datetime.now()),
                    'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
                        self.port_conditions['port_number']),
