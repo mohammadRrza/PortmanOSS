@@ -404,10 +404,15 @@ class GetCitiesFromPratakAPIView(views.APIView):
 
 class FarzaneganScrappingAPIView(views.APIView):
     def post(self, request, format=None):
+        data = request.data
+        print(data)
+        username = data['username']
+        password = data['password']
         try:
-
-            # result = farzanegan_scrapping()
+            # result = farzanegan_scrapping(username, password)
             result = ''
+            if result is None:
+                return Response({'result': 'Please try again!'})
             return Response({'result': result})
 
         except Exception as ex:

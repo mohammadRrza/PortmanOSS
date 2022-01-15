@@ -107,15 +107,18 @@ class Order(models.Model):
         return self.rastin_order_id
 
 
-class FarzaneganTDLTE(models.Model):
-    date_key = models.DateField()
-    provider = models.CharField(max_length=32)
-    customer_msisdn = models.CharField(max_length=32)
-    total_data_volume_income = models.CharField(max_length=32)
-
-
 class FarzaneganProvider(models.Model):
     provider_name = models.CharField(max_length=250)
+    username = models.CharField(max_length=32)
+    password = models.CharField(max_length=32)
+
+    def __str__(self):
+        return self.provider_name
+
+
+class FarzaneganProviderData(models.Model):
+    provider = models.ForeignKey(FarzaneganProvider, on_delete=models.CASCADE, related_name='provider_total_data')
+    created = models.DateTimeField(auto_now_add=True)
     total_traffic = models.IntegerField()
     used_traffic = models.IntegerField()
     remain_traffic = models.IntegerField()
@@ -125,4 +128,9 @@ class FarzaneganProvider(models.Model):
     total_data_volume = models.FloatField()
 
 
-
+class FarzaneganTDLTE(models.Model):
+    provider = models.ForeignKey(FarzaneganProvider, on_delete=models.CASCADE, related_name='provider_data')
+    date_key = models.DateField()
+    provider_number = models.CharField(max_length=32)
+    customer_msisdn = models.CharField(max_length=32)
+    total_data_volume_income = models.CharField(max_length=32)
