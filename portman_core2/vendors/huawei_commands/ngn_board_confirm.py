@@ -69,7 +69,7 @@ class NGNBoradConfirm(BaseCommand):
             tn.write(b"eenable\r\n")
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
-            tn.write(("port confirm 0/{}\r\n".format('3')).encode('utf-8'))
+            tn.write(("board confirm 0/{}\r\n".format('3')).encode('utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             tn.write(b"quit\r\n")
