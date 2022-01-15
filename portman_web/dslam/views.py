@@ -8111,10 +8111,10 @@ def ngn_registaration_runCommands(dslamObj, command, params):
     if command == 'ngn_register_port':
         if 'Failure' in result['result']:
             if 'IP existed already' in result['result']:
-                return dict({'result': result, 'msg': 'IP existed already'})
+                return dict({'result': result, 'msg': 'IP existed already', 'code': 10})
             else:
-                return dict({'result': result, 'msg': 'Error'})
-        return result
+                return dict({'result': result, 'msg': 'Error', 'code': 20})
+        return dict({'result': result, 'msg': result, 'code': 0})
     elif command == 'sip_configuration':
         return result
     elif command == 'assign_number_to_user':
@@ -8126,6 +8126,8 @@ def ngn_registaration_runCommands(dslamObj, command, params):
     elif command == 'display_sippstnuser_reg_state':
         return result
     elif command == 'display_sippstnuser_call_state':
+        return result
+    elif command == 'ngn_board_confirm':
         return result
     else:
         return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)

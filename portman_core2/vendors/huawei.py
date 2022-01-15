@@ -26,6 +26,7 @@ from .huawei_commands.reset_sip_configuration import ResetSIPConfiguration
 from .huawei_commands.display_if_sip_attribute_running import DisplayIfSipAttributeRunning
 from .huawei_commands.display_sippstnuser_reg_state import DisplaySippstnuserRegState
 from .huawei_commands.display_sippstnuser_call_state import DisplaySippstnuserCallState
+from .huawei_commands.ngn_board_confirm import NGNBoradConfirm
 
 '''
 from huawei_commands.selt import Selt
@@ -71,6 +72,7 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('display_if_sip_attribute_running', DisplayIfSipAttributeRunning)
     command_factory.register_type('display_sippstnuser_reg_state', DisplaySippstnuserRegState)
     command_factory.register_type('display_sippstnuser_call_state', DisplaySippstnuserCallState)
+    command_factory.register_type('ngn_board_confirm', NGNBoradConfirm)
 
     '''
     command_factory.register_type('selt', Selt)

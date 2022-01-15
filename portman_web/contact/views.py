@@ -7,10 +7,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from django.db import connection
 from rest_framework import status, views, mixins, viewsets, permissions
-from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState
+from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState, FarzaneganTDLTE
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
-from contact.serializers import OrderSerializer
+from contact.serializers import OrderSerializer, DDRPageSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -413,3 +413,40 @@ class FarzaneganScrappingAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class DDRPageViewSet(mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     mixins.RetrieveModelMixin,
+                     mixins.UpdateModelMixin,
+                     mixins.DestroyModelMixin,
+                     viewsets.GenericViewSet):
+    queryset = Order.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = DDRPageSerializer
+    pagination_class = LargeResultsSetPagination
+    queryset = FarzaneganTDLTE.objects.all()
+
+    def get_serializer(self, *args, **kwargs):
+        if self.request.user.is_superuser:
+            print(self.request.user.type)
+            return DDRPageSerializer(request=self.request, *args, **kwargs)
+        elif self.request.user.type == 'SUPPORT':
+            print(self.request.user.type)
+            _fields = ['date_key', 'provider', 'customer_msisdn', 'total_data_volume_income']
+            return DDRPageSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+        else:
+            print(self.request.user.type)
+            _fields = ['date_key', 'provider', 'customer_msisdn', 'total_data_volume_income']
+
+            return DDRPageSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+
+    @action(methods=['GET'], detail=False)
+    def current(self, request):
+        serializer = DDRPageSerializer(request.user, request=request)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        queryset = self.queryset
+        user = self.request.user
+        return queryset
