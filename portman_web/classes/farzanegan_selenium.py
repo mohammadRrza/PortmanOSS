@@ -1,18 +1,20 @@
 import re
+import sys
 from datetime import datetime, timedelta
 from io import BytesIO
 import cv2
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 from pytesseract import image_to_string
 from PIL import Image
-from contact.models import FarzaneganTDLTE, FarzaneganProvider
+from contact.models import FarzaneganTDLTE, FarzaneganProviderData, FarzaneganProvider
 
 
-def farzanegan_scrapping():
+def farzanegan_scrapping(username, password):
     options = webdriver.ChromeOptions()
     options.add_argument('ignore-certificate-errors')
     chrome_options = Options()
@@ -45,8 +47,8 @@ def farzanegan_scrapping():
     txt = image_to_string(thr)
     print(txt)
 
-    driver.find_element(By.ID, 'j_username_visible').send_keys("Pishgaman3")
-    driver.find_element(By.ID, 'j_password').send_keys("123456")
+    driver.find_element(By.ID, 'j_username_visible').send_keys(username)
+    driver.find_element(By.ID, 'j_password').send_keys(password)
     driver.find_element(By.ID, 'captcha_input').send_keys(txt)
     try:
         driver.find_element(By.ID, 'login_btn_submit').click()
@@ -66,14 +68,19 @@ def farzanegan_scrapping():
         total_data_volume = str(total_data_volume).split(":")[1].strip()
         total_records_number = driver.find_element(By.XPATH,
                                                    '/html/body/div[2]/div[2]/div/div[2]/table/tbody/tr[2]/td/span[1]').text
-        FarzaneganProvider.objects.create(provider_name=provider_name,
-                                          total_traffic=int(str(total_traffic_gb).replace(',', '')),
-                                          used_traffic=int(str(used_traffic_gb).replace(',', '')),
-                                          remain_traffic=int(str(remain_traffic_gb).replace(',', '')),
-                                          total_numbers=int(total_numbers), used_numbers=int(used_numbers),
-                                          remain_numbers=int(remain_numbers),
-                                          total_data_volume=float(str(total_data_volume).replace(',', '')))
-        pages = str(total_records_number).split()[5]
+        provider = FarzaneganProvider.objects.get(provider_name=provider_name)
+        FarzaneganProviderData.objects.create(provider_id=provider.id,
+                                              total_traffic=int(str(total_traffic_gb).replace(',', '')),
+                                              used_traffic=int(str(used_traffic_gb).replace(',', '')),
+                                              remain_traffic=int(str(remain_traffic_gb).replace(',', '')),
+                                              total_numbers=int(total_numbers), used_numbers=int(used_numbers),
+                                              remain_numbers=int(remain_numbers),
+                                              total_data_volume=float(str(total_data_volume).replace(',', '')))
+        pages = 1
+        if "show in" in str(total_records_number):
+            pages = str(total_records_number).split()[5]
+        # last_data_date = FarzaneganTDLTE.objects.order_by('-date_key')[0]
+        # last_data_date = last_data_date.date_key
         for page in range(1, int(pages) + 1):
             driver.get(
                 f'https://ddr.farzaneganpars.ir:8443/wenex/ddr/search.rose?destPage={page}&sessionid=C7B30FB45D0CEC0847B3A7DF0B65C25E')
@@ -81,15 +88,16 @@ def farzanegan_scrapping():
                 rows = driver.find_elements(By.XPATH, f'//*[@id="ddrList"][3]/tbody/tr[{row}]')
                 for row_data in rows:
                     col = row_data.find_elements(By.TAG_NAME, "td")
-                    # print(datetime.strptime(col[0].text, '%Y/%m/%d').date(), col[1].text, col[2].text, col[3].text)
-                    if datetime.strptime(col[0].text, '%Y/%m/%d').date() != datetime.now().date() - timedelta(3):
-                        return 'New Data successfully added'
-                    FarzaneganTDLTE.objects.create(date_key=datetime.strptime(col[0].text, '%Y/%m/%d').date(),
-                                                   provider=col[1].text, customer_msisdn=col[2].text,
+                    print(datetime.strptime(col[0].text, '%Y/%m/%d'), col[1].text, col[2].text, col[3].text)
+                    # if datetime.strptime(col[0].text, '%Y/%m/%d').date() <= last_data_date:
+                    #     return 'New Data successfully added'
+                    FarzaneganTDLTE.objects.create(provider_id=provider.id, date_key=datetime.strptime(col[0].text, '%Y/%m/%d').date(),
+                                                   provider_number=col[1].text, customer_msisdn=col[2].text,
                                                    total_data_volume_income=col[3].text)
-        return 'Data uploaded to data base successfully.'
-    except Exception as e:
-        print(e)
+        return 'Data successfully uploaded to database.'
+    except Exception as ex:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
 
 
 if __name__ == '__main__':
