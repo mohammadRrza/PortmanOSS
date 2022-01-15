@@ -10,7 +10,7 @@ from rest_framework import status, views, mixins, viewsets, permissions
 from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState, FarzaneganTDLTE
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
-from contact.serializers import OrderSerializer, DDRPageSerializer
+from contact.serializers import OrderSerializer, DDRPageSerializer, FarzaneganSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -454,4 +454,15 @@ class DDRPageViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         queryset = self.queryset
         user = self.request.user
+
+class FarzaneganViewSet(mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin,
+                        viewsets.GenericViewSet):
+    queryset = FarzaneganTDLTE.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = FarzaneganSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+
         return queryset

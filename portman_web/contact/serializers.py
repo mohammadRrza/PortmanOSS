@@ -76,3 +76,10 @@ class DDRPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = FarzaneganTDLTE
         fields = ['date_key', 'provider', 'customer_msisdn', 'total_data_volume_income']
+
+
+class FarzaneganSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FarzaneganTDLTE
+        fields = '__all__'
