@@ -160,6 +160,7 @@ urlpatterns = [
     url(r'^api/v1/dslamport/get-captcha/$', GetCaptchaAPIView.as_view(), name='get-captcha'),
     url(r'^api/v1/dslamport/farzanegan_scrapping/$', FarzaneganScrappingAPIView.as_view(), name='farzanegan_scrapping'),
 
+
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
     url(r'^api/v1/router-command/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
@@ -216,7 +217,8 @@ urlpatterns = [
         name='update_status_ports'),
     url(r'^api/v1/contact/get_cities_from_pratak/$', GetCitiesFromPratakAPIView.as_view(),
         name='get_cities_from_pratak'),
-
+    url(r'^api/v1/contact/farzanegan_provider_date/$', FarzaneganProviderDataAPIView.as_view(),
+        name='farzanegan_provider_date'),
 #portman_cdms
     url(r'^api/v1/portman_cdms/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='get_user_port_info'),
     url(r'^api/v1/portman_cdms/get_dslam_id_by_fqdn/$', GetDslamIdByFqdnAPIView.as_view(), name='get_dslam_id_by_fqdn'),

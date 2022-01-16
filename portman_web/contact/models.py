@@ -134,3 +134,4 @@ class FarzaneganTDLTE(models.Model):
     provider_number = models.CharField(max_length=32)
     customer_msisdn = models.CharField(max_length=32)
     total_data_volume_income = models.CharField(max_length=32)
+    owner_username = models.CharField(max_length=64)

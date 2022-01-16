@@ -7,7 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from django.db import connection
 from rest_framework import status, views, mixins, viewsets, permissions
-from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState, FarzaneganTDLTE
+from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState, FarzaneganTDLTE, \
+    FarzaneganProviderData
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from contact.serializers import OrderSerializer, DDRPageSerializer, FarzaneganSerializer
@@ -455,6 +456,7 @@ class DDRPageViewSet(mixins.ListModelMixin,
         queryset = self.queryset
         user = self.request.user
 
+
 class FarzaneganViewSet(mixins.ListModelMixin,
                         mixins.RetrieveModelMixin,
                         viewsets.GenericViewSet):
@@ -466,3 +468,17 @@ class FarzaneganViewSet(mixins.ListModelMixin,
         queryset = self.queryset
 
         return queryset
+
+
+class FarzaneganProviderDataAPIView(views.APIView):
+    def get(self, request, format=None):
+        try:
+            owner_username = request.GET.get('owner_username', None)
+            print(owner_username)
+            provider = FarzaneganTDLTE.objects.filter(owner_username=owner_username).first()
+            farzanegan_provider_data = FarzaneganProviderData.objects.filter(provider_id=provider.provider_id).order_by(
+                '-created').values().first()
+            return Response({'result': farzanegan_provider_data})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
