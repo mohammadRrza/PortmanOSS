@@ -64,8 +64,8 @@ def farzanegan_scrapping(username, password):
         remain_numbers = driver.find_element(By.XPATH, '//*[@id="ddrList"]/tbody/tr/td[7]').text
         total_data_volume = driver.find_element(By.XPATH,
                                                 '/html/body/div[2]/div[2]/div/div[2]/table/tbody/tr[2]/td').text
-        total_data_volume = re.findall(r'(?:Total Data Volume)[a-zA-Z\s\(\):]+\d*,\d*\.*\d*', total_data_volume)[0]
-        total_data_volume = str(total_data_volume).split(":")[1].strip()
+        total_data_volume = str(total_data_volume).splitlines()
+        total_data_volume = [val.split(':')[1].strip() for val in total_data_volume if "Base on search query" in val][0]
         total_records_number = driver.find_element(By.XPATH,
                                                    '/html/body/div[2]/div[2]/div/div[2]/table/tbody/tr[2]/td/span[1]').text
         provider = FarzaneganProvider.objects.get(provider_name=provider_name)
@@ -77,10 +77,10 @@ def farzanegan_scrapping(username, password):
                                               remain_numbers=int(remain_numbers),
                                               total_data_volume=float(str(total_data_volume).replace(',', '')))
         pages = 1
-        if "show in" in str(total_records_number):
+        if "pages" in str(total_records_number):
             pages = str(total_records_number).split()[5]
-        # last_data_date = FarzaneganTDLTE.objects.order_by('-date_key')[0]
-        # last_data_date = last_data_date.date_key
+        last_data_date = FarzaneganTDLTE.objects.filter(provider_id=provider.id).order_by('-date_key')[0]
+        last_data_date = last_data_date.date_key
         for page in range(1, int(pages) + 1):
             driver.get(
                 f'https://ddr.farzaneganpars.ir:8443/wenex/ddr/search.rose?destPage={page}&sessionid=C7B30FB45D0CEC0847B3A7DF0B65C25E')
@@ -88,10 +88,15 @@ def farzanegan_scrapping(username, password):
                 rows = driver.find_elements(By.XPATH, f'//*[@id="ddrList"][3]/tbody/tr[{row}]')
                 for row_data in rows:
                     col = row_data.find_elements(By.TAG_NAME, "td")
-                    print(datetime.strptime(col[0].text, '%Y/%m/%d'), col[1].text, col[2].text, col[3].text)
-                    # if datetime.strptime(col[0].text, '%Y/%m/%d').date() <= last_data_date:
-                    #     return 'New Data successfully added'
-                    FarzaneganTDLTE.objects.create(provider_id=provider.id, date_key=datetime.strptime(col[0].text, '%Y/%m/%d').date(),
+                    date = str(col[0].text).split()
+                    # print(datetime.strptime(date[0], '%Y/%m/%d').date(), col[1].text, col[2].text, col[3].text)
+                    farzanegan_tdlte = FarzaneganTDLTE.objects.filter(provider_id=provider.id).values()
+                    if datetime.strptime(col[0].text,
+                                         '%Y/%m/%d').date() <= last_data_date and farzanegan_tdlte[0][
+                        'provider_number'] == col[1].text:
+                        return 'New Data successfully added'
+                    FarzaneganTDLTE.objects.create(provider_id=provider.id,
+                                                   date_key=datetime.strptime(date[0], '%Y/%m/%d').date(),
                                                    provider_number=col[1].text, customer_msisdn=col[2].text,
                                                    total_data_volume_income=col[3].text)
         return 'Data successfully uploaded to database.'
