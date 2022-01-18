@@ -518,6 +518,9 @@ class Huawei(BaseDSLAM):
 
     @classmethod
     def execute_command(cls, dslam_info, command, params):
+        print('000000000000000000000000000000000000000000000')
+        print(params)
+
         params['set_snmp_community'] = dslam_info['set_snmp_community']
         params['get_snmp_community'] = dslam_info['get_snmp_community']
         params['snmp_port'] = dslam_info['snmp_port']
