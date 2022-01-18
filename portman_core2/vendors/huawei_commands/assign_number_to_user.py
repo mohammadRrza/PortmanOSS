@@ -14,8 +14,8 @@ class AssignNumberToUser(BaseCommand):
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
-        self.__phone_number = params.get('ngn_phon_number')
-        self.__sip_password = params.get('ngn_password')
+        self.__phone_number = self.port_conditions['ngn_phon_number']
+        self.__sip_password = self.port_conditions['ngn_password']
     @property
     def HOST(self):
         return self.__HOST
