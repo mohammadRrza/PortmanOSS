@@ -12,9 +12,8 @@ class NGNBoradConfirm(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')
+        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
-        self.Gateway = params.get('gateway')
     @property
     def HOST(self):
         return self.__HOST
@@ -69,7 +68,7 @@ class NGNBoradConfirm(BaseCommand):
             tn.write(b"eenable\r\n")
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
-            tn.write(("board confirm 0/{}\r\n".format('3')).encode('utf-8'))
+            tn.write(("board confirm 0/{}\r\n".format(self.port_conditions['slot_number'])).encode('utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             tn.write(b"quit\r\n")

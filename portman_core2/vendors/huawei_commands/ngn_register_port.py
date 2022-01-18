@@ -12,9 +12,8 @@ class NGNRegisterPort(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')
+        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
-        self.Gateway = params.get('gateway')
     @property
     def HOST(self):
         return self.__HOST

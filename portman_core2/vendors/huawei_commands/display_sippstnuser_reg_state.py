@@ -10,9 +10,10 @@ class DisplaySippstnuserRegState(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')
+        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
-        self.Gateway = params.get('gateway')
+        self.__phone_number = self.port_conditions['ngn_phon_number']
+        self.__sip_password = self.port_conditions['ngn_password']
     @property
     def HOST(self):
         return self.__HOST
@@ -75,8 +76,8 @@ class DisplaySippstnuserRegState(BaseCommand):
             print('config')
             tn.write(b"esl user\r\n")
             print('esl user')
-            tn.write(("display sippstnuser reg-state {}/{}\r\n".format('0', '3')).encode('utf-8'))
-            print("display sippstnuser reg-state {}/{}\r\n".format('0', '3'))
+            tn.write(("display sippstnuser reg-state {}/{}\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number'])).encode('utf-8'))
+            print("display sippstnuser reg-state {}/{}\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']))
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             tn.write(b"quit\r\n")
