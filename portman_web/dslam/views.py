@@ -600,7 +600,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             queryset = queryset.filter(dslam_type__id=dslam_type_id)
 
         if dslam_name:
-            queryset = queryset.filter(name__istartswith=dslam_name)
+            queryset = queryset.filter(name__contains=dslam_name)
 
         if ip:
             ip = ip.strip()
