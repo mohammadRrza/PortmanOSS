@@ -60,12 +60,19 @@ class ShowMac(BaseCommand):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
             tn.write(b"show mac\r\nn")
-            tn.read_until(b'show mac')
-            result = tn.read_until(b'#', 1)
-            output = ''
-            while '#' not in str(output):
-                output += result.decode()
+            result = tn.read_until(b'show mac')
+            if ">" in str(result):
+                result = tn.read_until(b'>', 1)
+                output = ''
+                while '>' not in str(output):
+                    output += result.decode()
+                    result = tn.read_until(b'>', 1)
+            else:
                 result = tn.read_until(b'#', 1)
+                output = ''
+                while '#' not in str(output):
+                    output += result.decode()
+                    result = tn.read_until(b'#', 1)
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
