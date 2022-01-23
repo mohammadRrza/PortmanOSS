@@ -57,8 +57,8 @@ class PortInfo(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"\r\n")
             tn.write(b"\r\n")
-            tn.write(b"end\r\n")
-            result = tn.read_until(b'end')
+            tn.write(b"end1\r\n")
+            result = tn.read_until(b'end1')
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")

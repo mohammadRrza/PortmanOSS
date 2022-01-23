@@ -83,7 +83,7 @@ class ShowMac(BaseCommand):
             for inx, line in enumerate(result):
                 if "Press any key" in line:
                     del result[inx:inx + 3]
-            return result
+            return dict(result=result, status=200)
             lst_result = []
             com = re.compile(
                 r"(?P<vlan_id>(\d))?(\s)*(?P<mac>([0-9A-F]{2}[:-]){5}([0-9A-F]{2}))(\s)*(?P<port>(\d+(\s)?-(\s)?\d+))$",

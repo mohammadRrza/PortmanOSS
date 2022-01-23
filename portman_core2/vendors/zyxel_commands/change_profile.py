@@ -58,7 +58,7 @@ class ChangeProfile(BaseCommand):
                     "port enable {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode(
                         'utf-8'))
                 time.sleep(1)
-            tn.write(b"end\r\n")
+            tn.write(b"end1\r\n")
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
