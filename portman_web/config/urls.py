@@ -162,7 +162,15 @@ urlpatterns = [
     url(r'^api/v1/user/get_user_permission_profile_objects/$', GetUserPermissionProfileObjectsAPIView.as_view(),
         name='get_user_permission_profile_objects'),
     url(r'^api/v1/partak/get_partak_provinces/$', GetPartakProvincesAPIView.as_view(),
-        name='get_partak_provinces'),
+        name='get_partak_provinces'), \
+    url(r'^api/v1/partak/get_partak_cities_by_province_id/$', GetPartakCitiesByProvinceIdAPIView.as_view(),
+        name='get_partak_cities_by_province_id'),
+    url(r'^api/v1/partak/get_partak_telecoms_by_city_id/$', GetPartakTelecomsByCityIdAPIView.as_view(),
+        name='get_partak_telecoms_by_city_id'),
+    url(r'^api/v1/partak/get_partak_dslam_list_by_telecom_id/$', GetPartakDslamListByTelecomIdAPIView.as_view(),
+        name='get_partak_dslam_list_by_telecom_id'),
+    url(r'^api/v1/partak/update_partak_fqdn/$', UpdatePartakFqdnAPIView.as_view(),
+        name='update_partak_fqdn'),
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
     url(r'^api/v1/router-command/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),

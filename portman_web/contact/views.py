@@ -490,8 +490,85 @@ class GetPartakProvincesAPIView(views.APIView):
 
     def get(self, request, format=None):
         try:
-            username = request.query_params.get('username', None)
             url = 'https://my.pishgaman.net/api/pte/getProvinceList'
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetPartakCitiesByProvinceIdAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            province_id = request.GET.get('province_id', None)
+            url = 'https://my.pishgaman.net/api/pte/getCityList?ProvinceID={}'.format(province_id)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetPartakTelecomsByCityIdAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            city_id = request.GET.get('city_id', None)
+            url = 'https://my.pishgaman.net/api/pte/getMdfList?CityID={}'.format(city_id)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetPartakDslamListByTelecomIdAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            mdf_id = request.GET.get('mdf_id', None)
+            url = 'https://my.pishgaman.net/api/pte/getDslamList?MdfID={}'.format(mdf_id)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class UpdatePartakFqdnAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            mdf_id = request.GET.get('mdf_id', None)
+            slat = request.GET.get('slat', None)
+            fqdn = request.GET.get('fqdn', None)
+            url = 'https://my.pishgaman.net/api/pte/updateFqdn?MdfID={}&Slat={}&NewFQDN={}'.format(mdf_id, slat, fqdn)
             url_response = requests.get(url, headers={"Content-Type": "application/json"})
             response = url_response.json()
             print(response)
