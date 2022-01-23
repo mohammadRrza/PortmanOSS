@@ -482,3 +482,22 @@ class FarzaneganProviderDataAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class GetPartakProvincesAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            username = request.query_params.get('username', None)
+            url = 'https://my.pishgaman.net/api/pte/getProvinceList'
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})

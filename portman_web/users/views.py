@@ -17,7 +17,7 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from users.serializers import *
-from users.models import UserAuditLog, PortmanLog
+from users.models import UserAuditLog, PortmanLog, UserPermissionProfile
 from dslam.mail import Mail
 
 from django.http import JsonResponse, HttpResponse
@@ -200,7 +200,7 @@ class UserViewSet(viewsets.ModelViewSet):
             data = request.data
             username = data.get('username', '')
             password = data.get('password', '')
-            user = ldap_auth(username=username+'@pishgaman.local', password=password)
+            user = ldap_auth(username=username + '@pishgaman.local', password=password)
             if user['message'] == "Success":
                 user_token = authenticate(username='admin', password='1234!@#$asdfASDF')
                 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -608,3 +608,24 @@ class PortmanLogViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetUserPermissionProfileObjectsAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            username = request.GET.get('username', None)
+            user_id = User.objects.get(username=username).id
+            print(user_id)
+            user_profile_id = UserPermissionProfile.objects.get(user_id=user_id)
+            return HttpResponse(user_profile_id.permission_profile_id, content_type='application/json')
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+

@@ -159,8 +159,10 @@ urlpatterns = [
     url(r'^api/v1/dslamport/portmap/$', PortmapAPIView.as_view(), name='portmap'),
     url(r'^api/v1/dslamport/get-captcha/$', GetCaptchaAPIView.as_view(), name='get-captcha'),
     url(r'^api/v1/dslamport/farzanegan_scrapping/$', FarzaneganScrappingAPIView.as_view(), name='farzanegan_scrapping'),
-
-
+    url(r'^api/v1/user/get_user_permission_profile_objects/$', GetUserPermissionProfileObjectsAPIView.as_view(),
+        name='get_user_permission_profile_objects'),
+    url(r'^api/v1/partak/get_partak_provinces/$', GetPartakProvincesAPIView.as_view(),
+        name='get_partak_provinces'),
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
     url(r'^api/v1/router-command/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),

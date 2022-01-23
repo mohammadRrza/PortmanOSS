@@ -3396,7 +3396,7 @@ class RegisterPortAPIView(views.APIView):
                         str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
                         port_data.get('card_number'), port_data.get('port_number'), ip)
                     mail_info.msg_subject = 'Error in RegisterPortAPIView'
-                    Mail.Send_Mail(mail_info)
+                    #Mail.Send_Mail(mail_info)
                     return JsonResponse({'Result': 'Dslam Not Found. Please check FQDN again.'},
                                         status=status.HTTP_200_OK)
 
