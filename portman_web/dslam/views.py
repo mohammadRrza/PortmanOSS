@@ -8068,6 +8068,22 @@ class GetFqdnFromZabbixAPIView(views.APIView):
             return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class SearchFqdnsAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            fqdn = request.GET.get('fqdn', None)
+            portman_fqdns = DSLAM.objects.filter(fqdn__icontains=fqdn).values('fqdn')
+            return Response({"portman_fqdn": portman_fqdns},
+                            status=status.HTTP_200_OK)
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
 class NGNRegisterAPIView(views.APIView):
 
     def get_permissions(self):

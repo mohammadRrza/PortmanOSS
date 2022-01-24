@@ -148,6 +148,8 @@ urlpatterns = [
     url(r'^api/v1/dslam/icmp_by_fqdn/command/$', DSLAMRunICMPCommandByFqdnView.as_view(), name='icmp_by_fqdn'),
     url(r'^api/v1/dslamport/check_port_conflict/$', CheckPortConflict.as_view(),
         name='check_port_conflict'),
+    url(r'^api/v1/dslamport/search_fqdns/$', SearchFqdnsAPIView.as_view(),
+        name='search_fqdns'),
     url(r'^api/v1/dslam/load_dslam_ports/$', LoadDslamPorts.as_view(), name='load_dslam_ports'),
     url(r'^api/v1/dslamport/get_port_count/$', GetDslamPorts.as_view(), name='get_port_count'),
     url(r'^api/v1/dslamport/fiberhome_get_card/$', FiberHomeGetCardAPIView.as_view(), name='fiberhome_get_card'),
