@@ -219,3 +219,4 @@ Traceback (most recent call last):
     raise TypeError(f'Object of type {o.__class__.__name__} '
 TypeError: Object of type FarzaneganProviderData is not JSON serializable
 Not Found: /api/v1/dslamport/farzanegan_provider_date
+Unauthorized: /api/v1/dslamport/run-command/
