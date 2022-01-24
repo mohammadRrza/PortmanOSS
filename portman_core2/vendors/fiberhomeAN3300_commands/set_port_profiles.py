@@ -72,7 +72,10 @@ class SetPortProfile(BaseCommand):
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             if "Incorrect  port number here." in str(result):
-                return "Card number or Port number is out of range."
+                str_res = ["There is one of the following problems:", "This card is not configured",
+                           "No card is defined on this port", "Card number is out of range.",
+                           "Port number is out of range."]
+                return str_res
             if "not exist." in str(result):
                 return f"Profile '{self.__lineprofile}' does not exist."
             tn.close()

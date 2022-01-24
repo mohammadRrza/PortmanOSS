@@ -101,8 +101,8 @@ class ChangeLineProfilePort(BaseCommand):
                                                                                          self.__lineprofile).encode(
                                     'utf-8'))
                                 time.sleep(1)
-                                tn.write(b"end\r\n")
-                                result = tn.read_until(b'end')
+                                tn.write(b"end1\r\n")
+                                result = tn.read_until(b'end1')
                                 if "example:" in str(result):
                                     result = str(result).split("\\r\\n")
                                     result = [val for val in result if re.search(r'example|between', val)]
