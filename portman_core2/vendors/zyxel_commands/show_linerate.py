@@ -73,9 +73,9 @@ class ShowLineRate(BaseCommand):
             tn.write(b'exit\r\n')
             tn.write(b'y\r\n')
             tn.close()
-            print('*******************************************')
-            print(('show linerate {0}'.format(str(result))))
-            print('*******************************************')
+            # print('*******************************************')
+            # print(('show linerate {0}'.format(str(result))))
+            # print('*******************************************')
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
@@ -148,7 +148,7 @@ class ShowLineRate(BaseCommand):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print((str(exc_tb.tb_lineno)))
-            print(e)
+            # print(e)
             self.retry += 1
             if self.retry < 3:
                 return self.run_command()

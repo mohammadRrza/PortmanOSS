@@ -1,1 +1,2 @@
 Unauthorized: /api/v1/dslamport/search_fqdns/
+Not Found: /api/v1/dslamport/get_partak_dslam_list_by_telecom_id/
