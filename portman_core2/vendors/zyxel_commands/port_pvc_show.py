@@ -78,7 +78,7 @@ class PortPvcShow(BaseCommand):
             tn.write(b"y\r\n")
             tn.close()
             print('******************************************')
-            print(("port enable {0}".format(self.port_conditions)))
+            print(("port enable {0}".format(self.__port_indexes)))
             print('******************************************')
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
@@ -86,7 +86,7 @@ class PortPvcShow(BaseCommand):
             result = [val for val in result if re.search(r'\s{3,}|--{3,}', val)]
 
             result = result[2:]
-            result = [re.sub(r'\s{3,}', ',', line).split(",") for line in result]
+            result = [re.sub(r'\s{2,}', ',', line).split(",") for line in result]
             res = []
             for line in result:
                 res.append(dict(pvc=line[0], type=line[1], mux=line[2], pvid=line[3], pri=line[4], mvlan=line[5],
