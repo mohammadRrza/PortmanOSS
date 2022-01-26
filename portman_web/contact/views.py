@@ -512,7 +512,7 @@ class GetPartakCitiesByProvinceIdAPIView(views.APIView):
             url = 'https://my.pishgaman.net/api/pte/getCityList?ProvinceID={}'.format(province_id)
             url_response = requests.get(url, headers={"Content-Type": "application/json"})
             response = url_response.json()
-            print(response)
+            print(url_response)
             return Response(response, status=status.HTTP_200_OK)
 
         except Exception as ex:
