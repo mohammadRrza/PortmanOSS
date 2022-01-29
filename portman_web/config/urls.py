@@ -231,6 +231,8 @@ urlpatterns = [
         name='get_cities_from_pratak'),
     url(r'^api/v1/contact/farzanegan_provider_date/$', FarzaneganProviderDataAPIView.as_view(),
         name='farzanegan_provider_date'),
+    url(r'^api/v1/contact/get_ddr_info_exportExcel/$', FarzaneganExportExcelAPIView.as_view(),
+        name='get_ddr_info_exportExcel'),
 #portman_cdms
     url(r'^api/v1/portman_cdms/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='get_user_port_info'),
     url(r'^api/v1/portman_cdms/get_dslam_id_by_fqdn/$', GetDslamIdByFqdnAPIView.as_view(), name='get_dslam_id_by_fqdn'),

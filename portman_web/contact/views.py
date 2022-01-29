@@ -475,6 +475,18 @@ class FarzaneganViewSet(mixins.ListModelMixin,
         return queryset
 
 
+class FarzaneganExportExcelAPIView(views.APIView):
+    def get(self, request, format=None):
+        try:
+            owner_username = request.GET.get('owner_username', None)
+            print(owner_username)
+            farzanegan_tdlte = FarzaneganTDLTE.objects.filter(owner_username=owner_username).values()
+            return Response({'result': farzanegan_tdlte})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
 class FarzaneganProviderDataAPIView(views.APIView):
     def get(self, request, format=None):
         try:
