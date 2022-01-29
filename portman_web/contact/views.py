@@ -466,6 +466,11 @@ class FarzaneganViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         queryset = self.queryset
+        owner_username = self.request.query_params.get('owner_username', None)
+        print(owner_username)
+        if owner_username:
+            print(owner_username)
+            queryset = queryset.filter(owner_username=owner_username)
 
         return queryset
 
