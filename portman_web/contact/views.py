@@ -1,21 +1,27 @@
 import json
 import sys, os
 from datetime import time
+
+import requests
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import View
 from django.db import connection
 from rest_framework import status, views, mixins, viewsets, permissions
-from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState, FarzaneganTDLTE
+from contact.models import Order, Province, City, TelecommunicationCenters, PortmapState, FarzaneganTDLTE, \
+    FarzaneganProviderData
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
-from contact.serializers import OrderSerializer, FarzaneganSerializer
+from contact.serializers import OrderSerializer, DDRPageSerializer, FarzaneganSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
 from django.core.serializers import serialize
 from classes.mellat_bank_scrapping import get_captcha
+
+
 from classes.farzanegan_selenium import farzanegan_scrapping
+# from portman_web.classes.farzanegan_selenium import farzanegan_scrapping
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -350,14 +356,62 @@ class GetCaptchaAPIView(views.APIView):
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
 
 
+class GetCitiesFromPratakAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            table_name = '"partak_telecom"'
+            url = 'https://my.pishgaman.net/api/pte/getProvinceList'
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response['ProvinceList'])
+            for item in response['ProvinceList']:
+                p_url = 'https://my.pishgaman.net/api/pte/getCityList?ProvinceID={}'.format(item['ProvinceID'])
+                p_url_response = requests.get(p_url, headers={"Content-Type": "application/json"})
+                p_response = p_url_response.json()
+                for item2 in p_response['CityList']:
+                    p_url = 'https://my.pishgaman.net/api/pte/getMdfList?CityID={}'.format(item2['CityID'])
+                    p_url_response = requests.get(p_url, headers={"Content-Type": "application/json"})
+                    p_response = p_url_response.json()
+                    for item3 in p_response['MdfList']:
+                        query = "INSERT INTO public.{} VALUES ({}, '{}', '{}', '{}', '{}', '{}');".format(table_name,
+                                                                                                          item[
+                                                                                                              'ProvinceID'],
+                                                                                                          item[
+                                                                                                              'ProvinceName'],
+                                                                                                          item2[
+                                                                                                              'CityID'],
+                                                                                                          item2[
+                                                                                                              'CityName'],
+                                                                                                          item3[
+                                                                                                              'MdfID'],
+                                                                                                          item3[
+                                                                                                              'MdfName'])
+                        cursor = connection.cursor()
+                        cursor.execute(query)
+
+            # url = 'https://my.pishgaman.net/api/pte/getCityList?ProvinceID={0}'.format(username)
+            # url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            # response = url_response.json()
+            # print(response)
+            return Response(response, status=status.HTTP_200_OK)
+        except Exception as ex:
+            print(ex)
+            return Response(str(ex), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 class FarzaneganScrappingAPIView(views.APIView):
     def post(self, request, format=None):
         data = request.data
         print(data)
         username = data['username']
         password = data['password']
+        owner_username = data['owner_username']
         try:
-            result = farzanegan_scrapping(username, password)
+            result = farzanegan_scrapping(username, password, owner_username)
             if result is None:
                 return Response({'result': 'Please try again!'})
             return Response({'result': result})
@@ -365,6 +419,42 @@ class FarzaneganScrappingAPIView(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class DDRPageViewSet(mixins.ListModelMixin,
+                     mixins.CreateModelMixin,
+                     mixins.RetrieveModelMixin,
+                     mixins.UpdateModelMixin,
+                     mixins.DestroyModelMixin,
+                     viewsets.GenericViewSet):
+    queryset = Order.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = DDRPageSerializer
+    pagination_class = LargeResultsSetPagination
+    queryset = FarzaneganTDLTE.objects.all()
+
+    def get_serializer(self, *args, **kwargs):
+        if self.request.user.is_superuser:
+            print(self.request.user.type)
+            return DDRPageSerializer(request=self.request, *args, **kwargs)
+        elif self.request.user.type == 'SUPPORT':
+            print(self.request.user.type)
+            _fields = ['date_key', 'provider', 'customer_msisdn', 'total_data_volume_income']
+            return DDRPageSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+        else:
+            print(self.request.user.type)
+            _fields = ['date_key', 'provider', 'customer_msisdn', 'total_data_volume_income']
+
+            return DDRPageSerializer(request=self.request, remove_fields=_fields, *args, **kwargs)
+
+    @action(methods=['GET'], detail=False)
+    def current(self, request):
+        serializer = DDRPageSerializer(request.user, request=request)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        queryset = self.queryset
+        user = self.request.user
 
 
 class FarzaneganViewSet(mixins.ListModelMixin,
@@ -378,3 +468,115 @@ class FarzaneganViewSet(mixins.ListModelMixin,
         queryset = self.queryset
 
         return queryset
+
+
+class FarzaneganProviderDataAPIView(views.APIView):
+    def get(self, request, format=None):
+        try:
+            owner_username = request.GET.get('owner_username', None)
+            print(owner_username)
+            provider = FarzaneganTDLTE.objects.filter(owner_username=owner_username).first()
+            farzanegan_provider_data = FarzaneganProviderData.objects.filter(provider_id=provider.provider_id).order_by(
+                '-created').values().first()
+            return Response({'result': farzanegan_provider_data})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
+
+
+class GetPartakProvincesAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            url = 'https://my.pishgaman.net/api/pte/getProvinceList'
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetPartakCitiesByProvinceIdAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            province_id = request.GET.get('province_id', None)
+            url = 'https://my.pishgaman.net/api/pte/getCityList?ProvinceID={}'.format(province_id)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(url_response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetPartakTelecomsByCityIdAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            city_id = request.GET.get('city_id', None)
+            url = 'https://my.pishgaman.net/api/pte/getMdfList?CityID={}'.format(city_id)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetPartakDslamListByTelecomIdAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            mdf_id = request.GET.get('mdf_id', None)
+            url = 'https://my.pishgaman.net/api/pte/getDslamList?MdfID={}'.format(mdf_id)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class UpdatePartakFqdnAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            mdf_id = request.GET.get('mdf_id', None)
+            slat = request.GET.get('slat', None)
+            fqdn = request.GET.get('fqdn', None)
+            url = 'https://my.pishgaman.net/api/pte/updateFqdn?MdfID={}&Slat={}&NewFQDN={}'.format(mdf_id, slat, fqdn)
+            url_response = requests.get(url, headers={"Content-Type": "application/json"})
+            response = url_response.json()
+            print(response)
+            return Response(response, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+

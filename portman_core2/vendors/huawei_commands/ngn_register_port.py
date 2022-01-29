@@ -12,9 +12,8 @@ class NGNRegisterPort(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')
+        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
-        self.Gateway = params.get('gateway')
     @property
     def HOST(self):
         return self.__HOST
@@ -70,6 +69,8 @@ class NGNRegisterPort(BaseCommand):
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.write(b"voip\r\n")
+            tn.write(b"end\r\n")
+            tn.read_until(b'end')
             tn.write(("ip address media {} {}\r\n".format('192.168.1.2', '192.168.1.1')).encode('utf-8'))
             tn.write(("ip address signaling {}\r\n".format('192.168.1.2')).encode('utf-8'))
             tn.write(b"display ip address media\r\n")
@@ -78,7 +79,7 @@ class NGNRegisterPort(BaseCommand):
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            return dict(result=str(result))
+            return dict(result=result.decode('utf-8'), status=200)
         except (EOFError, socket_error) as e:
             print('============socket_error==========')
             print(e)

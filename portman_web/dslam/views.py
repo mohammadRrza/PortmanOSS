@@ -600,7 +600,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
             queryset = queryset.filter(dslam_type__id=dslam_type_id)
 
         if dslam_name:
-            queryset = queryset.filter(name__istartswith=dslam_name)
+            queryset = queryset.filter(name__contains=dslam_name)
 
         if ip:
             ip = ip.strip()
@@ -3396,7 +3396,7 @@ class RegisterPortAPIView(views.APIView):
                         str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
                         port_data.get('card_number'), port_data.get('port_number'), ip)
                     mail_info.msg_subject = 'Error in RegisterPortAPIView'
-                    Mail.Send_Mail(mail_info)
+                    #Mail.Send_Mail(mail_info)
                     return JsonResponse({'Result': 'Dslam Not Found. Please check FQDN again.'},
                                         status=status.HTTP_200_OK)
 
@@ -3733,7 +3733,10 @@ class RegisterPortAPIView(views.APIView):
                 else:
                     return JsonResponse({'PVC': pvc, 'id': 400, 'res': sid, 'msg': 'port config has not been done.'},
                                         status=status.HTTP_400_BAD_REQUEST)
-                # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
+               # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
+            if dslam_obj.dslam_type_id == 5:
+                if 'attach pvc profile name' in sid:
+                    return JsonResponse({'id': 201, 'msg': 'port config has been done.'}, status=status.HTTP_201_CREATED)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -6008,7 +6011,7 @@ class FiberHomeCommandAPIView(views.APIView):
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show linerate', params)
                 current_user_profile = ''
-                if port_info['profile_name']:
+                if 'profile_name' in port_info:
                     current_user_profile = port_info['profile_name']
                     return JsonResponse(
                         {'response': result, 'current_user_profile': current_user_profile,
@@ -8065,6 +8068,22 @@ class GetFqdnFromZabbixAPIView(views.APIView):
             return JsonResponse({'response': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class SearchFqdnsAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            fqdn = request.GET.get('fqdn', None)
+            portman_fqdns = DSLAM.objects.filter(fqdn__icontains=fqdn).values('fqdn')
+            return Response({"portman_fqdn": portman_fqdns},
+                            status=status.HTTP_200_OK)
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
 class NGNRegisterAPIView(views.APIView):
 
     def get_permissions(self):
@@ -8106,7 +8125,12 @@ class NGNRegisterAPIView(views.APIView):
 def ngn_registaration_runCommands(dslamObj, command, params):
     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
     if command == 'ngn_register_port':
-        return result
+        if 'Failure' in result['result']:
+            if 'IP existed already' in result['result']:
+                return dict({'result': result, 'msg': 'IP existed already', 'code': 10})
+            else:
+                return dict({'result': result, 'msg': 'Error', 'code': 20})
+        return dict({'result': result, 'msg': result, 'code': 0})
     elif command == 'sip_configuration':
         return result
     elif command == 'assign_number_to_user':
@@ -8114,6 +8138,12 @@ def ngn_registaration_runCommands(dslamObj, command, params):
     elif command == 'reset_sip_configuration':
         return result
     elif command == 'display_if_sip_attribute_running':
+        return re.sub(r'-{2,}\sMore\s\(\s\w+\s\'\w\'\s\w+\s\w+\s\)\s\S+|\S+\W\d+\w', '', result['result'])
+    elif command == 'display_sippstnuser_reg_state':
+        return result
+    elif command == 'display_sippstnuser_call_state':
+        return result
+    elif command == 'ngn_board_confirm':
         return result
     else:
         return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)

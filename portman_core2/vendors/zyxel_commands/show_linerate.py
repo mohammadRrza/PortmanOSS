@@ -60,8 +60,8 @@ class ShowLineRate(BaseCommand):
                                                             self.port_conditions['port_number']).encode(
                 'utf-8'))
             time.sleep(1)
-            tn.write(b'end\r\n')
-            result = tn.read_until(b'end')
+            tn.write(b'end1\r\n')
+            result = tn.read_until(b'end1')
             if "example:" in str(result):
                 result = str(result).split("\\r\\n")
                 result = [val for val in result if re.search(r'example|between', val)]
@@ -73,14 +73,13 @@ class ShowLineRate(BaseCommand):
             tn.write(b'exit\r\n')
             tn.write(b'y\r\n')
             tn.close()
-            print('*******************************************')
-            print(('show linerate {0}'.format(str(result))))
-            print('*******************************************')
+            # print('*******************************************')
+            # print(('show linerate {0}'.format(str(result))))
+            # print('*******************************************')
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
-            res = {
-                   'dslamName/cammandName': "",
+            res = {'dslamName/cammandName': "",
                    'date': str(datetime.datetime.now()),
                    'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
                        self.port_conditions['port_number']),
@@ -149,7 +148,7 @@ class ShowLineRate(BaseCommand):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print((str(exc_tb.tb_lineno)))
-            print(e)
+            # print(e)
             self.retry += 1
             if self.retry < 3:
                 return self.run_command()

@@ -98,8 +98,7 @@ class ShowPort(BaseCommand):
             result = [val for val in result if re.search(r'\s+:|--+', val)]
             tn.close()
 
-            res = {'current_userProfile': "",
-                   'dslamName/cammandName': "",
+            res = {'dslamName/cammandName': "",
                    'date': "",
                    'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
                        self.port_conditions['port_number']),

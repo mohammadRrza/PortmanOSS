@@ -46,6 +46,8 @@ class TelecomCenter(models.Model):
     prefix_bukht_name = models.CharField(max_length=4)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     mdf_row_orientation = models.CharField(choices=mdf_row_orientation_key, default='Vertical', max_length=10)
+    partak_telecom_id = models.IntegerField(null=True, blank=True, default=0)
+    partak_telecom_name = models.CharField(max_length=256, blank=True, null=True)
 
     @property
     def get_dslams_count(self):

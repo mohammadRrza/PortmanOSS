@@ -59,17 +59,21 @@ class ShowProfiles(BaseCommand):
             if "Bad Password..." in str(err1):
                 return "DSLAM Password is wrong!"
             tn.write(b"cd profile\r\n")
+            tn.read_until(b"profile#", 0.1)
             tn.write(b"show all dsl-profile-name\r\n")
-            time.sleep(0.5)
-            result1 = tn.read_until(b"--Press any key to continue Ctrl+c to stop--")
-            tn.write(b"\r\n")
-            result2 = tn.read_until(b"number")
-            result = result1 + result2
+            result = tn.read_until(b"profile#", 0.5)
+            output = str(result)
+            while 'profile#' not in str(result):
+                result = tn.read_until(b"profile#", 0.5)
+                output += str(result)
+                tn.write(b"\r\n")
+            result = output
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result.decode('utf-8'), status=200)
+                return dict(result=result, status=200)
             result = str(result).split("\\r\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}', val)][1:]
+            # return dict(result=result, status=200)
+            result = [re.sub(r"\s+--P[a-zA-Z '+\\1-9[;-]+H", "", val) for val in result if re.search(r'\s{4,}', val)][1:]
             temp_res = []
             for i in result:
                 temp_res += i.split()

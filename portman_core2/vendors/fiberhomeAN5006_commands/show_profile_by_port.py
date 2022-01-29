@@ -53,7 +53,6 @@ class ShowProfileByPort(BaseCommand):
             tn.write("show pvc profile attach interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
                                                                             self.port_conditions['port_number']).encode(
                 'utf-8'))
-            tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if "SlotNoPortConvertObjIndex" in str(result):
@@ -65,24 +64,18 @@ class ShowProfileByPort(BaseCommand):
             profile_id = f"id: {result[1].split()[2]}"
             print(profile_id)
 
+            tn.write(b"cd ..\r\n")
             tn.write(b"cd qos\r\n")
-            time.sleep(0.1)
+            tn.read_until(b'qos#')
             tn.write(b"show rate-limit profile all\r\n")
-            time.sleep(1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            time.sleep(0.1)
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"end\r\n")
-            result = tn.read_until(b"end", 1)
+            result = tn.read_until(b"qos#", 0.1)
+            output = str(result)
+            while 'qos#' not in str(result):
+                result = tn.read_until(b"qos#", 0.1)
+                output += str(result)
+                tn.write(b"\r\n")
             tn.close()
-            result = str(result).split("\\r\\n")
+            result = str(output).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
                       re.search(r':\s', val)]
             for inx, val in enumerate(result):

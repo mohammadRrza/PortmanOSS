@@ -82,7 +82,7 @@ class ShowLineStatPort(BaseCommand):
                 port={'card': self.port_conditions['slot_number'], 'port': self.port_conditions['port_number']},
                 link=result[-5], usPayLoadRate=result[-4] + " kbps", dsPayLoadRate=result[-3] + " kbps",
                 protocol=result[-2], upTime=result[-1])
-            return dict(result=result, status=200)
+            return dict(result=str(result), status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

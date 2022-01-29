@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -5,14 +7,13 @@ from .command_base import BaseCommand
 import re
 
 
-class SIPConfiguration(BaseCommand):
+class NGNBoradConfirm(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')
+        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
-        self.Gateway = params.get('gateway')
     @property
     def HOST(self):
         return self.__HOST
@@ -56,10 +57,8 @@ class SIPConfiguration(BaseCommand):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             if tn.read_until(b'>>User name:'):
-                print(self.__telnet_username)
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
-                print(self.__telnet_password)
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             tn.write(b"\r\n")
             tn.write(b"\r\n")
@@ -69,15 +68,7 @@ class SIPConfiguration(BaseCommand):
             tn.write(b"eenable\r\n")
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
-            tn.write(b"interface sip 0\r\n")
-            if tn.read_until(b'Are you sure to add the SIP interface', 3):
-                tn.write(b"y\r\n")
-            tn.write(("If-sip attribute basic media-ip {} signal-ip {} signal-port 5000\r\n".format('192.168.1.2', '192.168.1.2')).encode('utf-8'))
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(("if-sip attribute basic primary-proxy-ip1 {} primary-proxy-port 5060\r\n".format('172.28.238.162')).encode('utf-8'))
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
+            tn.write(("board confirm 0/{}\r\n".format(self.port_conditions['slot_number'])).encode('utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             tn.write(b"quit\r\n")
@@ -92,8 +83,10 @@ class SIPConfiguration(BaseCommand):
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             print('============Exception==========')
-            print(e)
+            print(str(e)+"///"+str(exc_tb.tb_lineno))
             print('============Exception==========')
             self.retry += 1
             if self.retry < 4:

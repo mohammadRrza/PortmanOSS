@@ -5,14 +5,13 @@ from .command_base import BaseCommand
 import re
 
 
-class SIPConfiguration(BaseCommand):
+class DisplaySippstnuserRegState(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')
+        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
-        self.Gateway = params.get('gateway')
     @property
     def HOST(self):
         return self.__HOST
@@ -67,17 +66,15 @@ class SIPConfiguration(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"\r\n")
             tn.write(b"eenable\r\n")
+            print('==================================================================================')
+            print('eenable')
             tn.write(b"enable\r\n")
+            print('enable')
             tn.write(b"config\r\n")
-            tn.write(b"interface sip 0\r\n")
-            if tn.read_until(b'Are you sure to add the SIP interface', 3):
-                tn.write(b"y\r\n")
-            tn.write(("If-sip attribute basic media-ip {} signal-ip {} signal-port 5000\r\n".format('192.168.1.2', '192.168.1.2')).encode('utf-8'))
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(("if-sip attribute basic primary-proxy-ip1 {} primary-proxy-port 5060\r\n".format('172.28.238.162')).encode('utf-8'))
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
+            print('config')
+            tn.write(b"esl user\r\n")
+            print('esl user')
+            tn.write(("display sippstnuser reg-state 0/{}\r\n".format(self.port_conditions['slot_number']).encode('utf-8')))
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             tn.write(b"quit\r\n")
