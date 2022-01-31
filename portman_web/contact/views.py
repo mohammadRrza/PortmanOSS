@@ -495,6 +495,7 @@ class FarzaneganProviderDataAPIView(views.APIView):
             provider = FarzaneganTDLTE.objects.filter(owner_username=owner_username).first()
             farzanegan_provider_data = FarzaneganProviderData.objects.filter(provider_id=provider.provider_id).order_by(
                 '-created').values().first()
+            print(farzanegan_provider_data)
             return Response({'result': farzanegan_provider_data})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()

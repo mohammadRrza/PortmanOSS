@@ -1,6 +1,10 @@
+import os
+import sys
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.http import JsonResponse
 from dslam.models import Reseller, DSLAM, DSLAMPort, Command, ResellerPort, MDFDSLAM
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import ArrayField
@@ -173,19 +177,26 @@ class User(AbstractUser):
         ).values_list('object_id', flat=True)
         return command_ids
 
+    def set_user_id(self, user_id):
+        self.user_id = user_id
+
     @property
     def allowed_commands(self):
         allowed_command = {}
         denied_dslam_port = []
+        print('=================')
+        print(self.username)
+        print('=================')
+
         if self.type == "RESELLER":
             command_permission_ids = UserPermissionProfileObject.objects.filter(
                 object_id__isnull=False,
                 content_type__model='command',
-                user_permission_profile__user=self,
+                user_permission_profile__user=self.user_id,
                 user_permission_profile__action='allow',
                 user_permission_profile__is_active=True,
             ).exclude(object_id__in=self.denied_commands).values_list('object_id', flat=True)
-            return command_permission_ids
+            return list(command_permission_ids)
         else:
             command_permission_objs = UserPermissionProfileObject.objects.filter(
                 object_id__isnull=False,
@@ -210,6 +221,9 @@ class User(AbstractUser):
         return allowed_command
 
     ############# permission related methods ##########
+    def get_allowed_commands(self):
+        return self.allowed_commands
+
     def get_user_telecom_centers(self, permission_name):
         if self.type == "RESELLER":
             return self.allowed_telecom_centers
@@ -397,20 +411,28 @@ class UserPermissionProfileObject(models.Model):
     object_id = models.IntegerField(blank=True, null=True)
 
     def as_json(self):
-        name = None
-        model_type = self.content_type.model
-        if model_type == 'dslam':
-            name = DSLAM.objects.get(id=self.object_id).name
-        elif model_type == 'command':
-            name = Command.objects.get(id=self.object_id).text
-        return {
-            'id': self.id,
-            'user_permission_profile_id': self.user_permission_profile.id,
-            'model_type': self.content_type.model,
-            'object_id': self.object_id,
-            'object_name': name
-        }
-
+        try:
+            name = None
+            model_type = self.content_type.model
+            print('===================================')
+            print(DSLAM.objects.get(id=self.object_id).name)
+            print(model_type)
+            print('===================================')
+            if model_type == 'dslam':
+                name = DSLAM.objects.get(id=self.object_id).name
+            elif model_type == 'command':
+                name = Command.objects.get(id=self.object_id).text
+            return {
+                'id': self.id,
+                'user_permission_profile_id': self.user_permission_profile.id,
+                'model_type': self.content_type.model,
+                'object_id': self.object_id,
+                'object_name': name
+            }
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
     class Meta:
         unique_together = (('user_permission_profile', 'content_type', 'object_id'),)
 

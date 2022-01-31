@@ -17,7 +17,7 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from users.serializers import *
-from users.models import UserAuditLog, PortmanLog, UserPermissionProfile
+from users.models import UserAuditLog, PortmanLog, UserPermissionProfile,UserPermissionProfileObject
 from dslam.mail import Mail
 
 from django.http import JsonResponse, HttpResponse
@@ -616,16 +616,23 @@ class GetUserPermissionProfileObjectsAPIView(views.APIView):
 
     def get(self, request, format=None):
         try:
+            permission_objects = []
+            dslam_perm = {}
             username = request.GET.get('username', None)
             user_id = User.objects.get(username=username).id
-            print(user_id)
-            user_profile_id = UserPermissionProfile.objects.get(user_id=user_id)
-            return HttpResponse(user_profile_id.permission_profile_id, content_type='application/json')
+            user_profile_id = UserPermissionProfile.objects.get(user_id=user_id).permission_profile_id
+            uppo_list = UserPermissionProfileObject.objects.filter(user_permission_profile__id=user_profile_id).values()
+            for item in list(uppo_list):
+                if item['content_type_id'] == 7:
+                    permission_objects.append(str(item['object_id']) + 'Dslam')
+                elif item['content_type_id'] == 16:
+                    permission_objects.append(str(item['object_id']) + 'Command')
+            print(uppo_list)
+            return JsonResponse({'row': permission_objects})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
-
 
 

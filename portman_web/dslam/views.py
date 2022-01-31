@@ -19,6 +19,7 @@ from django.contrib.postgres.search import SearchVector
 from django.http import StreamingHttpResponse
 from dslam.mail import Mail
 from dslam.mail import Ticket
+from users.models import User
 from rest_framework.parsers import FileUploadParser
 
 from classes.portman_logging import PortmanLogging
@@ -1446,6 +1447,7 @@ class CommandViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         queryset = self.queryset
+        username = self.request.query_params.get('username', None)
         command_type = self.request.query_params.get('type', None)
         dslam_id = self.request.query_params.get('dslam_id', None)
         command_type = self.request.query_params.get('type', None)
@@ -1454,9 +1456,22 @@ class CommandViewSet(mixins.ListModelMixin,
         exclude_command_ids = self.request.query_params.get('exclude_command_id', None)
 
         if dslam_id:
-            dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
-            command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id', flat=True)
-            queryset = queryset.filter(id__in=command_ids)
+            if username:
+                user_type = User.objects.get(username=username).type
+                user_id = User.objects.get(username=username).id
+                model_user = User()
+                model_user.type = user_type
+                model_user.set_user_id(user_id)
+                allowed_commands = model_user.get_allowed_commands()
+                print(allowed_commands)
+                if user_type == 'RESELLER':
+                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                    queryset = queryset.filter(id__in=allowed_commands)
+                else:
+                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                    command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id',
+                                                                                                     flat=True)
+                    queryset = queryset.filter(id__in=command_ids)
 
         if exclude_command_ids:
             exclude_command_ids = eval(exclude_command_ids)
