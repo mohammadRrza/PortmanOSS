@@ -62,7 +62,8 @@ class SysInfoShow(BaseCommand):
             tn.write(b"sys info show\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
-
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split('\\r\\n')
             result = [re.sub(r'\\+t', ' ', val) for val in result if re.search(r']|:', val)]
             tn.write(b"exit\r\n")
