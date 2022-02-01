@@ -68,7 +68,8 @@ class ShowIP(BaseCommand):
             tn.write(b"show ip\r\n")
             result = tn.read_until(b'#')
             output += str(result)
-
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=output.decode('utf-8'), status=200)
             result = output.split('\\r\\n')
             result = [re.sub(r'\\+t', ' ', val) for val in result if re.search(r'--{4,}|\s{4,}|:', val)]
             tn.write(b"exit\r\n")
