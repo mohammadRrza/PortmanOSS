@@ -1448,22 +1448,25 @@ class CommandViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         queryset = self.queryset
         username = self.request.query_params.get('username', None)
+        ldap_email = self.request.query_params.get('ldap_email', None)
         command_type = self.request.query_params.get('type', None)
         dslam_id = self.request.query_params.get('dslam_id', None)
         command_type = self.request.query_params.get('type', None)
         exclude_type = self.request.query_params.get('exclude_type', None)
         command_name = self.request.query_params.get('command_name', None)
         exclude_command_ids = self.request.query_params.get('exclude_command_id', None)
+        ldap_login = self.request.query_params.get('ldap_login', None)
 
         if dslam_id:
-            if username:
+            if username and not bool(ldap_login):
+                print('username')
                 user_type = User.objects.get(username=username).type
                 user_id = User.objects.get(username=username).id
                 model_user = User()
                 model_user.type = user_type
                 model_user.set_user_id(user_id)
                 allowed_commands = model_user.get_allowed_commands()
-                print(allowed_commands)
+                print(user_id)
                 if user_type == 'RESELLER':
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
                     queryset = queryset.filter(id__in=allowed_commands)
@@ -1472,7 +1475,29 @@ class CommandViewSet(mixins.ListModelMixin,
                     command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id',
                                                                                                      flat=True)
                     queryset = queryset.filter(id__in=command_ids)
+            elif ldap_email and bool(ldap_login):
+                print(bool(ldap_login))
 
+                user_type = User.objects.get(email=ldap_email).type
+                user_id = User.objects.get(email=ldap_email).id
+                model_user = User()
+                model_user.type = user_type
+                model_user.set_user_id(user_id)
+                allowed_commands = model_user.get_allowed_commands()
+                print(user_type)
+                if user_type == 'SUPPORT':
+                    print(user_id)
+
+                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                    queryset = queryset.filter(id__in=allowed_commands)
+                elif user_type == 'RESELLER':
+                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                    queryset = queryset.filter(id__in=allowed_commands)
+                else:
+                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                    command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id',
+                                                                                                     flat=True)
+                    queryset = queryset.filter(id__in=command_ids)
         if exclude_command_ids:
             exclude_command_ids = eval(exclude_command_ids)
             if exclude_command_ids or len(exclude_command_ids) > 0:
@@ -3411,7 +3436,7 @@ class RegisterPortAPIView(views.APIView):
                         str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
                         port_data.get('card_number'), port_data.get('port_number'), ip)
                     mail_info.msg_subject = 'Error in RegisterPortAPIView'
-                    #Mail.Send_Mail(mail_info)
+                    # Mail.Send_Mail(mail_info)
                     return JsonResponse({'Result': 'Dslam Not Found. Please check FQDN again.'},
                                         status=status.HTTP_200_OK)
 
@@ -3748,10 +3773,11 @@ class RegisterPortAPIView(views.APIView):
                 else:
                     return JsonResponse({'PVC': pvc, 'id': 400, 'res': sid, 'msg': 'port config has not been done.'},
                                         status=status.HTTP_400_BAD_REQUEST)
-               # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
+            # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
             if dslam_obj.dslam_type_id == 5:
                 if 'attach pvc profile name' in sid:
-                    return JsonResponse({'id': 201, 'msg': 'port config has been done.'}, status=status.HTTP_201_CREATED)
+                    return JsonResponse({'id': 201, 'msg': 'port config has been done.'},
+                                        status=status.HTTP_201_CREATED)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

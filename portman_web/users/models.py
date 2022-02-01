@@ -188,7 +188,7 @@ class User(AbstractUser):
         print(self.username)
         print('=================')
 
-        if self.type == "RESELLER":
+        if self.type in ["RESELLER", "SUPPORT"]:
             command_permission_ids = UserPermissionProfileObject.objects.filter(
                 object_id__isnull=False,
                 content_type__model='command',
