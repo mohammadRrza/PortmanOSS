@@ -52,7 +52,7 @@ class VlanShow(BaseCommand):
 
     def run_command(self):
         try:
-            output = ''
+            result = ''
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.read_until(b"Password:")
@@ -62,13 +62,13 @@ class VlanShow(BaseCommand):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.read_until(b'#')
             tn.write(b"vlan show\r\nn")
-            result = tn.read_until(b'#', 1)
-            output += str(result)
+            output = tn.read_until(b'#', 1)
+            result += output.decode('utf-8')
             tn.write(b"show vlan\r\nn")
-            result = tn.read_until(b'#', 1)
-            output += str(result)
+            output = tn.read_until(b'#', 1)
+            result += output.decode('utf-8')
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result.decode('utf-8'), status=200)
+                return dict(result=result, status=200)
             result = str(result).split('\\r\\n')
             result = [val for val in result if re.search(r'\s{3,}|--{4,}|vid', val)]
             for inx, line in enumerate(result):
@@ -88,7 +88,9 @@ class VlanShow(BaseCommand):
             print('********************************')
             return dict(vlans=vlans, result=result, status=200)
         except Exception as e:
+            print('***************Exception*****************')
             print(e)
+            print('***************Exception*****************')
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
