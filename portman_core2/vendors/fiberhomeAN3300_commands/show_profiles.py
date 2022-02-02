@@ -70,7 +70,7 @@ class ShowProfiles(BaseCommand):
             result = output
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result, status=200)
+                return dict(result=re.sub(r'-{2,}\w*\s\w*\s\w*\s\w*\s\w*\s\w*.\w\s\w*\s\w*\-{2,}\s\W.\d.*', '', result.decode('utf-8')), status=200)
             result = str(result).split("\\r\\n")
             # return dict(result=result, status=200)
             result = [re.sub(r"\s+--P[a-zA-Z '+\\1-9[;-]+H", "", val) for val in result if re.search(r'\s{4,}', val)][1:]
