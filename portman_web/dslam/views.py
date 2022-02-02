@@ -1458,6 +1458,8 @@ class CommandViewSet(mixins.ListModelMixin,
         ldap_login = self.request.query_params.get('ldap_login', None)
 
         if dslam_id:
+            dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type_id
+            print(dslam_type)
             if username and not bool(ldap_login):
                 print('username')
                 user_type = User.objects.get(username=username).type
@@ -1466,6 +1468,9 @@ class CommandViewSet(mixins.ListModelMixin,
                 model_user.type = user_type
                 model_user.set_user_id(user_id)
                 allowed_commands = model_user.get_allowed_commands()
+                allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values()
+                print(allowed_commands_dslam_type)
+
                 print(user_id)
                 if user_type == 'RESELLER':
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
@@ -1484,6 +1489,8 @@ class CommandViewSet(mixins.ListModelMixin,
                 model_user.type = user_type
                 model_user.set_user_id(user_id)
                 allowed_commands = model_user.get_allowed_commands()
+                allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command', flat=True)
+                print(list(allowed_commands_dslam_type))
                 print(user_type)
                 if user_type == 'SUPPORT':
                     print(user_id)
@@ -7865,7 +7872,7 @@ class DslamCommandsV2APIView(views.APIView):
                     return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
                 if result:
                     if 'Busy' in result:
-                        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
+                        return Response({'response': result}, status=status.HTTP_400_BAD_REQUEST)
                     else:
                         description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
 
@@ -7874,16 +7881,16 @@ class DslamCommandsV2APIView(views.APIView):
                 return JsonResponse({'response': result})
 
             elif dslam_type == 2:  # huawei
-                return JsonResponse({'Result': dslam_type})
+                return JsonResponse({'response': dslam_type})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
                 if command == 'show mac by slot port':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
-                return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
+                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
 
-                return JsonResponse({'Result': result})
+                return JsonResponse({'response': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
                 if command == 'Show VLAN':
@@ -7891,7 +7898,7 @@ class DslamCommandsV2APIView(views.APIView):
                 return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
-                return JsonResponse({'Result': dslam_type})
+                return JsonResponse({'response': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

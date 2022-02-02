@@ -2,7 +2,7 @@ import os
 import csv
 
 directory = '/home/mrtbadboy/Desktop/NGN_CSV/'
-total_directory = '/opt/total/'
+total_directory = '/home/mrtbadboy/Desktop/NGN_total/'
 total_file = open(total_directory + 'total.csv', 'w')
 writer = csv.writer(total_file)
 i = 1
