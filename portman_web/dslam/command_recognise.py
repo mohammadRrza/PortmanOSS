@@ -40,6 +40,8 @@ def command_recognise(command):
         command = 'Show Shelf'
     elif command == 'Show Card' or command == 'show card':
         command = 'Show Card'
+    elif command == 'Show Card Range' or command == 'show card range':
+        command = 'Show Card Range'
     elif command == 'port reset' or command == 'reset port':
         command = 'port reset'
     elif command == 'save config' or command == 'Save Config' or command == 'config save':
