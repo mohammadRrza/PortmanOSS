@@ -75,7 +75,7 @@ class ShowMac(BaseCommand):
             if "Can not get the fdb information." in str(result):
                 return "This Card is not connected."
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result.decode('utf-8'), status=200)
+                return dict(result=re.sub(r'-{2,}\w*\s\w*\s\w*\s\w*\s\w*\s\w*.\w\s\w*\s\w*\-{2,}\s\W.\d.*', '', result.decode('utf-8')), status=200)
             result = str(result).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
