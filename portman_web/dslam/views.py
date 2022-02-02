@@ -1474,8 +1474,8 @@ class CommandViewSet(mixins.ListModelMixin,
                 print(user_id)
                 if user_type == 'RESELLER':
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
-                    queryset = queryset.filter(id__in=allowed_commands)
                     queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                    queryset = queryset.filter(id__in=allowed_commands)
 
                 else:
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
@@ -1491,6 +1491,7 @@ class CommandViewSet(mixins.ListModelMixin,
                 model_user.type = user_type
                 model_user.set_user_id(user_id)
                 allowed_commands = model_user.get_allowed_commands()
+                print(list(allowed_commands))
                 allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command', flat=True)
                 print(list(allowed_commands_dslam_type))
                 print(user_type)
@@ -1498,12 +1499,14 @@ class CommandViewSet(mixins.ListModelMixin,
                     print(user_id)
 
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
-                    queryset = queryset.filter(id__in=allowed_commands)
                     queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                    queryset = queryset.filter(id__in=allowed_commands)
+
                 elif user_type == 'RESELLER':
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
-                    queryset = queryset.filter(id__in=allowed_commands)
                     queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                    queryset = queryset.filter(id__in=allowed_commands)
+
                 else:
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
                     command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id',
