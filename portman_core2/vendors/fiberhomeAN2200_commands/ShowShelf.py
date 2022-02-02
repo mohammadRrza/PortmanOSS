@@ -73,7 +73,8 @@ class ShowShelf(BaseCommand):
             tn.write(b"exit\r\n")
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=re.sub(r'-{2,}\w*\s\w*\s\w*\s\w*\s\w*\s\w*.\w\s\w*\s\w*', '', res.decode('utf-8')), status=200)
+                print("self.device_ip == '127.0.0.1'")
+                return dict(result=re.sub(r'-{2,}\w*\s\w*\s\w*\s\w*\s\w*\s\w*.\w\s\w*\s\w*\-{2,}\s\W.\d.*', '', res.decode('utf-8')), status=200)
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s{4,}|SHELF|Polling|Current|--+', val)]
             return dict(result=result, status=200)
