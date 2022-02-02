@@ -71,7 +71,7 @@ class ShowPort(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', result.decode('utf-8')), status=200)
+                return dict(result=re.sub(r'-{2,}\w*\s\w*\s\w*\s\w*\s\w*\s\w*.\w\s\w*\s\w*\-{2,}\s\W.\d.*', '', result.decode('utf-8')), status=200)
             if "Invalid port list" in str(result):
                 str_res = ["There is one of the following problems:", "This card is not configured",
                            "No card is defined on this port", "Card number is out of range.",
