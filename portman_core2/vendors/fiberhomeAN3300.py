@@ -24,6 +24,7 @@ from .fiberhomeAN3300_commands.show_mac import ShowMac
 from .fiberhomeAN3300_commands.show_all_pvc_vlan import ShowAllVLANs
 from .fiberhomeAN3300_commands.show_port_with_mac import ShowPortWithMac
 from .fiberhomeAN3300_commands.show_pvc import ShowPVC
+from .fiberhomeAN3300_commands.show_card_range import ShowCardRange
 
 
 class FiberhomeAN3300(BaseDSLAM):
@@ -48,6 +49,7 @@ class FiberhomeAN3300(BaseDSLAM):
     command_factory.register_type('Show All VLANs', ShowAllVLANs)
     command_factory.register_type('show port with mac', ShowPortWithMac)
     command_factory.register_type('show pvc', ShowPVC)
+    command_factory.register_type('Show Card Range', ShowCardRange)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))
