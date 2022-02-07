@@ -50,6 +50,8 @@ class ShowPort(BaseCommand):
             tn.write(b"end\r\n")
             err1 = tn.read_until(b"end")
             if "Login Failed." in str(err1):
+                if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                    return dict(result='Telnet Username or Password is wrong! Please contact with core-access department.', status=200)
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.read_until(b"User>")
             tn.write(b'admin\r\n')
