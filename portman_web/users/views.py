@@ -656,6 +656,8 @@ class SetPermissionForUserAPIView(views.APIView):
 def set_permission_for_user(email):
     try:
         user_id = User.objects.get(email=email).id
+        permission_profile_id = 21
+        user_instance = UserPermissionProfile.objects.create(action='allow', is_active='t', permission_profile_id=permission_profile_id, user_id=user_id)
         user_profile_id = UserPermissionProfile.objects.get(user_id=user_id).id
         user_permission_profile_object = UserPermissionProfileObject.objects.filter(user_permission_profile_id=93).values_list('object_id',
                                                                                                  flat=True)
