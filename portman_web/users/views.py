@@ -17,7 +17,7 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from users.serializers import *
-from users.models import UserAuditLog, PortmanLog, UserPermissionProfile,UserPermissionProfileObject
+from users.models import UserAuditLog, PortmanLog, UserPermissionProfile, UserPermissionProfileObject
 from dslam.mail import Mail
 
 from django.http import JsonResponse, HttpResponse
@@ -447,6 +447,7 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         upp = UserPermissionProfile.objects.get(id=serializer.data.get('id'))
+        print(serializer.data.get('id'))
         if objects:
             for obj in objects:
                 for obj_id in obj.get('id', []):
@@ -634,5 +635,36 @@ class GetUserPermissionProfileObjectsAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class SetPermissionForUserAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def get(self, request, format=None):
+        try:
+            email = request.GET.get('email', None)
+
+            result = set_permission_for_user(email)
+            return JsonResponse({'result': result})
+
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+def set_permission_for_user(email):
+    try:
+        user_id = User.objects.get(email=email).id
+        user_profile_id = UserPermissionProfile.objects.get(user_id=user_id).id
+        user_permission_profile_object = UserPermissionProfileObject.objects.filter(user_permission_profile_id=93).values_list('object_id',
+                                                                                                 flat=True)
+        for item in user_permission_profile_object:
+            instance = UserPermissionProfileObject.objects.create(object_id=item, content_type_id=16, user_permission_profile_id=user_profile_id)
+        return instance
+    except Exception as ex:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        return str(ex)
 
 

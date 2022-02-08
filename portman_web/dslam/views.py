@@ -1459,7 +1459,6 @@ class CommandViewSet(mixins.ListModelMixin,
 
         if dslam_id:
             dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type_id
-            print(dslam_type)
             if username and not bool(ldap_login):
                 print('username')
                 user_type = User.objects.get(username=username).type
@@ -1483,21 +1482,14 @@ class CommandViewSet(mixins.ListModelMixin,
                                                                                                      flat=True)
                     queryset = queryset.filter(id__in=command_ids)
             elif ldap_email and bool(ldap_login):
-                print(bool(ldap_login))
-
                 user_type = User.objects.get(email=ldap_email).type
                 user_id = User.objects.get(email=ldap_email).id
                 model_user = User()
                 model_user.type = user_type
                 model_user.set_user_id(user_id)
                 allowed_commands = model_user.get_allowed_commands()
-                print(list(allowed_commands))
                 allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command', flat=True)
-                print(list(allowed_commands_dslam_type))
-                print(user_type)
                 if user_type == 'SUPPORT':
-                    print(user_id)
-
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
                     queryset = queryset.filter(id__in=allowed_commands_dslam_type)
                     queryset = queryset.filter(id__in=allowed_commands)
