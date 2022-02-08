@@ -11,7 +11,7 @@ from contact.models import Order, Province, City, TelecommunicationCenters, Port
     FarzaneganProviderData
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
-from contact.serializers import OrderSerializer, DDRPageSerializer, FarzaneganSerializer
+from contact.serializers import OrderSerializer, DDRPageSerializer, FarzaneganSerializer, GetNotesSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -22,6 +22,7 @@ from classes.mellat_bank_scrapping import get_captcha
 
 # from classes.farzanegan_selenium import farzanegan_scrapping
 # from portman_web.classes.farzanegan_selenium import farzanegan_scrapping
+from contact.models import PishgamanNote
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -598,3 +599,31 @@ class UpdatePartakFqdnAPIView(views.APIView):
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
 
 
+class SaveNoteAPIView(views.APIView):
+    def post(self, request):
+        try:
+            data = request.data
+            province = data.get('province')
+            city = data.get('city')
+            telecom_center = data.get('telecom_center')
+            problem_desc = data.get('problem_description')
+            username = data.get('username')
+            PishgamanNote.objects.create(province=province, city=city, telecom_center=telecom_center,
+                                         problem_desc=problem_desc, username=username)
+            return Response({"result": "New Note Successfully Added."})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetNotesViewSet(mixins.ListModelMixin,
+                      mixins.RetrieveModelMixin,
+                      viewsets.GenericViewSet):
+    queryset = PishgamanNote.objects.all()
+    serializer_class = GetNotesSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        return queryset
