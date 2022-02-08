@@ -73,6 +73,7 @@ portman_router.register(r'radio', RadioViewSet, basename='radio')
 portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
 portman_router.register(r'portman-log', PortmanLogViewSet, basename='portman-log')
 portman_router.register(r'farzanegan_data', FarzaneganViewSet, basename='farzanegan_data')
+portman_router.register(r'notes', GetNotesViewSet, basename='notes')
 
 
 urlpatterns = [
@@ -175,6 +176,7 @@ urlpatterns = [
         name='get_partak_dslam_list_by_telecom_id'),
     url(r'^api/v1/partak/update_partak_fqdn/$', UpdatePartakFqdnAPIView.as_view(),
         name='update_partak_fqdn'),
+    url(r'^api/v1/pishgaman-note/save-note/$', SaveNoteAPIView.as_view(), name='pishgaman-note'),
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
     url(r'^api/v1/router-command/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),

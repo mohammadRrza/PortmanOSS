@@ -135,3 +135,12 @@ class FarzaneganTDLTE(models.Model):
     customer_msisdn = models.CharField(max_length=32)
     total_data_volume_income = models.CharField(max_length=32)
     owner_username = models.CharField(max_length=64)
+
+
+class PishgamanNote(models.Model):
+    province = models.CharField(max_length=120)
+    city = models.CharField(max_length=120)
+    telecom_center = models.CharField(max_length=250)
+    problem_desc = models.TextField()
+    register_time = models.DateTimeField(auto_now=True)
+    username = models.CharField(max_length=120)
