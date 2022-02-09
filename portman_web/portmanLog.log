@@ -29,3 +29,4 @@ Traceback (most recent call last):
     raise TypeError(f'Object of type {o.__class__.__name__} '
 TypeError: Object of type FarzaneganTDLTE is not JSON serializable
 Not Found: /favicon.ico
+Unauthorized: /api/v1/dslamport/run-command/
