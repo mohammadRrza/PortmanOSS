@@ -73,7 +73,7 @@ portman_router.register(r'radio', RadioViewSet, basename='radio')
 portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
 portman_router.register(r'portman-log', PortmanLogViewSet, basename='portman-log')
 portman_router.register(r'farzanegan_data', FarzaneganViewSet, basename='farzanegan_data')
-portman_router.register(r'notes', GetNotesViewSet, basename='notes')
+portman_router.register(r'pishgaman-note', GetNotesViewSet, basename='notes')
 
 
 urlpatterns = [
