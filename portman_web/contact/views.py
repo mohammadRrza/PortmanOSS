@@ -602,7 +602,7 @@ class UpdatePartakFqdnAPIView(views.APIView):
 class SaveNoteAPIView(views.APIView):
     def post(self, request):
         try:
-            data = request.data
+            data = json.loads(request.data)
             province = data.get('province')
             city = data.get('city')
             telecom_center = data.get('telecom_center')
