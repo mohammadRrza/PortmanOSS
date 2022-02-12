@@ -620,7 +620,8 @@ class SaveNoteAPIView(views.APIView):
 class GetNotesViewSet(mixins.ListModelMixin,
                       mixins.RetrieveModelMixin,
                       viewsets.GenericViewSet):
-    queryset = PishgamanNote.objects.all()
+    queryset = PishgamanNote.objects.all().order_by(
+                '-register_time')
     serializer_class = GetNotesSerializer
 
     def get_queryset(self):
