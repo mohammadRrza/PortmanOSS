@@ -645,7 +645,7 @@ class SetPermissionForUserAPIView(views.APIView):
         try:
             email = request.GET.get('email', None)
 
-            result = set_permission_for_user(email)
+            result = update_permission_for_user(email)
             return JsonResponse({'result': result})
 
         except Exception as ex:
@@ -682,7 +682,7 @@ def update_permission_for_user(email):
             'id',
             flat=True)
         for item in user_instance:
-            instance = UserPermissionProfileObject.objects.create(object_id=100, content_type_id=16,
+            instance = UserPermissionProfileObject.objects.create(object_id=97, content_type_id=16,
                                                                   user_permission_profile_id=item)
         print(user_instance)
         return ''
