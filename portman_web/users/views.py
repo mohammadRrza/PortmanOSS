@@ -645,7 +645,7 @@ class SetPermissionForUserAPIView(views.APIView):
         try:
             email = request.GET.get('email', None)
 
-            result = update_permission_for_user(email)
+            result = set_permission_for_user(email)
             return JsonResponse({'result': result})
 
         except Exception as ex:
