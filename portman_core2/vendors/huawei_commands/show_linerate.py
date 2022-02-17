@@ -40,28 +40,30 @@ class ShowLineRate(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            if tn.read_until('>>User name:'):
+            if tn.read_until(b'>>User name:'):
                 tn.write((self.__telnet_username + "\n").encode('utf-8'))
-            if tn.read_until('>>User password:'):
+            if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write("enable\r\n")
-            tn.write("config\r\n")
+            tn.write(b"enable\r\n")
+            tn.write(b"config\r\n")
             for port_item in self.__port_indexes:
-                tn.write(("interface adsl 0/{0}\r\n".format(port_item['slot_number'])).encode('utf-8'))
-                tn.write(("display line operation {0}\r\n".format(port_item['port_number'])).encode('utf-8'))
-                tn.read_until(("display line operation {0}\r\n".format(port_item['port_number'])).encode('utf-8'))
-                tn.write(("y\r\n").encode('utf-8'))
+                tn.write((b"interface adsl 0/{0}\r\n".format(port_item['slot_number'])).encode('utf-8'))
+                tn.write((b"display line operation {0}\r\n".format(port_item['port_number'])).encode('utf-8'))
+                tn.read_until((b"display line operation {0}\r\n".format(port_item['port_number'])).encode('utf-8'))
+                tn.write((b"y\r\n").encode('utf-8'))
                 #tn.write(("\r\n").encode('utf-8'))
-                tn.write("quit\r\n")
-            result = '\n'.join(eval(repr(tn.read_until('Upstream total output power(dBm)')).replace(r"---- More ( Press 'Q' to break ) ----\x1b[37D                                     \x1b[37D","")).split("\r\n")[:-1])
-            tn.write("quit\r\n")
-            tn.write("quit\r\n")
-            tn.write("y\r\n")
-            tn.close()
+                tn.write(b"quit\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end")
+            #result = '\n'.join(eval(repr(tn.read_until('Upstream total output power(dBm)')).replace(r"---- More ( Press 'Q' to break ) ----\x1b[37D                                     \x1b[37D","")).split("\r\n")[:-1])
+            # tn.write("quit\r\n")
+            # tn.write("quit\r\n")
+            # tn.write("y\r\n")
+            # tn.close()
             print('*******************************************')
             print(("show linerate {0}".format(result)))
             print('*******************************************')
-            return {"result": result}
+            return {"result": str(result)}
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
