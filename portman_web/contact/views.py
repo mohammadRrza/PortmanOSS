@@ -17,8 +17,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Q
 from django.core.serializers import serialize
-from classes.mellat_bank_scrapping import get_captcha
-
+from classes.mellat_bank_scrapping import get_capt
 
 # from classes.farzanegan_selenium import farzanegan_scrapping
 # from portman_web.classes.farzanegan_selenium import farzanegan_scrapping
@@ -623,6 +622,7 @@ class GetNotesViewSet(mixins.ListModelMixin,
     queryset = PishgamanNote.objects.all().order_by(
                 '-register_time')
     serializer_class = GetNotesSerializer
+    pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
         queryset = self.queryset

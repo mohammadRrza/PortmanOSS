@@ -11,6 +11,7 @@ from users.models import PortmanLog
 
 User = get_user_model()
 
+
 class UserSerializer(serializers.ModelSerializer):
     last_login = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', required=False, read_only=True)
     date_joined = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', required=False, read_only=True)
@@ -46,6 +47,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -57,6 +59,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         if User.objects.filter(email=value).exclude(pk=self.instance.pk).exists():
             raise serializers.ValidationError('Email already exists')
         return value
+
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True)
@@ -79,6 +82,7 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Password mismatch")
         return data
 
+
 class UserAuditLogSerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField('get_created_persian_date')
 
@@ -91,7 +95,6 @@ class UserAuditLogSerializer(serializers.ModelSerializer):
 
 
 class PermissionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Permission
         fields = ('id', 'title', 'codename', 'description')
