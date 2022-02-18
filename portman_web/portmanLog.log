@@ -30,3 +30,4 @@ Traceback (most recent call last):
 TypeError: Object of type FarzaneganTDLTE is not JSON serializable
 Not Found: /favicon.ico
 Unauthorized: /api/v1/dslamport/run-command/
+Unauthorized: /api/v1/dslamport/run-command/
