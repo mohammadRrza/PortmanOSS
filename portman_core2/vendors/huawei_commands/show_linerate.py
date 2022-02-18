@@ -57,6 +57,7 @@ class ShowLineRate(BaseCommand):
                 tn.write(b"quit\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            print(result)
             #result = '\n'.join(eval(repr(tn.read_until('Upstream total output power(dBm)')).replace(r"---- More ( Press 'Q' to break ) ----\x1b[37D                                     \x1b[37D","")).split("\r\n")[:-1])
             # tn.write("quit\r\n")
             # tn.write("quit\r\n")
