@@ -485,7 +485,7 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
         upp_id = self.get_object().id
         uppo_list = [item.as_json() for item in
                      UserPermissionProfileObject.objects.filter(user_permission_profile__id=upp_id)]
-        return uppo_list
+        return HttpResponse(uppo_list, content_type='application/json')
 
     """
     Destroy a model instance.
