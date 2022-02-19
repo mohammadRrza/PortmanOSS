@@ -414,10 +414,6 @@ class UserPermissionProfileObject(models.Model):
         try:
             name = None
             model_type = self.content_type.model
-            print('===================================')
-            print(DSLAM.objects.get(id=self.object_id).name)
-            print(model_type)
-            print('===================================')
             if model_type == 'dslam':
                 name = DSLAM.objects.get(id=self.object_id).name
             elif model_type == 'command':

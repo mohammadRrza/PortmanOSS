@@ -483,8 +483,9 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
         user = request.user
         data = self.request.query_params
         upp_id = self.get_object().id
-        uppo_list = [item for item in
-                     UserPermissionProfileObject.objects.filter(user_permission_profile__id=upp_id).values()]
+        uppo_list = [item.as_json() for item in
+                     UserPermissionProfileObject.objects.filter(user_permission_profile__id=upp_id)]
+        print(uppo_list)
         return JsonResponse({'result': uppo_list})
 
     """
