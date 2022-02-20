@@ -60,12 +60,15 @@ class ShowProfiles(BaseCommand):
                 output += str(result)
                 tn.write(b"\r\n")
             tn.close()
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result.decode('utf-8'), status=200)
+
             result = str(output).split("\\r\\n")
             result = [re.sub(r"\s+--P[a-zA-Z +'\\1-9[;-]+J", "", val) for val in result if
                       re.search(r'name:\s', val)]
             result = [val.replace("name: ", '').strip() for val in result]
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
