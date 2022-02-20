@@ -99,10 +99,10 @@ class ShowProfiles(BaseCommand):
                 i = b.split(')')
                 d[i[0].replace('( ', '')] = i[1]
             result = d
-            # if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-            #     str_join = "\r\n"
-            #     str_join = str_join.join(result)
-            #     return dict(result=str_join, status=200)
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
