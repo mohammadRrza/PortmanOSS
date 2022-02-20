@@ -83,7 +83,7 @@ class ShowAllVLANs(BaseCommand):
             result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;-]+('b')[a-zA-Z +\\1-9[;-]+H", '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}', val)]
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                str_join = "\\r\\n"
+                str_join = "\r\n"
                 str_join = str_join.join(result)
                 return dict(result=str_join, status=200)
             tn.close()
