@@ -7880,7 +7880,7 @@ class DslamCommandsV2APIView(views.APIView): #111111111111
                 return JsonResponse({'response': result})
 
             elif dslam_type == 2:  # huawei
-                return JsonResponse({'response': dslam_type})
+                return JsonResponse({'response': result, 'DslamType': 'huawei'})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
                 if command == 'show mac by slot port':
                     result = result.split("\\r\\n")
