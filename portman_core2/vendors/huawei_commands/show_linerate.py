@@ -72,6 +72,10 @@ class ShowLineRate(BaseCommand):
                 output += str(result.decode('utf-8'))
                 tn.write(b"y")
             result = output.split("\r\n")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             tn.write(b"quit\r\n")
             # result = '\n'.join(eval(repr(tn.read_until(b'Upstream total output power(dBm)')).replace(r"---- More ( Press 'Q' to break ) ----\x1b[37D                                     \x1b[37D","")).split("\r\n")[:-1])
             tn.write(b"quit\r\n")
