@@ -69,7 +69,7 @@ class ShowLineRate(BaseCommand):
             output = str(result)
             while '#' not in str(result):
                 result = tn.read_until(b"#", 0.1)
-                output += str(result.decode('utf-8'))
+                output += str(result)
                 tn.write(b"y")
             result = output.split("\r\n")
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
