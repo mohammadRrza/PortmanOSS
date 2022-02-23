@@ -27,6 +27,15 @@ from .huawei_commands.display_if_sip_attribute_running import DisplayIfSipAttrib
 from .huawei_commands.display_sippstnuser_reg_state import DisplaySippstnuserRegState
 from .huawei_commands.display_sippstnuser_call_state import DisplaySippstnuserCallState
 from .huawei_commands.ngn_board_confirm import NGNBoradConfirm
+from .huawei_commands.profile_vdsl_show import ProfileVDSLShow
+from .huawei_commands.show_profile_by_port import ShowProfileByPort
+from .huawei_commands.show_mac_by_slot import ShowMacBySlot
+from .huawei_commands.port_reset import PortReset
+from .huawei_commands.show_card import ShowCard
+from .huawei_commands.show_pvc import ShowPVC
+from .huawei_commands.ip_show import IPShow
+from .huawei_commands.ip_arp_show import IPARPShow
+from .huawei_commands.sys_info_show import SysInfoShow
 
 '''
 from huawei_commands.selt import Selt
@@ -56,6 +65,7 @@ class Huawei(BaseDSLAM):
     command_factory = CommandFactory()
     command_factory.register_type('show mac', ShowMac)
     command_factory.register_type('profile adsl show', ProfileADSLShow)
+    command_factory.register_type('profile vdsl show', ProfileVDSLShow)
     command_factory.register_type('get dslam board', GetDSLAMBoard)
     command_factory.register_type('port enable', PortEnable)
     command_factory.register_type('change lineprofile port', ChangeLineProfilePort)
@@ -73,9 +83,17 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('display_sippstnuser_reg_state', DisplaySippstnuserRegState)
     command_factory.register_type('display_sippstnuser_call_state', DisplaySippstnuserCallState)
     command_factory.register_type('ngn_board_confirm', NGNBoradConfirm)
+    command_factory.register_type('show profile by port', ShowProfileByPort)
+    command_factory.register_type('show mac by slot', ShowMacBySlot)
+    command_factory.register_type('port reset', PortReset)
+    command_factory.register_type('Show Card', ShowCard)
+    command_factory.register_type('show pvc', ShowPVC)
+    command_factory.register_type('IP Show', IPShow)
+    command_factory.register_type('ip arp show', IPARPShow)
+    command_factory.register_type('sys info show', SysInfoShow)
 
     '''
-    command_factory.register_type('selt', Selt)
+    command_factory.register_type('showSelt', Selt)
     command_factory.register_type('show lineinfo', ShowLineInfo)
     command_factory.register_type('show linestat slot', ShowLineStatSlot)
     command_factory.register_type('show performance', ShowPerformance)

@@ -6,12 +6,13 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
-class LcmanShow(BaseCommand):
-    def __init__(self, params):
+
+class ShowMacBySlot(BaseCommand):
+    def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_name = None
+        self.__port_indexes = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
 
     @property
@@ -21,14 +22,6 @@ class LcmanShow(BaseCommand):
     @HOST.setter
     def HOST(self, value):
         self.__HOST = value
-
-    @property
-    def port_name(self):
-        return self.__port_name
-
-    @port_name.setter
-    def port_name(self, value):
-        self.__port_name = self.__clear_port_name(value)
 
     @property
     def telnet_username(self):
@@ -46,35 +39,36 @@ class LcmanShow(BaseCommand):
     def telnet_password(self, value):
         self.__telnet_password = value
 
-    def __clear_port_name(self,port_name):
-        pattern = r'\d+(\s)?-(\s)?\d+'
-        st = re.search(pattern,port_name,re.M|re.DOTALL)
-        return st.group()
-
     retry = 1
+
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             if tn.read_until(b'>>User name:'):
-                tn.write((self.__telnet_username + "\n").encode('utf-8'))
+                tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
-            tn.write(("display board 0\r\n").encode('utf-8'))
-            tn.read_until(b'display board 0')
-            tn.write(b"quit\r\n")
-            result = tn.read_until(b'quit').decode('utf-8').split('\r\n')[:-1]
-            tn.write(b"quit\r\n")
+            tn.read_until(b"(config)#")
+            # tn.write(("display mac-address adsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
+            tn.write(("display mac-address board 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
+            tn.write(b'end\r\n')
+            result = tn.read_until(b"end")
+            tn.write(b"\r\n")
+            if "Failure:" in str(result):
+                return dict(result="There is not any MAC address record", status=500)
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            print('**************************************')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return result.decode('utf-8')
+            print('***********************')
             print(result)
-            print('**************************************')
-            return {"result": result}
+            print('***********************')
+            result = str(result).split("\\r\\n")
+            result = [val for val in result if re.search(r'-{4,}|\s{4,}|:', val)]
+            return dict(result=result, port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

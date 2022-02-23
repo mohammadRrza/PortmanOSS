@@ -58,12 +58,13 @@ class ShowLineRate(BaseCommand):
             tn.write(b"enable\r\n")
             tn.read_until(b"#")
             tn.write(b"config\r\n")
-            print("###############################")
+            tn.read_until(b"(config)#")
             tn.write(("interface adsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
-            tn.read_until(b"#")
+            result = tn.read_until(b"(config)#")
+            if "Failure:" in str(result):
+                tn.write(("interface vdsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
             tn.write(("display line operation {0}\r\n".format(self.__port_indexes['port_number'])).encode('utf-8'))
             tn.write(("y\r\n").encode('utf-8'))
-            #tn.write(("\r\n").encode('utf-8'))
             tn.read_until(b"#")
             result = tn.read_until(b"#", 0.2)
             output = str(result)
@@ -122,21 +123,21 @@ class ShowLineRate(BaseCommand):
                    }
 
             for inx, val in enumerate(result):
-                if "Downstream channel SNR margin" in val:
+                if "Downstream channel SNR margin" in val or "Line SNR margin downstream" in val:
                     res['noisemarginDown'] = val.split(":")[1].strip()
-                if "Upstream channel SNR margin" in val:
+                if "Upstream channel SNR margin" in val or "Line SNR margin upstream" in val:
                     res['noisemarginUp'] = val.split(":")[1].strip()
-                if "Downstream max. attainable rate" in val:
+                if "Downstream max. attainable rate" in val or "attainable rate downstream" in val:
                     res['attainablerateDown'] = val.split(":")[1].strip()
-                if "Upstream max. attainable rate" in val:
+                if "Upstream max. attainable rate" in val or "attainable rate upstream" in val:
                     res['attainablerateUp'] = val.split(":")[1].strip()
-                if "Downstream actual net data rate" in val:
+                if "Downstream actual net data rate" in val or "Actual line rate downstream" in val:
                     res['actualrateDown'] = val.split(":")[1].strip()
-                if "Upstream actual net data rate" in val:
+                if "Upstream actual net data rate" in val or "Actual line rate upstream" in val:
                     res['actualrateUp'] = val.split(":")[1].strip()
-                if "Downstream channel attenuation" in val:
+                if "Downstream channel attenuation" in val or "Line attenuation downstream" in val:
                     res['attenuationDown'] = val.split(":")[1].strip()
-                if "Upstream channel attenuation" in val:
+                if "Upstream channel attenuation" in val or "Line attenuation upstream" in val:
                     res['attenuationUp'] = val.split(":")[1].strip()
 
             return dict(result=res, status=200)

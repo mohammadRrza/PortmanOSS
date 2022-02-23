@@ -1,7 +1,10 @@
+import os
+import sys
 import telnetlib
 import time
 from .command_base import BaseCommand
 import re
+
 
 class VlanShow(BaseCommand):
     def __init__(self, params):
@@ -48,32 +51,36 @@ class VlanShow(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
-            tn = telnetlib.Telnet(self.__HOST,23,20)
+            tn = telnetlib.Telnet(self.__HOST, 23, 20)
             time.sleep(1)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if self.__telnet_password:
-                tn.read_until("Password: ")
+                tn.read_until(b"Password: ")
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
             tn.write(("vlan show\r\n").encode('utf-8'))
             time.sleep(1)
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            results = result.split('\n')
+            tn.write(b"end\r\n")
+            result = tn.read_until(b'end')
+            results = result.split(b'\n')
             vlans = {}
-            for line in results[5:len(results)-1]:
+            for line in results[5:len(results) - 1]:
                 items = line.split()
                 vlans[items[0]] = items[-1]
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"exit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('********************************')
             print(vlans)
             print('********************************')
             return {"result": vlans}
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
             if self.retry < 4:
