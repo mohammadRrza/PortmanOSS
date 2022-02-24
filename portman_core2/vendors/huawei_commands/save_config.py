@@ -7,11 +7,12 @@ from .command_base import BaseCommand
 import re
 
 
-class VlanShow(BaseCommand):
+class SaveConfig(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
+        self.__port_name = None
         self.device_ip = params.get('device_ip')
 
     @property
@@ -64,16 +65,14 @@ class VlanShow(BaseCommand):
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.read_until(b"(config)#")
-            tn.write(b"display vlan all\r\n")
+            tn.write(b"save\r\n")
             tn.write(b"\r\n")
-            result = tn.read_until(b"(config)#", 0.1)
+            result = tn.read_until(b"completely", 0.1)
             output = str(result)
-            while '(config)#' not in str(result):
-                tn.write(b"\r\n")
-                result = tn.read_until(b"(config)#", 0.1)
+            while 'completely' not in str(result):
+                result = tn.read_until(b"completely", 0.1)
                 output += str(result.decode('utf-8'))
             result = output.split("\r\n")
-            result = [val for val in result if re.search(r'\s{4,}|-{3,}|Total', val)]
             tn.write(b"quit\r\n")
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
@@ -81,7 +80,7 @@ class VlanShow(BaseCommand):
             print('**************************************')
             print(result)
             print('**************************************')
-            return dict(result=result, status=200)
+            return dict(result="System data has been saved completely", status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

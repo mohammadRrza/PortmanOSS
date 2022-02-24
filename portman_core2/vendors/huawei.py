@@ -36,6 +36,10 @@ from .huawei_commands.show_pvc import ShowPVC
 from .huawei_commands.ip_show import IPShow
 from .huawei_commands.ip_arp_show import IPARPShow
 from .huawei_commands.sys_info_show import SysInfoShow
+from .huawei_commands.sys_snmp_show import SysSnmpShow
+from .huawei_commands.acl_maccout_show import ACLMacCountShow
+from .huawei_commands.vlan_show import VlanShow
+from .huawei_commands.save_config import SaveConfig
 
 '''
 from huawei_commands.selt import Selt
@@ -48,7 +52,6 @@ from huawei_commands.port_pvc_set import PortPvcSet
 from huawei_commands.port_pvc_delete import PortPvcDelete
 from huawei_commands.add_to_vlan import AddToVlan
 from huawei_commands.create_vlan import CreateVlan
-from huawei_commands.vlan_show import VlanShow
 from huawei_commands.change_admin_status import ChangeAdminStatus
 from huawei_commands.reset_admin_status import ResetAdminStatus
 from huawei_commands.switch_mac_flush_all import SwitchMacFlushAll
@@ -91,6 +94,10 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('IP Show', IPShow)
     command_factory.register_type('ip arp show', IPARPShow)
     command_factory.register_type('sys info show', SysInfoShow)
+    command_factory.register_type('show snmp community', SysSnmpShow)
+    command_factory.register_type('acl maccount show', ACLMacCountShow)
+    command_factory.register_type('Show VLAN', VlanShow)
+    command_factory.register_type('save config', SaveConfig)
 
     '''
     command_factory.register_type('showSelt', Selt)
@@ -106,7 +113,6 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('port pvc delete', PortPvcDelete)
     command_factory.register_type('add to vlan', AddToVlan)
     command_factory.register_type('create vlan', CreateVlan)
-    command_factory.register_type('vlan show', VlanShow)
     command_factory.register_type('change admin status', ChangeAdminStatus)
     command_factory.register_type('reset admin status', ResetAdminStatus)
     command_factory.register_type('switch mac flush all', SwitchMacFlushAll)

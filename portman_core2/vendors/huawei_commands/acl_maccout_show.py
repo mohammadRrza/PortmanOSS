@@ -7,11 +7,13 @@ from .command_base import BaseCommand
 import re
 
 
-class VlanShow(BaseCommand):
+class ACLMacCountShow(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
+        self.__port_name = None
+        self.__port_indexes = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
 
     @property
@@ -64,7 +66,7 @@ class VlanShow(BaseCommand):
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.read_until(b"(config)#")
-            tn.write(b"display vlan all\r\n")
+            tn.write("display mac-address max-mac-count adsl 0/{0}/{1}\r\n".format(self.__port_indexes['slot_number'], self.__port_indexes['port_number']).encode('utf-8'))
             tn.write(b"\r\n")
             result = tn.read_until(b"(config)#", 0.1)
             output = str(result)
@@ -73,7 +75,7 @@ class VlanShow(BaseCommand):
                 result = tn.read_until(b"(config)#", 0.1)
                 output += str(result.decode('utf-8'))
             result = output.split("\r\n")
-            result = [val for val in result if re.search(r'\s{4,}|-{3,}|Total', val)]
+            # result = [val for val in result if re.search(r'^(?![\s\S])|:|Total', val)]
             tn.write(b"quit\r\n")
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
