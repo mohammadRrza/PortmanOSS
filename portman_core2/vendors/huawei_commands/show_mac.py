@@ -1,8 +1,11 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
 from .command_base import BaseCommand
 import re
+
 
 class ShowMac(BaseCommand):
     def __init__(self, params=None):
@@ -36,43 +39,45 @@ class ShowMac(BaseCommand):
         self.__telnet_password = value
 
     retry = 1
+
     def run_command(self):
-        results = []
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            if tn.read_until('>>User name:'):
+            if tn.read_until(b'>>User name:'):
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            if tn.read_until('>>User password:'):
+            if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write("\r\n")
-            tn.write("\r\n")
-            tn.write("enable\r\n")
-            tn.write("config\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"enable\r\n")
+            tn.write(b"config\r\n")
+            tn.read_until(b"(config)#")
             tn.write(("display mac-address all\r\n\r\n").encode('utf-8'))
-            tn.write(("\r\n").encode('utf-8'))
-            for item in range(7):
-                time.sleep(1)
-                tn.write("n\r\n")
-                tn.write("next\r\n")
-                result = tn.read_until("next")
-                if 'next' in result:
-                    break
-            print(result)
-            com =re.compile(r'(?P<mac>\w{4}-\w{4}-\w{4})\s+\S+\s+\d{1}(\s)?/(?P<slot_number>\d+)(\s/(?P<port_number>\d+)\s+[\d+|\-]+\s+[\d+|\-]+)?\s+(?P<vlan_id>(\d+|\w+))')
-            results = [m.groupdict() for m in com.finditer(result)]
-            tn.write("quit\r\n")
-            tn.write("y\r\n")
+            result = tn.read_until(b"(config)#", 0.2)
+            output = str(result)
+            while '(config)#' not in str(result):
+                tn.write(b"\r\n")
+                result = tn.read_until(b"(config)#", 0.1)
+                output += str(result.decode('utf-8'))
+            result = output.split("\r\n")
+            result = [re.sub(r"-+\s[a-zA-Z\s(\')-]+\S+\s+\S\[37D", "", val) for val in result if
+                      re.search(r'-{3,}|\s{4,}', val)]
+            tn.write(b"quit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('***********************')
-            print(results)
+            print(result)
             print('***********************')
-            return {'result': results}
-        except (EOFError,socket_error) as e:
+            return dict(result=result, status=200)
+        except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
             if self.retry < 4:
