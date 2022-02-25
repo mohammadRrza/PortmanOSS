@@ -1459,31 +1459,35 @@ class CommandViewSet(mixins.ListModelMixin,
 
         if dslam_id:
             dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type_id
-            if username and not bool(ldap_login):
-                print('username')
-                user_type = User.objects.get(username=username).type
-                user_id = User.objects.get(username=username).id
-                model_user = User()
-                model_user.type = user_type
-                model_user.set_user_id(user_id)
-                allowed_commands = model_user.get_allowed_commands()
-                allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values()
-                print(allowed_commands_dslam_type)
+            if username and ldap_login == 'false':
+                try:
+                    print('username')
+                    user_type = User.objects.get(username=username).type
+                    user_id = User.objects.get(username=username).id
+                    model_user = User()
+                    model_user.type = user_type
+                    model_user.set_user_id(user_id)
+                    allowed_commands = model_user.get_allowed_commands()
+                    allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list(
+                    'command', flat=True)
+                    print(allowed_commands_dslam_type)
 
-                print(user_id)
-                if user_type == 'RESELLER':
-                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
-                    queryset = queryset.filter(id__in=allowed_commands_dslam_type)
-                    queryset = queryset.filter(id__in=allowed_commands)
-                elif user_type == 'DIRECTRESELLER':
-                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
-                    queryset = queryset.filter(id__in=allowed_commands_dslam_type)
-                    queryset = queryset.filter(id__in=allowed_commands)
-                else:
-                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
-                    command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id',
-                                                                                                     flat=True)
-                    queryset = queryset.filter(id__in=command_ids)
+                    print(user_id)
+                    if user_type == 'RESELLER':
+                        dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                        queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                        queryset = queryset.filter(id__in=allowed_commands)
+                    elif user_type == 'DIRECTRESELLER':
+                        dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                        queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                        queryset = queryset.filter(id__in=allowed_commands)
+                    else:
+                        dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                        command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id',
+                                                                                                         flat=True)
+                        queryset = queryset.filter(id__in=command_ids)
+                except Exception as e:
+                    print(e)
             elif ldap_email and bool(ldap_login):
                 user_type = User.objects.get(email=ldap_email).type
                 user_id = User.objects.get(email=ldap_email).id
@@ -1491,7 +1495,8 @@ class CommandViewSet(mixins.ListModelMixin,
                 model_user.type = user_type
                 model_user.set_user_id(user_id)
                 allowed_commands = model_user.get_allowed_commands()
-                allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command', flat=True)
+                allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list(
+                    'command', flat=True)
                 if user_type == 'SUPPORT':
                     dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
                     queryset = queryset.filter(id__in=allowed_commands_dslam_type)
@@ -6060,7 +6065,8 @@ class FiberHomeCommandAPIView(views.APIView):
                 current_user_profile = ''
                 if 'profile_name' in port_info:
                     current_user_profile = port_info['profile_name']
-                return JsonResponse({'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'huawei'})
+                return JsonResponse(
+                    {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'huawei'})
 
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show linerate', params)
@@ -7851,7 +7857,7 @@ class GetDslamPorts(views.APIView):
             return str(ex) + "  // " + str(exc_tb.tb_lineno)
 
 
-class DslamCommandsV2APIView(views.APIView): #111111111111
+class DslamCommandsV2APIView(views.APIView):  # 111111111111
 
     def get_permissions(self):
         return permissions.IsAuthenticated(),
