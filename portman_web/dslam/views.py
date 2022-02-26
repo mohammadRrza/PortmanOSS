@@ -6001,7 +6001,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
             log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
                                                           ip, 'Register Port', False,
                                                           str(ex) + '/' + str(exc_tb.tb_lineno),
-                                                          log_reseller_name)
+                                                          '')
             PortmanLogging('', log_params)
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
