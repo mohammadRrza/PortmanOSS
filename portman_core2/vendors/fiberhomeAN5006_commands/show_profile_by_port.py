@@ -51,7 +51,7 @@ class ShowProfileByPort(BaseCommand):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd qos\r\n")
             tn.write(
-                "show port rate-limit profile binding interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
+                "show port rate-limit-profile-binding interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
                                                                                     self.port_conditions[
                                                                                         'port_number']).encode(
                     'utf-8'))
@@ -62,7 +62,6 @@ class ShowProfileByPort(BaseCommand):
             elif "ifStr" in str(result):
                 return "Card number or Port number is out of range."
             result = str(result).split("\\r\\n")
-            print(result)
             result = [val for val in result if re.search(r'\s{3,}', val)]
             profile_id = f"id: {result[1].split()[1]}"
             print(profile_id)
