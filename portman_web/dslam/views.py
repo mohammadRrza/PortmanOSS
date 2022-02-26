@@ -6085,10 +6085,10 @@ class FiberHomeCommandAPIView(views.APIView):
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
 
-                # port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
-                # current_user_profile = port_info['profile_name']
+                port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
+                current_user_profile = port_info['profile_name']
                 return JsonResponse(
-                    {'response': result,  'DslamType': 'fiberhomeAN5006'})
+                    {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN5006'})
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
                 return JsonResponse({'response': dslam_type})
