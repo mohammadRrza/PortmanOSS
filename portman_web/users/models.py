@@ -82,6 +82,7 @@ class User(AbstractUser):
 
     @property
     def allowed_dslams(self):
+        print(self.type)
         if self.type == "RESELLER":
             if self.reseller.name == 'fanava':
                 identifier_keys = ResellerPort.objects.filter(reseller=self.reseller).values_list('identifier_key',
@@ -93,6 +94,15 @@ class User(AbstractUser):
 
             return dslams
 
+        elif self.type == "SUPPORT":
+            allowed_dslam_ids = UserPermissionProfileObject.objects.filter(
+                object_id__isnull=False,
+                content_type__model='dslam',
+                user_permission_profile__user=self.user_id,
+                user_permission_profile__action='allow',
+                user_permission_profile__is_active=True,
+            ).exclude(object_id__in=self.denied_dslam_ids).values_list('object_id', flat=True)
+            return list(allowed_dslam_ids)
         else:
             permission = Permission.objects.get(codename='view_dslam')
             pp = PermissionProfilePermission.objects.filter(permission=permission)[0]
@@ -223,6 +233,9 @@ class User(AbstractUser):
     ############# permission related methods ##########
     def get_allowed_commands(self):
         return self.allowed_commands
+
+    def get_allowed_dslams(self):
+        return self.allowed_dslams
 
     def get_user_telecom_centers(self, permission_name):
         if self.type == "RESELLER":

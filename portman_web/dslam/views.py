@@ -586,7 +586,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         queryset = self.queryset
         user = self.request.user
-
+        username = self.request.query_params.get('username', None)
         sort_field = self.request.query_params.get('sort_field', None)
         dslam_name = self.request.query_params.get('search_dslam', None)
         ip = self.request.query_params.get('search_ip', None)
@@ -596,7 +596,17 @@ class DSLAMViewSet(mixins.ListModelMixin,
         active = self.request.query_params.get('search_active', None)
         status = self.request.query_params.get('search_status', None)
         dslam_type_id = self.request.query_params.get('search_type', None)
+        ldap_login = self.request.query_params.get('ldap_login', None)
 
+        if username and ldap_login == 'false':
+            user_type = User.objects.get(username=username).type
+            user_id = User.objects.get(username=username).id
+            model_user = User()
+            model_user.type = user_type
+            model_user.set_user_id(user_id)
+            allowed_dslams = model_user.get_allowed_dslams()
+            if user_type == 'SUPPORT':
+                queryset = queryset.filter(id__in=allowed_dslams)
         if dslam_type_id:
             queryset = queryset.filter(dslam_type__id=dslam_type_id)
 
@@ -1469,7 +1479,7 @@ class CommandViewSet(mixins.ListModelMixin,
                     model_user.set_user_id(user_id)
                     allowed_commands = model_user.get_allowed_commands()
                     allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list(
-                    'command', flat=True)
+                        'command', flat=True)
                     print(allowed_commands_dslam_type)
 
                     print(user_id)
@@ -6001,7 +6011,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
             log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
                                                           ip, 'Register Port', False,
                                                           str(ex) + '/' + str(exc_tb.tb_lineno),
-                                                          '')
+                                                          log_reseller_name)
             PortmanLogging('', log_params)
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
