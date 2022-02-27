@@ -5786,7 +5786,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
                 city_id = TelecomCenter.objects.get(id=telecom_id).city_id
             except ObjectDoesNotExist as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
-                log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '', log_date,
                                                               ip, 'Register Port', False,
                                                               str(ex) + '/' + str(exc_tb.tb_lineno),
                                                               log_reseller_name)
@@ -5801,7 +5801,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
 
                 except ObjectDoesNotExist as ex:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
-                    log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '',
+                    log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '',
                                                                   log_date,
                                                                   ip, 'Register Port', False,
                                                                   str(ex) + '/' + str(exc_tb.tb_lineno),
@@ -5842,7 +5842,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
             # identifier_key = mdf_dslam.identifier_key
         except ObjectDoesNotExist as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '', log_date,
                                                           ip, 'Register Port', False,
                                                           str(ex) + '/' + str(exc_tb.tb_lineno),
                                                           log_reseller_name)
@@ -5850,7 +5850,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
             return JsonResponse({'result': str(ex), 'id': -1})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '', log_date,
                                                           ip, 'Register Port', False,
                                                           str(ex) + '/' + str(exc_tb.tb_lineno),
                                                           log_reseller_name)
@@ -5860,7 +5860,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
                 return JsonResponse({'result': 'Error is {0}--{1}'.format(ex, exc_tb.tb_lineno)})
             except ObjectDoesNotExist as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
-                log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '', log_date,
                                                               ip, 'Register Port', False,
                                                               str(ex) + '/' + str(exc_tb.tb_lineno),
                                                               log_reseller_name)
@@ -5936,14 +5936,14 @@ class AddToVlanAPIView(views.APIView):  # 000000
 
             # result2 = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
             log_status = True if isinstance(result, dict) else False
-            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', result, log_date,
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', result, log_date,
                                                           ip, 'Register Port', log_status, '', log_reseller_name)
             PortmanLogging(result, log_params)
             return Response({'result': result})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '', log_date,
                                                           ip, 'Register Port', False,
                                                           str(ex) + '/' + str(exc_tb.tb_lineno),
                                                           log_reseller_name)
