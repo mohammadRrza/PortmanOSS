@@ -607,6 +607,9 @@ class DSLAMViewSet(mixins.ListModelMixin,
             allowed_dslams = model_user.get_allowed_dslams()
             if user_type == 'SUPPORT':
                 queryset = queryset.filter(id__in=allowed_dslams)
+            if user_type == 'DIRECTRESELLER':
+                queryset = queryset.filter(id__in=allowed_dslams)
+
         if dslam_type_id:
             queryset = queryset.filter(dslam_type__id=dslam_type_id)
 
@@ -1471,7 +1474,6 @@ class CommandViewSet(mixins.ListModelMixin,
             dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type_id
             if username and ldap_login == 'false':
                 try:
-                    print('username')
                     user_type = User.objects.get(username=username).type
                     user_id = User.objects.get(username=username).id
                     model_user = User()

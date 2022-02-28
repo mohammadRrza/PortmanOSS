@@ -691,3 +691,24 @@ def update_permission_for_user(email):
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         return str(ex)
+
+
+def set_dslam_permission_for_user(username):
+    try:
+        user_id = User.objects.get(username=username).id
+        permission_profile_id = 21
+        user_instance = UserPermissionProfile.objects.create(action='allow', is_active='t',
+                                                             permission_profile_id=permission_profile_id,
+                                                             user_id=user_id)
+        user_profile_id = UserPermissionProfile.objects.get(user_id=user_id).id
+        user_permission_profile_object = UserPermissionProfileObject.objects.filter(
+            user_permission_profile_id=93).values_list('object_id',
+                                                       flat=True)
+        for item in user_permission_profile_object:
+            instance = UserPermissionProfileObject.objects.create(object_id=item, content_type_id=16,
+                                                                  user_permission_profile_id=user_profile_id)
+        return instance
+    except Exception as ex:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        return str(ex)

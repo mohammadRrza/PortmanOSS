@@ -103,6 +103,16 @@ class User(AbstractUser):
                 user_permission_profile__is_active=True,
             ).exclude(object_id__in=self.denied_dslam_ids).values_list('object_id', flat=True)
             return list(allowed_dslam_ids)
+        elif self.type == "DIRECTRESELLER":
+            print(self.user_id)
+            allowed_dslam_ids = UserPermissionProfileObject.objects.filter(
+                object_id__isnull=False,
+                content_type__model='dslam',
+                user_permission_profile__user=self.user_id,
+                user_permission_profile__action='allow',
+                user_permission_profile__is_active=True,
+            ).exclude(object_id__in=self.denied_dslam_ids).values_list('object_id', flat=True)
+            return list(allowed_dslam_ids)
         else:
             permission = Permission.objects.get(codename='view_dslam')
             pp = PermissionProfilePermission.objects.filter(permission=permission)[0]

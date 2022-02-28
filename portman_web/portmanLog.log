@@ -656,3 +656,5 @@ Traceback (most recent call last):
     if self.reseller.name == 'fanava':
 AttributeError: 'NoneType' object has no attribute 'name'
 Unauthorized: /api/v1/dslam/
+Not Found: /favicon.ico
+Not Found: /api/v1/dslam/
