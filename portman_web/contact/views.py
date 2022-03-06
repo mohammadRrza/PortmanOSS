@@ -19,7 +19,12 @@ from django.db.models import Q
 from django.core.serializers import serialize
 from classes.mellat_bank_scrapping import get_captcha
 
+<<<<<<< HEAD
+
+from classes.farzanegan_selenium import farzanegan_scrapping
+=======
 # from classes.farzanegan_selenium import farzanegan_scrapping
+>>>>>>> master
 # from portman_web.classes.farzanegan_selenium import farzanegan_scrapping
 from contact.models import PishgamanNote
 
@@ -409,9 +414,9 @@ class FarzaneganScrappingAPIView(views.APIView):
         print(data)
         username = data['username']
         password = data['password']
+        owner_username = data['owner_username']
         try:
-            # result = farzanegan_scrapping(username, password)
-            result = ''
+            result = farzanegan_scrapping(username, password, owner_username)
             if result is None:
                 return Response({'result': 'Please try again!'})
             return Response({'result': result})

@@ -58,9 +58,9 @@ class ShowProfileByPort(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if "SlotNoPortConvertObjIndex" in str(result):
-                return "The Card number maybe unavailable or does not exist."
+                return dict(result="The Card number maybe unavailable or does not exist.", status=500)
             elif "ifStr" in str(result):
-                return "Card number or Port number is out of range."
+                return dict(resutl="Card number or Port number is out of range.", status=500)
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}', val)]
             profile_id = f"id: {result[1].split()[1]}"
