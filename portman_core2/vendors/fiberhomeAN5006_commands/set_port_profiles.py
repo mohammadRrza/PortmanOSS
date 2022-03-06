@@ -49,10 +49,12 @@ class SetPortProfiles(BaseCommand):
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd qos\r\n")
-            tn.write("attach rate-limit profile name {0} interface {1}/{2}".format(self.__lineprofile,
-                                                                                   self.port_conditions['slot_number'],
-                                                                                   self.port_conditions[
-                                                                                       'port_number']).encode('utf-8'))
+            tn.write("attach rate-limit profile name {0} interface {1}/{2}\r\n".format(self.__lineprofile,
+                                                                                       self.port_conditions[
+                                                                                           'slot_number'],
+                                                                                       self.port_conditions[
+                                                                                           'port_number']).encode(
+                'utf-8'))
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")

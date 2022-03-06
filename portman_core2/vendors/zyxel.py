@@ -117,7 +117,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('IP Show', ShowIP)
     command_factory.register_type('ip arp show', IPARPShow)
     command_factory.register_type('sys info show', SysInfoShow)
-    command_factory.register_type('show mac limit', ACLMacCountShow)
+    command_factory.register_type('acl maccount show', ACLMacCountShow)
     command_factory.register_type('acl pktfilter show', ACLPktfilterShow)
     command_factory.register_type('acl pppoeagent show', ACLPPPoEAgentShow)
     command_factory.register_type('switch port show', SwitchPortShow)

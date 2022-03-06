@@ -9,7 +9,7 @@ class LcmanShowSlot(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__slot = params['slot']
+        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
 
     @property
@@ -57,7 +57,7 @@ class LcmanShowSlot(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(1)
             tn.read_until(b"Password:")
-            tn.write("lcman show {0}\r\n\r\n".format(self.__slot).encode('utf-8'))
+            tn.write("lcman show {0}\r\n\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(1)
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
@@ -66,7 +66,10 @@ class LcmanShowSlot(BaseCommand):
             tn.close()
             start_point = result.find(b'slot')
             end_point = result.rfind(b'\r\n\r\n')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = result[start_point:end_point]
+
             print('********************************')
             print(result)
             print('********************************')

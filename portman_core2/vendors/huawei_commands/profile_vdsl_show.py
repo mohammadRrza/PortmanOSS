@@ -9,7 +9,7 @@ from .command_base import BaseCommand
 
 # from easysnmp import Session
 
-class ProfileADSLShow(BaseCommand):
+class ProfileVDSLShow(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
@@ -67,15 +67,17 @@ class ProfileADSLShow(BaseCommand):
             tn.write(b"\r\n")
             tn.write("enable\r\n".encode('utf-8'))
             tn.write("config\r\n".encode('utf-8'))
-            tn.write("display adsl line-profile\r\n".encode('utf-8'))
-            time.sleep(1)
+            tn.read_until(b"(config)#")
+            tn.write("display vdsl line-profile\r\n".encode('utf-8'))
             tn.write(b"\r\n")
-            time.sleep(1)
-            tn.write(b"n\r\n")
-            time.sleep(1)
-            tn.write(b"end\r\n")
-            result = tn.read_until(b"end")
-            profiles = re.findall(r'\s+(\d+)\s(\S+)\s+\S+\s?\S+?\s+\S+\s+\d+\s+\d+\s+\d+\s+\d+', str(result))
+            result = tn.read_until(b"(config)#", 0.1)
+            output = str(result)
+            while '(config)#' not in str(result):
+                tn.write(b"\r\n")
+                result = tn.read_until(b"(config)#", 0.1)
+                output += str(result.decode('utf-8'))
+            result = output.split("\r\n")
+            profiles = re.findall(r'\d+\s[a-zA-Z0-9]+', str(result))
             profile_list = []
             # for profile_index, profile_name in profiles:
             #     time.sleep(1)
@@ -140,8 +142,8 @@ class ProfileADSLShow(BaseCommand):
             #
             #     profile['extra_settings'] = profile_extra_settings
             #     profile_list.append(profile)
-            for profile_index, profile_name in profiles:
-                profile_list.append(profile_name)
+            for profile in profiles:
+                profile_list.append(profile.split()[1])
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()

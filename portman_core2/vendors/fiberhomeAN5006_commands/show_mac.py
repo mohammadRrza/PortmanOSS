@@ -44,12 +44,15 @@ class ShowMac(BaseCommand):
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            err1 = tn.read_until(b"#", 1)
+            err1 = tn.read_until(b"#", 0.2)
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd device\r\n")
+            tn.read_until(b"device#")
             tn.write("show linecard fdb interface {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-            err2 = tn.read_until(b"-----", 1)
+            err2 = tn.read_until(b"device#", 0.2)
+            if "there is no mac" in str(err2):
+                return f"There is no mac address learned by slot {self.port_conditions['slot_number']} port {self.port_conditions['port_number']}"
             if "Unknown command." in str(err2):
                 tn.write(
                     "show mac-address interface {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
@@ -68,7 +71,8 @@ class ShowMac(BaseCommand):
                 if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                     return dict(result=result.decode('utf-8'), status=200)
                 result = str(result).split("\\r\\n")
-                result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if re.search(r'\s{3,}|--{4,}|:|learning', val)]
+                result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
+                          re.search(r'\s{3,}|--{4,}|:|learning', val)]
                 return dict(result=result, status=200)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")

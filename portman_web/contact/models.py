@@ -70,6 +70,13 @@ class CenterType(models.Model):
         return self.description
 
 
+class PortType(models.Model):
+    description = models.CharField(max_length=256, blank=True, null=True)
+
+    def __str__(self):
+        return self.description
+
+
 class TelecommunicationCenters(models.Model):
     telecomCenterId = models.IntegerField(max_length=1, blank=True, null=True)
     name = models.CharField(max_length=256, blank=True, null=True)
@@ -102,6 +109,7 @@ class Order(models.Model):
     status = models.ForeignKey(PortmapState, on_delete=models.CASCADE)
     telecom = models.ForeignKey(TelecommunicationCenters, on_delete=models.CASCADE)
     dslam = models.ForeignKey(DSLAM, on_delete=models.CASCADE, null=True, blank=True)
+    port_type = models.ForeignKey(PortType, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.rastin_order_id
@@ -135,3 +143,12 @@ class FarzaneganTDLTE(models.Model):
     customer_msisdn = models.CharField(max_length=32)
     total_data_volume_income = models.CharField(max_length=32)
     owner_username = models.CharField(max_length=64)
+
+
+class PishgamanNote(models.Model):
+    province = models.CharField(max_length=120)
+    city = models.CharField(max_length=120)
+    telecom_center = models.CharField(max_length=250)
+    problem_desc = models.TextField()
+    register_time = models.DateTimeField(auto_now=True)
+    username = models.CharField(max_length=120)

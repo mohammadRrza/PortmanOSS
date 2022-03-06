@@ -93,15 +93,16 @@ class ShowProfiles(BaseCommand):
                 return f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32"
             tn.write(b"exit\r\n")
             tn.close()
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=res.decode('utf-8'), status=200)
-
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s', val)]
             d = {}
             for b in result:
                 i = b.split(')')
                 d[i[0].replace('( ', '')] = i[1]
             result = d
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)

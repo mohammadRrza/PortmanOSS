@@ -62,7 +62,8 @@ class IPARPShow(BaseCommand):
             tn.write(b"ip arp show\r\nn")
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
-
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split('\\r\\n')
             result = [val for val in result if re.search(r'--{4,}|:|\s{4,}', val)]
             for inx, line in enumerate(result):

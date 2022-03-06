@@ -34,7 +34,8 @@ portman_router.register(r'permission', PermissionViewSet, basename='permission')
 portman_router.register(r'profile', PermissionProfileViewSet, basename='permission-profile')
 portman_router.register(r'permission-profile', PermissionProfilePermissionViewSet, basename='permission-profile-permission')
 portman_router.register(r'users', UserViewSet, basename='users')
-portman_router.register(r'users-permission-profile', UserPermissionProfileViewSet, basename='user-permission-profile')
+portman_router.register(r'users-permission-profile', UserPermissionProfileViewSet, basename='user-permission-profile2')
+portman_router.register(r'users/permission-profile', UserPermissionProfileViewSet, basename='user-permission-profile')
 portman_router.register(r'users', UserViewSet, basename='users')
 portman_router.register(r'users/auditlog', UserAuditLogViewSet, basename='user-audit-log')
 portman_router.register(r'mdfdslam', MDFDSLAMViewSet, basename='mdfdslam')
@@ -73,6 +74,7 @@ portman_router.register(r'radio', RadioViewSet, basename='radio')
 portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-command')
 portman_router.register(r'portman-log', PortmanLogViewSet, basename='portman-log')
 portman_router.register(r'farzanegan_data', FarzaneganViewSet, basename='farzanegan_data')
+portman_router.register(r'pishgaman-note', GetNotesViewSet, basename='notes')
 
 
 urlpatterns = [
@@ -163,6 +165,8 @@ urlpatterns = [
     url(r'^api/v1/dslamport/farzanegan_scrapping/$', FarzaneganScrappingAPIView.as_view(), name='farzanegan_scrapping'),
     url(r'^api/v1/user/get_user_permission_profile_objects/$', GetUserPermissionProfileObjectsAPIView.as_view(),
         name='get_user_permission_profile_objects'),
+    url(r'^api/v1/user/set_permission_for_user/$', SetPermissionForUserAPIView.as_view(),
+        name='set_permission_for_user'),
     url(r'^api/v1/partak/get_partak_provinces/$', GetPartakProvincesAPIView.as_view(),
         name='get_partak_provinces'), \
     url(r'^api/v1/partak/get_partak_cities_by_province_id/$', GetPartakCitiesByProvinceIdAPIView.as_view(),
@@ -173,6 +177,7 @@ urlpatterns = [
         name='get_partak_dslam_list_by_telecom_id'),
     url(r'^api/v1/partak/update_partak_fqdn/$', UpdatePartakFqdnAPIView.as_view(),
         name='update_partak_fqdn'),
+    url(r'^api/v1/pishgaman-note/save-note/$', SaveNoteAPIView.as_view(), name='pishgaman-note'),
     # Routers
     # url(r'^api/v1/dslam/icmp_by_fqdn/connect_handler_test/$', ConnectHandlerTest.as_view(),name='connect_handler_test'),
     url(r'^api/v1/router-command/router_run_command/$', RouterRunCommandAPIView.as_view(), name='routerRunCommand'),
@@ -231,6 +236,8 @@ urlpatterns = [
         name='get_cities_from_pratak'),
     url(r'^api/v1/contact/farzanegan_provider_date/$', FarzaneganProviderDataAPIView.as_view(),
         name='farzanegan_provider_date'),
+    url(r'^api/v1/contact/get_ddr_info_exportExcel/$', FarzaneganExportExcelAPIView.as_view(),
+        name='get_ddr_info_exportExcel'),
 #portman_cdms
     url(r'^api/v1/portman_cdms/get_user_port_info/$', GetUserPortInfoFromPartakAPIView.as_view(), name='get_user_port_info'),
     url(r'^api/v1/portman_cdms/get_dslam_id_by_fqdn/$', GetDslamIdByFqdnAPIView.as_view(), name='get_dslam_id_by_fqdn'),

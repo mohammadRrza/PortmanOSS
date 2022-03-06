@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -5,7 +7,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowProfiles(BaseCommand):
+class ShowCardRange(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
@@ -58,33 +60,30 @@ class ShowProfiles(BaseCommand):
             err1 = tn.read_until(b"#", 1)
             if "Bad Password..." in str(err1):
                 return "DSLAM Password is wrong!"
-            tn.write(b"cd profile\r\n")
-            tn.read_until(b"profile#", 0.1)
-            tn.write(b"show all dsl-profile-name\r\n")
-            result = tn.read_until(b"profile#", 0.5)
-            output = str(result)
-            while 'profile#' not in str(result):
-                result = tn.read_until(b"profile#", 0.5)
-                output += str(result)
-                tn.write(b"\r\n")
-            res = result
-            result = output
-            tn.close()
-            # if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-            #     return dict(result=re.sub(r'-{2,}\w*\s\w*\s\w*\s\w*\s\w*\s\w*.\w\s\w*\s\w*\-{2,}\s\W.\d.*', '', res.decode('utf-8')), status=200)
-            result = str(result).split("\\r\\n")
-            # return dict(result=result, status=200)
-            result = [re.sub(r"\s+--P[a-zA-Z '+\\1-9[;-]+H", "", val) for val in result if re.search(r'\s{4,}', val)][1:]
-            temp_res = []
-            for i in result:
-                temp_res += i.split()
+            tn.write(b"cd device\r\n")
+            tn.write("show port {0}:{1}-{0}:{2} linelink\r\n".format(self.port_conditions['slot_number'],
+                                                                     self.port_conditions['start_port'],
+                                                                     self.port_conditions['end_port']).encode('utf-8'))
+            time.sleep(0.5)
+            tn.write(b"\r\n")
+            tn.write(b"end\r\n")
+            result = tn.read_until(b"end")
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                str_join = "\r\n"
-                str_join = str_join.join(temp_res)
-                return dict(result=str_join, status=200)
-            return dict(result=temp_res, status=200)
+                return dict(result=result.decode('utf-8'), status=200)
+            if "Invalid port list" in str(result):
+                str_res = ["There is one of the following problems:", "This card is disable",
+                           "Card number is out of range.", "Port number is out of range."]
+                return str_res
+            tn.close()
+            result = str(result).replace("\\n\\n\\r", "").replace("\\r", "")
+            result = result.split("\\n")
+            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}', val)]
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno) + '//1'))
             print(e)
             self.retry += 1
             if self.retry < 4:

@@ -1,7 +1,11 @@
+import os
+import sys
 import telnetlib
 import time
+from socket import error as socket_error
 from .command_base import BaseCommand
 import re
+
 
 class VlanShow(BaseCommand):
     def __init__(self, params):
@@ -48,32 +52,45 @@ class VlanShow(BaseCommand):
         return st.group()
 
     retry = 1
+
     def run_command(self):
         try:
-            tn = telnetlib.Telnet(self.__HOST,23,20)
-            time.sleep(1)
-            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            if self.__telnet_password:
-                tn.read_until("Password: ")
+            tn = telnetlib.Telnet(self.__HOST)
+            if tn.read_until(b'>>User name:'):
+                tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            time.sleep(1)
-            tn.write(("vlan show\r\n").encode('utf-8'))
-            time.sleep(1)
-            tn.write("end\r\n")
-            result = tn.read_until('end')
-            results = result.split('\n')
-            vlans = {}
-            for line in results[5:len(results)-1]:
-                items = line.split()
-                vlans[items[0]] = items[-1]
-            tn.write("exit\r\n")
-            tn.write("y\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"enable\r\n")
+            tn.write(b"config\r\n")
+            tn.read_until(b"(config)#")
+            tn.write(b"display vlan all\r\n")
+            tn.write(b"\r\n")
+            result = tn.read_until(b"(config)#", 0.1)
+            output = str(result)
+            while '(config)#' not in str(result):
+                tn.write(b"\r\n")
+                result = tn.read_until(b"(config)#", 0.1)
+                output += str(result.decode('utf-8'))
+            result = output.split("\r\n")
+            result = [val for val in result if re.search(r'\s{4,}|-{3,}|Total', val)]
+            tn.write(b"quit\r\n")
+            tn.write(b"quit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
-            print('********************************')
-            print(vlans)
-            print('********************************')
-            return {"result": vlans}
+            print('**************************************')
+            print(result)
+            print('**************************************')
+            return dict(result=result, status=200)
+        except (EOFError, socket_error) as e:
+            print(e)
+            self.retry += 1
+            if self.retry < 4:
+                return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
             if self.retry < 4:

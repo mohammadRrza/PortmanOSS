@@ -1,18 +1,18 @@
-import telnetlib
-import sys
 import os
+import sys
+import telnetlib
 import time
 from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
 
-class ShowLineStatSlot(BaseCommand):
+class IPARPShow(BaseCommand):
     def __init__(self, params):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')[0]
+        self.__port_name = None
         self.device_ip = params.get('device_ip')
 
     @property
@@ -22,6 +22,14 @@ class ShowLineStatSlot(BaseCommand):
     @HOST.setter
     def HOST(self, value):
         self.__HOST = value
+
+    @property
+    def port_name(self):
+        return self.__port_name
+
+    @port_name.setter
+    def port_name(self, value):
+        self.__port_name = self.__clear_port_name(value)
 
     @property
     def telnet_username(self):
@@ -49,28 +57,32 @@ class ShowLineStatSlot(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.read_until(b"Password:", 1)
-            print(self.__port_indexes)
-            tn.write("show linestat {0}\r\nn".format(self.__port_indexes['slot_number']).encode('utf-8'))
-            time.sleep(0.5)
-            tn.write(b"end")
-            result = tn.read_until(b"end")
-            tn.write(b"exit\r\n")
+            if tn.read_until(b'>>User name:'):
+                tn.write((self.__telnet_username + "\n").encode('utf-8'))
+            if tn.read_until(b'>>User password:'):
+                tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write(b"\r\n")
+            tn.write(b"enable\r\n")
+            tn.write(b"config\r\n")
+            tn.read_until(b"(config)#")
+            tn.write(b"display arp all\r\n")
+            tn.write(b"\r\n")
+            result = tn.read_until(b"(config)#", 0.1)
+            output = str(result)
+            while '(config)#' not in str(result):
+                tn.write(b"\r\n")
+                result = tn.read_until(b"(config)#", 0.1)
+                output += str(result.decode('utf-8'))
+            result = output.split("\r\n")
+            result = [val for val in result if re.search(r'\s{4,}|-{3,}', val)]
+            tn.write(b"quit\r\n")
+            tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result.decode('utf-8'), status=200)
-            result = str(result).split('\\r\\n')
-            result = [val for val in result if re.search(r'--{4,}|\s{4,}', val)]
-            for inx, line in enumerate(result):
-                if "Press any key" in line:
-                    del result[inx:inx + 4]
-            print('******************************************')
-            print(("port {0}".format(self.__port_indexes)))
-            print('******************************************')
-            return dict(result=result)
+            print('**************************************')
+            print(result)
+            print('**************************************')
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
@@ -82,5 +94,5 @@ class ShowLineStatSlot(BaseCommand):
             print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
-            if self.retry < 3:
+            if self.retry < 4:
                 return self.run_command()

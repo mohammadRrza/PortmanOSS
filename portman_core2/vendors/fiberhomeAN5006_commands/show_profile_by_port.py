@@ -49,10 +49,12 @@ class ShowProfileByPort(BaseCommand):
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.write(b"cd dsl\r\n")
-            tn.write("show pvc profile attach interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
-                                                                            self.port_conditions['port_number']).encode(
-                'utf-8'))
+            tn.write(b"cd qos\r\n")
+            tn.write(
+                "show port rate-limit-profile-binding interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
+                                                                                    self.port_conditions[
+                                                                                        'port_number']).encode(
+                    'utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if "SlotNoPortConvertObjIndex" in str(result):
@@ -61,11 +63,9 @@ class ShowProfileByPort(BaseCommand):
                 return dict(resutl="Card number or Port number is out of range.", status=500)
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{3,}', val)]
-            profile_id = f"id: {result[1].split()[2]}"
+            profile_id = f"id: {result[1].split()[1]}"
             print(profile_id)
 
-            tn.write(b"cd ..\r\n")
-            tn.write(b"cd qos\r\n")
             tn.read_until(b'qos#')
             tn.write(b"show rate-limit profile all\r\n")
             result = tn.read_until(b"qos#", 0.1)

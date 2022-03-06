@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -11,7 +13,7 @@ class ShowCard(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.__vlan_name = params.get('vlan_name')
-        self.__access_name = params.get('access_name','an3300')
+        self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
 
@@ -59,9 +61,8 @@ class ShowCard(BaseCommand):
             if "Bad Password..." in str(err1):
                 return "DSLAM Password is wrong!"
             tn.write(b"cd device\r\n")
-            tn.write("show port {0}:{1}-{0}:{2} linelink\r\n".format(self.port_conditions['slot_number'],
-                                                                     self.port_conditions['start_port'],
-                                                                     self.port_conditions['end_port']).encode('utf-8'))
+            tn.write("show port {0}:{1}-{0}:{1} linelink\r\n".format(self.port_conditions['slot_number'],
+                                                                     self.port_conditions['port_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"\r\n")
             time.sleep(0.5)
@@ -80,6 +81,9 @@ class ShowCard(BaseCommand):
             return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno) + '//1'))
             print(e)
             self.retry += 1
             if self.retry < 4:

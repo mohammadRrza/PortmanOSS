@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -53,21 +55,21 @@ class LcmanShow(BaseCommand):
     def run_command(self):
         try:
             tn = telnetlib.Telnet(self.__HOST)
-            if tn.read_until('>>User name:'):
+            if tn.read_until(b'>>User name:'):
                 tn.write((self.__telnet_username + "\n").encode('utf-8'))
-            if tn.read_until('>>User password:'):
+            if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write("\r\n")
-            tn.write("\r\n")
-            tn.write("enable\r\n")
-            tn.write("config\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"\r\n")
+            tn.write(b"enable\r\n")
+            tn.write(b"config\r\n")
             tn.write(("display board 0\r\n").encode('utf-8'))
-            tn.read_until('display board 0')
-            tn.write("quit\r\n")
-            result = '\n'.join(tn.read_until('quit').split('\n\r')[:-1])
-            tn.write("quit\r\n")
-            tn.write("quit\r\n")
-            tn.write("y\r\n")
+            tn.read_until(b'display board 0')
+            tn.write(b"quit\r\n")
+            result = tn.read_until(b'quit').decode('utf-8').split('\r\n')[:-1]
+            tn.write(b"quit\r\n")
+            tn.write(b"quit\r\n")
+            tn.write(b"y\r\n")
             tn.close()
             print('**************************************')
             print(result)
@@ -79,6 +81,9 @@ class LcmanShow(BaseCommand):
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
             if self.retry < 4:

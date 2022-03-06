@@ -19,6 +19,7 @@ from django.contrib.postgres.search import SearchVector
 from django.http import StreamingHttpResponse
 from dslam.mail import Mail
 from dslam.mail import Ticket
+from users.models import User
 from rest_framework.parsers import FileUploadParser
 
 from classes.portman_logging import PortmanLogging
@@ -585,7 +586,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         queryset = self.queryset
         user = self.request.user
-
+        username = self.request.query_params.get('username', None)
         sort_field = self.request.query_params.get('sort_field', None)
         dslam_name = self.request.query_params.get('search_dslam', None)
         ip = self.request.query_params.get('search_ip', None)
@@ -595,6 +596,19 @@ class DSLAMViewSet(mixins.ListModelMixin,
         active = self.request.query_params.get('search_active', None)
         status = self.request.query_params.get('search_status', None)
         dslam_type_id = self.request.query_params.get('search_type', None)
+        ldap_login = self.request.query_params.get('ldap_login', None)
+
+        if username and username != 'admin' and ldap_login == 'false':
+            user_type = User.objects.get(username=username).type
+            user_id = User.objects.get(username=username).id
+            model_user = User()
+            model_user.type = user_type
+            model_user.set_user_id(user_id)
+            allowed_dslams = model_user.get_allowed_dslams()
+            if user_type == 'SUPPORT':
+                queryset = queryset.filter(id__in=allowed_dslams)
+            if user_type == 'DIRECTRESELLER':
+                queryset = queryset.filter(id__in=allowed_dslams)
 
         if dslam_type_id:
             queryset = queryset.filter(dslam_type__id=dslam_type_id)
@@ -1446,18 +1460,70 @@ class CommandViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         queryset = self.queryset
+        username = self.request.query_params.get('username', None)
+        ldap_email = self.request.query_params.get('ldap_email', None)
         command_type = self.request.query_params.get('type', None)
         dslam_id = self.request.query_params.get('dslam_id', None)
         command_type = self.request.query_params.get('type', None)
         exclude_type = self.request.query_params.get('exclude_type', None)
         command_name = self.request.query_params.get('command_name', None)
         exclude_command_ids = self.request.query_params.get('exclude_command_id', None)
+        ldap_login = self.request.query_params.get('ldap_login', None)
 
         if dslam_id:
-            dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
-            command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id', flat=True)
-            queryset = queryset.filter(id__in=command_ids)
+            dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type_id
+            if username and ldap_login == 'false':
+                try:
+                    user_type = User.objects.get(username=username).type
+                    user_id = User.objects.get(username=username).id
+                    model_user = User()
+                    model_user.type = user_type
+                    model_user.set_user_id(user_id)
+                    allowed_commands = model_user.get_allowed_commands()
+                    allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list(
+                        'command', flat=True)
+                    print(allowed_commands_dslam_type)
 
+                    print(user_id)
+                    if user_type == 'RESELLER':
+                        dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                        queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                        queryset = queryset.filter(id__in=allowed_commands)
+                    elif user_type == 'DIRECTRESELLER':
+                        dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                        queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                        queryset = queryset.filter(id__in=allowed_commands)
+                    else:
+                        dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                        command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id',
+                                                                                                         flat=True)
+                        queryset = queryset.filter(id__in=command_ids)
+                except Exception as e:
+                    print(e)
+            elif ldap_email and bool(ldap_login):
+                user_type = User.objects.get(email=ldap_email).type
+                user_id = User.objects.get(email=ldap_email).id
+                model_user = User()
+                model_user.type = user_type
+                model_user.set_user_id(user_id)
+                allowed_commands = model_user.get_allowed_commands()
+                allowed_commands_dslam_type = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list(
+                    'command', flat=True)
+                if user_type == 'SUPPORT':
+                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                    queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                    queryset = queryset.filter(id__in=allowed_commands)
+
+                elif user_type == 'RESELLER':
+                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                    queryset = queryset.filter(id__in=allowed_commands_dslam_type)
+                    queryset = queryset.filter(id__in=allowed_commands)
+
+                else:
+                    dslam_type = DSLAM.objects.get(id=dslam_id).dslam_type
+                    command_ids = DSLAMTypeCommand.objects.filter(dslam_type=dslam_type).values_list('command_id',
+                                                                                                     flat=True)
+                    queryset = queryset.filter(id__in=command_ids)
         if exclude_command_ids:
             exclude_command_ids = eval(exclude_command_ids)
             if exclude_command_ids or len(exclude_command_ids) > 0:
@@ -3396,7 +3462,7 @@ class RegisterPortAPIView(views.APIView):
                         str(exc_tb.tb_lineno), str(ex), reseller_data, port_data.get('fqdn'),
                         port_data.get('card_number'), port_data.get('port_number'), ip)
                     mail_info.msg_subject = 'Error in RegisterPortAPIView'
-                    #Mail.Send_Mail(mail_info)
+                    # Mail.Send_Mail(mail_info)
                     return JsonResponse({'Result': 'Dslam Not Found. Please check FQDN again.'},
                                         status=status.HTTP_200_OK)
 
@@ -3733,10 +3799,11 @@ class RegisterPortAPIView(views.APIView):
                 else:
                     return JsonResponse({'PVC': pvc, 'id': 400, 'res': sid, 'msg': 'port config has not been done.'},
                                         status=status.HTTP_400_BAD_REQUEST)
-               # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
+            # return JsonResponse({'result':'Port is registered', 'PVC': PVC , 'id': 201, 'res': sid}, status=status.HTTP_201_CREATED)
             if dslam_obj.dslam_type_id == 5:
                 if 'attach pvc profile name' in sid:
-                    return JsonResponse({'id': 201, 'msg': 'port config has been done.'}, status=status.HTTP_201_CREATED)
+                    return JsonResponse({'id': 201, 'msg': 'port config has been done.'},
+                                        status=status.HTTP_201_CREATED)
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
@@ -5786,7 +5853,8 @@ class AddToVlanAPIView(views.APIView):  # 000000
                 city_id = TelecomCenter.objects.get(id=telecom_id).city_id
             except ObjectDoesNotExist as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
-                log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '',
+                                                              log_date,
                                                               ip, 'Register Port', False,
                                                               str(ex) + '/' + str(exc_tb.tb_lineno),
                                                               log_reseller_name)
@@ -5801,7 +5869,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
 
                 except ObjectDoesNotExist as ex:
                     exc_type, exc_obj, exc_tb = sys.exc_info()
-                    log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '',
+                    log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '',
                                                                   log_date,
                                                                   ip, 'Register Port', False,
                                                                   str(ex) + '/' + str(exc_tb.tb_lineno),
@@ -5842,7 +5910,8 @@ class AddToVlanAPIView(views.APIView):  # 000000
             # identifier_key = mdf_dslam.identifier_key
         except ObjectDoesNotExist as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '',
+                                                          log_date,
                                                           ip, 'Register Port', False,
                                                           str(ex) + '/' + str(exc_tb.tb_lineno),
                                                           log_reseller_name)
@@ -5850,7 +5919,8 @@ class AddToVlanAPIView(views.APIView):  # 000000
             return JsonResponse({'result': str(ex), 'id': -1})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '',
+                                                          log_date,
                                                           ip, 'Register Port', False,
                                                           str(ex) + '/' + str(exc_tb.tb_lineno),
                                                           log_reseller_name)
@@ -5860,7 +5930,8 @@ class AddToVlanAPIView(views.APIView):  # 000000
                 return JsonResponse({'result': 'Error is {0}--{1}'.format(ex, exc_tb.tb_lineno)})
             except ObjectDoesNotExist as ex:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
-                log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+                log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '',
+                                                              log_date,
                                                               ip, 'Register Port', False,
                                                               str(ex) + '/' + str(exc_tb.tb_lineno),
                                                               log_reseller_name)
@@ -5936,14 +6007,16 @@ class AddToVlanAPIView(views.APIView):  # 000000
 
             # result2 = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
             log_status = True if isinstance(result, dict) else False
-            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', result, log_date,
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', result,
+                                                          log_date,
                                                           ip, 'Register Port', log_status, '', log_reseller_name)
             PortmanLogging(result, log_params)
             return Response({'result': result})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
-            log_params = PortmanLogging.prepare_variables(log_port_data, log_username, 'add to vlan', '', log_date,
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, 'add to vlan', '',
+                                                          log_date,
                                                           ip, 'Register Port', False,
                                                           str(ex) + '/' + str(exc_tb.tb_lineno),
                                                           log_reseller_name)
@@ -6006,9 +6079,18 @@ class FiberHomeCommandAPIView(views.APIView):
 
 
             elif dslam_type == 2:  ############################## huawei ##############################
-                return JsonResponse({'response': result, 'DslamType': 'huawei'})
+
+                port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
+                current_user_profile = ''
+                if 'profile_name' in port_info:
+                    return JsonResponse(
+                        {'response': result, 'current_user_profile': '', 'DslamType': 'huawei'})
+                current_user_profile = port_info['profile_name']
+                return JsonResponse(
+                    {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'huawei'})
 
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
+
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show linerate', params)
                 current_user_profile = ''
                 if 'profile_name' in port_info:
@@ -7808,7 +7890,7 @@ class GetDslamPorts(views.APIView):
             return str(ex) + "  // " + str(exc_tb.tb_lineno)
 
 
-class DslamCommandsV2APIView(views.APIView):
+class DslamCommandsV2APIView(views.APIView):  # 111111111111
 
     def get_permissions(self):
         return permissions.IsAuthenticated(),
@@ -7832,7 +7914,7 @@ class DslamCommandsV2APIView(views.APIView):
                     return Response({'result': 'Command does not exits'}, status=status.HTTP_400_BAD_REQUEST)
                 if result:
                     if 'Busy' in result:
-                        return Response({'result': result}, status=status.HTTP_400_BAD_REQUEST)
+                        return Response({'response': result}, status=status.HTTP_400_BAD_REQUEST)
                     else:
                         description = 'Run Command {0} on DSLAM {1}'.format(command, dslamObj.name)
 
@@ -7841,16 +7923,16 @@ class DslamCommandsV2APIView(views.APIView):
                 return JsonResponse({'response': result})
 
             elif dslam_type == 2:  # huawei
-                return JsonResponse({'Result': dslam_type})
+                return JsonResponse({'response': result, 'DslamType': 'huawei'})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
                 if command == 'show mac by slot port':
                     result = result.split("\\r\\n")
                     result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-{5,}|(All|Total)\W', val)]
-                return JsonResponse({'Result': result, 'DslamType': 'fiberhomeAN3300'})
+                return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
 
-                return JsonResponse({'Result': result})
+                return JsonResponse({'response': result})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
                 if command == 'Show VLAN':
@@ -7858,7 +7940,7 @@ class DslamCommandsV2APIView(views.APIView):
                 return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
-                return JsonResponse({'Result': dslam_type})
+                return JsonResponse({'response': dslam_type})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

@@ -122,24 +122,24 @@ class ShowPort(BaseCommand):
                    }
             for inx, val in enumerate(result):
                 if "SNR margin" in val:
-                    res['noisemarginUp'] = val.split(":")[2].strip()
-                    res['noisemarginDown'] = val.split(":")[1].split()[0]
+                    res['noisemarginDown'] = val.split(":")[2].strip()
+                    res['noisemarginUp'] = val.split(":")[1].split()[0]
                 if "Attainable bit rate" in val:
-                    res['attainablerateUp'] = val.split(":")[2].strip()
-                    res['attainablerateDown'] = val.split(":")[1].split()[0]
+                    res['attainablerateDown'] = val.split(":")[2].strip()
+                    res['attainablerateUp'] = val.split(":")[1].split()[0]
                 if "Actual Line bit rate" in val:
-                    res['actualrateUp'] = val.split(":")[2].strip()
-                    res['actualrateDown'] = val.split(":")[1].split()[0]
+                    res['actualrateDown'] = val.split(":")[2].strip()
+                    res['actualrateUp'] = val.split(":")[1].split()[0]
                 if "Actual bit rate" in val:
-                    res['payloadrateUp'] = val.split(":")[2].strip()
-                    res['payloadrateDown'] = val.split(":")[1].split()[0]
+                    res['payloadrateDown'] = val.split(":")[2].strip()
+                    res['payloadrateUp'] = val.split(":")[1].split()[0]
 
             return dict(result=res, status=200)
 
         except (EOFError, socket_error) as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print((str(exc_tb.tb_lineno)+'//1'))
+            print((str(exc_tb.tb_lineno) + '//1'))
             print(e)
             self.retry += 1
             if self.retry < 4:
@@ -148,7 +148,7 @@ class ShowPort(BaseCommand):
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print((str(exc_tb.tb_lineno)+'//2'))
+            print((str(exc_tb.tb_lineno) + '//2'))
             print(e)
             print(e)
             return str(e)

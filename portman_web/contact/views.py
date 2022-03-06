@@ -11,7 +11,7 @@ from contact.models import Order, Province, City, TelecommunicationCenters, Port
     FarzaneganProviderData
 from django.http import JsonResponse, HttpResponse
 from rest_framework.permissions import IsAuthenticated
-from contact.serializers import OrderSerializer, DDRPageSerializer, FarzaneganSerializer
+from contact.serializers import OrderSerializer, DDRPageSerializer, FarzaneganSerializer, GetNotesSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -19,9 +19,14 @@ from django.db.models import Q
 from django.core.serializers import serialize
 from classes.mellat_bank_scrapping import get_captcha
 
+<<<<<<< HEAD
 
 from classes.farzanegan_selenium import farzanegan_scrapping
+=======
+# from classes.farzanegan_selenium import farzanegan_scrapping
+>>>>>>> master
 # from portman_web.classes.farzanegan_selenium import farzanegan_scrapping
+from contact.models import PishgamanNote
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -466,8 +471,25 @@ class FarzaneganViewSet(mixins.ListModelMixin,
 
     def get_queryset(self):
         queryset = self.queryset
+        owner_username = self.request.query_params.get('owner_username', None)
+        print(owner_username)
+        if owner_username:
+            print(owner_username)
+            queryset = queryset.filter(owner_username=owner_username)
 
         return queryset
+
+
+class FarzaneganExportExcelAPIView(views.APIView):
+    def get(self, request, format=None):
+        try:
+            owner_username = request.GET.get('owner_username', None)
+            print(owner_username)
+            farzanegan_tdlte = FarzaneganTDLTE.objects.filter(owner_username=owner_username).values()
+            return Response({'result': farzanegan_tdlte})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
 
 
 class FarzaneganProviderDataAPIView(views.APIView):
@@ -478,6 +500,7 @@ class FarzaneganProviderDataAPIView(views.APIView):
             provider = FarzaneganTDLTE.objects.filter(owner_username=owner_username).first()
             farzanegan_provider_data = FarzaneganProviderData.objects.filter(provider_id=provider.provider_id).order_by(
                 '-created').values().first()
+            print(farzanegan_provider_data)
             return Response({'result': farzanegan_provider_data})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -580,3 +603,33 @@ class UpdatePartakFqdnAPIView(views.APIView):
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
 
 
+class SaveNoteAPIView(views.APIView):
+    def post(self, request):
+        try:
+            data = request.data
+            province = data.get('province')
+            city = data.get('city')
+            telecom_center = data.get('telecom_center')
+            problem_desc = data.get('problem_description')
+            username = data.get('username')
+            PishgamanNote.objects.create(province=province, city=city, telecom_center=telecom_center,
+                                         problem_desc=problem_desc, username=username)
+            return Response({"result": "New Note Successfully Added."})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class GetNotesViewSet(mixins.ListModelMixin,
+                      mixins.RetrieveModelMixin,
+                      viewsets.GenericViewSet):
+    queryset = PishgamanNote.objects.all().order_by(
+                '-register_time')
+    serializer_class = GetNotesSerializer
+    pagination_class = LargeResultsSetPagination
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        return queryset

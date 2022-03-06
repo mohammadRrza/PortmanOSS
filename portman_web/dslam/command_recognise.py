@@ -28,7 +28,7 @@ def command_recognise(command):
         command = 'show mac by slot port'
     elif command == 'show port with mac' or command == 'show port mac':
         command = 'show port with mac'
-    elif command == 'Show VLAN' or command == 'VLAN Show' or command == 'show vlan':
+    elif command == 'Show VLAN' or command == 'VLAN Show' or command == 'show vlan' or command == 'vlan show':
         command = 'Show VLAN'
     elif command == 'Show All VLANs' or command == 'All VLANs Show' or command == 'show all pvc vlans':
         command = 'Show All VLANs'
@@ -40,6 +40,8 @@ def command_recognise(command):
         command = 'Show Shelf'
     elif command == 'Show Card' or command == 'show card':
         command = 'Show Card'
+    elif command == 'Show Card Range' or command == 'show card range':
+        command = 'Show Card Range'
     elif command == 'port reset' or command == 'reset port':
         command = 'port reset'
     elif command == 'save config' or command == 'Save Config' or command == 'config save':
@@ -67,7 +69,7 @@ def command_recognise(command):
     elif command == 'show pvc by port' or command == 'Show PVC By Port' or command == 'show pvc by port' or command == 'port pvc show':
         command = 'show pvc by port'
     elif command == 'show mac limit' or command == 'ACL Maccount Show' or command == 'Show Mac Limit' or command == 'acl maccount Show':
-        command = 'show mac limit'
+        command = 'acl maccount show'
     elif command == 'switch port show' or command == 'Switch Port Show':
         command = 'switch port show'
     elif command == 'show profile by port' or command == 'showProfile by port':
