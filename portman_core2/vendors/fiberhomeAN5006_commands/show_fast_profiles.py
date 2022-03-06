@@ -7,7 +7,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowProfileByPort(BaseCommand):
+class ShowFastProfiles(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
@@ -50,49 +50,38 @@ class ShowProfileByPort(BaseCommand):
             if "Login Failed." in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
             tn.write(b"cd dsl\r\n")
-            tn.write("show pvc profile attach interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
-                                                                            self.port_conditions['port_number']).encode(
-                'utf-8'))
-            tn.write(b"end\r\n")
-            result = tn.read_until(b"end")
-            if "SlotNoPortConvertObjIndex" in str(result):
-                return dict(result="The Card number maybe unavailable or does not exist.", status=500)
-            elif "ifStr" in str(result):
-                return dict(resutl="Card number or Port number is out of range.", status=500)
-            result = str(result).split("\\r\\n")
-            result = [val for val in result if re.search(r'\s{3,}', val)]
-            profile_id = f"id: {result[1].split()[2]}"
-            print(profile_id)
-
-            tn.write(b"cd ..\r\n")
-            tn.write(b"cd qos\r\n")
-            tn.read_until(b'qos#')
-            tn.write(b"show rate-limit profile all\r\n")
-            result = tn.read_until(b"qos#", 0.1)
+            tn.read_until(b'dsl#')
+            time.sleep(0.1)
+            tn.write(b"show adsl line-profile\r\n")
+            result = tn.read_until(b"dsl#", 0.5)
             output = str(result)
-            while 'qos#' not in str(result):
-                result = tn.read_until(b"qos#", 0.1)
+            while 'dsl#' not in str(result):
+                result = tn.read_until(b"dsl#", 1)
                 output += str(result)
                 tn.write(b"\r\n")
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
+
             result = str(output).split("\\r\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
-                      re.search(r':\s', val)]
-            for inx, val in enumerate(result):
-                if profile_id in val:
-                    prf_name = result[inx + 1].split(":")[1].strip()
-                    result = f"Profile set to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: '{prf_name}'"
-                    return dict(result=result, status=200, profile_name=prf_name)
-            else:
-                return "Profile not found."
+
+            result = [item.split()[2] for item in result if
+                      re.search("\s\d+\d+\s", item)]
+
+            return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
             print(e)
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print(str(exc_tb.tb_lineno))
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
 
         except Exception as e:
+            print(e)
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return str(exc_tb.tb_lineno)
+            print(str(exc_tb.tb_lineno))
+            return str(e)
