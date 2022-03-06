@@ -31,6 +31,7 @@ from .fiberhomeAN5006_commands.show_profile_by_port import ShowProfileByPort
 from .fiberhomeAN5006_commands.show_pvc_profile_id import ShowPVCProfileID
 from .fiberhomeAN5006_commands.show_pvc_by_profile import ShowPVCByProfile
 from .fiberhomeAN5006_commands.show_vlan import ShowVLAN
+from .fiberhomeAN5006_commands.show_fast_profiles import ShowFastProfiles
 
 
 class FiberhomeAN5006(BaseDSLAM):
@@ -55,6 +56,7 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('show pvc profile id', ShowPVCProfileID)
     command_factory.register_type('show pvc by profile', ShowPVCByProfile)
     command_factory.register_type('Show VLAN', ShowVLAN)
+    command_factory.register_type('fast profiles adsl show', ShowFastProfiles)
 
     '''
     command_factory.register_type('selt', Selt)

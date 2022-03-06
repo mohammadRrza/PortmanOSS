@@ -14,7 +14,7 @@ from PIL import Image
 from contact.models import FarzaneganTDLTE, FarzaneganProviderData, FarzaneganProvider
 
 
-def farzanegan_scrapping(username, password):
+def farzanegan_scrapping(username, password, owner_username):
     options = webdriver.ChromeOptions()
     options.add_argument('ignore-certificate-errors')
     chrome_options = Options()
@@ -98,12 +98,8 @@ def farzanegan_scrapping(username, password):
                     FarzaneganTDLTE.objects.create(provider_id=provider.id,
                                                    date_key=datetime.strptime(date[0], '%Y/%m/%d').date(),
                                                    provider_number=col[1].text, customer_msisdn=col[2].text,
-                                                   total_data_volume_income=col[3].text)
+                                                   total_data_volume_income=col[3].text, owner_username=owner_username)
         return 'Data successfully uploaded to database.'
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         return JsonResponse({'row': str(ex) + "  // " + str(exc_tb.tb_lineno)})
-
-
-if __name__ == '__main__':
-    farzanegan_scrapping()
