@@ -597,8 +597,9 @@ class DSLAMViewSet(mixins.ListModelMixin,
         status = self.request.query_params.get('search_status', None)
         dslam_type_id = self.request.query_params.get('search_type', None)
         ldap_login = self.request.query_params.get('ldap_login', None)
-
-        if username and username != 'admin' and ldap_login == 'false':
+        if username and ldap_login == 'false':
+            user_type = User.objects.get(username=username).type
+        if username and user_type != 'ADMIN' and ldap_login == 'false':
             user_type = User.objects.get(username=username).type
             user_id = User.objects.get(username=username).id
             model_user = User()
