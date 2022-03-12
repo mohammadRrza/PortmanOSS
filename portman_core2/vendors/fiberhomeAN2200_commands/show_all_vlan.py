@@ -73,7 +73,7 @@ class ShowAllVLANs(BaseCommand):
             tn.write(b"sv\r\n")
             temp = tn.read_until(b'IP')
             if b"NO ip uplink" in temp:
-                return str(temp)
+                return dict(result=str(temp), status=500)
             tn.read_until(b'vlan(1,2):')
             tn.write(b"2\r\n")
             time.sleep(0.5)

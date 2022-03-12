@@ -72,9 +72,16 @@ class ShowProfileByPort(BaseCommand):
             tn.write(b"config\r\n")
             tn.read_until(b"(config)#")
             tn.write(("interface adsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
-            result = tn.read_until(b"(config)#")
+            result = tn.read_until(b"#")
+            if "Parameter error, the error locates at" in str(result):
+                return dict(result="Card number is out of range.", status=500)
             if "Failure:" in str(result):
                 tn.write(("interface vdsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
+                result = tn.read_until(b"#")
+                if "Parameter error, the error locates at" in str(result):
+                    return dict(result="Card number is out of range.", status=500)
+            print('++++++++++++++')
+            tn.write(b'\r\n')
             tn.read_until(b"#")
             tn.write(("display parameter {0}\r\n".format(self.__port_indexes['port_number'])).encode('utf-8'))
             result = tn.read_until(b"#", 0.1)
@@ -87,7 +94,7 @@ class ShowProfileByPort(BaseCommand):
             profile_index = None
             profile_name = None
             for item in result:
-                if "Line-profile" in item:
+                if "Line-profile" in item or "Profile index" in item:
                     profile_index = item.split(":")[1].split()[0].strip()
                     profile_name = item.split(":")[2].strip()
             tn.write(b"quit\r\n")

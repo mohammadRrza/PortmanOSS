@@ -47,7 +47,7 @@ class ShowTemperature(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"cd device\r\n")
             time.sleep(0.1)
             tn.write(b"show fan control status\r\n")

@@ -52,7 +52,7 @@ class AddToVlan(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
 
             ############################## Check if vlan exist ##############################
             tn.write(b"cd vlan\r\n")
@@ -76,7 +76,7 @@ class AddToVlan(BaseCommand):
             if "unknown input" in str(result):
                 str_res = ["There is one of the following problems:", "This card is not configured",
                            "Card number is out of range.", "Port number is out of range."]
-                return str_res
+                return dict(result=str_res, status=500)
 
             ########################### Add card and port to the new Vlan ###########################
             tn.write("add vlan service type unicast mode tag vid {0} cos 0 interface {1}/{2}/0\r\n".format(

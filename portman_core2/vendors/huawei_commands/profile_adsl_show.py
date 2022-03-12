@@ -60,21 +60,27 @@ class ProfileADSLShow(BaseCommand):
         try:
             tn = telnetlib.Telnet(self.__HOST)
             if tn.read_until(b'>>User name:'):
-                tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+                tn.write((self.__telnet_username + "\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
+            result = tn.read_until(b">", 0.5)
+            output = str(result)
+            while '>' not in str(result):
+                result = tn.read_until(b">", 1)
+                output += str(result)
+                tn.write(b"\r\n")
             tn.write("enable\r\n".encode('utf-8'))
             tn.write("config\r\n".encode('utf-8'))
-            tn.write("display adsl line-profile\r\n".encode('utf-8'))
-            time.sleep(1)
+            tn.read_until(b"(config)#")
+            tn.write(b"display adsl line-profile\r\n")
             tn.write(b"\r\n")
-            time.sleep(1)
-            tn.write(b"n\r\n")
-            time.sleep(1)
-            tn.write(b"end\r\n")
-            result = tn.read_until(b"end")
+            result = tn.read_until(b"(config)#", 0.1)
+            output = result.decode('utf-8')
+            while '(config)#' not in str(result):
+                tn.write(b"\r\n")
+                result = tn.read_until(b"(config)#", 0.1)
+                output += str(result.decode('utf-8'))
+            result = output
             profiles = re.findall(r'\s+(\d+)\s(\S+)\s+\S+\s?\S+?\s+\S+\s+\d+\s+\d+\s+\d+\s+\d+', str(result))
             profile_list = []
             # for profile_index, profile_name in profiles:

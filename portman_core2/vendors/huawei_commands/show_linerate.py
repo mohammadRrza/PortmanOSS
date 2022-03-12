@@ -49,6 +49,12 @@ class ShowLineRate(BaseCommand):
             tn.read_until(b'>>User password:')
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             result = tn.read_until(b">", 0.5)
+            if 'invalid' in str(result):
+                return dict(result='Telnet Username or Password is wrong! Please contact with core-access department.',
+                            status=500)
+            if 'Reenter times' in str(result):
+                return dict(result='The device is busy right now. Please try a few moments later.',
+                            status=500)
             output = str(result)
             while '>' not in str(result):
                 result = tn.read_until(b">", 1)
@@ -60,18 +66,22 @@ class ShowLineRate(BaseCommand):
             tn.write(b"config\r\n")
             tn.read_until(b"(config)#")
             tn.write(("interface adsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
-            result = tn.read_until(b"(config)#")
+            result = tn.read_until(b"#")
+            if "Parameter error" in str(result):
+                return dict(result="Card number is wrong.", status=500)
             if "Failure:" in str(result):
                 tn.write(("interface vdsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
+                tn.read_until(b"#")
             tn.write(("display line operation {0}\r\n".format(self.__port_indexes['port_number'])).encode('utf-8'))
             tn.write(("y\r\n").encode('utf-8'))
-            tn.read_until(b"#")
             result = tn.read_until(b"#", 0.2)
             output = str(result)
-            while '#' not in str(result):
-                result = tn.read_until(b"#", 0.1)
+            while ')#' not in str(result):
+                tn.write(b"\r\n")
+                result = tn.read_until(b")#", 0.1)
                 output += str(result.decode('utf-8'))
-                tn.write(b"y")
+            if "Parameter error" in str(output):
+                return dict(result="Port number is wrong.", status=500)
             result = output.split("\r\n")
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 str_join = "\r\n"

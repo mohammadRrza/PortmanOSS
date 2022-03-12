@@ -58,15 +58,15 @@ class ShowCard(BaseCommand):
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
             err1 = tn.read_until(b"correct")
             if "incorrect" in str(err1):
-                return "Access name is wrong!"
+                return dict(result="Access name is wrong!", status=500)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             err2 = tn.read_until(b"Password:", 1)
             if "Invalid User Name" in str(err2):
-                return "User Name is wrong."
+                return dict(result="User Name is wrong.", status=500)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err3 = tn.read_until(b"OK!", 1)
             if "Invalid Password" in str(err3):
-                return "Password is wrong."
+                return dict(result="Password is wrong.", status=500)
             print('password sent ...')
             tn.write(b"line\r\n")
             tn.write(b"sc \r\n")
@@ -80,9 +80,9 @@ class ShowCard(BaseCommand):
                 return dict(result=res.decode('utf-8'), status=200)
             tn.close()
             if "not config" in str(res):
-                return "This card is not configured"
+                return dict(result="This card is not configured", status=500)
             if "Please input" in str(res):
-                return "No card is defined on this port"
+                return dict(result="No card is defined on this port", status=500)
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s{4,}|--+', val)]
 

@@ -46,7 +46,7 @@ class ShowMacSlotPort(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"cd device\r\n")
             tn.write("show linecard fdb interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
                                                                       self.port_conditions['port_number']).encode(
@@ -67,9 +67,9 @@ class ShowMacSlotPort(BaseCommand):
                 if "invalid interface" in str(result):
                     str_res = ["There is one of the following problems:", "This card is not configured",
                                "Card number is out of range.", "Port number is out of range."]
-                    return str_res
+                    return dict(result=str_res, status=500)
                 if "total: 0." in str(result):
-                    return f"No MAC address is assigned to port '{self.port_conditions['port_number']}'"
+                    return dict(result=f"No MAC address is assigned to port '{self.port_conditions['port_number']}'", status=500)
                 tn.close()
 
                 result = str(result).split("\\r\\n")
@@ -81,12 +81,12 @@ class ShowMacSlotPort(BaseCommand):
             if "invalid interface" in str(result):
                 str_res = ["There is one of the following problems:", "This card is not configured",
                            "Card number is out of range.", "Port number is out of range."]
-                return str_res
+                return dict(result=str_res, status=500)
             if "total: 0." in str(result):
-                return f"No MAC address is assigned to port '{self.port_conditions['port_number']}'"
+                return dict(result=f"No MAC address is assigned to port '{self.port_conditions['port_number']}'", status=500)
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return result.decode('utf-8')
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             return dict(result=result, status=200)
 

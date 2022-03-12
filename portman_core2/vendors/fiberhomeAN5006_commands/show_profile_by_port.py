@@ -48,7 +48,7 @@ class ShowProfileByPort(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"cd qos\r\n")
             tn.write(
                 "show port rate-limit-profile-binding interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
@@ -57,6 +57,8 @@ class ShowProfileByPort(BaseCommand):
                     'utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "unknown input" in str(result):
+                return dict(result="Card number or Port number is out of range.", status=500)
             if "SlotNoPortConvertObjIndex" in str(result):
                 return dict(result="The Card number maybe unavailable or does not exist.", status=500)
             elif "ifStr" in str(result):
@@ -78,6 +80,7 @@ class ShowProfileByPort(BaseCommand):
             result = str(output).split("\\r\\n")
             result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+J', '', val) for val in result if
                       re.search(r':\s', val)]
+
             for inx, val in enumerate(result):
                 if profile_id in val:
                     prf_name = result[inx + 1].split(":")[1].strip()

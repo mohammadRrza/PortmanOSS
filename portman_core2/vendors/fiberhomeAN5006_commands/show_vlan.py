@@ -48,7 +48,7 @@ class ShowVLAN(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"cd vlan\r\n")
             time.sleep(0.1)
             tn.write("show service vlan interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
@@ -58,6 +58,8 @@ class ShowVLAN(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "invalid interface" in str(result):
+                return dict(result="Card number or Port number is out of range.", status=500)
             print("OK")
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
