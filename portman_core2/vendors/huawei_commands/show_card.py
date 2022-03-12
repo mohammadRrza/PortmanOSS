@@ -79,7 +79,7 @@ class ShowCard(BaseCommand):
                 return dict(result="Card number is wrong.", status=500)
             if "Failure:" in str(result):
                 tn.write(("interface vdsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
-            tn.read_until(b"#")
+                tn.read_until(b"#")
             tn.write(b"display port state all\r\n")
             result = tn.read_until(b"#", 0.1)
             output = str(result)
