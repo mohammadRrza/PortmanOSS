@@ -40,6 +40,7 @@ from .huawei_commands.sys_snmp_show import SysSnmpShow
 from .huawei_commands.acl_maccout_show import ACLMacCountShow
 from .huawei_commands.vlan_show import VlanShow
 from .huawei_commands.save_config import SaveConfig
+from .huawei_commands.selt import Selt
 
 '''
 from huawei_commands.selt import Selt
@@ -98,6 +99,7 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('acl maccount show', ACLMacCountShow)
     command_factory.register_type('Show All VLANs', VlanShow)
     command_factory.register_type('save config', SaveConfig)
+    command_factory.register_type('showSelt', Selt)
 
     '''
     command_factory.register_type('showSelt', Selt)
