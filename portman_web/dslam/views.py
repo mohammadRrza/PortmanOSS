@@ -6125,7 +6125,7 @@ class FiberHomeCommandAPIView(views.APIView):
 
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
-                return JsonResponse({'response': dslam_type})
+                return JsonResponse({'response': result})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, '', log_date,

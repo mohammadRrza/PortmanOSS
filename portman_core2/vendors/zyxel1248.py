@@ -14,13 +14,15 @@ from datetime import timedelta
 from .zyxel1248_commands.show_port import ShowPort
 from .zyxel1248_commands.adsl_profile_show import AdslProfileShow
 from .zyxel1248_commands.set_port_profile import SetProfile
+from .zyxel1248_commands.version import ShowVersion
 
 class Zyxel1248(BaseDSLAM):
 
     command_factory = CommandFactory()
-    command_factory.register_type('showPort', ShowPort)
+    command_factory.register_type('show linerate', ShowPort)
     command_factory.register_type('showProfiles', AdslProfileShow)
     command_factory.register_type('setProfile', SetProfile)
+    command_factory.register_type('Version', ShowVersion)
 
 
     EVENT = {'dslam_connection_error':'DSLAM Connection Error', 'no_such_object':'No Such Objects'}
