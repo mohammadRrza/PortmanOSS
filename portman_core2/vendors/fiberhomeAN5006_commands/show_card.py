@@ -58,9 +58,9 @@ class ShowCard(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if "unreached" in str(result):
-                return "The Card number maybe unavailable or does not exist."
+                return dict(result="The Card number maybe unavailable or does not exist.", status=500)
             if "Invalid slot number!" in str(result):
-                return "Card number is out of range."
+                return dict(result="Card number is out of range.", status=500)
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)

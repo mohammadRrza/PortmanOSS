@@ -61,21 +61,21 @@ class ShowVLAN(BaseCommand):
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
             err1 = tn.read_until(b"correct")
             if "incorrect" in str(err1):
-                return "Access name is wrong!"
+                return dict(result="Access name is wrong!", status=500)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             err2 = tn.read_until(b"Password:", 1)
             if "Invalid User Name" in str(err2):
-                return "User Name is wrong."
+                return dict(result="User Name is wrong.", status=500)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err3 = tn.read_until(b"OK!", 1)
             if "Invalid Password" in str(err3):
-                return "Password is wrong."
+                return dict(result="Password is wrong.", status=500)
             print('password sent ...')
             tn.write(b"ip\r\n")
             tn.write(b"sv\r\n")
             temp = tn.read_until(b'IP')
             if b"NO ip uplink" in temp:
-                return str(temp)
+                return dict(result=str(temp), status=500)
             tn.read_until(b'vlan(1,2):')
             tn.write(b"2\r\n")
             time.sleep(0.5)
@@ -86,8 +86,8 @@ class ShowVLAN(BaseCommand):
             tn.write(b"end")
             res = tn.read_until(b'end')
             tn.close()
-            if "No specified vlan" in str(res):
-                return "No specified vlan. Please try another vlan."
+            if "No specified vlan" in str(res) or "(xx,xx~xx)     :" in str(res):
+                return dict(result="No specified vlan. Please try another vlan.", status=500)
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=res.decode('utf-8'), status=200)
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\s+:', val)]

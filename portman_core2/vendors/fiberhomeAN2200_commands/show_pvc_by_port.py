@@ -60,15 +60,15 @@ class ShowPVCByPort(BaseCommand):
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
             err1 = tn.read_until(b"correct")
             if "incorrect" in str(err1):
-                return "Access name is wrong!"
+                return dict(result="Access name is wrong!", status=500)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             err2 = tn.read_until(b"Password:", 1)
             if "Invalid User Name" in str(err2):
-                return "User Name is wrong."
+                return dict(result="User Name is wrong.", status=500)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err3 = tn.read_until(b"OK!", 1)
             if "Invalid Password" in str(err3):
-                return "Password is wrong."
+                return dict(result="Password is wrong.", status=500)
             print('password sent ...')
             tn.write(b"core\r\n")
             tn.write(b"showvc\r\n")
@@ -87,7 +87,7 @@ class ShowPVCByPort(BaseCommand):
                 str_res = ["There is one of the following problems:", "This card is not configured",
                            "No card is defined on this port", "Card number is out of range.",
                            "Port number is out of range."]
-                return str_res
+                return dict(result=str_res, status=500)
             result = str(res).split("\\n\\r")
             result = [val for val in result if re.search(r'\s{3,}|--{4,}', val)]
 

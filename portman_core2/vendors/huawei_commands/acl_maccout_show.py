@@ -62,20 +62,33 @@ class ACLMacCountShow(BaseCommand):
                 tn.write((self.__telnet_username + "\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write(b"end")
+            err = tn.read_until(b'end')
+            if 'invalid' in str(err):
+                return dict(result='Telnet Username or Password is wrong! Please contact with core-access department.',
+                            status=500)
+            if 'Reenter times' in str(err):
+                return dict(result='The device is busy right now. Please try a few moments later.',
+                            status=500)
             tn.write(b"\r\n")
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.read_until(b"(config)#")
             tn.write("display mac-address max-mac-count adsl 0/{0}/{1}\r\n".format(self.__port_indexes['slot_number'], self.__port_indexes['port_number']).encode('utf-8'))
             tn.write(b"\r\n")
-            result = tn.read_until(b"(config)#", 0.1)
+            result = tn.read_until(b"(config)#")
+            if "Parameter error" in str(result):
+                return dict(result="Card number or Port number is wrong.", status=500)
+            if "Failure:" in str(result):
+                return dict(result="There is not any MAC address record", status=500)
             output = str(result)
             while '(config)#' not in str(result):
                 tn.write(b"\r\n")
                 result = tn.read_until(b"(config)#", 0.1)
                 output += str(result.decode('utf-8'))
-            result = output.split("\r\n")
-            # result = [val for val in result if re.search(r'^(?![\s\S])|:|Total', val)]
+
+
+            #result = [val for val in result if re.search(r'^(?![\s\S])|:|Total', val)]
             tn.write(b"quit\r\n")
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
@@ -83,6 +96,8 @@ class ACLMacCountShow(BaseCommand):
             print('**************************************')
             print(result)
             print('**************************************')
+            result = output.split("\\r\\n")
+            result = [item for item in result if re.search(r"-{4,}|:\s\d+|\s{2,}\w+\s{2,}", item)]
             return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)

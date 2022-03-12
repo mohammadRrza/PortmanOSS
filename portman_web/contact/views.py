@@ -19,12 +19,8 @@ from django.db.models import Q
 from django.core.serializers import serialize
 from classes.mellat_bank_scrapping import get_captcha
 
-<<<<<<< HEAD
 
-from classes.farzanegan_selenium import farzanegan_scrapping
-=======
 # from classes.farzanegan_selenium import farzanegan_scrapping
->>>>>>> master
 # from portman_web.classes.farzanegan_selenium import farzanegan_scrapping
 from contact.models import PishgamanNote
 

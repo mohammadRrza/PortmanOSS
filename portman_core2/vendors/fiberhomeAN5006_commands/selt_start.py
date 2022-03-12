@@ -46,7 +46,7 @@ class StartSelt(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"cd service\r\n")
             tn.write("telnet Slot {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(2)
@@ -54,9 +54,9 @@ class StartSelt(BaseCommand):
             tn.write(b"end\r\n")
             err2 = tn.read_until(b"end")
             if "unreached" in str(err2):
-                return f"The Card '{self.port_conditions['slot_number']}' maybe unavailable or does not exist."
+                return dict(result=f"The Card '{self.port_conditions['slot_number']}' maybe unavailable or does not exist.", status=500)
             if "Invalid slot number!" in str(err2):
-                return f"Card '{self.port_conditions['slot_number']}' is out of range."
+                return dict(result=f"Card '{self.port_conditions['slot_number']}' is out of range.", status=500)
             tn.write(b"ddd\r\n")
             tn.write(b"set global io current\r\n")
             time.sleep(0.1)
@@ -70,9 +70,9 @@ class StartSelt(BaseCommand):
             result = tn.read_until(b"end")
             tn.close()
             if "Invalid port No." in str(result):
-                return f"Invalid port number '{self.port_conditions['port_number']}'"
+                return dict(result=f"Invalid port number '{self.port_conditions['port_number']}'", status=500)
             if "started" in str(result):
-                return "Selt successfully started"
+                return dict(result="Selt successfully started", status=200)
             return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:

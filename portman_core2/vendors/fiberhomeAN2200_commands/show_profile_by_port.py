@@ -57,15 +57,15 @@ class ShowProfileByPort(BaseCommand):
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
             err1 = tn.read_until(b"correct")
             if "incorrect" in str(err1):
-                return "Access name is wrong!"
+                return dict(result="Access name is wrong!", status=500)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             err2 = tn.read_until(b"Password:", 1)
             if "Invalid User Name" in str(err2):
-                return "User Name is wrong."
+                return dict(result="User Name is wrong.", status=500)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err3 = tn.read_until(b"OK!", 1)
             if "Invalid Password" in str(err3):
-                return "Password is wrong."
+                return dict(result="Password is wrong.", status=500)
             print('password sent ...')
             tn.write(b"line\r\n")
             tn.write(b"sc \r\n")
@@ -77,13 +77,16 @@ class ShowProfileByPort(BaseCommand):
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=res.decode('utf-8'), status=200)
             if "not config" in str(res):
-                return f"Card number '{self.port_conditions['slot_number']}' is not configured."
+                return dict(result=f"Card number '{self.port_conditions['slot_number']}' is not configured.", status=500)
             if "error card number!" in str(res):
-                return f"Card number '{self.port_conditions['slot_number']}' is out of range."
+                return dict(result=f"Card number '{self.port_conditions['slot_number']}' is out of range.", status=500)
             res = [val for val in str(res).split("\\n\\r") if re.search(r'\s{4,}|--+', val)]
+            port_count = len([val for val in res if re.search(r'\s+\d+\s+', val)])
+            if self.port_conditions['port_number'] > port_count:
+                return dict(result="Port number is out of range", status=500)
             res = [val.split()[-1] for val in res if f" {self.port_conditions['port_number']}  " in val]
             print(res)
-            result = f"Profile assigned to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: {res[0]}"
+            result = dict(result=f"Profile assigned to card '{self.port_conditions['slot_number']}' and port '{self.port_conditions['port_number']}' is: {res[0]}", status=500)
             return dict(result=result, profile_name=res[0], status=200)
         except (EOFError, socket_error) as e:
             print(e)

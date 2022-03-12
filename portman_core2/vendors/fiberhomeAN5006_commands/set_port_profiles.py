@@ -47,7 +47,7 @@ class SetPortProfiles(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"cd qos\r\n")
             tn.write("attach rate-limit profile name {0} interface {1}/{2}\r\n".format(self.__lineprofile,
                                                                                        self.port_conditions[
@@ -60,7 +60,7 @@ class SetPortProfiles(BaseCommand):
             result = tn.read_until(b"end")
             print(result)
             if "not profile named" in str(result):
-                return f"there's not profile named '{self.__lineprofile}'"
+                return dict(result=f"there's not profile named '{self.__lineprofile}'", status=500)
             tn.close()
             return dict(result=f"Port profile has been changed to '{self.__lineprofile}'", status=200)
 

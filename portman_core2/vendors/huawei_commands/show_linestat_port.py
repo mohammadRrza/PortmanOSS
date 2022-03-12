@@ -53,6 +53,16 @@ class ShowLineStatPort(BaseCommand):
                 tn.write((self.__telnet_username + "\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+
+            tn.write(b"end")
+            err = tn.read_until(b'end')
+            if 'invalid' in str(err):
+                return dict(result='Telnet Username or Password is wrong! Please contact with core-access department.',
+                            status=500)
+            if 'Reenter times' in str(err):
+                return dict(result='The device is busy right now. Please try a few moments later.',
+                            status=500)
+            tn.write(b"\r\n")
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.read_until(b"(config)#")
@@ -60,6 +70,8 @@ class ShowLineStatPort(BaseCommand):
                                                                     self.__port_indexes['port_number'])).encode(
                 'utf-8'))
             result = tn.read_until(b"(config)#")
+            if "Parameter error" in str(result):
+                return dict(result="Card number or Port number is wrong.", status=500)
             if "Failure:" in str(result):
                 tn.write(("display interface vdsl 0/{0}/{1}\r\n".format(self.__port_indexes['slot_number'],
                                                                         self.__port_indexes['port_number'])).encode(

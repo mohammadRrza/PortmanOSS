@@ -47,7 +47,7 @@ class FiberhomeAN2200(BaseDSLAM):
     command_factory.register_type('show time', ShowTime)
     command_factory.register_type('show pvc by port', ShowPVCByPort)
     command_factory.register_type('IP Show', IPShow)
-    command_factory.register_type('show mac limit', ACLMaccountShow)
+    command_factory.register_type('acl maccount show', ACLMaccountShow)
     command_factory.register_type('switch port show', SwitchPortShow)
     command_factory.register_type('setPortProfiles', SetProfile)
     command_factory.register_type('show profile by port', ShowProfileByPort)
