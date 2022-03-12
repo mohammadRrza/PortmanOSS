@@ -96,7 +96,7 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('sys info show', SysInfoShow)
     command_factory.register_type('show snmp community', SysSnmpShow)
     command_factory.register_type('acl maccount show', ACLMacCountShow)
-    command_factory.register_type('Show VLAN', VlanShow)
+    command_factory.register_type('Show All VLANs', VlanShow)
     command_factory.register_type('save config', SaveConfig)
 
     '''
