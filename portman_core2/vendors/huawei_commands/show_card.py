@@ -93,6 +93,10 @@ class ShowCard(BaseCommand):
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             print('*******************************************')
             print(("show card {0}".format(result)))
             print('*******************************************')
