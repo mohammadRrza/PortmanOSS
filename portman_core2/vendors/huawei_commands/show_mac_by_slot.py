@@ -48,14 +48,31 @@ class ShowMacBySlot(BaseCommand):
                 tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             if tn.read_until(b'>>User password:'):
                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            tn.write(b"end")
+            err = tn.read_until(b'end')
+            if 'invalid' in str(err):
+                return dict(result='Telnet Username or Password is wrong! Please contact with core-access department.',
+                            status=500)
+            if 'Reenter times' in str(err):
+                return dict(result='The device is busy right now. Please try a few moments later.',
+                            status=500)
+            tn.write(b"\r\n")
+            tn.read_until(b'>')
+            # result = tn.read_until(b">", 0.5)
+            # output = str(result)
+            # while '>' not in str(result):
+            #     result = tn.read_until(b">", 1)
+            #     output += str(result)
+            #     tn.write(b"\r\n")
             tn.write(b"enable\r\n")
             tn.write(b"config\r\n")
             tn.read_until(b"(config)#")
             # tn.write(("display mac-address adsl 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
             tn.write(("display mac-address board 0/{0}\r\n".format(self.__port_indexes['slot_number'])).encode('utf-8'))
-            tn.write(b'end\r\n')
-            result = tn.read_until(b"end")
             tn.write(b"\r\n")
+            result = tn.read_until(b"(config)#")
+            if "Parameter error" in str(result):
+                return dict(result="Card number is is wrong.", status=500)
             if "Failure:" in str(result):
                 return dict(result="There is not any MAC address record", status=500)
             tn.write(b"quit\r\n")

@@ -49,7 +49,7 @@ class ShowPVCProfileID(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"cd dsl\r\n")
             tn.write("show pvc profile attach interface {0}/{1}\r\n".format(self.port_conditions['slot_number'],
                                                                             self.port_conditions['port_number']).encode(
@@ -58,9 +58,9 @@ class ShowPVCProfileID(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if "SlotNoPortConvertObjIndex" in str(result):
-                return "The Card number maybe unavailable or does not exist."
+                return dict(result="The Card number maybe unavailable or does not exist.", status=500)
             elif "ifStr" in str(result):
-                return "Card number or Port number is out of range."
+                return dict(result="Card number or Port number is out of range.", status=500)
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)

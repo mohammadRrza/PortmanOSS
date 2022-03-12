@@ -6082,7 +6082,7 @@ class FiberHomeCommandAPIView(views.APIView):
 
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
                 current_user_profile = ''
-                if 'profile_name' in port_info:
+                if 'profile_name' not in port_info:
                     return JsonResponse(
                         {'response': result, 'current_user_profile': '', 'DslamType': 'huawei'})
                 current_user_profile = port_info['profile_name']
@@ -6093,7 +6093,7 @@ class FiberHomeCommandAPIView(views.APIView):
 
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show linerate', params)
                 current_user_profile = ''
-                if 'profile_name' in port_info:
+                if 'profile_name' not in port_info:
                     return JsonResponse(
                         {'response': result, 'current_user_profile': '', 'DslamType': 'fiberhomeAN3300'})
                 current_user_profile = port_info['profile_name']

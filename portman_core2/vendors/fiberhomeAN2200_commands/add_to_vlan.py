@@ -58,15 +58,15 @@ class AddToVlan(BaseCommand):
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
             err1 = tn.read_until(b"correct")
             if "incorrect" in str(err1):
-                return "Access name is wrong!"
+                return dict(result="Access name is wrong!", status=500)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             err2 = tn.read_until(b"Password:", 1)
             if "Invalid User Name" in str(err2):
-                return "User Name is wrong."
+                return dict(result="User Name is wrong.", status=500)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err3 = tn.read_until(b"OK!", 1)
             if "Invalid Password" in str(err3):
-                return "Password is wrong."
+                return dict(result="Password is wrong.", status=500)
             tn.write(b"sc\r\n")
             tn.write(b"end\r\n")
             WANE2W_obj = tn.read_until(b'end')
@@ -85,7 +85,7 @@ class AddToVlan(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
             if "Untag port to be deleted is not in vlan pte!" in str(result):
-                return f"Card {self.port_conditions[0]['slot_number']} and Port {self.port_conditions[0]['port_number']} is not in vlan pte."
+                return dict(result=f"Card {self.port_conditions[0]['slot_number']} and Port {self.port_conditions[0]['port_number']} is not in vlan pte.", status=500)
             tn.write("addtovlan\r\n".encode('utf-8'))
             time.sleep(0.2)
             tn.write("{0}\r\n".format(self.__vlan_name).encode('utf-8'))
