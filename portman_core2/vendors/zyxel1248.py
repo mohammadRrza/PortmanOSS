@@ -15,14 +15,47 @@ from .zyxel1248_commands.show_port import ShowPort
 from .zyxel1248_commands.adsl_profile_show import AdslProfileShow
 from .zyxel1248_commands.set_port_profile import SetProfile
 from .zyxel1248_commands.version import ShowVersion
+from .zyxel1248_commands.show_shelf import ShowShelf
+from .zyxel1248_commands.adsl_pvc_show import AdslPvcShow
+from .zyxel1248_commands.show_card import ShowCard
+from .zyxel1248_commands.show_linerate import ShowLineRate
+from .zyxel1248_commands.show_mac import ShowMac
+from .zyxel1248_commands.start_selt import StartSelt
+from .zyxel1248_commands.show_selt import ShowSelt
+from .zyxel1248_commands.port_disable import PortDisable
+from .zyxel1248_commands.port_enable import PortEnable
+from .zyxel1248_commands.annexm_enable import AnnexmEnable
+from .zyxel1248_commands.annexm_disable import AnnexmDisable
+from .zyxel1248_commands.annexm_show import AnnexmShow
+from .zyxel1248_commands.show_profiles import ShowProfiles
+from .zyxel1248_commands.config_save import ConfigSave
+from .zyxel1248_commands.show_profile_by_port import ShowProfileByPort
+from .zyxel1248_commands.set_profile import SetProfile
 
 class Zyxel1248(BaseDSLAM):
 
     command_factory = CommandFactory()
-    command_factory.register_type('show linerate', ShowPort)
+    # command_factory.register_type('show linerate', ShowPort)
     command_factory.register_type('showProfiles', AdslProfileShow)
     command_factory.register_type('setProfile', SetProfile)
     command_factory.register_type('Version', ShowVersion)
+    command_factory.register_type('Show Shelf', ShowShelf)
+    command_factory.register_type('show pvc', AdslPvcShow)
+    command_factory.register_type('Show Card', ShowCard)
+    command_factory.register_type('show linerate', ShowLineRate)
+    command_factory.register_type('show mac', ShowMac)
+    command_factory.register_type('selt start', StartSelt)
+    command_factory.register_type('showSelt', ShowSelt)
+    command_factory.register_type('port disable', PortDisable)
+    command_factory.register_type('port enable', PortEnable)
+    command_factory.register_type('enable annexm', AnnexmEnable)
+    command_factory.register_type('disable annexm', AnnexmDisable)
+    command_factory.register_type('show annexm', AnnexmShow)
+    command_factory.register_type('profile adsl show', ShowProfiles)
+    command_factory.register_type('save config', ConfigSave)
+    command_factory.register_type('show profile by port', ShowProfileByPort)
+    command_factory.register_type('setPortProfiles', SetProfile)
+
 
 
     EVENT = {'dslam_connection_error':'DSLAM Connection Error', 'no_such_object':'No Such Objects'}

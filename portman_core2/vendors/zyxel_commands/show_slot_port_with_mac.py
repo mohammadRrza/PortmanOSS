@@ -55,17 +55,17 @@ class ShowSlotPortWithMac(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write("show mac {0}\r\n\r\n".format(self.__mac).encode('utf-8'))
             tn.write(b"end\r\n")
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             result = tn.read_until(b"end")
             if "XX" in str(result):
-                return "Insert MAC address in correct format"
+                return dict(resutl="Insert MAC address in correct format", status=500)
             print(result)
             if "vid" not in str(result):
-                return "There is no port on this MAC address"
+                return dict(result="There is no port on this MAC address", status=500)
             tn.close()
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
@@ -75,7 +75,7 @@ class ShowSlotPortWithMac(BaseCommand):
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'\S:\S', val)][1].split("  ")
             result = dict(port={'card': result[-1].split("-")[0], 'port': result[-1].split("-")[1].strip()})
-            return dict(result=result)
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

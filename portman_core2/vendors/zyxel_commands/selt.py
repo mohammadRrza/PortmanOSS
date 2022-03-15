@@ -77,11 +77,11 @@ class Selt(BaseCommand):
             if "example:" in str(err2):
                 result = str(err2).split("\\r\\n")
                 result = [val for val in result if re.search(r'example|between', val)]
-                return result
+                return dit(result=result, status=500)
             if "inactive" in str(err2):
                 result = str(err2).split("\\r\\n")
                 result = [val for val in result if re.search(r'inactive', val)]
-                return result
+                return dict(result=result, status=500)
             c_n += 1
             tn.write("diagnostic selt show {0}-{1}\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']).encode('utf-8'))
             tn.write((str(prompt)+str(c_n)+"\r\n").encode('utf-8'))

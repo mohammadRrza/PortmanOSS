@@ -6125,7 +6125,14 @@ class FiberHomeCommandAPIView(views.APIView):
 
 
             elif dslam_type == 7:  ########################### zyxel1248 ##########################
-                return JsonResponse({'response': result})
+                port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
+                current_user_profile = ''
+                if 'profile_name' not in port_info:
+                    return JsonResponse(
+                        {'response': result, 'current_user_profile': '', 'DslamType': 'zyxel1248'})
+                current_user_profile = port_info['profile_name']
+                return JsonResponse(
+                    {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'zyxel1248'})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, '', log_date,

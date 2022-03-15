@@ -59,7 +59,7 @@ class PortPvcDelete(BaseCommand):
             print('-----------------------------------')
             print(("port pvc delete {0}-0/35".format(self.__port_indexes)))
             print('-----------------------------------')
-            return dict(result="ports pvc was deleted", port_indexes=self.__port_indexes)
+            return dict(result="ports pvc was deleted", port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

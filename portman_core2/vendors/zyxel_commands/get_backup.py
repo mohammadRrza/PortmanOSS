@@ -62,7 +62,7 @@ class GetBackUp(BaseCommand):
             print('******************************************')
             print("show config")
             print('******************************************')
-            return dict(result=output)
+            return dict(result=output, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

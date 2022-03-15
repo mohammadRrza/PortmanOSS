@@ -62,7 +62,7 @@ class SwitchMacFlushAll(BaseCommand):
             print('*******************************************')
             print("switch mac flush all")
             print('*******************************************')
-            return dict(result="switch mac flush all")
+            return dict(result="switch mac flush all", status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

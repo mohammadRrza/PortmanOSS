@@ -85,9 +85,9 @@ class AddToVlan(BaseCommand):
             tn.close()
             if b'example' in result:
                 return {"result": "add to valn {0} give error".format(self.__vlan_id),
-                        "port_indexes": self.__port_indexes}
+                        "port_indexes": self.__port_indexes, "status": 500}
             print(("{0} added to vlan {1}".format(self.__port_indexes, self.__vlan_id)))
-            return dict(result="added to vlan {0}".format(self.__vlan_id), port_indexes=self.__port_indexes)
+            return dict(result="added to vlan {0}".format(self.__vlan_id), port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

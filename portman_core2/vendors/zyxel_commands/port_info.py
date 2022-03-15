@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from socket import error as socket_error
@@ -51,17 +53,18 @@ class PortInfo(BaseCommand):
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
+            tn.read_until(b'#')
             tn.write("port show {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'],
                                                         self.port_conditions['port_number']).encode('utf-8'))
-            time.sleep(0.5)
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"\r\n")
-            tn.write(b"end1\r\n")
-            result = tn.read_until(b'end1')
+            result = tn.read_until(b"#", 0.2)
+            output = str(result)
+            while '#' not in str(result):
+                tn.write(b"\r\n")
+                result = tn.read_until(b"#", 0.5)
+                output += str(result)
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
-            result = str(result).split("\\r\\n")
+            result = str(output).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{2,}|--{3,}', val)]
             for inx, val in enumerate(result):
                 if "Press" in val:
@@ -70,15 +73,21 @@ class PortInfo(BaseCommand):
             tn.write(b"y\r\n")
             tn.close()
             print('******************************************')
-            print(("port enable {0}".format(self.port_conditions)))
+            print(("port info {0}".format(self.port_conditions)))
             print('******************************************')
             return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
             if self.retry < 4:
                 return self.run_command()
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
             if self.retry < 4:

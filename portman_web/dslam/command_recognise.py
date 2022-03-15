@@ -88,5 +88,11 @@ def command_recognise(command):
         command = 'sip_configuration'
     elif command == 'assign_number_to_user' or command == 'assign number to user' or command == 'registerNumber':
         command = 'assign_number_to_user'
+    elif command == 'adsl annexm enable' or command == 'ADSL Annexm Enable' or command == 'enable annexm' or command == 'Enable Annexm':
+        command = 'enable annexm'
+    elif command == 'adsl annexm disable' or command == 'ADSL Annexm Disable' or command == 'disable annexm' or command == 'Disable Annexm':
+        command = 'disable annexm'
+    elif command == 'adsl annexm show' or command == 'ADSL Annexm Show' or command == 'show annexm' or command == 'Show Annexm':
+        command = 'show annexm'
 
     return command

@@ -56,7 +56,7 @@ class PortPvcShow(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(resutl="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             for port_item in self.__port_indexes:
                 tn.write(
                     "port pvc show {0}-{1}\r\n\r\n".format(port_item['slot_number'], port_item['port_number']).encode(
@@ -65,12 +65,12 @@ class PortPvcShow(BaseCommand):
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
             if "example:" in str(result):
-                return 'slot number or port number is out of range.'
+                return dict(result='slot number or port number is out of range.', status=500)
                 # result = str(result).split("\\r\\n")
                 # result = [val for val in result if re.search(r'example|between', val)]
                 # return result
             if "inactive" in str(result):
-                return f"slot {self.__port_indexes[0]['slot_number']} is inactive."
+                return dict(result=f"slot {self.__port_indexes[0]['slot_number']} is inactive.", status=500)
                 # result = str(result).split("\\r\\n")
                 # result = [val for val in result if re.search(r'inactive', val)]
                 # return result

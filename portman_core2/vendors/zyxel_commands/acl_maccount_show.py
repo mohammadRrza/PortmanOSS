@@ -67,7 +67,7 @@ class ACLMacCountShow(BaseCommand):
             print('******************************************')
             print(("port {0}".format(self.__port_indexes)))
             print('******************************************')
-            return dict(result=result)
+            return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

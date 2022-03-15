@@ -2,8 +2,8 @@ import datetime
 import os
 import sys
 import telnetlib
-import time
 from socket import error as socket_error
+
 from .command_base import BaseCommand
 import re
 
@@ -13,8 +13,8 @@ class ShowLineRate(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.port_conditions = params.get('port_conditions')
 
     @property
     def HOST(self):
@@ -23,6 +23,14 @@ class ShowLineRate(BaseCommand):
     @HOST.setter
     def HOST(self, value):
         self.__HOST = value
+
+    @property
+    def port_name(self):
+        return self.__port_name
+
+    @port_name.setter
+    def port_name(self, value):
+        self.__port_name = self.__clear_port_name(value)
 
     @property
     def telnet_username(self):
@@ -53,32 +61,21 @@ class ShowLineRate(BaseCommand):
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.read_until(b"Password:")
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            err1 = tn.read_until(b'Communications Corp.', 2)
+            err1 = tn.read_until(b"Communications Corp.", 10)
             if "Password:" in str(err1):
-                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
-            tn.write("show linerate {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'],
-                                                            self.port_conditions['port_number']).encode(
-                'utf-8'))
-            time.sleep(1)
-            tn.write(b'end1\r\n')
-            result = tn.read_until(b'end1')
-            if "example:" in str(result):
-                result = str(result).split("\\r\\n")
-                result = [val for val in result if re.search(r'example|between', val)]
-                return dict(result=result, status=500)
-            if "inactive" in str(result):
-                result = str(result).split("\\r\\n")
-                result = [val for val in result if re.search(r'inactive', val)]
-                return dict(result=result, status=500)
-            tn.write(b'exit\r\n')
-            tn.write(b'y\r\n')
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.",
+                            status=500)
+
+            tn.write("statistics adsl linerate {0}\r\n".format(self.port_conditions['port_number']).encode('utf8'))
+            tn.write(b"end")
+            result = tn.read_until(b"end")
+            tn.write(b"exit\r\n")
             tn.close()
-            # print('*******************************************')
-            # print(('show linerate {0}'.format(str(result))))
-            # print('*******************************************')
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
-            result = str(result).split("\\r\\n")
+            result = str(result).split('\\r\\n')
+
+
             res = {'dslamName/cammandName': "",
                    'date': str(datetime.datetime.now()),
                    'slot/port': str(self.port_conditions['slot_number']) + '-' + str(
@@ -88,8 +85,8 @@ class ShowLineRate(BaseCommand):
                    # 'Latency' : res[6].split(":")[1],
                    'noisemarginDown': "",
                    'noisemarginUp': "",
-                   'payloadrateDown': "",
-                   'payloadrateUp': "",
+                   # 'payloadrateDown': "",
+                   # 'payloadrateUp': "",
                    'attenuationDown': "",
                    'attenuationUp': "",
                    # 'Tx power(D/U)' : res[10].split(":")[1].split("/")[0],
@@ -111,8 +108,8 @@ class ShowLineRate(BaseCommand):
                    # 'Uncorrect(U)' : res[19].split(":")[1].split("/")[1],
                    'attainablerateDown': "",
                    'attainablerateUp': "",
-                   'actualrateDown': "",
-                   'actualrateUp': "",
+                   # 'actualrateDown': "",
+                   # 'actualrateUp': "",
 
                    # 'Interleaved Delay(D) ' : res[21].split(":")[1].split("/")[0],
                    # 'Interleaved Delay(U) ' : res[21].split(":")[1].split("/")[1],
@@ -120,35 +117,40 @@ class ShowLineRate(BaseCommand):
                    }
 
             for inx, val in enumerate(result):
-                if "noise margin" in val:
-                    res['noisemarginUp'] = val.split("=")[1].split()[0]
-                    res['noisemarginDown'] = val.split("=")[1].split()[1]
-                if "attainable rate" in val:
-                    res['attainablerateUp'] = val.split("=")[1].split()[0]
-                    res['attainablerateDown'] = val.split("=")[1].split()[1]
-                if "actual rate" in val:
-                    res['actualrateUp'] = val.split("=")[1].split()[0]
-                    res['actualrateDown'] = val.split("=")[1].split()[1]
-                if "attenuation" in val:
-                    res['attenuationUp'] = val.split("=")[1].split()[0]
-                    res['attenuationDown'] = val.split("=")[1].split()[1]
-                if "payload rate" in val:
-                    res['payloadrateUp'] = val.split("=")[1].split()[0]
-                    res['payloadrateDown'] = val.split("=")[1].split()[1]
-                if "link" in val:
-                    res['link'] = val.split("=")[1].strip()
+                if "stream margin" in val:
+                    res['noisemarginUp'] = val.split(":")[1].split("/")[1].strip()
+                    res['noisemarginDown'] = val.split(":")[1].split("/")[0].strip()
+                if "attainable" in val:
+                    res['attainablerateUp'] = val.split(":")[1].split("/")[1].strip()
+                    res['attainablerateDown'] = val.split(":")[1].split("/")[0].strip()
+                # if "actual rate" in val:
+                #     res['actualrateUp'] = val.split(":")[1].split()[0]
+                #     res['actualrateDown'] = val.split(":")[1].split()[1]
+                if "stream attenuation" in val:
+                    res['attenuationUp'] = val.split(":")[1].split("/")[1].strip()
+                    res['attenuationDown'] = val.split(":")[1].split("/")[0].strip()
+                # if "payload rate" in val:
+                #     res['payloadrateUp'] = val.split(":")[1].split()[0]
+                #     res['payloadrateDown'] = val.split(":")[1].split()[1]
+                # if "link" in val:
+                #     res['link'] = val.split(":")[1].strip()
 
             return dict(result=res, status=200)
+
+
         except (EOFError, socket_error) as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno) + '//1'))
             print(e)
             self.retry += 1
-            if self.retry < 3:
+            if self.retry < 4:
                 return self.run_command()
+
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print((str(exc_tb.tb_lineno)))
-            # print(e)
-            self.retry += 1
-            if self.retry < 3:
-                return self.run_command()
+            print((str(exc_tb.tb_lineno) + '//2'))
+            print(e)
+            print(e)
+            return str(e)

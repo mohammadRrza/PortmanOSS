@@ -87,7 +87,7 @@ class ProfileVDSLSet(BaseCommand):
                         error_desc = "error: {0} send to port {1}!!!. dslam dont have line profile {2}".format(
                             error_status.prettyPrint(), port_item['port_index'], self.__lineprofile)
                         if "badValue" in error_desc:
-                            return f"DSLAM don't have line profile '{self.__lineprofile}'"
+                            return dict(rsult=f"DSLAM don't have line profile '{self.__lineprofile}'", status=500)
                         if 'notWritable' in error_desc:
                             try:
                                 print("test")
@@ -106,13 +106,13 @@ class ProfileVDSLSet(BaseCommand):
                                 if "example:" in str(result):
                                     result = str(result).split("\\r\\n")
                                     result = [val for val in result if re.search(r'example|between', val)]
-                                    return result
+                                    return dict(result=result, status=500)
                                 if "inactive" in str(result):
                                     result = str(result).split("\\r\\n")
                                     result = [val for val in result if re.search(r'inactive', val)]
-                                    return result
+                                    return dict(result=result, status=500)
                                 if "no such profile" in str(result):
-                                    return f"Profile '{self.__lineprofile}' does not exist."
+                                    return dict(result=f"Profile '{self.__lineprofile}' does not exist.", status=500)
                                 print(result)
                                 tn.write(b"exit\r\n")
                                 tn.write(b"y\r\n")
@@ -121,7 +121,7 @@ class ProfileVDSLSet(BaseCommand):
                                 print(("port adsl set {0}-{1}".format(port_item['slot_number'],
                                                                       port_item['port_number'])))
                                 print('******************************************')
-                                return dict(result="ports line profile changed to {0}".format(self.__lineprofile))
+                                return dict(result="ports line profile changed to {0}".format(self.__lineprofile), status=200)
                             except (EOFError, socket_error) as e:
                                 print(e)
                                 self.retry += 1

@@ -1,3 +1,5 @@
+import os
+import sys
 import telnetlib
 import time
 from .command_base import BaseCommand
@@ -58,7 +60,7 @@ class ShowVersion(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"sys version\r\n")
             time.sleep(1)
             tn.write(b"end\r\n")
@@ -75,6 +77,9 @@ class ShowVersion(BaseCommand):
             print('********************************')
             return dict(result=result, status=200)
         except Exception as e:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            print((str(exc_tb.tb_lineno)))
             print(e)
             self.retry += 1
             if self.retry < 4:

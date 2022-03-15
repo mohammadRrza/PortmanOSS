@@ -60,7 +60,7 @@ class ProfileVDSLShow(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"profile vdsl show\r\n")
             time.sleep(0.5)
             tn.write(b"n\r\n")
@@ -126,7 +126,7 @@ class ProfileVDSLShow(BaseCommand):
             tn.write("exit\r\n")
             tn.write("y\r\n")
             tn.close()
-            return {"result": dict(result=lstresult)}
+            return {"result": dict(result=lstresult), "status": 200}
         # except Exception as ex:
         #     print('????????????????????????????')
         #     print((self.__HOST, self.__telnet_username, self.__telnet_password))

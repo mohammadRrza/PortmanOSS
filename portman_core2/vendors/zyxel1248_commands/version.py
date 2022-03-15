@@ -1,7 +1,6 @@
 import os
 import sys
 import telnetlib
-import time
 from socket import error as socket_error
 
 from .command_base import BaseCommand
@@ -64,12 +63,19 @@ class ShowVersion(BaseCommand):
             if "Password:" in str(err1):
                 return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"sys info show\r\n")
-
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split('\\r\\n')
-            result = [item for item in result if re.search(r'[:]', item)]
-            return dict(result=result, status=200)
+            result = [item.strip() for item in result if re.search(r':', item)]
+            output = {}
+            for line in result[:len(result)]:
+                items = line.split(":", 1)
+                output[items[0]] = items[1].strip()
+            tn.write(b"exit\r\n")
+            tn.close()
+            return dict(result=output, status=200)
 
         except (EOFError, socket_error) as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
