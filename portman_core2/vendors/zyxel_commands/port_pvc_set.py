@@ -77,7 +77,7 @@ class PortPvcSet(BaseCommand):
             print('***********************************************')
             print(("port pvc set 0/35 DEFVAL llc  1 0 for {0}".format(self.__port_indexes)))
             print('***********************************************')
-            return dict(result="ports pvc set is done ", port_indexes=self.__port_indexes)
+            return dict(result="ports pvc set is done ", port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

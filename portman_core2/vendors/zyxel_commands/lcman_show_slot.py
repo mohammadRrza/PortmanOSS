@@ -73,7 +73,7 @@ class LcmanShowSlot(BaseCommand):
             print('********************************')
             print(result)
             print('********************************')
-            return {"result": result}
+            return {"result": result, "status": 200}
 
         except (EOFError, socket_error) as e:
             print(e)

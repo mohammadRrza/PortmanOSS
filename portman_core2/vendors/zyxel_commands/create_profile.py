@@ -129,7 +129,7 @@ class CreateProfile(BaseCommand):
             print('*******************************************')
             print(("{0} profile created".format(profile_name)))
             print('*******************************************')
-            return {"result": "{0} profile created".format(profile_name)}
+            return {"result": "{0} profile created".format(profile_name), "status": 200}
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

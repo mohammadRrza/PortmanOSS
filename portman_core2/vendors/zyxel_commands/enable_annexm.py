@@ -62,7 +62,7 @@ class EnableAnnexm(BaseCommand):
             print(("port adsl annexm enable {0}".format(self.__port_indexes)))
             print('******************************************')
             return dict(result="ports adsl annexm enable {0}".format(self.__port_indexes),
-                        port_indexes=self.__port_indexes)
+                        port_indexes=self.__port_indexes, status = 200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

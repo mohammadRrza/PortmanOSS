@@ -61,7 +61,7 @@ class SetTime(BaseCommand):
             print('******************************************')
             print("")
             print('******************************************')
-            return dict(result="Time set successfully")
+            return dict(result="Time set successfully", status=500)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

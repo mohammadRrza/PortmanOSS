@@ -82,9 +82,9 @@ class RemoveFromVlan(BaseCommand):
             tn.close()
             if 'example' in str(result):
                 return {"result": "The delete from card/port {0} gives error".format(self.__port_indexes),
-                        "port_indexes": self.__port_indexes}
+                        "port_indexes": self.__port_indexes, "status": 500}
             return dict(result="deleted from card/port{0}".format(self.__port_indexes),
-                        port_indexes=self.__port_indexes)
+                        port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

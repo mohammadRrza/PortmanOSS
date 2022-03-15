@@ -70,11 +70,11 @@ class CreateVlan(BaseCommand):
                 print('************************************')
                 print(("error: {0} vlan created".format(self.__vlan_id)))
                 print('************************************')
-                return {"result": "error: {0} vlan created".format(self.__vlan_id)}
+                return {"result": "error: {0} vlan created".format(self.__vlan_id), "status": 500}
             print('************************************')
             print(("{0} vlan created".format(self.__vlan_id)))
             print('************************************')
-            return {"result": "{0} vlan created".format(self.__vlan_id)}
+            return {"result": "{0} vlan created".format(self.__vlan_id), "status": 200}
         except Exception as e:
             print(e)
             self.retry += 1

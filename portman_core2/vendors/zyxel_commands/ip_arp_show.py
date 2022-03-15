@@ -58,7 +58,7 @@ class IPARPShow(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b'Communications Corp.', 1)
             if "Password:" in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=200)
             tn.write(b"ip arp show\r\nn")
             tn.write(b"end\r\n")
             result = tn.read_until(b'end')

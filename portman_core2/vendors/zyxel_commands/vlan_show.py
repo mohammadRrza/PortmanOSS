@@ -59,7 +59,7 @@ class VlanShow(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.read_until(b'#')
             tn.write(b"vlan show\r\nn")
             output = tn.read_until(b'#', 1)

@@ -101,7 +101,7 @@ class GetDSLAMBoard(BaseCommand):
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            return {"result": boards}
+            return {"result": boards, "status": 200}
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1

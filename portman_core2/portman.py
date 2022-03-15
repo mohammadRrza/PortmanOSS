@@ -32,7 +32,7 @@ class Portman(object):
         self.__portman_factory = PortmanFactory()
         # dslams
         self.__portman_factory.register_type('zyxel', Zyxel)
-        self.__portman_factory.register_type('zyxel1248', Zyxel1248)
+        self.__portman_factory.register_type('zyxel 1248', Zyxel1248)
         self.__portman_factory.register_type('huawei', Huawei)
         self.__portman_factory.register_type('fiberhomeAN2200', FiberhomeAN2200)
         self.__portman_factory.register_type('fiberhomeAN3300', FiberhomeAN3300)

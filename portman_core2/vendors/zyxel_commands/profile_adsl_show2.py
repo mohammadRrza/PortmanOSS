@@ -129,7 +129,7 @@ class ProfileADSLShow(BaseCommand):
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            return {"result": lstresult}
+            return {"result": lstresult, "status": 200}
         except Exception as ex:
             print('????????????????????????????')
             print((self.__HOST, self.__telnet_username, self.__telnet_password))

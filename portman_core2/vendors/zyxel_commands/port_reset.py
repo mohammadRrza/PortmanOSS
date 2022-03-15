@@ -60,7 +60,7 @@ class PortReset(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
-                return "Telnet Username or Password is wrong! Please contact with core-access department."
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write("port disable {0}-{1}\r\n".format(self.port_conditions['slot_number'], self.port_conditions['port_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.write("port enable {0}-{1}\r\n".format(self.port_conditions['slot_number'],
@@ -71,11 +71,11 @@ class PortReset(BaseCommand):
             if "example:" in str(result):
                 result = str(result).split("\\r\\n")
                 result = [val for val in result if re.search(r'example|between', val)]
-                return result
+                return dict(result=result, status=500)
             if "inactive" in str(result):
                 result = str(result).split("\\r\\n")
                 result = [val for val in result if re.search(r'inactive', val)]
-                return result
+                return dict(result=result, status=500)
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
