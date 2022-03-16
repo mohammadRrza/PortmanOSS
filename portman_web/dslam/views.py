@@ -3628,7 +3628,7 @@ class RegisterPortAPIView(views.APIView):
                         if (vlanName == 'farzanegan'):
                             vlanName = 'farzaneg'
 
-                        url = 'http://5.202.129.61:9096/api/Telnet/telnet'
+                        url = 'http://172.28.244.138:9096/api/Telnet/telnet'
                         data = "{'type':'%s','dslam':'%s','telnetPort':'23','userName':'%s','password':'%s','access':'%s','sourceVlanId':'%s','vlanName':'%s','vlanId':'%s','untaggedPortList':'%s','vpiVci':'%s','card':'%s','port':'%s','command':'%s','terminalDelay':'600','requestTimeOut':'1500'}" % (
                             dslamType, dslam_obj.ip, dslam_obj.telnet_username, dslam_obj.telnet_password,
                             dslam_obj.access_name, sourceVlanId, vlanName, vlan_objs[0].vlan_id,

@@ -39,7 +39,8 @@ class ZabbixHosts:
                 router_board = ["RB450G", "RB450", "RB750Gr3", "RB750gl", "RB750G", "RB750", "RB750R2", "CCR1009", "RB1100", "CCR1016", "CCR1036",
                                 "hEX", "RB1100AHx2", "1100AHx2", "RB1100AH", "RB1100x4", "RB1100AHx4", "1100AH", "RB2011", "RB433AH", "RB433ah", "hEXRB750",
                                 "750Gr3hEX", "750Gr3", "RB3011UiAS", "HexRB750", "hex", "RB600", "CCR1072", "RB750Gr2", "RB493AH", "RB2011UAS", "haplite",
-                                "RB850", "1100AHx4", "RB751U", "RB1000", "RB800", "CCR1100", "RBAH433", "450G", "RB4011", "CCR1036-", "RB750R3", "RB750GL"]
+                                "RB850", "1100AHx4", "RB751U", "RB1000", "RB800", "CCR1100", "RBAH433", "450G", "RB4011", "CCR1036-", "RB750R3", "RB750GL",
+                                "RB100Ahx2"]
                 router_virtual = ["vmx86", "vmx86"]
                 switch_board = ["CRS328", "CRS125"]
                 wireless = ["LHG5", "LHGHP", "LHG", "LHGXL", "LHG HP5", "SXThpnd", "RB911G-5", "LHGXL5", "B921UA",

@@ -32,8 +32,8 @@ from .zyxel1248_commands.config_save import ConfigSave
 from .zyxel1248_commands.show_profile_by_port import ShowProfileByPort
 from .zyxel1248_commands.set_profile import SetProfile
 
-class Zyxel1248(BaseDSLAM):
 
+class Zyxel1248(BaseDSLAM):
     command_factory = CommandFactory()
     # command_factory.register_type('show linerate', ShowPort)
     command_factory.register_type('showProfiles', AdslProfileShow)
@@ -56,36 +56,34 @@ class Zyxel1248(BaseDSLAM):
     command_factory.register_type('show profile by port', ShowProfileByPort)
     command_factory.register_type('setPortProfiles', SetProfile)
 
-
-
-    EVENT = {'dslam_connection_error':'DSLAM Connection Error', 'no_such_object':'No Such Objects'}
-    EVENT_INVERS = dict(list(zip(list(EVENT.values()),list(EVENT.keys()))))
+    EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
+    EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))
 
     PORT_DETAILS_OID_TABLE = {
-        "1.3.6.1.2.1.2.2.1.7"         : "PORT_ADMIN_STATUS",
-        "1.3.6.1.2.1.2.2.1.8"         : "PORT_OPER_STATUS",
-        "1.3.6.1.2.1.10.94.1.1.1.1.4" : "LINE_PROFILE",
-        "1.3.6.1.2.1.10.94.1.1.2.1.4" : "ADSL_UPSTREAM_SNR",
-        "1.3.6.1.2.1.10.94.1.1.2.1.5" : "ADSL_UPSTREAM_ATTEN",
-        "1.3.6.1.2.1.10.94.1.1.2.1.8" : "ADSL_UPSTREAM_ATT_RATE",
-        "1.3.6.1.2.1.10.94.1.1.5.1.2" : "ADSL_CURR_UPSTREAM_RATE",
-        "1.3.6.1.2.1.10.94.1.1.3.1.4" : "ADSL_DOWNSTREAM_SNR",
-        "1.3.6.1.2.1.10.94.1.1.3.1.5" : "ADSL_DOWNSTREAM_ATTEN",
-        "1.3.6.1.2.1.10.94.1.1.3.1.8" : "ADSL_DOWNSTREAM_ATT_RATE",
-        "1.3.6.1.2.1.10.94.1.1.4.1.2" : "ADSL_CURR_DOWNSTREAM_RATE",
-        "1.3.6.1.2.1.31.1.1.1.10"     : "OUTGOING_TRAFFIC",
-        "1.3.6.1.2.1.31.1.1.1.6"      : "INCOMING_TRAFFIC"
+        "1.3.6.1.2.1.2.2.1.7": "PORT_ADMIN_STATUS",
+        "1.3.6.1.2.1.2.2.1.8": "PORT_OPER_STATUS",
+        "1.3.6.1.2.1.10.94.1.1.1.1.4": "LINE_PROFILE",
+        "1.3.6.1.2.1.10.94.1.1.2.1.4": "ADSL_UPSTREAM_SNR",
+        "1.3.6.1.2.1.10.94.1.1.2.1.5": "ADSL_UPSTREAM_ATTEN",
+        "1.3.6.1.2.1.10.94.1.1.2.1.8": "ADSL_UPSTREAM_ATT_RATE",
+        "1.3.6.1.2.1.10.94.1.1.5.1.2": "ADSL_CURR_UPSTREAM_RATE",
+        "1.3.6.1.2.1.10.94.1.1.3.1.4": "ADSL_DOWNSTREAM_SNR",
+        "1.3.6.1.2.1.10.94.1.1.3.1.5": "ADSL_DOWNSTREAM_ATTEN",
+        "1.3.6.1.2.1.10.94.1.1.3.1.8": "ADSL_DOWNSTREAM_ATT_RATE",
+        "1.3.6.1.2.1.10.94.1.1.4.1.2": "ADSL_CURR_DOWNSTREAM_RATE",
+        "1.3.6.1.2.1.31.1.1.1.10": "OUTGOING_TRAFFIC",
+        "1.3.6.1.2.1.31.1.1.1.6": "INCOMING_TRAFFIC"
     }
 
-    PORT_DETAILS_OID_TABLE_INVERSE = {v:k for k, v in list(PORT_DETAILS_OID_TABLE.items())}
+    PORT_DETAILS_OID_TABLE_INVERSE = {v: k for k, v in list(PORT_DETAILS_OID_TABLE.items())}
 
-    PORT_ADMIN_STATUS = {1:"UNLOCK", 2:"LOCK", 3:"TESTING"}
-    PORT_ADMIN_STATUS_INVERSE = {v:k for k, v in list(PORT_ADMIN_STATUS.items())}
+    PORT_ADMIN_STATUS = {1: "UNLOCK", 2: "LOCK", 3: "TESTING"}
+    PORT_ADMIN_STATUS_INVERSE = {v: k for k, v in list(PORT_ADMIN_STATUS.items())}
 
-    PORT_OPER_STATUS = {1:"SYNC", 2:"NO-SYNC", 3:"TESTING",
-                        4:"UNKNOWN", 5:"DORMANT", 6:"NOT-PRESENT",
-                        7:"LOWER-LAYER-DOWN", 65536:"NO-SYNC-GENERAL"}
-    PORT_OPER_STATUS_INVERSE = {v:k for k, v in list(PORT_OPER_STATUS.items())}
+    PORT_OPER_STATUS = {1: "SYNC", 2: "NO-SYNC", 3: "TESTING",
+                        4: "UNKNOWN", 5: "DORMANT", 6: "NOT-PRESENT",
+                        7: "LOWER-LAYER-DOWN", 65536: "NO-SYNC-GENERAL"}
+    PORT_OPER_STATUS_INVERSE = {v: k for k, v in list(PORT_OPER_STATUS.items())}
 
     PORT_INDEX_TO_PORT_NAME_OID = '1.3.6.1.2.1.2.2.1.2'
     PORT_UPTIME_OID = '1.3.6.1.2.1.2.2.1.9'
@@ -127,7 +125,6 @@ class Zyxel1248(BaseDSLAM):
             return cls.PORT_OPER_STATUS[oper_status_val]
         return oper_status_val
 
-
     @classmethod
     def get_dslam_info(cls, dslam_data):
         dslam_ip = dslam_data['ip']
@@ -135,7 +132,8 @@ class Zyxel1248(BaseDSLAM):
         snmp_port = int(dslam_data.get('snmp_port', 161))
         snmp_timeout = int(dslam_data.get('snmp_timeout', 5))
         try:
-            session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port,timeout=snmp_timeout, retries=1, version=2)
+            session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port, timeout=snmp_timeout,
+                              retries=1, version=2)
 
             try:
                 dslam_hostname = session.get(cls.HOSTName_OID).value
@@ -155,7 +153,6 @@ class Zyxel1248(BaseDSLAM):
             return None, None
         return (dslam_uptime, dslam_hostname)
 
-
     @classmethod
     def get_port_index_mapping(cls, dslam_data):
         """
@@ -169,21 +166,22 @@ class Zyxel1248(BaseDSLAM):
         snmp_port = int(dslam_data.get('snmp_port', 161))
         snmp_timeout = int(dslam_data.get('snmp_timeout', 5))
         try:
-            session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port,timeout=snmp_timeout, retries=1, version=2)
+            session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port, timeout=snmp_timeout,
+                              retries=1, version=2)
             var_binds = session.walk(cls.PORT_INDEX_TO_PORT_NAME_OID)
             for item in var_binds:
                 if 'adsl' in item.value:
-                    slot_number = re.search(r'\d{1,4}',item.value).group()
-                    port_number = re.search(r'\d{1,4}$',item.value).group()
+                    slot_number = re.search(r'\d{1,4}', item.value).group()
+                    port_number = re.search(r'\d{1,4}$', item.value).group()
                     if 'ifDescr' in item.oid:
                         port_index_mapping.append((slot_number, port_number, item.oid_index, item.value))
                     else:
-                        port_index_mapping.append((slot_number, port_number,item.oid.split('.')[-1], item.value))
+                        port_index_mapping.append((slot_number, port_number, item.oid.split('.')[-1], item.value))
 
             du = time.time() - start
         except Exception as e:
             print(e)
-            info['dslam_events'] = (dslam_data['id'], cls.translate_event_by_text('DSLAM Connection Error'),e)
+            info['dslam_events'] = (dslam_data['id'], cls.translate_event_by_text('DSLAM Connection Error'), e)
         finally:
             info['port_index_mapping'] = port_index_mapping
             return info
@@ -197,39 +195,41 @@ class Zyxel1248(BaseDSLAM):
         snmp_port = int(dslam_data.get('snmp_port', 161))
         snmp_timeout = int(dslam_data.get('snmp_timeout', 5))
         port_event_items = []
-        session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port,timeout=5, retries=1, version=2)
+        session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port, timeout=5, retries=1,
+                          version=2)
         for oid, item_name in list(cls.PORT_DETAILS_OID_TABLE.items()):
             try:
-                var_bind = session.get(oid+".{0}".format(port_index))
+                var_bind = session.get(oid + ".{0}".format(port_index))
             except Exception as ex:
                 port_event_items.append({
                     'event': cls.translate_event_by_text('DSLAM Connection Error'),
-                    'message': str(ex) +'on {0}'.format(item_name)
-                    })
+                    'message': str(ex) + 'on {0}'.format(item_name)
+                })
                 continue
 
-            if 'No Such' in var_bind.value or 'NOSUCH' in var_bind.value: # Ignore this item since we have no data
+            if 'No Such' in var_bind.value or 'NOSUCH' in var_bind.value:  # Ignore this item since we have no data
                 port_event_items.append({
                     'event': cls.translate_event_by_text('No Such Objects'),
-                    'message': 'error on '+ item_name
-                    })
+                    'message': 'error on ' + item_name
+                })
                 continue
 
             if item_name == 'PORT_ADMIN_STATUS':
                 value = cls.translate_admin_status_by_value(var_bind.value)
             elif item_name == 'PORT_OPER_STATUS':
                 value = cls.translate_oper_status_by_value(var_bind.value)
-            elif item_name in ('ADSL_UPSTREAM_ATT_RATE', 'ADSL_DOWNSTREAM_ATT_RATE', 'ADSL_CURR_UPSTREAM_RATE', 'ADSL_CURR_DOWNSTREAM_RATE'):
+            elif item_name in ('ADSL_UPSTREAM_ATT_RATE', 'ADSL_DOWNSTREAM_ATT_RATE', 'ADSL_CURR_UPSTREAM_RATE',
+                               'ADSL_CURR_DOWNSTREAM_RATE'):
                 value = int(var_bind.value) / 8192
             else:
                 value = var_bind.value
 
-            port_current_status[ item_name ] = value
+            port_current_status[item_name] = value
 
         # get uptime port
         uptime = 0
         if int(port_number) < 10:
-            port_number = '0'+ str(port_number)
+            port_number = '0' + str(port_number)
         try:
             port_last_change_var = session.get('{0}.{1}{2}'.format(cls.PORT_UPTIME_OID, slot_number, port_number))
             sys_up_time_var = session.get(cls.SYS_UP_TIME)
@@ -246,53 +246,55 @@ class Zyxel1248(BaseDSLAM):
         port_current_status['ADSL_UPTIME'] = uptime
 
         if 'ADSL_UPSTREAM_ATTEN' in port_current_status:
-            port_current_status['ADSL_UPSTREAM_ATTEN_FLAG'] = cls.get_atten_flag(float(port_current_status['ADSL_UPSTREAM_ATTEN']) / 10)
+            port_current_status['ADSL_UPSTREAM_ATTEN_FLAG'] = cls.get_atten_flag(
+                float(port_current_status['ADSL_UPSTREAM_ATTEN']) / 10)
 
         if 'ADSL_DOWNSTREAM_ATTEN' in port_current_status:
-            port_current_status['ADSL_DOWNSTREAM_ATTEN_FLAG'] = cls.get_atten_flag(float(port_current_status['ADSL_DOWNSTREAM_ATTEN']) / 10)
+            port_current_status['ADSL_DOWNSTREAM_ATTEN_FLAG'] = cls.get_atten_flag(
+                float(port_current_status['ADSL_DOWNSTREAM_ATTEN']) / 10)
 
         if 'ADSL_UPSTREAM_SNR' in port_current_status:
-            port_current_status['ADSL_UPSTREAM_SNR_FLAG'] = cls.get_snr_flag(float(port_current_status['ADSL_UPSTREAM_SNR']) / 10)
+            port_current_status['ADSL_UPSTREAM_SNR_FLAG'] = cls.get_snr_flag(
+                float(port_current_status['ADSL_UPSTREAM_SNR']) / 10)
 
         if 'ADSL_DOWNSTREAM_SNR' in port_current_status:
-            port_current_status['ADSL_DOWNSTREAM_SNR_FLAG'] = cls.get_snr_flag(float(port_current_status['ADSL_DOWNSTREAM_SNR']) / 10)
+            port_current_status['ADSL_DOWNSTREAM_SNR_FLAG'] = cls.get_snr_flag(
+                float(port_current_status['ADSL_DOWNSTREAM_SNR']) / 10)
 
         port_results['port_current_status'] = port_current_status
-        port_results['port_events'] = {'dslam_id':dslam_data['id'],'slot_number':slot_number,'port_number':port_number ,'port_event_items':port_event_items}
+        port_results['port_events'] = {'dslam_id': dslam_data['id'], 'slot_number': slot_number,
+                                       'port_number': port_number, 'port_event_items': port_event_items}
 
         port_results['fetched_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         return port_results
-
 
     @classmethod
     def get_atten_flag(cls, atten_value):
         if atten_value <= 20:
             return 'outstanding'
-        elif atten_value > 20  and atten_value <= 30 :
+        elif atten_value > 20 and atten_value <= 30:
             return 'excellent'
-        elif atten_value > 30 and atten_value <= 40 :
+        elif atten_value > 30 and atten_value <= 40:
             return 'very_good'
-        elif atten_value > 40 and atten_value <= 50 :
+        elif atten_value > 40 and atten_value <= 50:
             return 'good'
-        elif atten_value > 50 and atten_value <= 60 :
+        elif atten_value > 50 and atten_value <= 60:
             return 'poor'
         else:
             return 'bad'
-
 
     @classmethod
     def get_snr_flag(cls, snr_value):
         if snr_value <= 6:
             return 'bad'
-        elif snr_value > 6  and snr_value <= 10 :
+        elif snr_value > 6 and snr_value <= 10:
             return 'fair'
-        elif snr_value > 10 and snr_value <= 20 :
+        elif snr_value > 10 and snr_value <= 20:
             return 'good'
-        elif snr_value > 20 and snr_value <= 29 :
+        elif snr_value > 20 and snr_value <= 29:
             return 'excellent'
         else:
             return 'outstanding'
-
 
     @classmethod
     def get_current_port_status_bulk(cls, dslam_info, dslam_port_map):
@@ -301,30 +303,30 @@ class Zyxel1248(BaseDSLAM):
         dslam_ip = dslam_info['ip']
         snmp_port = int(dslam_info.get('snmp_port', 161))
         snmp_timeout = int(dslam_info.get('snmp_timeout', 5))
-        #dslam_port_map = cls._get_all_port_mappings(dslam)
+        # dslam_port_map = cls._get_all_port_mappings(dslam)
         port_mapping_len = len(dslam_port_map)
         ports_status = {}
         cmd_gen = cmdgen.CommandGenerator()
         oid_list = [
-            #cls.PORT_DETAILS_OID_TABLE_INVERSE['PORT_ADMIN_STATUS'],
-            #cls.PORT_DETAILS_OID_TABLE_INVERSE['PORT_OPER_STATUS'],
-            #cls.PORT_DETAILS_OID_TABLE_INVERSE['LINE_PROFILE'],
-            #cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_DOWNSTREAM_RATE'],
-            #cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_UPSTREAM_RATE'],
+            # cls.PORT_DETAILS_OID_TABLE_INVERSE['PORT_ADMIN_STATUS'],
+            # cls.PORT_DETAILS_OID_TABLE_INVERSE['PORT_OPER_STATUS'],
+            # cls.PORT_DETAILS_OID_TABLE_INVERSE['LINE_PROFILE'],
+            # cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_DOWNSTREAM_RATE'],
+            # cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_UPSTREAM_RATE'],
             cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_DOWNSTREAM_SNR'],
             cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_UPSTREAM_SNR']
         ]
 
-        #session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port,timeout=snmp_timeout, retries=3,version=2)
-        #var_bind_table = session.get_bulk(*oid_list,0,port_mapping_len)
+        # session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port,timeout=snmp_timeout, retries=3,version=2)
+        # var_bind_table = session.get_bulk(*oid_list,0,port_mapping_len)
 
-        error_indication, error_status,\
-            error_index, var_bind_table = cmd_gen.bulkCmd(
-                cmdgen.CommunityData(snmp_community),
-                cmdgen.UdpTransportTarget((dslam_ip, snmp_port),
-                                          timeout=snmp_timeout, retries=2),
-                0, port_mapping_len, *oid_list
-            )
+        error_indication, error_status, \
+        error_index, var_bind_table = cmd_gen.bulkCmd(
+            cmdgen.CommunityData(snmp_community),
+            cmdgen.UdpTransportTarget((dslam_ip, snmp_port),
+                                      timeout=snmp_timeout, retries=2),
+            0, port_mapping_len, *oid_list
+        )
 
         if error_indication:
             raise Exception(error_indication)
@@ -332,13 +334,13 @@ class Zyxel1248(BaseDSLAM):
             if error_status:
                 raise Exception('%s at %s' % (
                     error_status.prettyPrint(),
-                    error_index and var_bind_table[-1][int(error_index)-1] or '?'
+                    error_index and var_bind_table[-1][int(error_index) - 1] or '?'
                 ))
 
             else:
                 for row in var_bind_table:
                     for oid, val in row:
-                        #oid, port_index = cls._resolve_oid(oid.prettyPrint())
+                        # oid, port_index = cls._resolve_oid(oid.prettyPrint())
                         oid, port_index = cls._resolve_oid(str(oid))
                         port_name = dslam_port_map[port_index]
                         item_name = cls.PORT_DETAILS_OID_TABLE[oid]
@@ -349,8 +351,8 @@ class Zyxel1248(BaseDSLAM):
                             'fetched_at'
                         ] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        du = time.time()-start
-        print(('======================= Get Port Status Bulk Donw in %s'%du))
+        du = time.time() - start
+        print(('======================= Get Port Status Bulk Donw in %s' % du))
         return ports_status
 
     @classmethod
@@ -369,12 +371,14 @@ class Zyxel1248(BaseDSLAM):
         dslam_ip = dslam_info['ip']
         snmp_port = int(dslam_info.get('snmp_port', 161))
         snmp_timeout = int(dslam_info.get('snmp_timeout', 5))
-        session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port, timeout=5, retries=1, version=2)
+        session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port, timeout=5, retries=1,
+                          version=2)
         info = {}
         port_vpi_vci = defaultdict(dict)
         try:
             start = time.time()
-            session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port,timeout=snmp_timeout, retries=1, version=2)
+            session = Session(hostname=dslam_ip, community=snmp_community, remote_port=snmp_port, timeout=snmp_timeout,
+                              retries=1, version=2)
             var_binds = session.walk(cls.VPI_OID)
             for item in var_binds:
                 port_index = item.oid.split('.')[-3]
@@ -386,27 +390,24 @@ class Zyxel1248(BaseDSLAM):
                 port_vpi_vci[port_index]['vci'] = item.value
                 port_vpi_vci[port_index]['port_index'] = port_index
 
-
             du = time.time() - start
         except Exception as e:
             print(e)
-            info['dslam_events'] = (dslam_data['id'], cls.translate_event_by_text('DSLAM Connection Error'),e)
+            info['dslam_events'] = (dslam_data['id'], cls.translate_event_by_text('DSLAM Connection Error'), e)
         finally:
             info['port_vpi_vci'] = list(port_vpi_vci.values())
             return info
 
-
-
     @classmethod
     def change_port_admin_status(cls, dslam_info, port_index, admin_status):
-        #port_index = cls.resolve_port_name(dslam, port_name)
+        # port_index = cls.resolve_port_name(dslam, port_name)
         admin_status = cls.translate_admin_status_by_text(admin_status)
         snmp_community = dslam_info['set_snmp_community']
         dslam_ip = dslam_info['ip']
         snmp_port = int(dslam_info.get('snmp_port', 161))
         snmp_timeout = int(dslam_info.get('snmp_timeout', 5))
 
-        target_oid = '.{0}.{1}'.format(cls.PORT_DETAILS_OID_TABLE_INVERSE['PORT_ADMIN_STATUS'],port_index)
+        target_oid = '.{0}.{1}'.format(cls.PORT_DETAILS_OID_TABLE_INVERSE['PORT_ADMIN_STATUS'], port_index)
 
         if admin_status is None:
             raise Exception('Invalid Admin Status Value')
@@ -428,7 +429,7 @@ class Zyxel1248(BaseDSLAM):
             if error_status:
                 Exception('%s at %s' % (
                     error_status.prettyPrint(),
-                    error_index and var_binds[int(error_index)-1][0] or '?'
+                    error_index and var_binds[int(error_index) - 1][0] or '?'
                 ))
 
         return True
@@ -440,7 +441,7 @@ class Zyxel1248(BaseDSLAM):
         dslam_ip = dslam_info['ip']
         snmp_port = int(dslam_info.get('snmp_port', 161))
         snmp_timeout = int(dslam_info.get('snmp_timeout', 5))
-        target_oid = '.{0}.{1}'.format(cls.PORT_DETAILS_OID_TABLE_INVERSE['PORT_ADMIN_STATUS'],port_index)
+        target_oid = '.{0}.{1}'.format(cls.PORT_DETAILS_OID_TABLE_INVERSE['PORT_ADMIN_STATUS'], port_index)
         lock = cls.PORT_ADMIN_STATUS_INVERSE['LOCK']
         unlock = cls.PORT_ADMIN_STATUS_INVERSE['UNLOCK']
 
@@ -462,10 +463,10 @@ class Zyxel1248(BaseDSLAM):
             if error_status:
                 Exception('%s at %s' % (
                     error_status.prettyPrint(),
-                    error_index and var_binds[int(error_index)-1][0] or '?'
+                    error_index and var_binds[int(error_index) - 1][0] or '?'
                 ))
 
-        #unlock admin status
+        # unlock admin status
         error_indication, error_status, error_index, var_binds = cmd_gen.setCmd(
             cmdgen.CommunityData(snmp_community),
             cmdgen.UdpTransportTarget((dslam_ip, snmp_port),
@@ -479,23 +480,23 @@ class Zyxel1248(BaseDSLAM):
             if error_status:
                 Exception('%s at %s' % (
                     error_status.prettyPrint(),
-                    error_index and var_binds[int(error_index)-1][0] or '?'
+                    error_index and var_binds[int(error_index) - 1][0] or '?'
                 ))
 
         print('reset port admin status')
         return True
 
-        #time.sleep(5)
+        # time.sleep(5)
 
     @classmethod
     def change_port_line_profile(cls, dslam_info, port_index, lineprofile):
-        #port_index = cls.resolve_port_name(dslam, port_name)
+        # port_index = cls.resolve_port_name(dslam, port_name)
         snmp_community = dslam_info['set_snmp_community']
         dslam_ip = dslam_info['ip']
         snmp_port = int(dslam_info.get('snmp_port', 161))
         snmp_timeout = int(dslam_info.get('snmp_timeout', 5))
 
-        target_oid = '.{0}.{1}'.format(cls.PORT_DETAILS_OID_TABLE_INVERSE['LINE_PROFILE'],port_index)
+        target_oid = '.{0}.{1}'.format(cls.PORT_DETAILS_OID_TABLE_INVERSE['LINE_PROFILE'], port_index)
 
         cmd_gen = cmdgen.CommandGenerator()
 
@@ -514,7 +515,7 @@ class Zyxel1248(BaseDSLAM):
             if error_status:
                 Exception('%s at %s' % (
                     error_status.prettyPrint(),
-                    error_index and var_binds[int(error_index)-1][0] or '?'
+                    error_index and var_binds[int(error_index) - 1][0] or '?'
                 ))
         return True
 
@@ -545,16 +546,18 @@ class Zyxel1248(BaseDSLAM):
             if result:
                 with open(result_filepath, 'ab') as log_file:
                     log_file.write('\r\n\r\n=======================================\r\n\r\n')
-                    log_file.write('\r\n\r\nid: {0}, name: {1}, ip: {2}\r\n\r\n'.format(dslam_data.get('id'), dslam_data.get('name').encode('utf-8'), dslam_data.get('ip')))
-                    log_file.write(result+'\n')
+                    log_file.write('\r\n\r\nid: {0}, name: {1}, ip: {2}\r\n\r\n'.format(dslam_data.get('id'),
+                                                                                        dslam_data.get('name').encode(
+                                                                                            'utf-8'),
+                                                                                        dslam_data.get('ip')))
+                    log_file.write(result + '\n')
                     log_file.write('\r\n\r\n=======================================\r\n\r\r\n')
                 with open(success_filepath, 'ab') as success_file:
-                    success_file.write(str(dslam_data.get('id'))+','+dslam_data.get('ip')+'\r\n')
+                    success_file.write(str(dslam_data.get('id')) + ',' + dslam_data.get('ip') + '\r\n')
             else:
                 with open(error_filepath, 'ab') as error_file:
-                    error_file.write(str(dslam_data.get('id'))+','+dslam_data.get('ip')+'\r\n')
+                    error_file.write(str(dslam_data.get('id')) + ',' + dslam_data.get('ip') + '\r\n')
         return {'result': 'run dslam bulk command is done'}
-
 
     @classmethod
     def run_commands(cls, dslam_id, HOST, user, password, commands, slot_ports):
@@ -574,7 +577,7 @@ class Zyxel1248(BaseDSLAM):
                                 for template_tag in template_tags:
                                     template_tag_value = command.get('params')
                                     template_tag_value.update({'slot_number': slot})
-                                    tn.write(template_tag.format(**template_tag_value)+'\r\n\r\n'.encode('utf-8'))
+                                    tn.write(template_tag.format(**template_tag_value) + '\r\n\r\n'.encode('utf-8'))
                             except Exception as ex:
                                 print(('run_commands (slot section) =>>>', ex))
                 else:
@@ -584,8 +587,9 @@ class Zyxel1248(BaseDSLAM):
                             try:
                                 for template_tag in template_tags:
                                     template_tag_value = command.get('params')
-                                    template_tag_value.update({'port_number': port['port_number'], 'slot_number': port['slot_number']})
-                                    tn.write((template_tag.format(**template_tag_value)+'\r\n\r\n').encode('utf-8'))
+                                    template_tag_value.update(
+                                        {'port_number': port['port_number'], 'slot_number': port['slot_number']})
+                                    tn.write((template_tag.format(**template_tag_value) + '\r\n\r\n').encode('utf-8'))
                                     time.sleep(1)
                             except Exception as ex:
                                 print(('run_commands (port section) =>>>', ex))
@@ -596,13 +600,13 @@ class Zyxel1248(BaseDSLAM):
                         template_tag_value = command.get('params')
                         try:
                             for template_tag in template_tags:
-                                command = (template_tag.format(**template_tag_value)+'\r\n\r\n').encode('utf-8')
+                                command = (template_tag.format(**template_tag_value) + '\r\n\r\n').encode('utf-8')
                                 tn.write(command)
                                 time.sleep(1)
                         except Exception as ex:
                             print(('run_commands (dslam section) =>>>', ex))
                     else:
-                        tn.write(command.get('text')+'\r\n\r\n'.encode('utf-8'))
+                        tn.write(command.get('text') + '\r\n\r\n'.encode('utf-8'))
                     time.sleep(1)
 
             tn.write("end\r\n")
@@ -611,11 +615,11 @@ class Zyxel1248(BaseDSLAM):
             tn.write("y\r\n")
             tn.close()
             results = result.split('\n')
-            results = '\n'.join(results[3:len(results)-2])
+            results = '\n'.join(results[3:len(results) - 2])
             return results
         except Exception as ex:
             print('---------------------')
             print(ex)
-            print((HOST+','+user+','+password))
+            print((HOST + ',' + user + ',' + password))
             print('---------------------')
             return None
