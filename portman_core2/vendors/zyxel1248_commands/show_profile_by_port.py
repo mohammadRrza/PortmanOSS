@@ -63,7 +63,8 @@ class ShowProfileByPort(BaseCommand):
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"Communications Corp.", 10)
             if "Password:" in str(err1):
-                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
+                return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.",
+                            status=500)
 
             tn.write(b"adsl show\r\n")
             tn.read_until(b'adsl show', 0.2)
@@ -73,10 +74,10 @@ class ShowProfileByPort(BaseCommand):
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split('\\r\\n')
             result = [item for item in result if re.search(r"[/]|--+", item)]
-            result = [item.split()[-1] for item in result if f" {self.port_conditions['port_number']} " in item]
+            result = [item.split()[-1] for item in result if f" {self.port_conditions['port_number']} " in item][0]
             tn.write(b"exit\r\n")
             tn.close()
-            return dict(result=result, profile_name=result[0], status=200)
+            return dict(result=result, profile_name=result, status=200)
 
         except (EOFError, socket_error) as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()

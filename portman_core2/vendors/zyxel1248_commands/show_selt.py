@@ -1,6 +1,7 @@
 import os
 import sys
 import telnetlib
+import time
 from socket import error as socket_error
 
 from .command_base import BaseCommand
@@ -61,21 +62,37 @@ class ShowSelt(BaseCommand):
             tn.read_until(b"Password:")
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             err1 = tn.read_until(b"Communications Corp.", 10)
+
             if "Password:" in str(err1):
                 return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
-
+            tn.read_until(b">")
+            tn.write("adsl linediag setselt {0}\r\n".format(self.port_conditions['port_number']).encode('utf8'))
+            tn.read_until(b">")
             tn.write("adsl linediag getselt {0}\r\n".format(self.port_conditions['port_number']).encode('utf8'))
-            tn.write(b"end")
-            result = tn.read_until(b"end")
-            tn.write(b"exit\r\n")
-            tn.close()
+            # tn.write(b"end")
+            result = tn.read_until(b">")
             if "error:" in str(result):
                 return dict(result="Port number is out of range.", status=500)
+            while 'START' in str(result):
+                print("&&&&&&&&&&&&&&")
+                tn.write("adsl linediag setselt {0}\r\n".format(self.port_conditions['port_number']).encode('utf8'))
+                tn.read_until(b">")
+                tn.write("adsl linediag getselt {0}\r\n".format(self.port_conditions['port_number']).encode('utf8'))
+                result = tn.read_until(b">")
+            count = 1
+            while "INPROGRESS" in str(result):
+                print(count)
+                tn.write("adsl linediag getselt {0}\r\n".format(self.port_conditions['port_number']).encode('utf8'))
+                result = tn.read_until(b">")
+                count += 1
+            tn.write(b"exit\r\n")
+            tn.close()
+
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
 
             result = str(result).split('\\r\\n')
-            result = [item for item in result if re.search(r":|--+|\w+\s{2,}\w+", item)]
+            result = [val for val in result if re.search(r'-{3,}|\s{3,}', val)]
             return dict(result=result, status=200)
 
 
