@@ -13,7 +13,7 @@ class AddToVlan(BaseCommand):
         self.__access_name = params.get('access_name', 'an2100')
         self.__vlan_name = params.get('vlan_name')
         self.port_conditions = params.get('port_indexes')
-        self.reseller = params.get('reseller').split('-')[1]
+        self.reseller = params.get('vlan_name')
         self.device_ip = params.get('device_ip')
 
     @property
