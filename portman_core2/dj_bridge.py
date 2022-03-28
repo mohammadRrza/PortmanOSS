@@ -2,7 +2,7 @@ import sys
 import os
 
 # sys.path.append('/opt/portmanv3/portman_web/')
-sys.path.insert(0, '/home/sajad/Project/portmanv3/portman_web/')
+sys.path.insert(0, '/home/milad/project/portmanv3/portman_web/')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings'
 
 from django.core.wsgi import get_wsgi_application
