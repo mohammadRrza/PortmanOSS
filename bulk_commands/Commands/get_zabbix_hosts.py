@@ -35,7 +35,7 @@ class ZabbixHosts:
                 # return JsonResponse({'hosts':hosts['result'] })
                 switch_types = ["c2960", "4948", "c9200", "c3064pq"]
                 switch_layer3 = ["c3850", "c3750", "c4500", "c4500x", "c6816x", "c6840x"]
-                router = ["9500", "c2921k9", "asr1002x", "asr1002", "asr1002hx", "asr1001x"]
+                router = ["9500", "c9500", "c2921k9", "asr1002x", "asr1002", "asr1002hx", "asr1001x"]
                 router_board = ["RB450G", "RB450", "RB750Gr3", "RB750gl", "RB750G", "RB750", "RB750R2", "CCR1009", "RB1100", "CCR1016", "CCR1036",
                                 "hEX", "RB1100AHx2", "1100AHx2", "RB1100AH", "RB1100x4", "RB1100AHx4", "1100AH", "RB2011", "RB433AH", "RB433ah", "hEXRB750",
                                 "750Gr3hEX", "750Gr3", "RB3011UiAS", "HexRB750", "hex", "RB600", "CCR1072", "RB750Gr2", "RB493AH", "RB2011UAS", "haplite",
