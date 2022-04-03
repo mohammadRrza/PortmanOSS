@@ -72,7 +72,8 @@ class ZabbixHosts:
                             device_type = "router"
                             device_brand = "cisco"
                         elif (item['host'].split('.')[5].lower() in [x.lower() for x in router_board] or
-                              item['host'].split('.')[4].lower() in [x.lower() for x in router_board]):
+                              item['host'].split('.')[4].lower() in [x.lower() for x in router_board] or
+                              item['host'].split('.')[3].lower() in [x.lower() for x in router_board]):
                             device_type = "router_board"
                             device_brand = "mikrotik"
                         elif (item['host'].split('.')[5].lower() in [x.lower() for x in router_virtual] or
