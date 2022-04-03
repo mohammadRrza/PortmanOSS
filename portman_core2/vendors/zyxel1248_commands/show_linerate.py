@@ -71,11 +71,13 @@ class ShowLineRate(BaseCommand):
             result = tn.read_until(b"end")
             tn.write(b"exit\r\n")
             tn.close()
+            if "<port>" in str(result):
+                return dict(result=f"Port number '{self.port_conditions['port_number']}' is out of range.", status=500)
+            if "link is down" in str(result):
+                return dict(result="This link is down.")
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split('\\r\\n')
-
-
             res = {'dslamName/cammandName': "",
                    'date': str(datetime.datetime.now()),
                    'slot/port': str(self.port_conditions['slot_number']) + '-' + str(

@@ -63,7 +63,7 @@ class ShowProfiles(BaseCommand):
             if "Password:" in str(err1):
                 return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
 
-            tn.write("adsl profile show\r\n".encode('utf8'))
+            tn.write("adsl profile show\r\n".encode('utf-8'))
             tn.write(b"end")
             result = tn.read_until(b"end")
             tn.write(b"exit\r\n")
