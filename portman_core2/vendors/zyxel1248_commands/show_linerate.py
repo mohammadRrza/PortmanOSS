@@ -129,9 +129,10 @@ class ShowLineRate(BaseCommand):
                 if "stream attenuation" in val:
                     res['attenuationUp'] = val.split(":")[1].split("/")[1].strip()
                     res['attenuationDown'] = val.split(":")[1].split("/")[0].strip()
-                # if "payload rate" in val:
-                #     res['payloadrateUp'] = val.split(":")[1].split()[0]
-                #     res['payloadrateDown'] = val.split(":")[1].split()[1]
+                if "AS0" in val:
+                    res['payloadrateDown'] = val.split(":")[1].strip()
+                if "LS0" in val:
+                    res['payloadrateUp'] = val.split(":")[1].strip()
                 # if "link" in val:
                 #     res['link'] = val.split(":")[1].strip()
 

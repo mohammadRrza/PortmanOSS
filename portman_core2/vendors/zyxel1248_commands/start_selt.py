@@ -64,7 +64,7 @@ class StartSelt(BaseCommand):
             if "Password:" in str(err1):
                 return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
 
-            tn.write("adsl linediag getselt {0}\r\n".format(self.port_conditions['port_number']).encode('utf8'))
+            tn.write("adsl linediag setselt {0}\r\n".format(self.port_conditions['port_number']).encode('utf8'))
             tn.write(b"end")
             result = tn.read_until(b"end")
             tn.write(b"exit\r\n")
