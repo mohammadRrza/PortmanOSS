@@ -69,6 +69,10 @@ class SetProfile(BaseCommand):
             tn.read_until(b'adsl show', 0.2)
             tn.write(b"end")
             result = tn.read_until(b"end", 0.5)
+            if "<port>" in str(result):
+                return dict(result=f"this port : {self.port_conditions['port_number']} out of range ", status=500)
+            if "<profile>" in str(result):
+                return dict(result=f"tis profile : {self.__lineprofile} dose not exist.", status=500)
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             tn.write(b"exit\r\n")
