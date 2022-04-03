@@ -97,8 +97,8 @@ class AddToVlan(BaseCommand):
             tn.write(b"cd vlan\r\n")
             tn.write(b"show pvc vlan\r\n")
             time.sleep(0.5)
-            tn.read_until(b'#')
-            output = tn.read_until(b'stop--', 0.1)
+            tn.read_until(b'#', 0.5)
+            output = tn.read_until(b'stop--', 3)
             res += str(output)
             while '#' not in str(output):
                 print('----------------------------------------')
