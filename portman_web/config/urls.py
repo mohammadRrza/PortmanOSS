@@ -251,6 +251,7 @@ urlpatterns = [
 
     url(r'^media/(?P<path>.*)$', django.views.static.serve,
         {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+    url(r'^api/v1/dslamport/fiberhome_get_card_status/$', FiberHomeShowCardStatusAPIView.as_view(), name='fiberhome_get_card_status'),
 
 ]
 
