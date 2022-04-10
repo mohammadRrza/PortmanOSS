@@ -54,7 +54,7 @@ class SetFastProfiles(BaseCommand):
             tn.write("attach adsl profile name {0} interface {1}/{2}\r\n\r\n".format(self.__lineprofile, self.port_conditions['slot_number'], self.port_conditions['port_number']).encode('utf-8'))
             tn.write("end\r\n".encode('utf-8'))
             result = tn.read_until(b"end")
-            return dict(result=result, status=200)
+            return dict(result=str(result), status=200)
 
         except (EOFError, socket_error) as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
