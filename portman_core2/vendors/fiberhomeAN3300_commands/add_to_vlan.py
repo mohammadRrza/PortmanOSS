@@ -161,7 +161,6 @@ class AddToVlan(BaseCommand):
                 cart_port = [val.split() for val in result]
                 flag = 0
                 for item in reversed(cart_port):
-                    print(item)
                     if item[0] == str(self.port_index['slot_number']) and item[1] == str(
                             self.port_index['port_number']):
                         vlan_info['pvc_num'] = item[2]
