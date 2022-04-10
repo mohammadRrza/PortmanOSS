@@ -50,7 +50,7 @@ class SetFastProfiles(BaseCommand):
             err1 = tn.read_until(b"#", 1)
             if "Login Failed." in str(err1):
                 return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
-            tn.write(b"cd qos\r\n")
+            tn.write(b"cd dsl\r\n")
             tn.write("attach adsl profile name {0} interface {1}/{2}\r\n\r\n".format(self.__lineprofile, self.port_conditions['slot_number'], self.port_conditions['port_number']).encode('utf-8'))
             tn.write("end\r\n".encode('utf-8'))
             result = tn.read_until(b"end")
