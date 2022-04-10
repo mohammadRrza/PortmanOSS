@@ -5,6 +5,7 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class AddToVlan(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -50,6 +51,7 @@ class AddToVlan(BaseCommand):
             count = 1
             res = ''
             vlan_info = {}
+            vlan_info['vlan_id'] = None
             all_pvc = []
             pvc_num = None
             profile_name = None
@@ -99,55 +101,24 @@ class AddToVlan(BaseCommand):
             time.sleep(0.5)
             tn.read_until(b'#', 0.5)
             output = tn.read_until(b'stop--', 3)
-            if "Unknown command." in str(output):
-                tn.write("show service vlan slot {0}\r\n".format(self.port_index['slot_number']).encode('utf-8'))
-                time.sleep(0.5)
-                # tn.read_until(b'#', 0.5)
-                output = tn.read_until(b'stop--', 3)
+            res += str(output)
+
+            """
+            If fiberhomeAn3300 is type 2 , run under commands
+
+            """
+
+            if "Unknown command." in res:
                 vlan_info['vlan_id'] = self.__vlan_id
                 vlan_info['vlan_name'] = self.__vlan_name
-            res += str(output)
-            while '#' not in str(output):
-                print('----------------------------------------')
-                print(count)
-                print('----------------------------------------')
-                count += 1
-                tn.write(b'\r\n')
-                output = tn.read_until(b'#', 0.1)
-                res += str(output)
-            tn.write(b"end\r\n")
-            result = tn.read_until(b"end")
-            res += str(result)
-            res = res.replace("'b'", "")
-            result = str(res).split("\\r\\n")
-            result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;-]+H", '', val) for val in result if
-                      re.search(r'\s{4,}[-\d\w]|-{5,}', val)]
-            # if "information" not in result[0]:
-            #     return result
-            ################# get vlan name, vlan ID and pvc number due to Card and Port. ################
-            cart_port = [val.split() for val in result]
-            flag = 0
-            for item in reversed(cart_port):
-                if item[0] == str(self.port_index['slot_number']) and item[1] == str(
-                        self.port_index['port_number']):
-                    vlan_info['pvc_num'] = item[2]
-                    flag = 1
-                if 'vlan' in item and flag == 1:
-                    vlan_info['vlan_id'] = item[2].split(":")[1]
-                    vlan_info['vlan_name'] = item[1].split(":")[1]
-                    break
-                else:                  ##################### Add a new Vlan #####################
-                    tn.write("create pvc vlan {0}\r\n".format(self.__vlan_name).encode('utf-8'))
-                    time.sleep(0.2)
-                    tn.write("set pvc vlan {0} tag {1}\r\n".format(self.__vlan_name, self.__vlan_id).encode('utf-8'))
-                    time.sleep(0.2)
-            check_directory = tn.read_until(b'profile#', 0.1)
+                tn.write("show service vlan slot {0} port {1}\r\n".format(self.port_index['slot_number'],
+                                                                          self.port_index['port_number']).encode(
+                    'utf-8'))
+                time.sleep(0.5)
+                output = tn.read_until(b'#')
+                output = str(output).split("\\r\\n")
+                vlan_info['pvc_num'] = output[2].split()[2]
 
-            """
-                If fiberhomeAn3300 is type 2 , run under commands
-            """
-
-            if "invalid now" in str(check_directory):
                 tn.write(b"show localvlan\r\n")
                 output = tn.read_until(b"stop--", 0.2)
                 res1 = ''
@@ -156,9 +127,58 @@ class AddToVlan(BaseCommand):
                     tn.write(b'\r\n')
                     output = tn.read_until(b'#', 0.1)
                     res1 += str(output)
-                if self.__vlan_name not in res1:
+                    ##################### Add a new Vlan #####################
+                if f":{self.__vlan_name}" not in res1:
                     tn.write("create localvlan {0}\r\n".format(self.__vlan_name).encode('utf-8'))
+                    time.sleep(0.2)
                     tn.write("set localvlan {0} tag {1}\r\n".format(self.__vlan_name, self.__vlan_id).encode('utf-8'))
+                    time.sleep(0.2)
+                    tn.write("set localvlan {0} add uplinkport 29:1-29:7 tagged\r\n".format(self.__vlan_name).encode('utf-8'))
+
+            """
+                If fiberhomeAn3300 is type 1 , run under commands
+
+            """
+            if vlan_info['vlan_id'] == None:
+                while '#' not in str(output):
+                    print('----------------------------------------')
+                    print(count)
+                    print('----------------------------------------')
+                    count += 1
+                    tn.write(b'\r\n')
+                    output = tn.read_until(b'#', 0.1)
+                    res += str(output)
+                tn.write(b"end\r\n")
+                result = tn.read_until(b"end")
+                res += str(result)
+                res = res.replace("'b'", "")
+                result = str(res).split("\\r\\n")
+                result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;-]+H", '', val) for val in result if
+                          re.search(r'\s{4,}[-\d\w]|-{5,}', val)]
+                if "information" not in result[0]:
+                    return result
+                ################# get vlan name, vlan ID and pvc number due to Card and Port. ################
+                cart_port = [val.split() for val in result]
+                flag = 0
+                for item in reversed(cart_port):
+                    print(item)
+                    if item[0] == str(self.port_index['slot_number']) and item[1] == str(
+                            self.port_index['port_number']):
+                        vlan_info['pvc_num'] = item[2]
+                        flag = 1
+                    if 'vlan' in item and flag == 1:
+                        vlan_info['vlan_id'] = item[2].split(":")[1]
+                        vlan_info['vlan_name'] = item[1].split(":")[1]
+                        break
+                    else:  ##################### Add a new Vlan #####################
+                        tn.write("create pvc vlan {0}\r\n".format(self.__vlan_name).encode('utf-8'))
+                        time.sleep(0.2)
+                        tn.write(
+                            "set pvc vlan {0} tag {1}\r\n".format(self.__vlan_name, self.__vlan_id).encode('utf-8'))
+                        time.sleep(0.2)
+                        tn.write("set pvc vlan {0} add uplink 29:1-29:7 tagged\r\n".format(self.__vlan_name).encode('utf-8'))
+                        time.sleep(0.2)
+            check_directory = tn.read_until(b'profile#', 0.1)
 
             ################################ Show PVC command ###############################
             while 'profile#' not in str(check_directory):
@@ -195,13 +215,6 @@ class AddToVlan(BaseCommand):
                 result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if
                           re.search(r':', val)]
                 return result
-# set service vlan slot 5 port 5 pvc 0 index 1 svid shomrevlan cvid 0 untadded
-# delet service vlan slot 5 port 5 pvc 0 index 1
-#
-# create localvlan esmevlan
-# set local vlan esmevlan tag vlanid
-# show localvlan hame vlanha ro nshon mide
-# set localvlan vlanname add uplinkport 29:1-29:7 tagged tarif vlan
 
             ############################## Get user PVC ##############################
             for item in all_pvc:
@@ -238,19 +251,23 @@ class AddToVlan(BaseCommand):
             If fiberhomeAn3300 is type 2 , run under commands
             
             """
+            ############################## Delete PVC Vlan ##############################
             if "invalid now" in str(result):
                 tn.write("delete service vlan slot {0} port {1} pvc {2} index 1\r\n".format(
-                    self.port_index['slot_number'], self.port_index['port_number'], vlan_info['pvc_num']).encode('utf-8'))
+                    self.port_index['slot_number'], self.port_index['port_number'], vlan_info['pvc_num']).encode(
+                    'utf-8'))
 
+                ############################## Add PVC Vlan ##############################
                 tn.write("set service vlan slot {0} port {1} pvc {2} index 1 svid {3} cvid 0 untagged\r\n".format(
-                    self.port_index['slot_number'], self.port_index['port_number'], vlan_info['pvc_num'], self.__vlan_id).encode('utf-8'))
+                    self.port_index['slot_number'], self.port_index['port_number'], pvc_num,
+                    self.__vlan_id).encode('utf-8'))
             if "has been add" in str(result):
                 return dict(
-                    result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {vlan_info['pvc_num']} has been successfully add to vlan {vlan_info['vlan_name']}",
+                    result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {pvc_num} has been successfully add to vlan {vlan_info['vlan_name']}",
                     status=200)
             tn.close()
             return dict(
-                result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {vlan_info['pvc_num']} has been successfully add to vlan {vlan_info['vlan_name']}",
+                result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {pvc_num} has been successfully add to vlan {vlan_info['vlan_name']}",
                 status=200)
 
         except (EOFError, socket_error) as e:
