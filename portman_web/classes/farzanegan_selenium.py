@@ -16,10 +16,17 @@ from contact.models import FarzaneganTDLTE, FarzaneganProviderData, FarzaneganPr
 
 def farzanegan_scrapping(username, password, owner_username):
     options = webdriver.ChromeOptions()
+    print('1')
     options.add_argument('ignore-certificate-errors')
+    print('2')
+    options.add_argument('--remote-debugging-port=9222')
     chrome_options = Options()
+    print('3')
     chrome_options.add_experimental_option("detach", True)
-    driver = webdriver.Chrome(options=options)
+    print('4')
+    driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', options=options)
+    print('5')
+
     driver.get('https://ddr.farzaneganpars.ir:8443/wenex/loginpage.rose')
     print(driver.title)
 
@@ -30,23 +37,24 @@ def farzanegan_scrapping(username, password, owner_username):
     # driver.quit()
 
     im = Image.open(BytesIO(png))  # uses PIL library to open image in memory
+    try:
+        left = location['x']
+        top = location['y']
+        right = location['x'] + size['width']
+        bottom = location['y'] + size['height']
+        im = im.crop((left, top, right, bottom))  # defines crop points
+        im.save('/opt/portmanv3/portman_web/classes/far_captcha.png')  # saves new cropped image
 
-    left = location['x']
-    top = location['y']
-    right = location['x'] + size['width']
-    bottom = location['y'] + size['height']
-    im = im.crop((left, top, right, bottom))  # defines crop points
-    im.save('/home/sajad/Project/portmanv3/portman_web/classes/far_captcha.png')  # saves new cropped image
-
-    img = cv2.imread("/home/sajad/Project/portmanv3/portman_web/classes/far_captcha.png")
-    gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    (h, w) = gry.shape[:2]
-    gry = cv2.resize(gry, (w * 2, h * 2))
-    cls = cv2.morphologyEx(gry, cv2.MORPH_CLOSE, None)
-    thr = cv2.threshold(cls, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-    txt = image_to_string(thr)
-    print(txt)
-
+        img = cv2.imread("/opt/portmanv3/portman_web/classes/far_captcha.png")
+        gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        (h, w) = gry.shape[:2]
+        gry = cv2.resize(gry, (w * 2, h * 2))
+        cls = cv2.morphologyEx(gry, cv2.MORPH_CLOSE, None)
+        thr = cv2.threshold(cls, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+        txt = image_to_string(img, config="--psm 6")
+        print('txt:' +txt)
+    except Exception as ex:
+        print(ex)
     driver.find_element(By.ID, 'j_username_visible').send_keys(username)
     driver.find_element(By.ID, 'j_password').send_keys(password)
     driver.find_element(By.ID, 'captcha_input').send_keys(txt)

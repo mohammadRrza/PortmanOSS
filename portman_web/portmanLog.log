@@ -135,3 +135,5 @@ Unauthorized: /api/v1/dslamport/run-command/
 Not Found: /favicon.ico
 Not Found: /favicon.ico
 Not Found: /favicon.ico
+Method Not Allowed: /api/v1/dslamport/farzanegan_scrapping/
+Not Found: /favicon.ico
