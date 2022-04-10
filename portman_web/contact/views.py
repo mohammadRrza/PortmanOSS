@@ -461,7 +461,7 @@ class DDRPageViewSet(mixins.ListModelMixin,
 class FarzaneganViewSet(mixins.ListModelMixin,
                         mixins.RetrieveModelMixin,
                         viewsets.GenericViewSet):
-    queryset = FarzaneganTDLTE.objects.all()
+    queryset = FarzaneganTDLTE.objects.all().order_by('-date_key')
     permission_classes = (IsAuthenticated,)
     serializer_class = FarzaneganSerializer
 
