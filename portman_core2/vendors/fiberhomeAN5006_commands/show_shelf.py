@@ -57,7 +57,8 @@ class ShowShelf(BaseCommand):
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
-            result = [val for val in result if re.search(r'\s{4,}[-\d\w]|-+', val)]
+
+            result = [val for val in result if re.search(r'\s+\d|^\w+\s{4,}|--+', val)]
             return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:

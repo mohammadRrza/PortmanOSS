@@ -155,6 +155,7 @@ urlpatterns = [
     url(r'^api/v1/dslam/load_dslam_ports/$', LoadDslamPorts.as_view(), name='load_dslam_ports'),
     url(r'^api/v1/dslamport/get_port_count/$', GetDslamPorts.as_view(), name='get_port_count'),
     url(r'^api/v1/dslamport/fiberhome_get_card/$', FiberHomeGetCardAPIView.as_view(), name='fiberhome_get_card'),
+    url(r'^api/v1/dslamport/huawei_get_card/$', HuaweiGetCardAPIView.as_view(), name='huawei_get_card'),
     url(r'^api/v1/dslamport/fiberhome_get_port/$', FiberHomeGetPortAPIView.as_view(), name='fiberhome_get_port'),
     url(r'^api/v1/dslamport/upload_rented_port/$', UploadRentedPort.as_view(), name='upload_rented_port'),
     url(r'^api/v1/dslamport/rented_port/$', RentedPortAPIView.as_view(), name='rented_port'),
