@@ -20,7 +20,7 @@ from django.core.serializers import serialize
 from classes.mellat_bank_scrapping import get_captcha
 
 
-# from classes.farzanegan_selenium import farzanegan_scrapping
+#from classes.farzanegan_selenium import farzanegan_scrapping
 # from portman_web.classes.farzanegan_selenium import farzanegan_scrapping
 from contact.models import PishgamanNote
 
@@ -412,7 +412,7 @@ class FarzaneganScrappingAPIView(views.APIView):
         password = data['password']
         owner_username = data['owner_username']
         try:
-            result = farzanegan_scrapping(username, password, owner_username)
+            result = ''#farzanegan_scrapping(username, password, owner_username)
             if result is None:
                 return Response({'result': 'Please try again!'})
             return Response({'result': result})
@@ -461,7 +461,7 @@ class DDRPageViewSet(mixins.ListModelMixin,
 class FarzaneganViewSet(mixins.ListModelMixin,
                         mixins.RetrieveModelMixin,
                         viewsets.GenericViewSet):
-    queryset = FarzaneganTDLTE.objects.all()
+    queryset = FarzaneganTDLTE.objects.all().order_by('-date_key')
     permission_classes = (IsAuthenticated,)
     serializer_class = FarzaneganSerializer
 
