@@ -5599,7 +5599,6 @@ class GetPortInfoByIdAPIView(views.APIView):
 
 
 class FiberHomeGetCardAPIView(views.APIView):
-
     def get_permissions(self):
         return permissions.IsAuthenticated(),
 
@@ -5611,43 +5610,72 @@ class FiberHomeGetCardAPIView(views.APIView):
         dslamObj = DSLAM.objects.get(id=dslam_id)
         params = data.get('params', None)
         dslam_type = dslamObj.dslam_type_id
-        active_cards = []
-        inactive_cards = []
 
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-                result = [val for val in result if re.search(r'\d\s{4,}\w', val)]
-                for i in result:
-                    card_number = i.split()
-                    if "up" in i:
-                        active_cards.append(card_number)
+                result = [val.strip().split() for val in result['result'] if re.search(r'\d\s{4,}\w', val)]
+                res = []
+                for item in result:
+                    dic = {}
+                    if item[1] == 'up':
+                        dic["Card"] = item[0]
+                        dic["Status"] = 'ON'
                     else:
-                        inactive_cards.append(card_number)
-                return JsonResponse(
-                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN3300'})
+                        dic["Card"] = item[0]
+                        dic["Status"] = 'OFF'
+
+                    res.append(dic)
+                res.append({'DslamType' : "fiberhomeAN3300"})
+                return JsonResponse(dict(result=res))
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
-                result = [val for val in result['res'] if re.search(r'\d\s{4,}\d', val)]
-                for i in result:
-                    card_number = i.split()[1:3]
-                    if "AD32+" in i:
-                        active_cards.append(card_number)
+                result = [val.strip().split() for val in result['result'] if re.search(r'\d\s{4,}\d', val)]
+                res = []
+                for item in result:
+                    dic = {}
+                    if item[2] == 'AD32+':
+                        dic["Card"] = item[1]
+                        dic["Status"] = 'ON'
                     else:
-                        inactive_cards.append(card_number)
-                return JsonResponse(
-                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN2200'})
+                        dic["Card"] = item[1]
+                        dic["Status"] = 'OFF'
+
+                    res.append(dic)
+                res.append({'DslamType': "fiberhomeAN2200"})
+                return JsonResponse(dict(result=res))
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                result = [val for val in result if re.search(r'\s{10,}', val)]
-                for i in result:
-                    card_number = i.split()[0:2]
-                    if "ADSL" in i:
-                        active_cards.append(card_number)
+                result = [val.strip().split() for val in result['result'] if re.search(r'\s{10,}', val)]
+                res = []
+                for item in result:
+                    dic = {}
+                    if 'ADSL' in item[1] or 'VDSL' in item[1]:
+                        dic["Card"] = item[0]
+                        dic["Status"] = 'ON'
                     else:
-                        inactive_cards.append(card_number)
-                return JsonResponse(
-                    {'active_cards': active_cards, 'inactive_cards': inactive_cards, 'DslamType': 'fiberhomeAN5006'})
+                        dic["Card"] = item[0]
+                        dic["Status"] = 'OFF'
+
+                    res.append(dic)
+                res.append({'DslamType': "fiberhomeAN5006"})
+                return JsonResponse(dict(result=res))
+            elif dslam_type == 2:  ############################## Huawei ##############################
+                result = [val.strip().split() for val in result['result'] if re.search(r'\s+\d', val)]
+                res = []
+
+                for item in result:
+                    dic = {}
+                    if item[2] == 'Normal':
+                        dic["Card"] = item[0]
+                        dic["Status"] = 'ON'
+                    else:
+                        dic["Card"] = item[0]
+                        dic["Status"] = 'OFF'
+
+                    res.append(dic)
+                res.append({'DslamType': "huawei"})
+                return JsonResponse(dict(result=res))
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
