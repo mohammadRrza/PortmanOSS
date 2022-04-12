@@ -5660,6 +5660,22 @@ class FiberHomeGetCardAPIView(views.APIView):
                     res.append(dic)
                 res.append({'DslamType': "fiberhomeAN5006"})
                 return JsonResponse(dict(result=res))
+            elif dslam_type == 2:  ############################## Huawei ##############################
+                result = [val.strip().split() for val in result['result'] if re.search(r'\s+\d', val)]
+                res = []
+
+                for item in result:
+                    dic = {}
+                    if item[2] == 'Normal':
+                        dic["Card"] = item[0]
+                        dic["Status"] = 'ON'
+                    else:
+                        dic["Card"] = item[0]
+                        dic["Status"] = 'OFF'
+
+                    res.append(dic)
+                res.append({'DslamType': "huawei"})
+                return JsonResponse(dict(result=res))
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -8271,40 +8287,3 @@ def ngn_registaration_runCommands(dslamObj, command, params):
         return result
     else:
         return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)
-
-class HuaweiGetCardAPIView(views.APIView):
-    def get_permissions(self):
-        return permissions.IsAuthenticated(),
-
-    def post(self, request, format=None):
-        print('HuaweiGetCardAPIView')
-        data = request.data
-        command = 'Show Shelf'
-        dslam_id = data.get('dslam_id', None)
-        dslamObj = DSLAM.objects.get(id=dslam_id)
-        params = data.get('params', None)
-
-        try:
-            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
-
-
-            result = [val.strip().split() for val in result['result'] if re.search(r'\s+\d', val)]
-
-            res = []
-            for item in result:
-                dic = {}
-                if item[2] == 'Normal':
-                    dic["Card"] = item[0]
-                    dic["Status"] = 'ON'
-                else:
-                    dic["Card"] = item[0]
-                    dic["Status"] = 'OFF'
-
-                res.append(dic)
-            res.append({'DslamType': "huawei"})
-            return JsonResponse(dict(result=res))
-
-        except Exception as ex:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})

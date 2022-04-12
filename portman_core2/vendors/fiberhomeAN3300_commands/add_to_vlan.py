@@ -169,14 +169,6 @@ class AddToVlan(BaseCommand):
                         vlan_info['vlan_id'] = item[2].split(":")[1]
                         vlan_info['vlan_name'] = item[1].split(":")[1]
                         break
-                    else:  ##################### Add a new Vlan #####################
-                        tn.write("create pvc vlan {0}\r\n".format(self.__vlan_name).encode('utf-8'))
-                        time.sleep(0.2)
-                        tn.write(
-                            "set pvc vlan {0} tag {1}\r\n".format(self.__vlan_name, self.__vlan_id).encode('utf-8'))
-                        time.sleep(0.2)
-                        tn.write("set pvc vlan {0} add uplink 29:1-29:7 tagged\r\n".format(self.__vlan_name).encode('utf-8'))
-                        time.sleep(0.2)
             check_directory = tn.read_until(b'profile#', 0.1)
 
             ################################ Show PVC command ###############################
@@ -246,6 +238,20 @@ class AddToVlan(BaseCommand):
                                                                                           pvc_num).encode('utf-8'))
             tn.write(b"end\r\n")
             result = tn.read_until(b"end")
+            if "not existed." in str(result):
+                tn.write("create pvc vlan {0}\r\n".format(self.__vlan_name).encode('utf-8'))
+                time.sleep(0.2)
+                tn.write(
+                    "set pvc vlan {0} tag {1}\r\n".format(self.__vlan_name, self.__vlan_id).encode('utf-8'))
+                time.sleep(0.2)
+                tn.write("set pvc vlan {0} add uplink 29:1-29:7 tagged\r\n".format(self.__vlan_name).encode('utf-8'))
+                time.sleep(0.2)
+                tn.write("set pvc vlan {0} add slot {1} port {2} pvc {3} untagged\r\n".format(self.__vlan_name,
+                                                                                              self.port_index[
+                                                                                                  'slot_number'],
+                                                                                              self.port_index[
+                                                                                                  'port_number'],
+                                                                                              pvc_num).encode('utf-8'))
             """
             If fiberhomeAn3300 is type 2 , run under commands
             
@@ -262,11 +268,11 @@ class AddToVlan(BaseCommand):
                     self.__vlan_id).encode('utf-8'))
             if "has been add" in str(result):
                 return dict(
-                    result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {pvc_num} has been successfully add to vlan {vlan_info['vlan_name']}",
+                    result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {pvc_num} has been successfully add to vlan {self.__vlan_name}",
                     status=200)
             tn.close()
             return dict(
-                result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {pvc_num} has been successfully add to vlan {vlan_info['vlan_name']}",
+                result=f"slot {self.port_index['slot_number']} port {self.port_index['port_number']} pvc {pvc_num} has been successfully add to vlan {self.__vlan_name}",
                 status=200)
 
         except (EOFError, socket_error) as e:
