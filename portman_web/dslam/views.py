@@ -6040,7 +6040,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
                                                           log_date,
                                                           ip, 'Register Port', log_status, '', log_reseller_name)
             PortmanLogging(result, log_params)
-            return Response({'result': result})
+            return Response({'result': result}, status=status.HTTP_201_CREATED)
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
