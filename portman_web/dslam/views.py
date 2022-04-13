@@ -7552,9 +7552,11 @@ def get_user_info_from_ibs(username):
                                                "Authorization": "Bearer f6eccc80-1667-3a5e-88f1-089ec684cc4d",
                                                "token": '' + response_json['token']})
     userinfo_response_json = userinfo_response.json()
-    # return userinfo_response_json['error']
+    for key in userinfo_response_json['result']:
+        if userinfo_response_json['result'][key]['online_status'] == False:
+            return "Error : this user is offline"
     if (userinfo_response_json['error'] and 'does not exists' in userinfo_response_json['error']):
-        return userinfo_response_json['error']
+        return "Error"+str(userinfo_response_json['error'])
     for value in userinfo_response_json['result']:
         return userinfo_response_json['result'][value]['attrs']['limit_mac']
 
@@ -7850,25 +7852,36 @@ class CheckPortConflict(views.APIView):
     def post(self, request, format=None):
         try:
             data = request.data
+            username = data.get('username')
             fqdn = data.get('fqdn')
             slot = data.get('slot')
             port = data.get('port')
-            dslamObj = DSLAM.objects.get(fqdn=fqdn)
+            dslamObj = DSLAM.objects.get(fqdn=str(fqdn).lower())
+            mac = get_user_info_from_ibs(username)
+            if 'Error' in mac:
+                return JsonResponse({'Error': mac})
             params = param2()
             params.type = 'dslamport'
             params.is_queue = False
-            params.fqdn = dslamObj.fqdn
-            params.command = ''
+            params.mac = mac
+            params.fqdn = fqdn
+            params.command = 'show port with mac'
             params.port_conditions = port_condition2()
             params.port_conditions.slot_number = slot
             params.port_conditions.port_number = port
             params_json = json.dumps(params, default=lambda x: x.__dict__)
             result = utility.dslam_port_run_command(dslamObj.pk, params.command, json.loads(params_json))
-            return JsonResponse({'row': json.loads(params_json)})
+            dslam_card = result['result']['port']['card']
+            dslam_port = result['result']['port']['port']
+            if dslam_card == slot or dslam_port == port:
+                return JsonResponse({'Error': 'this port have conflict , correct slot-port : {0}-{1}'.format(
+                    dslam_card, dslam_port
+                )})
+            return JsonResponse({'Result': 'This port does not have Conflict'})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return Response({'message': str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': str(ex) + "  // " + str(exc_tb.tb_lineno)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class LoadDslamPorts(views.APIView):
