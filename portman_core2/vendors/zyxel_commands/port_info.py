@@ -62,8 +62,6 @@ class PortInfo(BaseCommand):
                 tn.write(b"\r\n")
                 result = tn.read_until(b"#", 0.5)
                 output += str(result)
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result.decode('utf-8'), status=200)
             result = str(output).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{2,}|--{3,}', val)]
             for inx, val in enumerate(result):
@@ -75,6 +73,10 @@ class PortInfo(BaseCommand):
             print('******************************************')
             print(("port info {0}".format(self.port_conditions)))
             print('******************************************')
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
