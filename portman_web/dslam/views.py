@@ -5853,7 +5853,7 @@ class AddToVlanAPIView(views.APIView):  # 000000
         fqdn = port_data.get('fqdn', None)
         reseller_data = data.get('reseller')
         customer_data = data.get('subscriber')
-        dslam_obj = DSLAM.objects.get(fqdn=fqdn)
+        dslam_obj = DSLAM.objects.get(fqdn=str(fqdn).lower())
         mdf_status = data.get('status')
         identifier_key = data.get('identifier_key')
         if not identifier_key:
