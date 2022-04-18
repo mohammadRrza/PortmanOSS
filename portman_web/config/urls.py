@@ -167,6 +167,10 @@ urlpatterns = [
         name='get_user_permission_profile_objects'),
     url(r'^api/v1/user/set_permission_for_user/$', SetPermissionForUserAPIView.as_view(),
         name='set_permission_for_user'),
+    url(r'^api/v1/user/set_bulk_permission_for_user/$', SetBulkPermissionForUserApiView.as_view(),
+        name='set_bulk_permission_for_user'),
+    url(r'^api/v1/user/delete_bulk_permission_for_user/$', DeleteBulkPermissionForUserApiView.as_view(),
+        name='delete_bulk_permission_for_user'),
     url(r'^api/v1/partak/get_partak_provinces/$', GetPartakProvincesAPIView.as_view(),
         name='get_partak_provinces'), \
     url(r'^api/v1/partak/get_partak_cities_by_province_id/$', GetPartakCitiesByProvinceIdAPIView.as_view(),

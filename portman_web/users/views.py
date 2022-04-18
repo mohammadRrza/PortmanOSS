@@ -30,6 +30,7 @@ from dslam.views import LargeResultsSetPagination
 # from portman_web.users.backends import ldap_auth
 from .backends import ldap_auth
 from .serializers import PortmanLogSerializer
+from dslam.models import Command
 
 User = get_user_model()
 
@@ -655,6 +656,40 @@ class SetPermissionForUserAPIView(views.APIView):
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
 
 
+class SetBulkPermissionForUserApiView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request):
+        try:
+            data = request.data
+            emails = data.get('emails', None)
+            commands = data.get('commands', None)
+            result = set_bulk_permission_for_user(emails, commands)
+            return JsonResponse({'result': result})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
+class DeleteBulkPermissionForUserApiView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request):
+        try:
+            data = request.data
+            emails = data.get('emails', None)
+            commands = data.get('commands', None)
+            result = delete_bulk_permission_for_user(emails, commands)
+            return JsonResponse({'result': result, 'status': 200})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
+
+
 def set_permission_for_user(email):
     try:
         user_id = User.objects.get(email=email).id
@@ -670,6 +705,67 @@ def set_permission_for_user(email):
             instance = UserPermissionProfileObject.objects.create(object_id=item, content_type_id=16,
                                                                   user_permission_profile_id=user_profile_id)
         return instance
+    except Exception as ex:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        return str(ex)
+
+
+def set_bulk_permission_for_user(emails, commands):
+    try:
+        users_id = []
+        commands_id = []
+        users_profile_id = []
+        for item in emails:
+            users_id.append(User.objects.get(email=item).id)
+        for item in users_id:
+            users_profile_id.append(UserPermissionProfile.objects.get(user_id=item).id)
+        for item in commands:
+            commands_id.append(Command.objects.get(text=item).id)
+
+        for item in users_profile_id:
+            for command in commands_id:
+                try:
+                    UserPermissionProfileObject.objects.create(object_id=command, content_type_id=16,
+                                                               user_permission_profile_id=item)
+                except Exception as ex:
+                    if "duplicate key value violates unique" in str(ex):
+                        continue
+                    else:
+                        return str(ex)
+        return "Specified commands successfully added for users."
+
+    except Exception as ex:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        return str(ex)
+
+
+def delete_bulk_permission_for_user(emails, commands):
+    try:
+        users_id = []
+        commands_id = []
+        users_profile_id = []
+        for item in emails:
+            users_id.append(User.objects.get(email=item).id)
+        for item in users_id:
+            users_profile_id.append(UserPermissionProfile.objects.get(user_id=item).id)
+        for item in commands:
+            commands_id.append(Command.objects.get(text=item).id)
+
+        for item in users_profile_id:
+            for command in commands_id:
+                try:
+                    UserPermissionProfileObject.objects.get(object_id=command, content_type_id=16,
+                                                            user_permission_profile_id=item).delete()
+
+                except Exception as ex:
+                    if "does not exist." in str(ex):
+                        continue
+                    else:
+                        return str(ex)
+        return "Specified commands successfully deleted for users."
+
     except Exception as ex:
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]

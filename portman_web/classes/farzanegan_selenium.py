@@ -46,6 +46,8 @@ def farzanegan_scrapping(username, password, owner_username):
         im.save('/opt/portmanv3/portman_web/classes/far_captcha.png')  # saves new cropped image
 
         img = cv2.imread("/opt/portmanv3/portman_web/classes/far_captcha.png")
+        # im.save('/home/milad/project/portmanv3/portman_web/classes/far_captcha.png')  # saves new cropped image
+        # img = cv2.imread('/home/milad/project/portmanv3/portman_web/classes/far_captcha.png')
         gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         (h, w) = gry.shape[:2]
         gry = cv2.resize(gry, (w * 2, h * 2))
