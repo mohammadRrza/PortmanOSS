@@ -15,6 +15,7 @@ from contact.models import FarzaneganTDLTE, FarzaneganProviderData, FarzaneganPr
 
 
 def farzanegan_scrapping(username, password, owner_username):
+    global Exception
     options = webdriver.ChromeOptions()
     print('1')
     options.add_argument('ignore-certificate-errors')
@@ -51,7 +52,7 @@ def farzanegan_scrapping(username, password, owner_username):
         gry = cv2.resize(gry, (w * 2, h * 2))
         cls = cv2.morphologyEx(gry, cv2.MORPH_CLOSE, None)
         thr = cv2.threshold(cls, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-        txt = image_to_string(img)
+        txt = image_to_string(thr)
         print('txt:' +txt)
     except Exception as ex:
         print(ex)

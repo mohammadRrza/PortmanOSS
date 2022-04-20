@@ -92,6 +92,10 @@ class ShowMac(BaseCommand):
                             status=500)
             tn.close()
             result = str(result).split("\\r\\n")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             return dict(result=result, status=200)
 
         except (EOFError, socket_error) as e:
