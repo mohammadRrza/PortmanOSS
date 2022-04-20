@@ -2,7 +2,7 @@ import re
 import sys
 from datetime import datetime, timedelta
 from io import BytesIO
-import cv2
+#import cv2
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from selenium import webdriver
@@ -46,14 +46,14 @@ def farzanegan_scrapping(username, password, owner_username):
         im = im.crop((left, top, right, bottom))  # defines crop points
         im.save('/opt/portmanv3/portman_web/classes/far_captcha.png')  # saves new cropped image
 
-        img = cv2.imread("/opt/portmanv3/portman_web/classes/far_captcha.png")
-        gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        (h, w) = gry.shape[:2]
-        gry = cv2.resize(gry, (w * 2, h * 2))
-        cls = cv2.morphologyEx(gry, cv2.MORPH_CLOSE, None)
-        thr = cv2.threshold(cls, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
-        txt = image_to_string(thr)
-        print('txt:' +txt)
+        # img = cv2.imread("/opt/portmanv3/portman_web/classes/far_captcha.png")
+        # gry = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        # (h, w) = gry.shape[:2]
+        # gry = cv2.resize(gry, (w * 2, h * 2))
+        # cls = cv2.morphologyEx(gry, cv2.MORPH_CLOSE, None)
+        # thr = cv2.threshold(cls, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+        # txt = image_to_string(thr)
+        print('txt:')
     except Exception as ex:
         print(ex)
     driver.find_element(By.ID, 'j_username_visible').send_keys(username)
