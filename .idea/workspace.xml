@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/bulk_commands/Commands/get_cisco_routers_backup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_core2/vendors/fiberhomeAN5006_commands/show_mac.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/fiberhomeAN5006_commands/show_mac.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_core2/vendors/fiberhomeAN5006_commands/show_mac_by_port.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/fiberhomeAN5006_commands/show_mac_by_port.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_web/classes/far_captcha.png" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/classes/far_captcha.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_web/classes/farzanegan_selenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/classes/farzanegan_selenium.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/portman_web/contact/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/contact/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_web/portmanLog.log" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/portmanLog.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +38,6 @@
     <setting file="file://$PROJECT_DIR$/portman_core2/vendors/fiberhomeAN5006_commands/show_mac.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/portman_core2/vendors/huawei_commands/vlan_show.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/portman_core2/vendors/huawei_commands/show_card.py" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/portman_core2/example.log" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/portman_core2/portman_core.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/portman_web/contact/views.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/portman_core2/dj_bridge.py" root0="FORCE_HIGHLIGHTING" />
@@ -250,7 +243,7 @@
       <workItem from="1648627809616" duration="19598000" />
       <workItem from="1649583320797" duration="10826000" />
       <workItem from="1649829074593" duration="6326000" />
-      <workItem from="1649925590536" duration="8802000" />
+      <workItem from="1649925590536" duration="9185000" />
     </task>
     <servers />
   </component>

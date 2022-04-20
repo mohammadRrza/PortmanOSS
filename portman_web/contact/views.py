@@ -412,7 +412,7 @@ class FarzaneganScrappingAPIView(views.APIView):
         password = data['password']
         owner_username = data['owner_username']
         try:
-            result = farzanegan_scrapping(username, password, owner_username)
+            result = "" #farzanegan_scrapping(username, password, owner_username)
             if result is None:
                 return Response({'result': 'Please try again!'})
             return Response({'result': result})
