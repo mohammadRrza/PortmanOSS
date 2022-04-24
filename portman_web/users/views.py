@@ -436,6 +436,11 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
     def get_queryset(self):
         user = self.request.user
         queryset = UserPermissionProfile.objects.all()
+        username = self.request.query_params.get('username', None)
+        user_id = User.objects.get(username__icontains=username).id
+
+        if username:
+            queryset = queryset.filter(user_id=user_id)
         return queryset
 
     def create(self, request, *args, **kwargs):
@@ -712,3 +717,5 @@ def set_dslam_permission_for_user(username):
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         return str(ex)
+
+
