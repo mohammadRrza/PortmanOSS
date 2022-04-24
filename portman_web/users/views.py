@@ -439,8 +439,7 @@ class UserPermissionProfileViewSet(mixins.ListModelMixin,
         username = self.request.query_params.get('username', None)
 
         if username:
-            user_id = User.objects.get(username__icontains=username).id
-            queryset = queryset.filter(user_id=user_id)
+            queryset = UserPermissionProfile.objects.select_related('user').filter(user__username__icontains = username)
         return queryset
 
     def create(self, request, *args, **kwargs):
