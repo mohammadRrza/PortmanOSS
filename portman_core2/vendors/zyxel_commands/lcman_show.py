@@ -67,7 +67,7 @@ class LcmanShow(BaseCommand):
             tn.write(b"exit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            result = [val for val in result if re.search(r'\d+|--|\s{4,}', val)]
+            result = [val for val in result if re.search(r'--|\s{4,}', val)]
             print('**************************************')
             print(result)
             print('**************************************')
