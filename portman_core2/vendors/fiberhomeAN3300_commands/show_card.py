@@ -61,13 +61,25 @@ class ShowCard(BaseCommand):
             if "Bad Password..." in str(err1):
                 return "DSLAM Password is wrong!"
             tn.write(b"cd device\r\n")
-            tn.write("show port {0}:{1}-{0}:{1} linelink\r\n".format(self.port_conditions['slot_number'],
+            tn.write("show port all linelink\r\n".format(self.port_conditions['slot_number'],
                                                                      self.port_conditions['port_number']).encode('utf-8'))
-            time.sleep(0.5)
-            tn.write(b"\r\n")
-            time.sleep(0.5)
+            time.sleep(0.3)
+            tn.read_until(b'#')
+            output = tn.read_until(b'#', 0.1)
+            result = ''
+            result += str(output)
+            while '#' not in str(output):
+                tn.write(b'\r\n')
+                output = tn.read_until(b'#', 0.1)
+                result += str(output)
+
             tn.write(b"end\r\n")
-            result = tn.read_until(b"end")
+            result += str(tn.read_until(b"end"))
+            result = re.split(r'\\n\\r|\\r\\n|\\r|\\n', result)
+            res = [item for item in result if re.search(':', item)]
+            # result = str(result).replace("\\n\\n\\r", "").replace("\\r", "")
+            # result = result.split("\\n")
+
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 return dict(result=result.decode('utf-8'), status=200)
             if "Invalid port list" in str(result):
@@ -75,10 +87,7 @@ class ShowCard(BaseCommand):
                            "Card number is out of range.", "Port number is out of range."]
                 return str_res
             tn.close()
-            result = str(result).replace("\\n\\n\\r", "").replace("\\r", "")
-            result = result.split("\\n")
-            result = [re.sub(r'\s+--P[a-zA-Z +\\1-9[;-]+H', '', val) for val in result if re.search(r'\s{4,}', val)]
-            return dict(result=result, status=200)
+            return dict(result=res, status=200)
 
         except (EOFError, socket_error) as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
