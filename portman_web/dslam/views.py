@@ -5614,68 +5614,80 @@ class FiberHomeGetCardAPIView(views.APIView):
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-                result = [val.strip().split() for val in result['result'] if re.search(r'\d\s{4,}\w', val)]
-                res = []
+                result = [val for val in result['result'] if re.search(r'^\s+\d+\s+', val)]
+                cards_info = []
                 for item in result:
-                    dic = {}
-                    if item[1] == 'up':
-                        dic["Card"] = item[0]
-                        dic["Status"] = 'ON'
+                    print(item)
+                    card_info = {}
+                    card_info["Card"] = item.split()[0]
+                    if 'up' in item:
+                        card_info["Status"] = 'ON'
                     else:
-                        dic["Card"] = item[0]
-                        dic["Status"] = 'OFF'
+                        card_info["Status"] = 'OFF'
 
-                    res.append(dic)
-                res.append({'DslamType' : "fiberhomeAN3300"})
-                return JsonResponse(dict(result=res))
+                    cards_info.append(card_info)
+                cards_info.append({'DslamType': "fiberhomeAN3300"})
+                return JsonResponse(dict(result=cards_info))
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
-                result = [val.strip().split() for val in result['result'] if re.search(r'\d\s{4,}\d', val)]
-                res = []
+                result = [val for val in result['result'] if re.search(r'^\s+\d+\s+', val)]
+                cards_info = []
                 for item in result:
-                    dic = {}
-                    if item[2] == 'AD32+':
-                        dic["Card"] = item[1]
-                        dic["Status"] = 'ON'
+                    card_info = {}
+                    card_info["Card"] = item.split()[1]
+                    if 'LINK_LOS' not in item:
+                        card_info["Status"] = 'ON'
                     else:
-                        dic["Card"] = item[1]
-                        dic["Status"] = 'OFF'
+                        card_info["Status"] = 'OFF'
 
-                    res.append(dic)
-                res.append({'DslamType': "fiberhomeAN2200"})
-                return JsonResponse(dict(result=res))
+                    cards_info.append(card_info)
+                cards_info.append({'DslamType': "fiberhomeAN2200"})
+                return JsonResponse(dict(result=cards_info))
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                result = [val.strip().split() for val in result['result'] if re.search(r'\s{10,}', val)]
-                res = []
+                result = [val for val in result['result'] if re.search(r'\s{10,}', val)]
+                cards_info = []
                 for item in result:
-                    dic = {}
-                    if 'ADSL' in item[1] or 'VDSL' in item[1]:
-                        dic["Card"] = item[0]
-                        dic["Status"] = 'ON'
+                    card_info = {}
+                    card_info["Card"] = item.split() [0]
+                    if 'ADSL' in item or 'VDSL' in item:
+                        card_info["Status"] = 'ON'
                     else:
-                        dic["Card"] = item[0]
-                        dic["Status"] = 'OFF'
+                        card_info["Status"] = 'OFF'
 
-                    res.append(dic)
-                res.append({'DslamType': "fiberhomeAN5006"})
-                return JsonResponse(dict(result=res))
+                    cards_info.append(card_info)
+                cards_info.append({'DslamType': "fiberhomeAN5006"})
+                return JsonResponse(dict(result=cards_info))
             elif dslam_type == 2:  ############################## Huawei ##############################
-                result = [val.strip().split() for val in result['result'] if re.search(r'\s+\d', val)]
-                res = []
+                result = [val for val in result['result'] if re.search(r'\s+\d', val)]
+                cards_info = []
+                for item in result:
+                    card_info = {}
+                    card_info["Card"] = item.split()[0]
+                    if 'Normal' in item:
+                        card_info["Status"] = 'ON'
+                    else:
+                        card_info["Status"] = 'OFF'
+
+                    cards_info.append(card_info)
+                cards_info.append({'DslamType': "huawei"})
+                return JsonResponse(dict(result=cards_info))
+
+            elif dslam_type == 1:  ############################## zyxel ##############################
+                result = [item for item in result['result'] if re.search(r'^\s*\d+\s+', item)]
+                cards_info = []
 
                 for item in result:
-                    dic = {}
-                    if item[2] == 'Normal':
-                        dic["Card"] = item[0]
-                        dic["Status"] = 'ON'
+                    card_info = {}
+                    card_info['Card'] = item.split()[0]
+                    if 'active' in item:
+                        card_info["Status"] = 'ON'
                     else:
-                        dic["Card"] = item[0]
-                        dic["Status"] = 'OFF'
+                        card_info["Status"] = 'OFF'
 
-                    res.append(dic)
-                res.append({'DslamType': "huawei"})
-                return JsonResponse(dict(result=res))
+                    cards_info.append(card_info)
+                cards_info.append({'DslamType': "huawei"})
+                return JsonResponse(dict(result=cards_info))
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -5701,44 +5713,125 @@ class FiberHomeGetPortAPIView(views.APIView):
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-                if "There is one of the following problems:" in result:
-                    return JsonResponse({'result': result})
-                for i in result:
-                    port_info = {}
-                    info = i.split()
-                    port_info['port_number'] = info[1].split(":")[1]
-                    port_info['port_state'] = info[-1]
-                    ports_info.append(port_info)
-                return JsonResponse({'result': ports_info})
+                if "There is one of the following problems:" in result['result']:
+                    return JsonResponse({'result': result['result']})
+                number_of_ports = 0
+                slot_number = params['port_conditions']['slot_number']
+
+                for item in result['result']:
+                    info = item.strip().split(':')
+                    if info[0].split()[1] == str(slot_number):
+                        port_info = {}
+                        port_info['port_number'] = info[1].split()[0]
+                        if 'DATA' in info[-1]:
+                            port_info['port_status'] = "ON"
+                        elif 'attribute.' in info[-1]:
+                            port_info['port_status'] = "has not this attribute."
+                        else:
+                            port_info['port_status'] = "OFF"
+                        number_of_ports +=1
+                        port_info['up_time'] = None
+                        port_info['protocol'] = None
+                        ports_info.append(port_info)
+                if len(ports_info) == 0:
+                    return JsonResponse({'result': 'This card is not defined.'})
+
+                return JsonResponse({'number of ports': number_of_ports, 'result': ports_info})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
-                if "This card is not configured" in result:
-                    return JsonResponse({'result': result})
-                if "No card is defined on this port" in result:
-                    return JsonResponse({'result': result})
-                result = [val for val in result if re.search(r'.prf', val)]
-                for i in result:
+                if "This card is not configured" in result['result']:
+                    return JsonResponse({'result': result}['result'])
+                if "No card is defined on this port" in result['result']:
+                    return JsonResponse({'result': result['result']})
+                result = [val for val in result['result'] if re.search(r'.prf', val)]
+                number_of_ports = len(result)
+
+                for item in result:
                     port_info = {}
-                    info = i.split()
-                    port_info['port_number'] = info[0]
-                    port_info['port_state'] = info[2]
-                    port_info['profile_name'] = info[-1]
+                    port_info['port_number'] = item.split()[0]
+                    if 'UP' in item:
+                        port_info['port_state'] = 'ON'
+                    else:
+                        port_info['port_state'] = 'OFF'
+                    port_info['up_time'] = None
+                    port_info['protocol'] = None
                     ports_info.append(port_info)
-                return JsonResponse({'result': ports_info})
-                # return JsonResponse({'result': result})
+                return JsonResponse({'number of ports': number_of_ports, 'result': ports_info})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                if "The Card number maybe unavailable or does not exist." in result:
-                    return JsonResponse({'result': result})
-                if "Card number is out of range." in result:
-                    return JsonResponse({'result': result})
-                for i in result:
+                if "The Card number maybe unavailable or does not exist." in result['result']:
+                    return JsonResponse({'result': result['result']})
+                if "Card number is out of range." in result['result']:
+                    return JsonResponse({'result': result['result']})
+                number_of_ports = len(result['result'])
+                for item in result['result']:
                     port_info = {}
-                    info = i.split()
-                    port_info['port_number'] = info[1]
-                    port_info['port_state'] = info[-1]
+                    port_info['port_number'] = item.split()[1]
+                    if 'SHOWTIME' in item:
+                        port_info['port_state'] = 'ON'
+                    else:
+                        port_info['port_state'] = 'OFF'
+                    port_info['up_time'] = None
+                    port_info['protocol'] = None
                     ports_info.append(port_info)
-                return JsonResponse({'result': ports_info})
+                return JsonResponse({'number of ports': number_of_ports, 'result': ports_info})
+            elif dslam_type == 1: ############################## zyxel ##############################
+                result = [item for item in result['result'] if re.search(r"^\s+\d+", item)]
+                number_of_ports = len(result)
+                if number_of_ports == 0:
+                    return JsonResponse({'result': 'This card is not defined.'})
+                for item in result:
+                    port_info = {}
+                    info = re.sub('\s{2,}', " ", item)
+                    info = info.split('-')[1].lstrip().split(' ', 5)
+                    port_info['port_number'] = info[0]
+
+                    if info[1] == 'up':
+                        port_info['port_status'] = 'ON'
+                    else:
+                        port_info['port_status'] = 'OFF'
+
+                    port_info['up_time'] = info[5]
+                    port_info['protocol'] = info[4]
+                    ports_info.append(port_info)
+
+
+
+                return JsonResponse({'number of ports': number_of_ports, 'result': ports_info})
+
+            elif dslam_type == 7:  ############################## zyxel1248 ##############################
+
+                result = [item.split() for item in result['result'] if re.search(r'^\s+\d+', item)]
+                number_of_ports = len(result)
+                for info in result:
+                    port_info = {}
+                    port_info['port_number'] = info[0]
+                    if info[1] != '-':
+                        port_info['port_status'] = 'ON'
+                        port_info['up_time'] = info[-2]
+                    else:
+                        port_info['port_status'] = 'OFF'
+                        port_info['up_time'] = ""
+                    port_info['protocol'] = None
+                    ports_info.append(port_info)
+                return JsonResponse({'number of ports': number_of_ports, 'result': ports_info})
+
+            elif dslam_type == 2:  ############################## huawei ##############################
+                result = [item for item in result['result'] if re.search(r'^\s+\d+', item)]
+                number_of_ports = len(result)
+                if number_of_ports == 0:
+                    return JsonResponse({'result': 'This card is not defined.'})
+                for info in result:
+                    port_info = {}
+                    port_info['port_number'] = info.split()[0]
+                    if 'Activated' in info:
+                        port_info['port_status'] = 'ON'
+                    else:
+                        port_info['port_status'] = 'OFF'
+                    port_info['up_time'] = None
+                    port_info['protocol'] = None
+                    ports_info.append(port_info)
+                return JsonResponse({'number of ports': number_of_ports, 'result': ports_info})
 
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
