@@ -19,7 +19,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from users.serializers import *
 from users.models import UserAuditLog, PortmanLog, UserPermissionProfile, UserPermissionProfileObject
 from dslam.mail import Mail
-
+from dslam.models import Command
 from django.http import JsonResponse, HttpResponse
 import simplejson as json
 from khayyam import *
@@ -660,6 +660,16 @@ class SetPermissionForUserAPIView(views.APIView):
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
 
 
+class SetBulkPermissionByPermissionProfileId(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, fname=None):
+        try:
+            date = request.data
+            profiles_id = date.get('profiles_id', None)
+            commands = date.get('commands', None)
+            result = set_permission_by_permission_profile_id(profiles_id, commands)
 class SetBulkPermissionForUserApiView(views.APIView):
     def get_permissions(self):
         return permissions.IsAuthenticated(),
@@ -677,6 +687,45 @@ class SetBulkPermissionForUserApiView(views.APIView):
             return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
 
 
+def set_permission_by_permission_profile_id(profiles_id, commands):
+    try:
+        commands_id = []
+        users_profile_id = []
+        wrong_id = []
+
+        for item in profiles_id:
+            query_set = UserPermissionProfile.objects.filter(permission_profile_id=item)
+            if query_set.exists():
+                for obj in query_set:
+                    users_profile_id.append(obj.id)
+            else:
+                wrong_id.append(item)
+
+        for item in commands:
+            commands_id.append(Command.objects.get(text=item).id)
+
+        for item in users_profile_id:
+            for command in commands_id:
+                try:
+                    UserPermissionProfileObject.objects.create(object_id=command, content_type_id=16,
+                                                               user_permission_profile_id=item)
+                except Exception as ex:
+                    if "duplicate key value violates unique" in str(ex):
+                        continue
+                    else:
+                        return str(ex)
+        if len(wrong_id) == 0:
+            return "Specified commands successfully added."
+        else:
+            if len(users_profile_id) != 0:
+                return f"This list {wrong_id} of ID dose not exist in database. But Specified commands Successfully added for other ID"
+            else:
+                return f"This list {wrong_id} of ID dose not exist in database."
+    except Exception as ex:
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        return str(ex)
+=======
 class DeleteBulkPermissionForUserApiView(views.APIView):
     def get_permissions(self):
         return permissions.IsAuthenticated(),
@@ -812,5 +861,3 @@ def set_dslam_permission_for_user(username):
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         return str(ex)
-
-
