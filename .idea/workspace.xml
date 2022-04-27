@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/classes/far_captcha.png" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/classes/far_captcha.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/classes/farzanegan_selenium.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/classes/farzanegan_selenium.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/config/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/portman_web/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -242,7 +246,7 @@
       <workItem from="1648627809616" duration="19598000" />
       <workItem from="1649583320797" duration="10826000" />
       <workItem from="1649829074593" duration="6326000" />
-      <workItem from="1649925590536" duration="19319000" />
+      <workItem from="1649925590536" duration="22348000" />
     </task>
     <servers />
   </component>
