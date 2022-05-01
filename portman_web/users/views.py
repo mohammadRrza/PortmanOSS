@@ -670,6 +670,11 @@ class SetBulkPermissionByPermissionProfileId(views.APIView):
             profiles_id = date.get('profiles_id', None)
             commands = date.get('commands', None)
             result = set_permission_by_permission_profile_id(profiles_id, commands)
+            return JsonResponse({'result': result})
+        except Exception as ex:
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            return JsonResponse({'row': str(ex) + '////' + str(exc_tb.tb_lineno)})
 class SetBulkPermissionForUserApiView(views.APIView):
     def get_permissions(self):
         return permissions.IsAuthenticated(),
@@ -725,7 +730,8 @@ def set_permission_by_permission_profile_id(profiles_id, commands):
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         return str(ex)
-=======
+
+
 class DeleteBulkPermissionForUserApiView(views.APIView):
     def get_permissions(self):
         return permissions.IsAuthenticated(),
