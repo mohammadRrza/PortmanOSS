@@ -168,6 +168,8 @@ urlpatterns = [
         name='get_user_permission_profile_objects'),
     url(r'^api/v1/user/set_permission_for_user/$', SetPermissionForUserAPIView.as_view(),
         name='set_permission_for_user'),
+    url(r'^api/v1/user/set_permission_by_permission_profile_id/$', SetBulkPermissionByPermissionProfileId.as_view(),
+        name='set_permission_by_permission_profile_id'),
     url(r'^api/v1/user/set_bulk_permission_for_user/$', SetBulkPermissionForUserApiView.as_view(),
         name='set_bulk_permission_for_user'),
     url(r'^api/v1/user/delete_bulk_permission_for_user/$', DeleteBulkPermissionForUserApiView.as_view(),

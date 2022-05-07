@@ -53,7 +53,7 @@ class PortInfo(BaseCommand):
             err1 = tn.read_until(b'Communications Corp.', 2)
             if "Password:" in str(err1):
                 return "Telnet Username or Password is wrong! Please contact with core-access department."
-            tn.read_until(b'#')
+            tn.read_until(b'#', 0.5)
             tn.write("port show {0}-{1}\r\n\r\n".format(self.port_conditions['slot_number'],
                                                         self.port_conditions['port_number']).encode('utf-8'))
             result = tn.read_until(b"#", 0.2)
@@ -62,6 +62,8 @@ class PortInfo(BaseCommand):
                 tn.write(b"\r\n")
                 result = tn.read_until(b"#", 0.5)
                 output += str(result)
+                if '>' in str(result):
+                    break
             result = str(output).split("\\r\\n")
             result = [val for val in result if re.search(r'\s{2,}|--{3,}', val)]
             for inx, val in enumerate(result):

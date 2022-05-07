@@ -69,6 +69,19 @@ class AddToVlan(BaseCommand):
                 ).encode('utf-8'))
                 time.sleep(1)
             for port_item in self.__port_indexes:
+                tn.write("port pvc show {0}-{1}\r\n".format(port_item['slot_number'], port_item['port_number']).encode('utf-8'))
+                tn.write(b'end\r\n')
+                result = tn.read_until(b'end', 0.3)
+                result = str(result).split('\\r\\n')
+                result = [item for item in result if re.search(r'\d+-\d+-\d+', item)]
+                for item in result:
+                    old_vpi = item.split('/')[0].split('-')[-1]
+                    old_vci = item.split('/')[1].split()[0]
+                    tn.write("port pvc delete {0}-{1}-{2}/{3}\r\n".format(port_item['slot_number'],
+                                                                          port_item['port_number'],
+                                                                          old_vpi,
+                                                                          old_vci).encode('utf-8'))
+                time.sleep(0.5)
                 tn.write("port pvc set {0}-{1}-{2}/{3} {4} {5} {6} {7}\r\n\r\n".format(
                     port_item['slot_number'], port_item['port_number'],
                     self.__vpi,
