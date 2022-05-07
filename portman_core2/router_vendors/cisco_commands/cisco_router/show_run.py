@@ -9,13 +9,13 @@ from .command_base import BaseCommand
 
 class ShowRun(BaseCommand):
     def __init__(self, params):
-        self.__IP = params.get('switch_ip')
+        self.__IP = params.get('router_ip')
         self.__SSH_username = params.get('SSH_username')
         self.__SSH_password = params.get('SSH_password')
         self.__SSH_port = params.get('SSH_port', 1001)
         self.__SSH_timeout = params.get('SSH_timeout', 10)
         self.__Command = 'show run'
-        self.__FQDN = params.get('switch_fqdn')
+        self.__FQDN = params.get('router_fqdn')
 
     def run_command(self):
         try:
@@ -24,7 +24,7 @@ class ShowRun(BaseCommand):
             client.connect(self.__IP, username=self.__SSH_username, password=self.__SSH_password, port=self.__SSH_port, timeout=self.__SSH_timeout, allow_agent=False,
                            look_for_keys=False)
             stdin, stdout, stderr = client.exec_command('show run')
-            f = open("/home/taher/backup/cisco_switches/{0}@{1}_{2}.txt".format(
+            f = open("/home/taher/backup/cisco_routers/{0}@{1}_{2}.txt".format(
                 self.__IP, self.__FQDN, str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S'))), "w")
             for line in stdout:
                 f.write(line.strip('\n'))

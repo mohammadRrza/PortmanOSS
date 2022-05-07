@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands/cisco_router/command_base.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands/cisco_router/show_run.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands/command_factory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands/router.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bulk_commands/Commands/get_cisco_routers_backup.py" beforeDir="false" afterPath="$PROJECT_DIR$/bulk_commands/Commands/get_cisco_routers_backup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bulk_commands/Commands/get_zabbix_hosts.py" beforeDir="false" afterPath="$PROJECT_DIR$/bulk_commands/Commands/get_zabbix_hosts.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bulk_commands/bulk_commands.py" beforeDir="false" afterPath="$PROJECT_DIR$/bulk_commands/bulk_commands.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_core2/portman.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/portman.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands/cisco_router/show_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands/cisco_router/show_run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,7 +270,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/add_to_vlan.py</url>
-          <line>104</line>
+          <line>117</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
