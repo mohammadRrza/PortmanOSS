@@ -6,6 +6,7 @@ from vendors.fiberhomeAN3300 import FiberhomeAN3300
 from vendors.fiberhomeAN5006 import FiberhomeAN5006
 from switch_vendors.cisco_commands.switch_C2960 import C2960
 from router_vendors.mikrotik_commands.RB951Ui2HnD import RB951Ui2HnD
+from router_vendors.cisco_commands.router import CiscoRouter
 from radio_vendors.wireless import Wireless
 
 from portman_factory import PortmanFactory
@@ -77,6 +78,12 @@ class Portman(object):
         self.__portman_factory.register_type('HexRB750', RB951Ui2HnD)
         self.__portman_factory.register_type('RB450', RB951Ui2HnD)
         self.__portman_factory.register_type('CCR1036', RB951Ui2HnD)
+        self.__portman_factory.register_type('c2921k9', CiscoRouter)
+        self.__portman_factory.register_type('c2811', CiscoRouter)
+        self.__portman_factory.register_type('asr1002x', CiscoRouter)
+        self.__portman_factory.register_type('asr1002', CiscoRouter)
+        self.__portman_factory.register_type('asr1002hx', CiscoRouter)
+        self.__portman_factory.register_type('asr1001x', CiscoRouter)
 
         #radios
         self.__portman_factory.register_type('wireless', Wireless)

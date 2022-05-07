@@ -19,13 +19,13 @@ class GetCiscoRouterbackUp():
         mail.msg_body = 'Cisco Router Backup Process has been started at {0}'.format(
             str(datetime.datetime.today().strftime('%Y-%m-%d-%H:%M:%S')))
         # Mail.Send_Mail(mail)
-        home = "/home/taher"#str(Path.home())
+        home = "/home/taher/"#str(Path.home())
         print("=============================================")
         print("Router Backup Process has been started...")
         print("=============================================")
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        query = "SELECT Distinct  device_type, device_brand, device_ip, device_fqdn from zabbix_hosts where  (device_type = 'Router' or device_type = 'Router') and device_fqdn NOT like  '%OLD%' ORDER BY device_ip"
+        query = "SELECT Distinct  device_type, device_brand, device_ip, device_fqdn from zabbix_hosts where  (device_type = 'cisco_router' and device_brand = 'cisco') and device_fqdn NOT like  '%OLD%' ORDER BY device_ip"
         cursor = connection.cursor()
         cursor.execute(query)
         RouterObjs = cursor.fetchall()
