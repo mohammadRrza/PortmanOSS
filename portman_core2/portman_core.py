@@ -157,6 +157,10 @@ class PortmanRPC(object):
 
     def router_run_command(self, router_id, command, params):
         router = Router.objects.get(id=router_id)
+        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        print(router.get_info())
+        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+
         task = RouterCommandTask(router.get_info(), command, params)
         is_queue = False
         if is_queue == False:

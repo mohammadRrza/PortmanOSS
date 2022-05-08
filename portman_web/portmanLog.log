@@ -979,3 +979,11 @@ Traceback (most recent call last):
   File "/home/mrtbadboy/.local/lib/python3.9/site-packages/django/db/models/sql/query.py", line 1539, in names_to_path
     raise FieldError("Cannot resolve keyword '%s' into field. "
 django.core.exceptions.FieldError: Cannot resolve keyword 'tmp' into field. Choices are: action, id, is_active, permission_profile, permission_profile_id, user, user_id, userpermissionprofileobject
+Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
+Not Found: /favicon.ico
+Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/router/router_run_command/
