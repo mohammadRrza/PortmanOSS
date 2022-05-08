@@ -4,7 +4,7 @@ from .cisco_router.show_run import ShowRun
 
 class CiscoRouter:
     command_factory = CommandFactory()
-    command_factory.register_type('get BackUp', ShowRun)
+    command_factory.register_type('get Backup', ShowRun)
 
 
     def __init__(self):
