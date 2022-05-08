@@ -629,5 +629,5 @@ class GetNotesViewSet(mixins.ListModelMixin,
         queryset = self.queryset
         note_id = self.request.query_params.get('note_id', None)
         if note_id:
-            queryset = queryset.filter(id=note_id)[:1].get()
+            queryset = queryset.filter(id=note_id)
         return queryset
