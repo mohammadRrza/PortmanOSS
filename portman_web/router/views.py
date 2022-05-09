@@ -233,12 +233,19 @@ class GetRouterBackupFilesNameAPIView2(views.APIView):
                 date_array.append(str(datetime.datetime.now().date() - datetime.timedelta(i)))
             router_id = request.data.get('router_id')
             router_obj = Router.objects.get(id=router_id)
+            routertype_id = router_obj.router_brand_id
+            if routertype_id==1:
+                router_path = '/home/taher/backup/cisco_routers/'
+            elif routertype_id==2:
+                router_path = '/home/taher/backup/mikrotik_routers/'
+            else:
+                return None
             fqdn = router_obj.device_fqdn
             ip = router_obj.device_ip
             filenames = []
             filenames_error = []
             total = []
-            directory = path
+            directory = router_path
             for filename in os.listdir(directory):
                 fileobj = File()
                 # if (filename.__contains__(fqdn) or filename.__contains__(ip)) and filename.__contains__(str(datetime.datetime.now().date() - datetime.timedelta(1))):
