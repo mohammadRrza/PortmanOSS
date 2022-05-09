@@ -233,10 +233,10 @@ class GetRouterBackupFilesNameAPIView2(views.APIView):
                 date_array.append(str(datetime.datetime.now().date() - datetime.timedelta(i)))
             router_id = request.data.get('router_id')
             router_obj = Router.objects.get(id=router_id)
-            routertype_id = router_obj.router_brand_id
-            if routertype_id==1:
+            router_type_id = router_obj.router_brand_id
+            if router_type_id==1:
                 router_path = '/home/taher/backup/cisco_routers/'
-            elif routertype_id==2:
+            elif router_type_id==2:
                 router_path = '/home/taher/backup/mikrotik_routers/'
             else:
                 return None
@@ -277,7 +277,16 @@ class DownloadRouterBackupFileAPIView(views.APIView):
     def post(self, request, format=None):
         try:
             download_backup_file = request.data.get('backup_file_name')
-            directory = path + download_backup_file
+            router_id = request.data.get('router_id')
+            router_obj = Router.objects.get(id=router_id)
+            router_type_id = router_obj.router_brand_id
+            if router_type_id==1:
+                router_path = '/home/taher/backup/cisco_routers/'
+            elif router_type_id==2:
+                router_path = '/home/taher/backup/mikrotik_routers/'
+            else:
+                return None
+            directory = router_path + download_backup_file
             f = open(directory, "r")
             return JsonResponse({'response': f.read()})
         except Exception as ex:
