@@ -94,5 +94,9 @@ def command_recognise(command):
         command = 'disable annexm'
     elif command == 'adsl annexm show' or command == 'ADSL Annexm Show' or command == 'show annexm' or command == 'Show Annexm':
         command = 'show annexm'
+    elif command == 'fast profiles adsl show' or command == 'showFastProfiles':
+        command = 'fast profiles adsl show'
+    elif command == 'fast profiles adsl set':
+        command = 'fast profiles adsl set'
 
     return command
