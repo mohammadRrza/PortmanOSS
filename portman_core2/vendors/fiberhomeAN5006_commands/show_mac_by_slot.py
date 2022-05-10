@@ -5,7 +5,7 @@ from .command_base import BaseCommand
 import re
 
 
-class ShowMac(BaseCommand):
+class ShowMacBySlot(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None

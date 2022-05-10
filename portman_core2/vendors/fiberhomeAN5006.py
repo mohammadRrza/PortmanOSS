@@ -19,7 +19,7 @@ from .fiberhomeAN5006_commands.selt_show import ShowSelt
 from .fiberhomeAN5006_commands.selt_start import StartSelt
 from .fiberhomeAN5006_commands.show_shelf import ShowShelf
 from .fiberhomeAN5006_commands.show_card import ShowCard
-from .fiberhomeAN5006_commands.show_mac import ShowMac
+from .fiberhomeAN5006_commands.show_mac_by_slot import ShowMacBySlot
 from .fiberhomeAN5006_commands.save_config import SaveConfig
 from .fiberhomeAN5006_commands.show_all_vlans import ShowAllVLANs
 from .fiberhomeAN5006_commands.add_to_vlan import AddToVlan
@@ -45,7 +45,7 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('show mac by slot port', ShowMacSlotPort)
     command_factory.register_type('Show Shelf', ShowShelf)
     command_factory.register_type('Show Card', ShowCard)
-    command_factory.register_type('show mac', ShowMac)
+    command_factory.register_type('show mac by slot', ShowMacBySlot)
     command_factory.register_type('save config', SaveConfig)
     command_factory.register_type('Show All VLANs', ShowAllVLANs)
     command_factory.register_type('add to vlan', AddToVlan)

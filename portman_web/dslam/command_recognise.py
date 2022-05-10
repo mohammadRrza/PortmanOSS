@@ -26,6 +26,8 @@ def command_recognise(command):
         command = 'port disable'
     elif command == 'show mac slot port' or command == 'showmacslotport':
         command = 'show mac by slot port'
+    elif command == 'show mac by slot' or command == 'showmacslot':
+        command = 'show mac by slot'
     elif command == 'show port with mac' or command == 'show port mac':
         command = 'show port with mac'
     elif command == 'Show VLAN' or command == 'VLAN Show' or command == 'show vlan' or command == 'vlan show':
