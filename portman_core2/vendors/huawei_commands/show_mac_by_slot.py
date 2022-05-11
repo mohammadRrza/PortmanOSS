@@ -78,14 +78,16 @@ class ShowMacBySlot(BaseCommand):
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
 
-                return dict(result=result.decode('utf-8'), status=200)
             print('***********************')
             print(result)
             print('***********************')
             result = str(result).split("\\r\\n")
             result = [val for val in result if re.search(r'-{4,}|\s{4,}|:', val)]
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             return dict(result=result, port_indexes=self.__port_indexes, status=200)
         except (EOFError, socket_error) as e:
             print(e)
