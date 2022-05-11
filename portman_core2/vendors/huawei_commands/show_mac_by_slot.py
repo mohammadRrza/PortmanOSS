@@ -82,7 +82,7 @@ class ShowMacBySlot(BaseCommand):
             print('***********************')
             print(result)
             print('***********************')
-            result = str(result).split("\\r\\n")
+            result = str(result).split("\r\n")
             result = [val for val in result if re.search(r'-{4,}|\s{4,}|:', val)]
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 str_join = "\r\n"
