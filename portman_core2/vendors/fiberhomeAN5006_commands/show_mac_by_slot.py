@@ -4,9 +4,8 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
-
 class ShowMacBySlot(BaseCommand):
-    def __init__(self, params=None):
+    def _init_(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
@@ -65,7 +64,8 @@ class ShowMacBySlot(BaseCommand):
                 tn.write(b"\r\n")
                 tn.write(b"\r\n")
                 tn.write(b"end\r\n")
-                result = tn.read_until(b"end")
+                result = tn.read_until(b"end", 1.5)
+                tn.write(b"\r\n")
                 if "invalid interface" in str(result):
                     str_res = ["There is one of the following problems:",
                                "This card is not configured or not available", "Card number is out of range."]

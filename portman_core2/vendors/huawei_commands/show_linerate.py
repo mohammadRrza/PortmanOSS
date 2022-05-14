@@ -83,16 +83,16 @@ class ShowLineRate(BaseCommand):
             if "Parameter error" in str(output):
                 return dict(result="Port number is wrong.", status=500)
             result = output.split("\r\n")
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             tn.write(b"quit\r\n")
             # result = '\n'.join(eval(repr(tn.read_until(b'Upstream total output power(dBm)')).replace(r"---- More ( Press 'Q' to break ) ----\x1b[37D                                     \x1b[37D","")).split("\r\n")[:-1])
             tn.write(b"quit\r\n")
             tn.write(b"quit\r\n")
             tn.write(b"y\r\n")
             tn.close()
-            # if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-            #     str_join = "\r\n"
-            #     str_join = str_join.join(result)
-            #     return dict(result=str_join, status=200)
             print('*******************************************')
             print(("show linerate {0}".format(result)))
             print('*******************************************')
