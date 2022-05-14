@@ -134,6 +134,9 @@ class DSLAM(models.Model):
     availability_start_time = models.DateTimeField(auto_now_add=True)
     down_seconds = models.BigIntegerField(default=0)
     fqdn = models.CharField(max_length=1024, null=True, blank=True)
+    pishgaman_vlan = models.IntegerField(blank=True, null=True)
+    pishgaman_vpi = models.IntegerField(blank=True, null=True)
+    pishgaman_vci = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

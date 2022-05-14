@@ -183,7 +183,7 @@ class DSLAMSerializer(serializers.ModelSerializer):
             'text', 'total_ports_count', 'up_ports_count', 'down_ports_count', 'last_sync_duration', 'uptime',
             'version',
             'availability_start_time', 'down_seconds', 'dslam_availability', 'hostname', 'sync_ports_count',
-            'nosync_ports_count', 'fqdn', 'slots', 'ports',
+            'nosync_ports_count', 'fqdn', 'slots', 'ports','pishgaman_vlan','pishgaman_vpi','pishgaman_vci'
         )
         read_only_fields = (
             'id', 'created_at', 'updated_at', 'last_sync',
