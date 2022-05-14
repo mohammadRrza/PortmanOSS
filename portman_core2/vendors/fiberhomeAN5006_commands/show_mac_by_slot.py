@@ -65,7 +65,7 @@ class ShowMacBySlot(BaseCommand):
                 tn.write(b"\r\n")
                 tn.write(b"\r\n")
                 tn.write(b"end\r\n")
-                result = tn.read_until(b"end", 1.5)
+                result = tn.read_until(b"end")
                 tn.write(b"\r\n")
                 if "invalid interface" in str(result):
                     str_res = ["There is one of the following problems:",
