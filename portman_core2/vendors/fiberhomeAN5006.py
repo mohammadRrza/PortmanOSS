@@ -42,7 +42,9 @@ class FiberhomeAN5006(BaseDSLAM):
     command_factory.register_type('setPortProfiles', SetPortProfiles)
     command_factory.register_type('showSelt', ShowSelt)
     command_factory.register_type('selt start', StartSelt)
-    command_factory.register_type('show mac by slot port', ShowMacSlotPort)
+    # command_factory.register_type('show mac by slot port', ShowMacSlotPort)
+    command_factory.register_type('show mac by slot port', ShowCard)
+
     command_factory.register_type('Show Shelf', ShowShelf)
     command_factory.register_type('Show Card', ShowCard)
     command_factory.register_type('show mac by slot', ShowMacBySlot)

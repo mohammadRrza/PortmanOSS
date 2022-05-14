@@ -42,7 +42,6 @@ class ShowMacBySlot(BaseCommand):
         try:
             print('===================Mohammad==================')
             print(self.port_conditions)
-            print(self.HOST)
             print('===================Mohammad==================')
 
             tn = telnetlib.Telnet(self.__HOST)
