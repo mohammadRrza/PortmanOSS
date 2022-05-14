@@ -4,8 +4,9 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
+
 class ShowMacBySlot(BaseCommand):
-    def _init_(self, params=None):
+    def __init__(self, params=None):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
@@ -40,10 +41,6 @@ class ShowMacBySlot(BaseCommand):
 
     def run_command(self):
         try:
-            print('===================Mohammad==================')
-            print(self.port_conditions)
-            print('===================Mohammad==================')
-
             tn = telnetlib.Telnet(self.__HOST)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
