@@ -61,7 +61,7 @@ class ShowMacBySlot(BaseCommand):
             if "Unknown command." in str(err2):
                 tn.write(
                     "show mac-address interface {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
-                time.sleep(0.5)
+                time.sleep(1.5)
                 tn.write(b"\r\n")
                 tn.write(b"\r\n")
                 tn.write(b"end\r\n")
