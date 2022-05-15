@@ -4,7 +4,6 @@ from socket import error as socket_error
 from .command_base import BaseCommand
 import re
 
-
 class ShowMacBySlot(BaseCommand):
     def __init__(self, params=None):
         self.__HOST = None
@@ -72,7 +71,7 @@ class ShowMacBySlot(BaseCommand):
                                "This card is not configured or not available", "Card number is out of range."]
                     return dict(result=str_res, status=500)
                 if "total: 0." in str(result):
-                    return dict(result=f"No MAC address is assigned to port '{self.port_conditions['port_number']}'",
+                    return dict(result=f"No MAC address is assigned to slot '{self.port_conditions['slot_number']}'",
                                 status=500)
                 tn.close()
                 if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
