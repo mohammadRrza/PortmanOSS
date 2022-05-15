@@ -6148,7 +6148,9 @@ class FiberHomeCommandAPIView(views.APIView):
                     {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN2200'})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-
+                return JsonResponse(
+                    {'response': command, 'current_user_profile': '',
+                     'DslamType': 'fiberhomeAN5006'})
                 if command == 'show mac':
                     from .services.fiber_home_get_card import FiberHomeGetCardStatusService
                     cards_status_class = FiberHomeGetCardStatusService(request.data)
