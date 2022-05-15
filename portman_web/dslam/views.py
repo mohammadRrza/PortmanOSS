@@ -7997,12 +7997,12 @@ class DslamCommandsV2APIView(views.APIView):  # 111111111111
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
                 if command == 'show mac':
-                    return JsonResponse({'response': command, 'DslamType': 'fiberhomeAN5006'})
                     from .services.fiber_home_get_card import FiberHomeGetCardStatusService
                     cards_status_class = FiberHomeGetCardStatusService(request.data)
                     cards_status = cards_status_class.get_status_cards()
                     params['cards_status'] = cards_status
                     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+                    return JsonResponse({'response': result, 'DslamType': 'fiberhomean5006'})
                 if command == 'Show VLAN':
                     return JsonResponse({'response': result.split("\\r\\n"), 'DslamType': 'fiberhomeAN5006'})
                 return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN5006'})
