@@ -6155,6 +6155,9 @@ class FiberHomeCommandAPIView(views.APIView):
                     cards_status = cards_status_class.get_status_cards()
                     params['cards_status'] = cards_status
                     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+                    return JsonResponse(
+                        {'response': 'show mac', 'current_user_profile': '',
+                         'DslamType': 'fiberhomeAN5006'})
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
                 current_user_profile = ''
                 if 'profile_name' not in port_info:
