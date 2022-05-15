@@ -71,6 +71,7 @@ from dslam.serializers import *
 from users.helpers import add_audit_log
 from .command_recognise import command_recognise
 import openpyxl
+from .services.fiber_home_get_card import FiberHomeGetCardStatusService
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -5603,96 +5604,9 @@ class FiberHomeGetCardAPIView(views.APIView):
         return permissions.IsAuthenticated(),
 
     def post(self, request, format=None):
-        print('FiberHomeGetCardAPIView')
-        data = request.data
-        command = 'Show Shelf'
-        dslam_id = data.get('dslam_id', None)
-        dslamObj = DSLAM.objects.get(id=dslam_id)
-        params = data.get('params', None)
-        dslam_type = dslamObj.dslam_type_id
-
-        try:
-            result = utility.dslam_port_run_command(dslamObj.pk, command, params)
-            if dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-                result = [val for val in result['result'] if re.search(r'^\s+\d+\s+', val)]
-                cards_info = []
-                for item in result:
-                    print(item)
-                    card_info = {}
-                    card_info["Card"] = item.split()[0]
-                    if 'up' in item:
-                        card_info["Status"] = 'ON'
-                    else:
-                        card_info["Status"] = 'OFF'
-
-                    cards_info.append(card_info)
-                cards_info.append({'DslamType': "fiberhomeAN3300"})
-                return JsonResponse(dict(result=cards_info))
-
-            elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
-                result = [val for val in result['result'] if re.search(r'^\s+\d+\s+', val)]
-                cards_info = []
-                for item in result:
-                    card_info = {}
-                    card_info["Card"] = item.split()[1]
-                    if 'LINK_LOS' not in item:
-                        card_info["Status"] = 'ON'
-                    else:
-                        card_info["Status"] = 'OFF'
-
-                    cards_info.append(card_info)
-                cards_info.append({'DslamType': "fiberhomeAN2200"})
-                return JsonResponse(dict(result=cards_info))
-
-            elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                result = [val for val in result['result'] if re.search(r'\s{10,}', val)]
-                cards_info = []
-                for item in result:
-                    card_info = {}
-                    card_info["Card"] = item.split() [0]
-                    if 'ADSL' in item or 'VDSL' in item:
-                        card_info["Status"] = 'ON'
-                    else:
-                        card_info["Status"] = 'OFF'
-
-                    cards_info.append(card_info)
-                cards_info.append({'DslamType': "fiberhomeAN5006"})
-                return JsonResponse(dict(result=cards_info))
-            elif dslam_type == 2:  ############################## Huawei ##############################
-                result = [val for val in result['result'] if re.search(r'\s+\d', val)]
-                cards_info = []
-                for item in result:
-                    card_info = {}
-                    card_info["Card"] = item.split()[0]
-                    if 'Normal' in item:
-                        card_info["Status"] = 'ON'
-                    else:
-                        card_info["Status"] = 'OFF'
-
-                    cards_info.append(card_info)
-                cards_info.append({'DslamType': "huawei"})
-                return JsonResponse(dict(result=cards_info))
-
-            elif dslam_type == 1:  ############################## zyxel ##############################
-                result = [item for item in result['result'] if re.search(r'^\s*\d+\s+', item)]
-                cards_info = []
-
-                for item in result:
-                    card_info = {}
-                    card_info['Card'] = item.split()[0]
-                    if 'active' in item:
-                        card_info["Status"] = 'ON'
-                    else:
-                        card_info["Status"] = 'OFF'
-
-                    cards_info.append(card_info)
-                cards_info.append({'DslamType': "huawei"})
-                return JsonResponse(dict(result=cards_info))
-
-        except Exception as ex:
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
+        status_cards_class = FiberHomeGetCardStatusService(request.data)
+        status_cards = status_cards_class.get_status_cards()
+        return JsonResponse({'result':status_cards})
 
 
 class FiberHomeGetPortAPIView(views.APIView):
@@ -6235,6 +6149,12 @@ class FiberHomeCommandAPIView(views.APIView):
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
 
+                if command == 'show mac':
+                    from .services.fiber_home_get_card import FiberHomeGetCardStatusService
+                    cards_status_class = FiberHomeGetCardStatusService(request.data)
+                    cards_status = cards_status_class.get_status_cards()
+                    params['cards_status'] = cards_status
+                    result = utility.dslam_port_run_command(dslamObj.pk, command, params)
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
                 current_user_profile = ''
                 if 'profile_name' not in port_info:
