@@ -27,6 +27,7 @@ class FiberHomeGetCardStatusService:
 
         dslamObj = DSLAM.objects.get(id=dslam_id)
         dslam_type = dslamObj.dslam_type_id
+        print(dslam_type)
 
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
