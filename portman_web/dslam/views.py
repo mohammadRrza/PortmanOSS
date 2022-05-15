@@ -8001,6 +8001,7 @@ class DslamCommandsV2APIView(views.APIView):  # 111111111111
                     cards_status_class = FiberHomeGetCardStatusService(request.data)
                     cards_status = cards_status_class.get_status_cards()
                     params['cards_status'] = cards_status
+                    print(params)
                     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
                     return JsonResponse({'response': result, 'DslamType': 'fiberhomean5006'})
                 if command == 'Show VLAN':
