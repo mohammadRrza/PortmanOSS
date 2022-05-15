@@ -19,11 +19,15 @@ class FiberHomeGetCardStatusService:
         params = self.data.get('params', None)
         dslam_id = self.data.get('dslam_id', None)
 
-        if dslam_id == None:
+        if dslam_id is None:
             dslam_id = DSLAM.objects.get(fqdn=self.data.get('fqdn')).id
+        else:
+            dslam_id = DSLAM.objects.get(id=dslam_id).id
+            print(DSLAM.objects.get(id=dslam_id).fqdn)
 
         dslamObj = DSLAM.objects.get(id=dslam_id)
         dslam_type = dslamObj.dslam_type_id
+        print(dslam_type)
 
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)

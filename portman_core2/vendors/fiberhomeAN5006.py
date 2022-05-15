@@ -33,7 +33,7 @@ from .fiberhomeAN5006_commands.show_pvc_by_profile import ShowPVCByProfile
 from .fiberhomeAN5006_commands.show_vlan import ShowVLAN
 from .fiberhomeAN5006_commands.show_fast_profiles import ShowFastProfiles
 from .fiberhomeAN5006_commands.set_fast_profiles import SetFastProfiles
-# from .fiberhomeAN5006_commands.show_mac import ShowMac
+from .fiberhomeAN5006_commands.show_mac import ShowMac
 
 
 class FiberhomeAN5006(BaseDSLAM):

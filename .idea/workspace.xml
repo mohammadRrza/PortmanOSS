@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_web/dslam/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/dslam/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_web/dslam/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/dslam/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/dslam/services/fiber_home_get_card.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/dslam/services/fiber_home_get_card.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/portmanLog.log" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/portmanLog.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -247,7 +246,8 @@
       <workItem from="1649583320797" duration="10826000" />
       <workItem from="1649829074593" duration="6326000" />
       <workItem from="1649925590536" duration="22348000" />
-      <workItem from="1652017540299" duration="21126000" />
+      <workItem from="1652017540299" duration="21743000" />
+      <workItem from="1652601699272" duration="685000" />
     </task>
     <servers />
   </component>
