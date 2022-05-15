@@ -6148,18 +6148,12 @@ class FiberHomeCommandAPIView(views.APIView):
                     {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'fiberhomeAN2200'})
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
-                return JsonResponse(
-                    {'response': command, 'current_user_profile': '',
-                     'DslamType': 'fiberhomeAN5006'})
                 if command == 'show mac':
                     from .services.fiber_home_get_card import FiberHomeGetCardStatusService
                     cards_status_class = FiberHomeGetCardStatusService(request.data)
                     cards_status = cards_status_class.get_status_cards()
                     params['cards_status'] = cards_status
                     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
-                    return JsonResponse(
-                        {'response': 'show mac', 'current_user_profile': '',
-                         'DslamType': 'fiberhomeAN5006'})
                 port_info = utility.dslam_port_run_command(dslamObj.pk, 'show profile by port', params)
                 current_user_profile = ''
                 if 'profile_name' not in port_info:
@@ -8003,6 +7997,7 @@ class DslamCommandsV2APIView(views.APIView):  # 111111111111
 
             elif dslam_type == 5:  ############################## fiberhomeAN5006 ##############################
                 if command == 'show mac':
+                    return JsonResponse({'response': command, 'DslamType': 'fiberhomeAN5006'})
                     from .services.fiber_home_get_card import FiberHomeGetCardStatusService
                     cards_status_class = FiberHomeGetCardStatusService(request.data)
                     cards_status = cards_status_class.get_status_cards()
