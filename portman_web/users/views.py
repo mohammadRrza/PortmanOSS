@@ -23,7 +23,7 @@ from dslam.models import Command
 from django.http import JsonResponse, HttpResponse
 import simplejson as json
 from khayyam import *
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from dslam.views import LargeResultsSetPagination
 
@@ -166,7 +166,9 @@ class UserViewSet(viewsets.ModelViewSet):
                     jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
                     payload = jwt_payload_handler(user)
                     token = jwt_encode_handler(payload)
-
+                    if(username == 'admin'):
+                        print('Login')
+                        api_settings.JWT_AUTH['JWT_EXPIRATION_DELTA'] = timedelta(seconds=30);
                     response = serializer = UserSerializer(user).data
                     response['token'] = token
 
