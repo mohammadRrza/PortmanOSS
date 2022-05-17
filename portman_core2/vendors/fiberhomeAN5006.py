@@ -562,7 +562,7 @@ class FiberhomeAN5006(BaseDSLAM):
         command_class.HOST = dslam_info['ip']
         command_class.telnet_username = dslam_info['telnet_username']
         command_class.telnet_password = dslam_info['telnet_password']
-        command_class.port_conditions = params["port_conditions"]
+        # command_class.port_conditions = params["port_conditions"]
         return command_class.run_command()
 
     @classmethod

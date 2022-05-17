@@ -987,3 +987,16 @@ Internal Server Error: /api/v1/router/router_run_command/
 Not Found: /favicon.ico
 Internal Server Error: /api/v1/router/router_run_command/
 Internal Server Error: /api/v1/router/router_run_command/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Unauthorized: /api/v1/dslam/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
+Internal Server Error: /api/v1/users/login/
