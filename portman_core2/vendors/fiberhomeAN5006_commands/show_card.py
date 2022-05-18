@@ -51,12 +51,12 @@ class ShowCard(BaseCommand):
             time.sleep(0.1)
             tn.write("telnet Slot {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(1)
-            if tn.read_until(b"Press Ctrl-Q or Ctrl-Y to force exit telnet"):
-                tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-                tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-                if tn.read_until(b"User>"):
-                    tn.write(b"enable\r\n")
-                    tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            # if tn.read_until(b"Press Ctrl-Q or Ctrl-Y to force exit telnet"):
+            #     tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+            #     tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            #     if tn.read_until(b"User>"):
+            #         tn.write(b"enable\r\n")
+            #         tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             tn.write(b"cd dsp\r\n")
             tn.write(b"\r\n")
             tn.write(b"show all port state\r\n")
