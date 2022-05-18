@@ -1000,3 +1000,8 @@ Internal Server Error: /api/v1/users/login/
 Internal Server Error: /api/v1/users/login/
 Internal Server Error: /api/v1/users/login/
 Internal Server Error: /api/v1/users/login/
+Unauthorized: /api/v1/dslamport/run-command/
+Unauthorized: /api/v1/dslamport/run-command/
+Unauthorized: /api/v1/dslamport/run-command/
+Unauthorized: /api/v1/dslamport/run-command/
+Unauthorized: /api/v1/dslamport/run-command/

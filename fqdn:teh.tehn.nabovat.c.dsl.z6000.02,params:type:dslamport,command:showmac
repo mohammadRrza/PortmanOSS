@@ -1,0 +1,12 @@
+HTTP/1.1 401 Unauthorized
+Date: Wed, 18 May 2022 12:06:27 GMT
+Server: WSGIServer/0.2 CPython/3.9.7
+Content-Type: application/json
+WWW-Authenticate: Token realm="api"
+Vary: Accept, Origin, Cookie
+Allow: POST, OPTIONS
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+X-Frame-Options: DENY
+Content-Length: 58
+

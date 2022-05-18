@@ -51,13 +51,17 @@ class ShowPort(BaseCommand):
                 return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.", status=500)
             tn.write(b"cd service\r\n")
             tn.write("telnet Slot {0}\r\n\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
+            fiber5006_1=tn.read_until(b"Login", 2)
+            fiber5006_2=tn.read_until(b"xDSL", 2)
+
             time.sleep(1)
-            # if tn.read_until(b"Press Ctrl-Q or Ctrl-Y to force exit telnet"):
-            #     tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            #     tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            #     if tn.read_until(b"User>"):
-            #         tn.write(b"enable\r\n")
-            #         tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+            if "Login" in str(fiber5006_1):
+                print('Login')
+                tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
+                tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
+                if tn.read_until(b"User>"):
+                        tn.write(b"enable\r\n")
+                        tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
 
             tn.write(b"cd dsp\r\n")
             tn.write("show port status {0}\r\n\r\n".format(self.port_conditions['port_number']).encode('utf-8'))

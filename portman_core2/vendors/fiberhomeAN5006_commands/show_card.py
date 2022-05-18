@@ -51,6 +51,16 @@ class ShowCard(BaseCommand):
             time.sleep(0.1)
             tn.write("telnet Slot {0}\r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(1)
+            s= tn.read_until(b"Login",2)
+            t=tn.read_until(b"xDSL",2)
+            print(s)
+            print(t)
+            if tn.read_until(b"xDSL"):
+                    print('xDSL')
+            elif tn.read_until(b"Login"):
+                print("Login")
+            else:
+                print('NONE')
             # if tn.read_until(b"Login"):
             #     tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             #     tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
