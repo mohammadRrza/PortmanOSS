@@ -21,6 +21,7 @@ class ChangeLineProfilePort(BaseCommand):
         self.__lineprofile = params.get('new_lineprofile')
         self.__set_snmp_community = params.get('set_snmp_community')
         self.device_ip = params.get('device_ip')
+        self.port_conditions = params.get('port_conditions')
 
     @property
     def HOST(self):
@@ -65,6 +66,8 @@ class ChangeLineProfilePort(BaseCommand):
         # command_class.run_command()
 
         target_oids_value = []
+        self.__port_indexes = [{'port_index': '{}{}'.format(self.port_conditions['slot_number'],
+                                                            self.port_conditions['port_number'])}]
         for index, port_item in enumerate(self.__port_indexes, 1):
             target_oids_value.append(('.{0}.{1}'.format(self.__LINE_PROFILE_OID, port_item['port_index']),
                                       rfc1902.OctetString(self.__lineprofile)))
