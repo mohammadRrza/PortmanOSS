@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/change_lineprofile_port.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/change_lineprofile_port.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bulk_commands/bulk_commands.py" beforeDir="false" afterPath="$PROJECT_DIR$/bulk_commands/bulk_commands.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/dslam/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/dslam/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -248,7 +250,7 @@
       <workItem from="1649925590536" duration="22348000" />
       <workItem from="1652017540299" duration="21743000" />
       <workItem from="1652601699272" duration="685000" />
-      <workItem from="1652866122343" duration="4835000" />
+      <workItem from="1652866122343" duration="12250000" />
     </task>
     <servers />
   </component>

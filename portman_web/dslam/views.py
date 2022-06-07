@@ -8320,3 +8320,15 @@ def ngn_registaration_runCommands(dslamObj, command, params):
         return result
     else:
         return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class GetDslamPortSnapShotAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        try:
+            return
+        except Exception as ex:
+            return ex
