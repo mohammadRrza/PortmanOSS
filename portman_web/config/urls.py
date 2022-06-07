@@ -75,6 +75,7 @@ portman_router.register(r'radio-command', RadioCommandViewSet, basename='radio-c
 portman_router.register(r'portman-log', PortmanLogViewSet, basename='portman-log')
 portman_router.register(r'farzanegan_data', FarzaneganViewSet, basename='farzanegan_data')
 portman_router.register(r'pishgaman-note', GetNotesViewSet, basename='notes')
+portman_router.register(r'dslamport/dslam-port-snapshot', DSLAMPortSnapshotViewSet, basename='port-snapshot')
 
 
 urlpatterns = [
