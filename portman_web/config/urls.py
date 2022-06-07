@@ -55,7 +55,7 @@ portman_router.register(r'telecom-center/mdf', TelecomCenterMDFViewSet, basename
 portman_router.register(r'telecom-center/location', TelecomCenterLocationViewSet, basename='telecom-center-location')
 portman_router.register(r'telecom-center', TelecomCenterViewSet, basename='telecom-center')
 portman_router.register(r'dslam-port', DSLAMPortViewSet, basename='dslam-port')
-#portman_router.register(r'dslam-port-snapshot', DSLAMPortSnapshotViewSet, basename='dslam-port-snapshot')
+portman_router.register(r'dslam-port-snapshot', DSLAMPortSnapshotViewSet, basename='dslam-port-snapshot')
 portman_router.register(r'vlan', VlanViewSet, basename='vlan')
 portman_router.register(r'reseller', ResellerViewSet, basename='reseller')
 portman_router.register(r'customer-port', CustomerPortViewSet, basename='customer-port')
