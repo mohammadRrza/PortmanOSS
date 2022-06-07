@@ -8295,6 +8295,46 @@ class NGNRegisterAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
+
+class DSLAMPortSnapshotSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DSLAMPortSnapshot
+        fields = ('id', 'dslam_id', 'snp_date', 'downstream_snr_flag', 'upstream_snr_flag',
+                  'upstream_attenuation_flag', 'downstream_attenuation_flag')
+
+
+
+
+
+class DSLAMPortSnapshotViewSet(mixins.ListModelMixin,
+                               mixins.RetrieveModelMixin,
+                               viewsets.GenericViewSet):
+    serializer_class = DSLAMPortSnapshotSerializer
+    permission_classes = (IsAuthenticated,)
+    queryset = DSLAMPortSnapshot.objects.all()
+
+    def get_queryset(self):
+
+        dslam_fqdn = self.request.query_params.get('fqdn', None)
+        dslamObj = DSLAM.objects.get(fqdn=str(dslam_fqdn).lower())
+        dslam_id = dslamObj.pk
+        slot_number = self.request.query_params.get('slot_number', None)
+        port_number = self.request.query_params.get('port_number', None)
+        start_date = self.request.query_params.get('start_date', None)
+        end_date = self.request.query_params.get('end_date', None)
+        queryset = self.queryset
+        if dslam_fqdn and slot_number and port_number and start_date and end_date:
+            print(self.request.query_params.get('fqdn', None))
+            print(self.request.query_params.get('slot_number', None))
+            print(self.request.query_params.get('port_number', None))
+            print(self.request.query_params.get('start_date', None))
+            print(self.request.query_params.get('end_date', None))
+            queryset = queryset.filter(dslam_id=dslam_id, snp_date__range=(start_date+' '+'00:00:00', end_date+' '+'23:59:59'),
+                                       slot_number=slot_number, port_number=port_number)
+        return queryset
+
+
 def ngn_registaration_runCommands(dslamObj, command, params):
     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
     if command == 'ngn_register_port':

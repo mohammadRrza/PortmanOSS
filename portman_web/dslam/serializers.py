@@ -439,3 +439,10 @@ class DSLAMPortFaultySerializer(serializers.ModelSerializer):
         model = DSLAMPortFaulty
         fields = ('id', 'slot_number', 'port_number', 'created_at', 'dslam_id')
 
+
+class DSLAMPortSnapshotSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DSLAMPortSnapshot
+        fields = ('id', 'dslam_id', 'snp_date', 'downstream_snr_flag', 'upstream_snr_flag',
+                  'upstream_attenuation_flag', 'downstream_attenuation_flag')
