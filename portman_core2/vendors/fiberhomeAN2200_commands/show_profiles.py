@@ -94,15 +94,15 @@ class ShowProfiles(BaseCommand):
             tn.write(b"exit\r\n")
             tn.close()
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s', val)]
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
             d = {}
             for b in result:
                 i = b.split(')')
                 d[i[0].replace('( ', '')] = i[1]
             result = d
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                str_join = "\r\n"
-                str_join = str_join.join(result)
-                return dict(result=str_join, status=200)
             return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
