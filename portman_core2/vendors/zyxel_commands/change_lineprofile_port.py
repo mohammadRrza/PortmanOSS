@@ -99,10 +99,9 @@ class ChangeLineProfilePort(BaseCommand):
                                 tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
                                 time.sleep(1)
                                 tn.read_until(b"Password:")
-                                tn.write("port adsl set {0}-{1} {2} auto\r\n\r\n".format(port_item['slot_number'],
-                                                                                         port_item['port_number'],
-                                                                                         self.__lineprofile).encode(
-                                    'utf-8'))
+                                tn.write("port adsl set {0}-{1} {2} auto\r\n\r\n".format(self.port_conditions['slot_number'],
+                                                                                         self.port_conditions['port_number'],
+                                                                                         self.__lineprofile).encode('utf-8'))
                                 time.sleep(1)
                                 tn.write(b"end1\r\n")
                                 result = tn.read_until(b'end1')
