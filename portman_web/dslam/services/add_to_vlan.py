@@ -21,7 +21,11 @@ class AddToVlanService:
         port_data = data.get('port', None)
         command = 'Show Shelf'
         fqdn = port_data.get('fqdn', None)
-        reseller_data = data.get('reseller')
+        reseller_data = data.get('reseller', None)
+
+        if reseller_data == None:
+            reseller_data = {}
+            reseller_data['name'] = 'pte'
         customer_data = data.get('subscriber')
         dslam_obj = DSLAM.objects.get(fqdn=str(fqdn).lower())
         mdf_status = data.get('status')
@@ -166,13 +170,13 @@ class AddToVlanService:
             pishParams = {
                 "type": "dslamport",
                 "is_queue": False,
-                "vlan_id": 3900,
+                "vlan_id": dslam_obj.pishgaman_vlan,
                 "vlan_name": 'pte',
                 "dslam_id": dslam_obj.id,
                 "port_indexes": port_indexes,
                 "username": customer_data.get('username'),
-                "vpi": 0,
-                "vci": 35,
+                "vpi": dslam_obj.pishgaman_vpi,
+                "vci": dslam_obj.pishgaman_vci,
             }
             vlan_name = vlan_objs[0].vlan_name
             if dslam_type == 3 or dslam_type == 4 or dslam_type == 5:
@@ -196,7 +200,11 @@ class AddToVlanService:
             }
 
             # res = utility.dslam_port_run_command(dslam_obj.id, 'delete from vlan', pishParams)
-            result = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
+            if reseller_data['name'] != 'pte':
+                result = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
+            else:
+                result = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', pishParams)
+
             # PVC = utility.dslam_port_run_command(dslam_obj.id, 'port pvc show', params)
 
             # result2 = utility.dslam_port_run_command(dslam_obj.id, 'add to vlan', params)
