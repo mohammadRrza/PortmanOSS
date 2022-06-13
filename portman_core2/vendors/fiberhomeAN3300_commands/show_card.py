@@ -87,7 +87,7 @@ class ShowCard(BaseCommand):
 
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 str_join = "\r\n"
-                str_join = str_join.join(result)
+                str_join = str_join.join(res)
                 return dict(result=str_join, status=200)
 
             tn.close()
