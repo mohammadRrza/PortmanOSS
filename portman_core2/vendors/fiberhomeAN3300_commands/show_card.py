@@ -80,12 +80,16 @@ class ShowCard(BaseCommand):
             # result = str(result).replace("\\n\\n\\r", "").replace("\\r", "")
             # result = result.split("\\n")
 
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
-                return dict(result=result.decode('utf-8'), status=200)
             if "Invalid port list" in str(result):
                 str_res = ["There is one of the following problems:", "This card is disable",
                            "Card number is out of range.", "Port number is out of range."]
                 return str_res
+
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                str_join = "\r\n"
+                str_join = str_join.join(result)
+                return dict(result=str_join, status=200)
+
             tn.close()
             return dict(result=res, status=200)
 
