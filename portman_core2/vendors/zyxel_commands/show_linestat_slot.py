@@ -12,7 +12,7 @@ class ShowLineStatSlot(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__port_indexes = params.get('port_indexes')[0]
+        self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
 
     @property
@@ -52,8 +52,7 @@ class ShowLineStatSlot(BaseCommand):
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             tn.read_until(b"Password:", 1)
-            print(self.__port_indexes)
-            tn.write("show linestat {0}\r\nn".format(self.__port_indexes['slot_number']).encode('utf-8'))
+            tn.write("show linestat {0}\r\nn".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"end")
             result = tn.read_until(b"end")
@@ -67,9 +66,6 @@ class ShowLineStatSlot(BaseCommand):
             for inx, line in enumerate(result):
                 if "Press any key" in line:
                     del result[inx:inx + 4]
-            print('******************************************')
-            print(("port {0}".format(self.__port_indexes)))
-            print('******************************************')
             return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
             print(e)
