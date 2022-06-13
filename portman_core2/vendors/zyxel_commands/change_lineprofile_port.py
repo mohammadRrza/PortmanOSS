@@ -66,8 +66,9 @@ class ChangeLineProfilePort(BaseCommand):
         # command_class.run_command()
 
         target_oids_value = []
-        self.__port_indexes = [{'port_index': '{}{}'.format(self.port_conditions['slot_number'],
+        self.__port_indexes = [{'port_index': '{}.{}'.format(self.port_conditions['slot_number'],
                                                             self.port_conditions['port_number'])}]
+
         for index, port_item in enumerate(self.__port_indexes, 1):
             target_oids_value.append(('.{0}.{1}'.format(self.__LINE_PROFILE_OID, port_item['port_index']),
                                       rfc1902.OctetString(self.__lineprofile)))
@@ -91,6 +92,7 @@ class ChangeLineProfilePort(BaseCommand):
                             error_status.prettyPrint(), port_item['port_index'], self.__lineprofile)
                         if "badValue" in error_desc:
                             return dict(result=f"DSLAM don't have line profile '{self.__lineprofile}'", status=500)
+
                         if 'notWritable' in error_desc:
                             try:
                                 print("test")
