@@ -75,3 +75,6 @@ def check_status(result):
 
     elif status == HTTP_201_CREATED:
         return JsonResponse({'response': result}, status=HTTP_201_CREATED)
+
+    elif status == HTTP_200_OK:
+        return JsonResponse({'response': result}, status=HTTP_200_OK)
