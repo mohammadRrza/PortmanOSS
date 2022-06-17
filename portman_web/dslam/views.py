@@ -8335,6 +8335,21 @@ class DSLAMPortSnapshotViewSet(mixins.ListModelMixin,
         return queryset
 
 
+
+class AddToPishgamanAPIView(views.APIView):
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request):
+        from .services.add_to_pishgaman import AddToPishgamanService
+        from .services.check_status import check_status
+        data = request.data
+        ip = get_device_ip(request)
+        pte = AddToPishgamanService(data, ip)
+        result = pte.add_to_pishgaman()
+        response = check_status(result)
+        return response
+
 def ngn_registaration_runCommands(dslamObj, command, params):
     result = utility.dslam_port_run_command(dslamObj.pk, command, params)
     if command == 'ngn_register_port':
