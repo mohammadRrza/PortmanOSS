@@ -56,7 +56,6 @@ class SetIpOnDslams(BaseCommand):
             if "Password:" in str(err1):
                 return dict(result="Telnet Username or Password is wrong! Please contact with core-access department.",
                             status=500)
-            return dict(result="Ips added to DSLAMS successfully.", status=200)
 
             tn.write(b"sys client enable 1\r\n\r\n")
             tn.write(b"sys client set 1 109.125.191.1 109.125.191.254 telnet ftp web icmp ssh snmp https\r\n\r\n")
