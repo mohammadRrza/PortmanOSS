@@ -63,6 +63,7 @@ from .zyxel_commands.acl_pktfilter_show import ACLPktfilterShow
 from .zyxel_commands.acl_pppoeagent_show import ACLPPPoEAgentShow
 from .zyxel_commands.switch_port_show import SwitchPortShow
 from .zyxel_commands.save_config import SaveConfig
+from .zyxel_commands.set_ip_on_dslam import SetIpOnDslams
 
 from datetime import timedelta
 
@@ -122,6 +123,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('acl pppoeagent show', ACLPPPoEAgentShow)
     command_factory.register_type('switch port show', SwitchPortShow)
     command_factory.register_type('save config', SaveConfig)
+    command_factory.register_type('set ip on dslams', SetIpOnDslams)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))

@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/portman_async/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/portman_async/dj_bridge.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/portman_async/portman_async.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/portman_async/tasks/dslam_tasks/dslam_tasks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/set_ip_on_dslam.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/portman_web/config/celery.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/show_linestat_slot.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/show_linestat_slot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_core2/vendors/zyxel.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/zyxel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/config/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/portmanLog.log" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/portmanLog.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,15 +85,16 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands/cisco_router" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/portman_web/config" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/portman_web/config" />
+      <recent name="$PROJECT_DIR$/portman_async" />
       <recent name="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands/cisco_router" />
       <recent name="$PROJECT_DIR$/portman_core2/router_vendors/cisco_commands" />
       <recent name="$PROJECT_DIR$/portman_core2/radio_vendors/wireless_commands" />
-      <recent name="$PROJECT_DIR$/portman_core2/radio_vendors" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/portman_core2/radio_vendors/wireless_commands" />
@@ -249,7 +258,7 @@
       <workItem from="1652017540299" duration="21743000" />
       <workItem from="1652601699272" duration="685000" />
       <workItem from="1652866122343" duration="14826000" />
-      <workItem from="1654697056303" duration="1398000" />
+      <workItem from="1654697056303" duration="18199000" />
     </task>
     <servers />
   </component>
