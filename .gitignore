@@ -4,7 +4,7 @@
 /opt/portmanv3/portman_core2/dj_bridge.py
 /opt/portmanv3/portman_core2/example.log
 /opt/portmanv3/portman_web/portmanLog.log
-
+/opt/portmanv3/portman_async/*
 ### Django ###
 *.log
 *.pot
