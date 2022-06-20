@@ -714,7 +714,7 @@ class DSLAMViewSet(mixins.ListModelMixin,
                                                                                                           'name')})
 
     @action(methods=['GET'], detail=False)
-    def get_all_dslam(self, request):
+    def get_all_dslams(self, request):
         dslams = DSLAM.objects.all().values()
         return Response({'result': dslams})
 
