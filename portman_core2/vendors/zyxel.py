@@ -58,6 +58,7 @@ from .zyxel_commands.show_snmp import ShowSNMP
 from .zyxel_commands.show_ip import ShowIP
 from .zyxel_commands.ip_arp_show import IPARPShow
 from .zyxel_commands.sys_info_show import SysInfoShow
+from .zyxel_commands.sys_client_show import SysClientShow
 from .zyxel_commands.acl_maccount_show import ACLMacCountShow
 from .zyxel_commands.acl_pktfilter_show import ACLPktfilterShow
 from .zyxel_commands.acl_pppoeagent_show import ACLPPPoEAgentShow
@@ -118,6 +119,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('IP Show', ShowIP)
     command_factory.register_type('ip arp show', IPARPShow)
     command_factory.register_type('sys info show', SysInfoShow)
+    command_factory.register_type('sys client show', SysClientShow)
     command_factory.register_type('acl maccount show', ACLMacCountShow)
     command_factory.register_type('acl pktfilter show', ACLPktfilterShow)
     command_factory.register_type('acl pppoeagent show', ACLPPPoEAgentShow)
