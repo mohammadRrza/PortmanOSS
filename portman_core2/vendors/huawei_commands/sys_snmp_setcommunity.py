@@ -53,30 +53,23 @@ class SysSnmpSetCommunity(BaseCommand):
                             status=500)
             output = str(result)
             while '>' not in str(result):
-                print("line 1")
                 result = tn.read_until(b">", 1)
                 output += str(result)
                 tn.write(b"\r\n")
-            print("line 2")
             tn.write(b"\r\n")
-            print("line 3")
             tn.write(b"enable\r\n")
-            print("line 4")
             tn.write(b"config\r\n")
-            print("line 5")
             tn.write("display snmp-agent community read\r\n".encode('utf-8'))
             time.sleep(1)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
             result = tn.read_until(b"end", 1)
-            print('==================================')
             if b'Community name' in result:
                 dic = {}
                 lst = [val for val in str(result).split('\\r\\n') if re.search(r'(:)\s\w+\s', val)]
                 for i in lst:
                     a = i.strip().split(':')
                     dic[a[0]] = a[1]
-                print('==================================')
                 time.sleep(1)
                 tn.write(b"quit\r\n")
                 tn.write(b"quit\r\n")
