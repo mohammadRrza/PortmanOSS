@@ -9,7 +9,6 @@ class SysSnmpGetCommunity(BaseCommand):
         self.__HOST = None
         self.__telnet_username = None
         self.__telnet_password = None
-        self.__snmp_name = params['snmp_name']
         self.device_ip = params.get('device_ip')
 
     @property
@@ -64,7 +63,7 @@ class SysSnmpGetCommunity(BaseCommand):
             print("line 4")
             tn.write(b"config\r\n")
             print("line 5")
-            tn.write("display snmp-agent community read\r\n".encode('utf-8'))
+            tn.write("display snmp-agent community write\r\n".encode('utf-8'))
             time.sleep(1)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
@@ -83,7 +82,7 @@ class SysSnmpGetCommunity(BaseCommand):
                 tn.write(b"y\r\n")
                 tn.close()
                 result = dic
-                return dict(result=result)
+                return dict(result=result, status=200)
             else:
                 return dict(result='This SNMP Community have not been set.',
                             status=500)
