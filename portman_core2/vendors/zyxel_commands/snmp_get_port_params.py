@@ -55,31 +55,35 @@ class SNMPGetPortParam(BaseCommand):
     retry = 1
 
     def run_command(self):
-        print(self.__get_snmp_community)
-        target_oids_value = []
-        self.__port_indexes = [{'port_index': '{}.{}'.format(self.port_conditions['slot_number'],
-                                                            self.port_conditions['port_number'])}]
+        import sys
+        from pysnmp.entity.rfc3413.oneliner import cmdgen
 
-        for index, port_item in enumerate(self.__port_indexes, 1):
-            target_oids_value.append(('.{0}.{1}'.format(self.__ADSL_UPSTREAM_SNR, port_item['port_index']),
-                                      rfc1902.OctetString(self.__ADSL_UPSTREAM_SNR)))
-            if index % 40 == 0 or index == len(self.__port_indexes):
-                target_oids_value_tupple = tuple(target_oids_value)
-                cmd_gen = cmdgen.CommandGenerator()
+        SYSNAME = '1.3.6.1.2.1.1.5.0'
 
-                error_indication, error_status, error_index, var_binds = cmd_gen.getCmd(
-                    cmdgen.CommunityData(self.__get_snmp_community),
-                    cmdgen.UdpTransportTarget((self.__HOST, self.__snmp_port), timeout=self.__snmp_timeout, retries=2),
-                    *target_oids_value_tupple
-                )
-                target_oids_value = []
+        host = self.__HOST
+        snmp_ro_comm = self.__get_snmp_community
 
-                # Check for errors and print out results
-                if error_indication:
-                    raise Exception(error_indication)
-                else:
-                    if error_status:
-                        error_desc = "error: {0} send to port {1}!!!. dslam dont have line profile {2}".format(
-                            error_status.prettyPrint(), port_item['port_index'], self.__lineprofile)
-        return {"result": "ports line profile changed to {0}".format(self.__lineprofile),
-                "port_indexes": self.__port_indexes}
+        # Define a PySNMP CommunityData object named auth, by providing the SNMP community string
+        auth = cmdgen.CommunityData(snmp_ro_comm)
+
+        # Define the CommandGenerator, which will be used to send SNMP queries
+        cmdGen = cmdgen.CommandGenerator()
+
+        # Query a network device using the getCmd() function, providing the auth object, a UDP transport
+        # our OID for SYSNAME, and don't lookup the OID in PySNMP's MIB's
+        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
+            auth,
+            cmdgen.UdpTransportTarget((host, 161)),
+            cmdgen.MibVariable(SYSNAME),
+            lookupMib=False,
+        )
+
+        # Check if there was an error querying the device
+        if errorIndication:
+            sys.exit()
+
+        # We only expect a single response from the host for sysName, but varBinds is an object
+        # that we need to iterate over. It provides the OID and the value, both of which have a
+        # prettyPrint() method so that you can get the actual string data
+        for oid, val in varBinds:
+            print(oid.prettyPrint(), val.prettyPrint())
