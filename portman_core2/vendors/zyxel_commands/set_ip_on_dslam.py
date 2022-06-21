@@ -90,8 +90,11 @@ class SetIpOnDslams(BaseCommand):
             tn.write(b"sys client disable 16\r\n\r\n")
             tn.write(b"sys client set 16 0.0.0.0 0.0.0.0\r\n\r\n")
             tn.write(b"config save\r\n\r\n")
-
-            return dict(result="Ips added to DSLAMS successfully.", port_indexes=self.port_conditions, status=200)
+            tn.write(b"sys client show\r\n\r\n")
+            time.sleep(0.5)
+            tn.write(b"end\r\n\r\n")
+            result = tn.read_until(b"end")
+            return dict(result=result.decode('utf-8'), status=200)
         except (EOFError, socket_error) as e:
             print(e)
             self.retry += 1
