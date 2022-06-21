@@ -164,6 +164,7 @@ urlpatterns = [
     url(r'^api/v1/dslamport/rented_port/$', RentedPortAPIView.as_view(), name='rented_port'),
     url(r'^api/v1/dslamport/get_pvc_vlan/$', GetPVCVlanAPIView.as_view(), name='get_pvc_vlan'),
     url(r'^api/v1/dslamport/add_to_vlan/$', AddToVlanAPIView.as_view(), name='add_to_vlan'),
+    url(r'^api/v1/dslamport/add_to_pishgaman/$', AddToPishgamanAPIView.as_view(), name='add_to_pishgaman'),
     url(r'^api/v1/dslamport/portmap/$', PortmapAPIView.as_view(), name='portmap'),
     url(r'^api/v1/dslamport/get-captcha/$', GetCaptchaAPIView.as_view(), name='get-captcha'),
     url(r'^api/v1/dslamport/farzanegan_scrapping/$', FarzaneganScrappingAPIView.as_view(), name='farzanegan_scrapping'),
