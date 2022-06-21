@@ -2,7 +2,7 @@ from io import BytesIO
 # import cv2
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-# from pytesseract import image_to_string
+from pytesseract import image_to_string
 from PIL import Image, ImageEnhance, ImageFilter
 
 
