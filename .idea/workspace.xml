@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/set_ip_on_dslam.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/set_ip_on_dslam.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -250,7 +249,7 @@
       <workItem from="1652601699272" duration="685000" />
       <workItem from="1652866122343" duration="14826000" />
       <workItem from="1654697056303" duration="30857000" />
-      <workItem from="1655633333644" duration="16037000" />
+      <workItem from="1655633333644" duration="16438000" />
     </task>
     <servers />
   </component>
