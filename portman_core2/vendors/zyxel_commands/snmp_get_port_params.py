@@ -6,7 +6,6 @@ from .create_profile import CreateProfile
 import telnetlib
 import time
 from socket import error as socket_error
-from pysnmp.hlapi import *
 
 
 class SNMPGetPortParam(BaseCommand):
@@ -59,19 +58,28 @@ class SNMPGetPortParam(BaseCommand):
         print(self.__get_snmp_community)
         target_oids_value = []
         self.__port_indexes = [{'port_index': '{}.{}'.format(self.port_conditions['slot_number'],
-                                                             self.port_conditions['port_number'])}]
+                                                            self.port_conditions['port_number'])}]
 
-        for (errorIndication,
-             errorStatus,
-             errorIndex,
-             varBinds) in nextCmd(SnmpEngine(),
-                                  CommunityData(self.__get_snmp_community, mpModel=0),
-                                  UdpTransportTarget((self.__HOST, self.__snmp_port)),
-                                  ContextData(),
-                                  ObjectType(ObjectIdentity('1.3.6.1.2.1.1.3.0'))):
-            if errorIndication or errorStatus:
-                print(errorIndication or errorStatus)
-                break
-            else:
-                for varBind in varBinds:
-                    print(' = '.join([x.prettyPrint() for x in varBind]))
+        for index, port_item in enumerate(self.__port_indexes, 1):
+            target_oids_value.append(('.{0}.{1}'.format(self.__ADSL_UPSTREAM_SNR, port_item['port_index']),
+                                      rfc1902.OctetString(self.__ADSL_UPSTREAM_SNR)))
+            if index % 40 == 0 or index == len(self.__port_indexes):
+                target_oids_value_tupple = tuple(target_oids_value)
+                cmd_gen = cmdgen.CommandGenerator()
+
+                error_indication, error_status, error_index, var_binds = cmd_gen.getCmd(
+                    cmdgen.CommunityData(self.__get_snmp_community),
+                    cmdgen.UdpTransportTarget((self.__HOST, self.__snmp_port), timeout=self.__snmp_timeout, retries=2),
+                    *target_oids_value_tupple
+                )
+                target_oids_value = []
+
+                # Check for errors and print out results
+                if error_indication:
+                    raise Exception(error_indication)
+                else:
+                    if error_status:
+                        error_desc = "error: {0} send to port {1}!!!. dslam dont have line profile {2}".format(
+                            error_status.prettyPrint(), port_item['port_index'], self.__lineprofile)
+        return {"result": "ports line profile changed to {0}".format(self.__lineprofile),
+                "port_indexes": self.__port_indexes}
