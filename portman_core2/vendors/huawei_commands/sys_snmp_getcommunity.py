@@ -52,7 +52,6 @@ class SysSnmpGetCommunity(BaseCommand):
                             status=500)
             output = str(result)
             while '>' not in str(result):
-                print("line 1")
                 result = tn.read_until(b">", 1)
                 output += str(result)
                 tn.write(b"\r\n")
