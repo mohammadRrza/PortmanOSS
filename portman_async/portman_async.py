@@ -36,18 +36,20 @@ def get_current_port_status():
             params.fqdn = dslam_obj.fqdn
             params.command = 'get config'
             params.port_conditions = port_condition()
-            params.port_conditions.slot_number = '1'
-            params.port_conditions.port_number = '1'
-            params = json.dumps(params, default=lambda x: x.__dict__)
-            try:
-                result = utility.dslam_port_run_command(dslam_obj.pk, 'snmp get port params', json.loads(params))
-                print(result)
-                return result
-            except Exception as ex:
-                exc_type, exc_obj, exc_tb = sys.exc_info()
-                fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-                print(ex, exc_tb.tb_lineno)
-                return 'ERROR'
+            for i in range(50):
+                params.port_conditions.slot_number = '1'
+                params.port_conditions.port_number = str(i)
+                params = json.dumps(params, default=lambda x: x.__dict__)
+                try:
+                    result = utility.dslam_port_run_command(dslam_obj.pk, 'snmp get port params', json.loads(params))
+                    print(result)
+                    return result
+                except Exception as ex:
+                    exc_type, exc_obj, exc_tb = sys.exc_info()
+                    fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+                    print(ex, exc_tb.tb_lineno)
+                    return 'ERROR'
+            print('OKKKKKKKK')
 
 
 
