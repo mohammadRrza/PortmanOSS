@@ -16,6 +16,9 @@ class SNMPGetPortParam(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.__ADSL_UPSTREAM_SNR = params.get('adsl_upstream_snr_oid')
+        self.__ADSL_DOWNSTREAM_SNR = params.get('adsl_downstream_snr_oid')
+        self.__ADSL_CURR_UPSTREAM_RATE = params.get('adsl_curr_upstream_oid')
+        self.__ADSL_CURR_DOWNSTREAM_RATE = params.get('adsl_downstream_snr_oid')
         self.__port_indexes = params.get('port_indexes')
         self.__snmp_port = params.get('snmp_port', 161)
         self.__snmp_timeout = params.get('snmp_timeout', 7)
@@ -60,13 +63,22 @@ class SNMPGetPortParam(BaseCommand):
             self.port_conditions['port_number'] = '0' + self.port_conditions['port_number']
         self.__port_indexes = [{'port_index': '{}{}'.format(self.port_conditions['slot_number'],
                                                             self.port_conditions['port_number'])}]
+        result = {}
         port_event_items = []
         session = Session(hostname=self.__HOST, community=self.__get_snmp_community, remote_port=self.__snmp_port,
                           timeout=5, retries=1,
                           version=2)
         try:
-            var_bind = session.get(self.__ADSL_UPSTREAM_SNR + ".{0}".format(self.__port_indexes[0]['port_index']))
-            print(var_bind)
+            snr_up = session.get(self.__ADSL_UPSTREAM_SNR + ".{0}".format(self.__port_indexes[0]['port_index']))
+            result['ADSL_UPSTREAM_SNR'] = snr_up.value
+            snr_down = session.get(self.__ADSL_DOWNSTREAM_SNR + ".{0}".format(self.__port_indexes[0]['port_index']))
+            result['ADSL_DOWNSTREAM_SNR'] = snr_down.value
+            curr_down = session.get(self.__ADSL_CURR_DOWNSTREAM_RATE + ".{0}".format(self.__port_indexes[0]['port_index']))
+            result['ADSL_CURR_DOWNSTREAM_RATE'] = curr_down.value
+            curr_up = session.get(self.__ADSL_CURR_UPSTREAM_RATE + ".{0}".format(self.__port_indexes[0]['port_index']))
+            result['ADSL_CURR_UPSTREAM_RATE'] = curr_up.value
+            return dict(result=result, status=200)
+
         except Exception as ex:
             port_event_items.append({
                 'event': '',
