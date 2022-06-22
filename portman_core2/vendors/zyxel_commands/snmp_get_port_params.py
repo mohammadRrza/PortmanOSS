@@ -1,3 +1,4 @@
+from easysnmp import Session
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
 from .command_base import BaseCommand
@@ -55,35 +56,14 @@ class SNMPGetPortParam(BaseCommand):
     retry = 1
 
     def run_command(self):
-        import sys
-        from pysnmp.entity.rfc3413.oneliner import cmdgen
-
-        SYSNAME = '1.3.6.1.2.1.1.5.0'
-
-        host = self.__HOST
-        snmp_ro_comm = self.__get_snmp_community
-
-        # Define a PySNMP CommunityData object named auth, by providing the SNMP community string
-        auth = cmdgen.CommunityData(snmp_ro_comm)
-
-        # Define the CommandGenerator, which will be used to send SNMP queries
-        cmdGen = cmdgen.CommandGenerator()
-
-        # Query a network device using the getCmd() function, providing the auth object, a UDP transport
-        # our OID for SYSNAME, and don't lookup the OID in PySNMP's MIB's
-        errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
-            auth,
-            cmdgen.UdpTransportTarget((host, 161)),
-            cmdgen.MibVariable(SYSNAME),
-            lookupMib=False,
-        )
-
-        # Check if there was an error querying the device
-        if errorIndication:
-            sys.exit()
-
-        # We only expect a single response from the host for sysName, but varBinds is an object
-        # that we need to iterate over. It provides the OID and the value, both of which have a
-        # prettyPrint() method so that you can get the actual string data
-        for oid, val in varBinds:
-            print(oid.prettyPrint(), val.prettyPrint())
+        port_event_items = []
+        session = Session(hostname=self.__HOST, community=self.__get_snmp_community, remote_port=self.__snmp_port, timeout=5, retries=1,
+                          version=2)
+        try:
+            var_bind = session.get(self.__ADSL_UPSTREAM_SNR + ".{0}".format('10.10'))
+            print(var_bind)
+        except Exception as ex:
+            port_event_items.append({
+                'event': '',
+                'message': str(ex) + 'on {0}'.format('')
+            })
