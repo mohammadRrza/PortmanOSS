@@ -30,11 +30,11 @@ def get_current_port_status():
     for dslam_obj in dslam_objs:
             telecom_center_id = DSLAM.objects.get(id=dslam_obj.id).telecom_center_id
             telecom_center = TelecomCenter.objects.get(id=telecom_center_id).name
-            params = param()
-            params.type = 'dslamport'
-            params.is_queue = False
-            params.fqdn = dslam_obj.fqdn
             for i in range(1, 50):
+                params = param()
+                params.type = 'dslamport'
+                params.is_queue = False
+                params.fqdn = dslam_obj.fqdn
                 params.port_conditions = port_condition()
                 params.port_conditions.slot_number = '1'
                 params.port_conditions.port_number = str(i)
