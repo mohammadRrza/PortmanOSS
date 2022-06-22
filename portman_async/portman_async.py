@@ -36,8 +36,8 @@ def get_current_port_status():
             params.fqdn = dslam_obj.fqdn
             params.command = 'get config'
             params.port_conditions = port_condition()
-            params.port_conditions.slot_number = 1
-            params.port_conditions.port_number = 1
+            params.port_conditions.slot_number = '1'
+            params.port_conditions.port_number = '1'
             params = json.dumps(params, default=lambda x: x.__dict__)
             try:
                 result = utility.dslam_port_run_command(dslam_obj.pk, 'snmp get port params', json.loads(params))
