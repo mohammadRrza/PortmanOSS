@@ -36,7 +36,7 @@ def get_current_port_status():
             params.fqdn = dslam_obj.fqdn
             params.command = 'get config'
             params.port_conditions = port_condition()
-            for i in range(50):
+            for i in range(1, 50):
                 params.port_conditions.slot_number = '1'
                 params.port_conditions.port_number = str(i)
                 params = json.dumps(params, default=lambda x: x.__dict__)
