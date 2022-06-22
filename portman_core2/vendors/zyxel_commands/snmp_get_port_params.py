@@ -60,7 +60,7 @@ class SNMPGetPortParam(BaseCommand):
         session = Session(hostname=self.__HOST, community=self.__get_snmp_community, remote_port=self.__snmp_port, timeout=5, retries=1,
                           version=2)
         try:
-            var_bind = session.get(self.__ADSL_UPSTREAM_SNR + ".{0}".format('10.10'))
+            var_bind = session.get(self.__ADSL_UPSTREAM_SNR + ".{0}".format('1010'))
             print(var_bind)
         except Exception as ex:
             port_event_items.append({
