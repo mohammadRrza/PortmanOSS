@@ -8386,3 +8386,26 @@ class GetDslamPortSnapShotAPIView(views.APIView):
             return
         except Exception as ex:
             return ex
+
+
+class GetSNMPPortStatusAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        try:
+            device_ip = get_device_ip(request)
+            data = request.data
+            print('============================================================================')
+            print(device_ip)
+            print(data)
+            print('============================================================================')
+            fqdn = request.data.get('fqdn')
+            dslamObj = DSLAM.objects.get(fqdn=str(fqdn).lower())
+            params = data.get('params', None)
+            dslam_type = dslamObj.dslam_type_id
+            result = utility.dslam_port_run_command(dslamObj.pk, 'snmp get port params', params)
+            return JsonResponse({'response': result}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as ex:
+            return ex
