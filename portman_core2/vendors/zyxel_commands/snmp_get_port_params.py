@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from easysnmp import Session
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
@@ -77,6 +79,8 @@ class SNMPGetPortParam(BaseCommand):
             result['ADSL_CURR_DOWNSTREAM_RATE'] = curr_down.value
             curr_up = session.get(self.__ADSL_CURR_UPSTREAM_RATE + ".{0}".format(self.__port_indexes[0]['port_index']))
             result['ADSL_CURR_UPSTREAM_RATE'] = curr_up.value
+            result['TIME'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
             return dict(result=result, status=200)
 
         except Exception as ex:
