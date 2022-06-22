@@ -605,7 +605,7 @@ class Zyxel(BaseDSLAM):
         params['adsl_upstream_snr_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_UPSTREAM_SNR']
         params['adsl_downstream_snr_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_DOWNSTREAM_SNR']
         params['adsl_curr_upstream_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_UPSTREAM_RATE']
-        params['adsl_curr_downstream_snr_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_DOWNSTREAM_RATE']
+        params['adsl_curr_downstream_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_DOWNSTREAM_RATE']
         command_class = cls.command_factory.get_type(command)(params)
         command_class.HOST = dslam_info['ip']
         command_class.telnet_username = dslam_info['telnet_username']

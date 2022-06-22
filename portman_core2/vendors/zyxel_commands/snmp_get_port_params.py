@@ -18,7 +18,7 @@ class SNMPGetPortParam(BaseCommand):
         self.__ADSL_UPSTREAM_SNR = params.get('adsl_upstream_snr_oid')
         self.__ADSL_DOWNSTREAM_SNR = params.get('adsl_downstream_snr_oid')
         self.__ADSL_CURR_UPSTREAM_RATE = params.get('adsl_curr_upstream_oid')
-        self.__ADSL_CURR_DOWNSTREAM_RATE = params.get('adsl_downstream_snr_oid')
+        self.__ADSL_CURR_DOWNSTREAM_RATE = params.get('adsl_curr_downstream_oid')
         self.__port_indexes = params.get('port_indexes')
         self.__snmp_port = params.get('snmp_port', 161)
         self.__snmp_timeout = params.get('snmp_timeout', 7)
