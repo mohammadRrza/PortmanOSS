@@ -8406,6 +8406,6 @@ class GetSNMPPortStatusAPIView(views.APIView):
             params = data.get('params', None)
             dslam_type = dslamObj.dslam_type_id
             result = utility.dslam_port_run_command(dslamObj.pk, 'snmp get port params', params)
-            return JsonResponse({'response': result}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'response': result}, status=status.HTTP_200_OK)
         except Exception as ex:
             return ex
