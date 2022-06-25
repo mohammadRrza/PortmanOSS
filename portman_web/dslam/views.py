@@ -72,6 +72,9 @@ from users.helpers import add_audit_log
 from .command_recognise import command_recognise
 import openpyxl
 from .services.fiber_home_get_card import FiberHomeGetCardStatusService
+from .services.add_to_pishgaman import AddToPishgamanService
+from .services.check_status import check_status
+from .services.get_snmp_port_status import GetPortStatusParamsService
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -8340,8 +8343,6 @@ class AddToPishgamanAPIView(views.APIView):
         return permissions.IsAuthenticated(),
 
     def post(self, request):
-        from .services.add_to_pishgaman import AddToPishgamanService
-        from .services.check_status import check_status
         data = request.data
         ip = get_device_ip(request)
         pte = AddToPishgamanService(data, ip)
@@ -8397,15 +8398,10 @@ class GetSNMPPortStatusAPIView(views.APIView):
         try:
             device_ip = get_device_ip(request)
             data = request.data
-            print('============================================================================')
-            print(device_ip)
-            print(data)
-            print('============================================================================')
-            fqdn = request.data.get('fqdn')
-            dslamObj = DSLAM.objects.get(fqdn=str(fqdn).lower())
-            params = data.get('params', None)
-            dslam_type = dslamObj.dslam_type_id
-            result = utility.dslam_port_run_command(dslamObj.pk, 'snmp get port params', params)
-            return JsonResponse({'response': result}, status=status.HTTP_200_OK)
+            port_params_obj = GetPortStatusParamsService(data, device_ip)
+            result = port_params_obj.get_port_params()
+            response = check_status(result)
+            return response
+
         except Exception as ex:
             return ex
