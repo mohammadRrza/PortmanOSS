@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_core2/vendors/huawei.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/huawei.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/portman_core2/vendors/huawei_commands/snmp_get_port_params.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/huawei_commands/snmp_get_port_params.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -217,7 +216,8 @@
       <workItem from="1654697056303" duration="30857000" />
       <workItem from="1655633333644" duration="27749000" />
       <workItem from="1655816913081" duration="205000" />
-      <workItem from="1655817138143" duration="19230000" />
+      <workItem from="1655817138143" duration="26550000" />
+      <workItem from="1656159165837" duration="590000" />
     </task>
     <servers />
   </component>

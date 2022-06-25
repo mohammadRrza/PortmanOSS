@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from easysnmp import Session
+from easysnmp import Session, EasySNMPError
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from pysnmp.proto import rfc1902
 from .command_base import BaseCommand
@@ -61,7 +61,6 @@ class SNMPGetPortParam(BaseCommand):
     retry = 1
 
     def run_command(self):
-        print(self.__get_snmp_community)
         if int(self.port_conditions['port_number']) < 10:
             self.port_conditions['port_number'] = '0' + self.port_conditions['port_number']
         self.__port_indexes = [{'port_index': '{}{}'.format(self.port_conditions['slot_number'],
@@ -72,20 +71,26 @@ class SNMPGetPortParam(BaseCommand):
                           timeout=5, retries=1,
                           version=2)
         try:
-            snr_up = session.get(self.__ADSL_UPSTREAM_SNR + ".{0}".format(self.__port_indexes[0]['port_index']))
+            print(self.__ADSL_DOWNSTREAM_SNR+".{0}".format(self.__port_indexes[0]['port_index']))
+            snr_up = session.get(self.__ADSL_DOWNSTREAM_SNR+".{0}".format(self.__port_indexes[0]['port_index']))
+            print('===========================================================================')
+            print(snr_up)
             result['ADSL_UPSTREAM_SNR'] = snr_up.value
             snr_down = session.get(self.__ADSL_DOWNSTREAM_SNR + ".{0}".format(self.__port_indexes[0]['port_index']))
             result['ADSL_DOWNSTREAM_SNR'] = snr_down.value
-            curr_down = session.get(self.__ADSL_CURR_DOWNSTREAM_RATE + ".{0}".format(self.__port_indexes[0]['port_index']))
+            curr_down = session.get(
+                self.__ADSL_CURR_DOWNSTREAM_RATE + ".{0}".format(self.__port_indexes[0]['port_index']))
             result['ADSL_CURR_DOWNSTREAM_RATE'] = curr_down.value
             curr_up = session.get(self.__ADSL_CURR_UPSTREAM_RATE + ".{0}".format(self.__port_indexes[0]['port_index']))
             result['ADSL_CURR_UPSTREAM_RATE'] = curr_up.value
             result['TIME'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             return dict(result=result, status=200)
-
+        except EasySNMPError as snmp_ex:
+            print(snmp_ex)
         except Exception as ex:
             port_event_items.append({
                 'event': '',
                 'message': str(ex) + 'on {0}'.format('')
             })
+            print(ex)
