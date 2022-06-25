@@ -35,6 +35,7 @@ from .huawei_commands.show_card import ShowCard
 from .huawei_commands.show_pvc import ShowPVC
 from .huawei_commands.ip_show import IPShow
 from .huawei_commands.ip_arp_show import IPARPShow
+from .huawei_commands.snmp_get_port_params import SNMPGetPortParam
 from .huawei_commands.sys_info_show import SysInfoShow
 from .huawei_commands.sys_snmp_getcommunity import SysSnmpGetCommunity
 from .huawei_commands.sys_snmp_show import SysSnmpShow
@@ -102,6 +103,7 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('save config', SaveConfig)
     command_factory.register_type('showSelt', Selt)
     command_factory.register_type('sys snmp getcommunity', SysSnmpGetCommunity)
+    command_factory.register_type('snmp get port params', SNMPGetPortParam)
 
     '''
     command_factory.register_type('showSelt', Selt)
