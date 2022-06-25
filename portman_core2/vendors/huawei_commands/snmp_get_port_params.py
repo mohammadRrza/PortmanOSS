@@ -61,6 +61,7 @@ class SNMPGetPortParam(BaseCommand):
     retry = 1
 
     def run_command(self):
+        print(self.__get_snmp_community)
         if int(self.port_conditions['port_number']) < 10:
             self.port_conditions['port_number'] = '0' + self.port_conditions['port_number']
         self.__port_indexes = [{'port_index': '{}{}'.format(self.port_conditions['slot_number'],
