@@ -713,6 +713,11 @@ class DSLAMViewSet(mixins.ListModelMixin,
                                                                                                           'search_name',
                                                                                                           'name')})
 
+    @action(methods=['GET'], detail=False)
+    def get_all_dslams(self, request):
+        dslams = DSLAM.objects.all().values()
+        return Response({'result': dslams})
+
     @action(methods=['GET'], detail=True)
     def getvlan(self, request, pk=None):
         user = request.user
@@ -5606,7 +5611,7 @@ class FiberHomeGetCardAPIView(views.APIView):
     def post(self, request, format=None):
         status_cards_class = FiberHomeGetCardStatusService(request.data)
         status_cards = status_cards_class.get_status_cards()
-        return JsonResponse({'result':status_cards})
+        return JsonResponse({'result': status_cards})
 
 
 class FiberHomeGetPortAPIView(views.APIView):
@@ -5643,7 +5648,7 @@ class FiberHomeGetPortAPIView(views.APIView):
                             port_info['port_status'] = "has not this attribute."
                         else:
                             port_info['port_status'] = "OFF"
-                        number_of_ports +=1
+                        number_of_ports += 1
                         port_info['up_time'] = None
                         port_info['protocol'] = None
                         ports_info.append(port_info)
@@ -5689,7 +5694,7 @@ class FiberHomeGetPortAPIView(views.APIView):
                     port_info['protocol'] = None
                     ports_info.append(port_info)
                 return JsonResponse({'number of ports': number_of_ports, 'result': ports_info})
-            elif dslam_type == 1: ############################## zyxel ##############################
+            elif dslam_type == 1:  ############################## zyxel ##############################
                 result = [item for item in result['result'] if re.search(r"^\s+\d+", item)]
                 number_of_ports = len(result)
                 if number_of_ports == 0:
@@ -5708,8 +5713,6 @@ class FiberHomeGetPortAPIView(views.APIView):
                     port_info['up_time'] = info[5]
                     port_info['protocol'] = info[4]
                     ports_info.append(port_info)
-
-
 
                 return JsonResponse({'number of ports': number_of_ports, 'result': ports_info})
 
@@ -7568,7 +7571,7 @@ def get_user_info_from_ibs(username):
         if userinfo_response_json['result'][key]['online_status'] == False:
             return "Error : this user is offline"
     if (userinfo_response_json['error'] and 'does not exists' in userinfo_response_json['error']):
-        return "Error"+str(userinfo_response_json['error'])
+        return "Error" + str(userinfo_response_json['error'])
     for value in userinfo_response_json['result']:
         return userinfo_response_json['result'][value]['attrs']['limit_mac']
 
@@ -7893,7 +7896,8 @@ class CheckPortConflict(views.APIView):
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            return Response({'message': str(ex) + "  // " + str(exc_tb.tb_lineno)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': str(ex) + "  // " + str(exc_tb.tb_lineno)},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class LoadDslamPorts(views.APIView):
@@ -8295,16 +8299,11 @@ class NGNRegisterAPIView(views.APIView):
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
 
-
 class DSLAMPortSnapshotSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = DSLAMPortSnapshot
         fields = ('id', 'dslam_id', 'snp_date', 'downstream_snr_flag', 'upstream_snr_flag',
                   'upstream_attenuation_flag', 'downstream_attenuation_flag')
-
-
-
 
 
 class DSLAMPortSnapshotViewSet(mixins.ListModelMixin,
@@ -8315,7 +8314,6 @@ class DSLAMPortSnapshotViewSet(mixins.ListModelMixin,
     queryset = DSLAMPortSnapshot.objects.all()
 
     def get_queryset(self):
-
         dslam_fqdn = self.request.query_params.get('fqdn', None)
         dslamObj = DSLAM.objects.get(fqdn=str(dslam_fqdn).lower())
         dslam_id = dslamObj.pk
@@ -8330,7 +8328,8 @@ class DSLAMPortSnapshotViewSet(mixins.ListModelMixin,
             print(self.request.query_params.get('port_number', None))
             print(self.request.query_params.get('start_date', None))
             print(self.request.query_params.get('end_date', None))
-            queryset = queryset.filter(dslam_id=dslam_id, snp_date__range=(start_date+' '+'00:00:00', end_date+' '+'23:59:59'),
+            queryset = queryset.filter(dslam_id=dslam_id,
+                                       snp_date__range=(start_date + ' ' + '00:00:00', end_date + ' ' + '23:59:59'),
                                        slot_number=slot_number, port_number=port_number)
         return queryset
 
@@ -8375,7 +8374,7 @@ def ngn_registaration_runCommands(dslamObj, command, params):
         return result
     else:
         return JsonResponse({'result': 'the Command '}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 class GetDslamPortSnapShotAPIView(views.APIView):
 
@@ -8385,5 +8384,28 @@ class GetDslamPortSnapShotAPIView(views.APIView):
     def post(self, request, format=None):
         try:
             return
+        except Exception as ex:
+            return ex
+
+
+class GetSNMPPortStatusAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        try:
+            device_ip = get_device_ip(request)
+            data = request.data
+            print('============================================================================')
+            print(device_ip)
+            print(data)
+            print('============================================================================')
+            fqdn = request.data.get('fqdn')
+            dslamObj = DSLAM.objects.get(fqdn=str(fqdn).lower())
+            params = data.get('params', None)
+            dslam_type = dslamObj.dslam_type_id
+            result = utility.dslam_port_run_command(dslamObj.pk, 'snmp get port params', params)
+            return JsonResponse({'response': result}, status=status.HTTP_200_OK)
         except Exception as ex:
             return ex

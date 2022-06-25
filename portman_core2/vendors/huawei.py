@@ -36,6 +36,7 @@ from .huawei_commands.show_pvc import ShowPVC
 from .huawei_commands.ip_show import IPShow
 from .huawei_commands.ip_arp_show import IPARPShow
 from .huawei_commands.sys_info_show import SysInfoShow
+from .huawei_commands.sys_snmp_getcommunity import SysSnmpGetCommunity
 from .huawei_commands.sys_snmp_show import SysSnmpShow
 from .huawei_commands.acl_maccout_show import ACLMacCountShow
 from .huawei_commands.vlan_show import VlanShow
@@ -100,6 +101,7 @@ class Huawei(BaseDSLAM):
     command_factory.register_type('Show All VLANs', VlanShow)
     command_factory.register_type('save config', SaveConfig)
     command_factory.register_type('showSelt', Selt)
+    command_factory.register_type('sys snmp getcommunity', SysSnmpGetCommunity)
 
     '''
     command_factory.register_type('showSelt', Selt)

@@ -183,9 +183,6 @@ ADMIN_TOOLS_MEDIA_URL = '/media/'
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, "admin/")
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'media'),)
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
-CELERY_BROKER_URL = 'pyamqp://guest@localhost//'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',

@@ -126,6 +126,7 @@ urlpatterns = [
     url(r'^api/v1/dslamport/getPortDownstream/$', GetPortDownstreamAPIView.as_view(), name='getPortDownstreamAPIView'),
     url(r'^api/v1/dslamport/saveLineStats/$', SaveLineStatsAPIView.as_view(), name='saveLineStats'),
     url(r'^api/v1/dslamport/getSeltByFqdn/$', GetSeltByFqdnAPIView.as_view(), name='getSeltByFqdn'),
+    url(r'^api/v1/dslamport/get_snmp_port_status/$', GetSNMPPortStatusAPIView.as_view(), name='get_snmp_port_status'),
     # url(r'^api/v1/dslamport/createTicket/$', CreateTicketAPIView.as_view(), name='createTicket'),
     # url(r'^api/v1/dslamport/getticket/$', GetTicketInfoAPIView.as_view(), name='getticket'),
     url(r'^api/v1/dslamport/port_conflict_correction/$', PortConflictCorrectionAPIView.as_view(), name='port_conflict_correction'),

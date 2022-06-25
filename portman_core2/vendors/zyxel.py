@@ -58,11 +58,14 @@ from .zyxel_commands.show_snmp import ShowSNMP
 from .zyxel_commands.show_ip import ShowIP
 from .zyxel_commands.ip_arp_show import IPARPShow
 from .zyxel_commands.sys_info_show import SysInfoShow
+from .zyxel_commands.sys_client_show import SysClientShow
 from .zyxel_commands.acl_maccount_show import ACLMacCountShow
 from .zyxel_commands.acl_pktfilter_show import ACLPktfilterShow
 from .zyxel_commands.acl_pppoeagent_show import ACLPPPoEAgentShow
 from .zyxel_commands.switch_port_show import SwitchPortShow
 from .zyxel_commands.save_config import SaveConfig
+from .zyxel_commands.set_ip_on_dslam import SetIpOnDslams
+from .zyxel_commands.snmp_get_port_params import SNMPGetPortParam
 
 from datetime import timedelta
 
@@ -117,11 +120,14 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('IP Show', ShowIP)
     command_factory.register_type('ip arp show', IPARPShow)
     command_factory.register_type('sys info show', SysInfoShow)
+    command_factory.register_type('sys client show', SysClientShow)
     command_factory.register_type('acl maccount show', ACLMacCountShow)
     command_factory.register_type('acl pktfilter show', ACLPktfilterShow)
     command_factory.register_type('acl pppoeagent show', ACLPPPoEAgentShow)
     command_factory.register_type('switch port show', SwitchPortShow)
     command_factory.register_type('save config', SaveConfig)
+    command_factory.register_type('set ip on dslams', SetIpOnDslams)
+    command_factory.register_type('snmp get port params', SNMPGetPortParam)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))
@@ -141,6 +147,7 @@ class Zyxel(BaseDSLAM):
         "1.3.6.1.2.1.31.1.1.1.10": "OUTGOING_TRAFFIC",
         "1.3.6.1.2.1.31.1.1.1.6": "INCOMING_TRAFFIC"
     }
+
 
     PORT_DETAILS_OID_TABLE_INVERSE = {v: k for k, v in list(PORT_DETAILS_OID_TABLE.items())}
 
@@ -595,6 +602,10 @@ class Zyxel(BaseDSLAM):
         params['snmp_port'] = dslam_info['snmp_port']
         params['snmp_timeout'] = dslam_info['snmp_timeout']
         params['line_profile_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['LINE_PROFILE']
+        params['adsl_upstream_snr_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_UPSTREAM_SNR']
+        params['adsl_downstream_snr_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_DOWNSTREAM_SNR']
+        params['adsl_curr_upstream_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_UPSTREAM_RATE']
+        params['adsl_curr_downstream_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_DOWNSTREAM_RATE']
         command_class = cls.command_factory.get_type(command)(params)
         command_class.HOST = dslam_info['ip']
         command_class.telnet_username = dslam_info['telnet_username']
