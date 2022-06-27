@@ -93,7 +93,7 @@ class ShowProfiles(BaseCommand):
                 return dict(result=f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32", status=500)
             tn.write(b"exit\r\n")
             tn.close()
-            result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s', val)]
+            result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s*\d+\W', val)]
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
                 str_join = "\r\n"
                 str_join = str_join.join(result)
@@ -101,7 +101,7 @@ class ShowProfiles(BaseCommand):
             d = {}
             for b in result:
                 i = b.split(')')
-                d[i[0].replace('( ', '')] = i[1]
+                d[i[0].replace('(', '').strip()] = i[1]
             result = d
             return dict(result=result, status=200)
         except (EOFError, socket_error) as e:
