@@ -7993,10 +7993,6 @@ class DslamCommandsV2APIView(views.APIView):  # 111111111111
             elif dslam_type == 2:  # huawei
                 return JsonResponse({'response': result, 'DslamType': 'huawei'})
             elif dslam_type == 3:  ############################## fiberhomeAN3300 ##############################
-                if command == 'show mac by slot port':
-                    result = str(result.get('result')).split("\\r\\n")
-                    result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;'-]+H", "", val) for val in result if
-                              re.search(r"\s{4,}[-\d\w]|-{5,}|Total", val)]
                 return JsonResponse({'response': result, 'DslamType': 'fiberhomeAN3300'})
 
             elif dslam_type == 4:  ############################## fiberhomeAN2200 ##############################
