@@ -62,7 +62,7 @@ class SNMPGetPortParam(BaseCommand):
 
     def run_command(self):
         if int(self.port_conditions['port_number']) < 10:
-            self.port_conditions['port_number'] = '0' + self.port_conditions['port_number']
+            self.port_conditions['port_number'] = '0' + str(self.port_conditions['port_number'])
         self.__port_indexes = [{'port_index': '{}{}'.format(self.port_conditions['slot_number'],
                                                             self.port_conditions['port_number'])}]
         result = {}
@@ -72,13 +72,13 @@ class SNMPGetPortParam(BaseCommand):
                           version=2)
         try:
             snr_up = session.get(self.__ADSL_UPSTREAM_SNR + ".{0}".format(self.__port_indexes[0]['port_index']))
-            result['ADSL_UPSTREAM_SNR'] = snr_up.value
+            result['ADSL_UPSTREAM_SNR'] = str(int(snr_up.value)/10)
             snr_down = session.get(self.__ADSL_DOWNSTREAM_SNR + ".{0}".format(self.__port_indexes[0]['port_index']))
-            result['ADSL_DOWNSTREAM_SNR'] = snr_down.value
+            result['ADSL_DOWNSTREAM_SNR'] = str(int(snr_down.value)/10)
             curr_down = session.get(self.__ADSL_CURR_DOWNSTREAM_RATE + ".{0}".format(self.__port_indexes[0]['port_index']))
-            result['ADSL_CURR_DOWNSTREAM_RATE'] = curr_down.value
+            result['ADSL_CURR_DOWNSTREAM_RATE'] = str(int(curr_down.value)/1000)
             curr_up = session.get(self.__ADSL_CURR_UPSTREAM_RATE + ".{0}".format(self.__port_indexes[0]['port_index']))
-            result['ADSL_CURR_UPSTREAM_RATE'] = curr_up.value
+            result['ADSL_CURR_UPSTREAM_RATE'] = str(int(curr_up.value)/1000)
             result['TIME'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             return dict(result=result, status=200)
