@@ -17,8 +17,11 @@ def ldap_auth(username, password):
         result_obj = search_res[0][1]
         email = result_obj.get('mail')[0].decode('utf-8')
         fullname = result_obj.get('cn')[0].decode('utf-8')
-        group_info = [value.decode('utf-8') for value in result_obj.get('memberOf')]
-        group_name = [gp.split(",")[0].split("=")[1] for gp in group_info]
+        if result_obj.get('memberOf'):
+            group_info = [value.decode('utf-8') for value in result_obj.get('memberOf')]
+            group_name = [gp.split(",")[0].split("=")[1] for gp in group_info]
+        else:
+            return dict(message="you are not belongs to any LDAP group!")
 
     except ldap.LDAPError as e:
         return dict(message="Failed to authenticate")

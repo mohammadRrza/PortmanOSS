@@ -209,6 +209,8 @@ class UserViewSet(viewsets.ModelViewSet):
                 payload = jwt_payload_handler(user_token)
                 token = jwt_encode_handler(payload)
                 return Response({'result': user, 'token': token}, status=status.HTTP_200_OK)
+            elif 'not belongs' in user['message']:
+                return Response({'result': 'you are not belongs to any LDAP group!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             else:
                 return Response({'result': 'Failed to authenticate'}, status=status.HTTP_401_UNAUTHORIZED)
 
