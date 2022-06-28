@@ -66,6 +66,7 @@ from .zyxel_commands.switch_port_show import SwitchPortShow
 from .zyxel_commands.save_config import SaveConfig
 from .zyxel_commands.set_ip_on_dslam import SetIpOnDslams
 from .zyxel_commands.snmp_get_port_params import SNMPGetPortParam
+from .zyxel_commands.get_traffic import GetTraffic
 
 from datetime import timedelta
 
@@ -128,6 +129,7 @@ class Zyxel(BaseDSLAM):
     command_factory.register_type('save config', SaveConfig)
     command_factory.register_type('set ip on dslams', SetIpOnDslams)
     command_factory.register_type('snmp get port params', SNMPGetPortParam)
+    command_factory.register_type('get traffic', GetTraffic)
 
     EVENT = {'dslam_connection_error': 'DSLAM Connection Error', 'no_such_object': 'No Such Objects'}
     EVENT_INVERS = dict(list(zip(list(EVENT.values()), list(EVENT.keys()))))
@@ -606,12 +608,13 @@ class Zyxel(BaseDSLAM):
         params['adsl_downstream_snr_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_DOWNSTREAM_SNR']
         params['adsl_curr_upstream_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_UPSTREAM_RATE']
         params['adsl_curr_downstream_oid'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['ADSL_CURR_DOWNSTREAM_RATE']
+        params['adsl_outcomming_traffic'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['OUTGOING_TRAFFIC']
+        params['adsl_incomming_traffic'] = cls.PORT_DETAILS_OID_TABLE_INVERSE['INCOMING_TRAFFIC']
         command_class = cls.command_factory.get_type(command)(params)
         command_class.HOST = dslam_info['ip']
         command_class.telnet_username = dslam_info['telnet_username']
         command_class.telnet_password = dslam_info['telnet_password']
         return command_class.run_command()
-
     @classmethod
     def execute_bulk_command(cls, dslams_data, commands, result_filepath, success_filepath, error_filepath, slot_ports):
         for dslam_data in dslams_data:

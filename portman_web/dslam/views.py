@@ -25,6 +25,7 @@ from rest_framework.parsers import FileUploadParser
 from classes.portman_logging import PortmanLogging
 
 from .models import Rented_port, PortmanZabbixHosts
+from .services.get_snmp_port_trrafic import GetPortTrafficService
 
 """from rtkit.resource import RTResource
 from rtkit.resource import RTResource
@@ -8401,6 +8402,24 @@ class GetSNMPPortStatusAPIView(views.APIView):
             data = request.data
             port_params_obj = GetPortStatusParamsService(data, device_ip)
             result = port_params_obj.get_port_params()
+            response = check_status(result)
+            return response
+
+        except Exception as ex:
+            return ex
+
+
+class GetSNMPPortTrafficAPIView(views.APIView):
+
+    def get_permissions(self):
+        return permissions.IsAuthenticated(),
+
+    def post(self, request, format=None):
+        try:
+            device_ip = get_device_ip(request)
+            data = request.data
+            port_traffic_obj = GetPortTrafficService(data, device_ip)
+            result = port_traffic_obj.get_port_params()
             response = check_status(result)
             return response
 
