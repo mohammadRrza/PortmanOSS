@@ -70,9 +70,9 @@ class GetTraffic(BaseCommand):
                           version=2)
         try:
             out_comming_traffic = session.get(self.__OUTGOING_TRAFFIC + ".{0}".format(self.__port_indexes[0]['port_index']))
-            result['ADSL_OUTGOING_TRAFFIC'] = out_comming_traffic
+            result['ADSL_OUTGOING_TRAFFIC'] = out_comming_traffic.value
             in_comming_traffic = session.get(self.__INCOMING_TRAFFIC + ".{0}".format(self.__port_indexes[0]['port_index']))
-            result['ADSL_INGOING_TRAFFIC'] = in_comming_traffic
+            result['ADSL_INGOING_TRAFFIC'] = in_comming_traffic.value
             result['TIME'] = datetime.now().strftime("%H:%M:%S")
 
             return dict(result=result, status=200)
