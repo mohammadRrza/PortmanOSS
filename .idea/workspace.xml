@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/portman_web/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/config/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/portman_web/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -218,7 +216,7 @@
       <workItem from="1655633333644" duration="27749000" />
       <workItem from="1655816913081" duration="205000" />
       <workItem from="1655817138143" duration="26550000" />
-      <workItem from="1656159165837" duration="9904000" />
+      <workItem from="1656159165837" duration="9975000" />
     </task>
     <servers />
   </component>

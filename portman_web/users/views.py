@@ -879,6 +879,7 @@ class PortmanCommandsLoggingViewSet(mixins.ListModelMixin,
                                     viewsets.GenericViewSet):
     permission_classes = (IsAuthenticated,)
     queryset = PortmanLog.objects.all()
+    pagination_class = LargeResultsSetPagination
 
     def get_queryset(self):
         queryset = self.queryset
