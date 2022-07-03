@@ -877,6 +877,8 @@ def set_dslam_permission_for_user(username):
 class PortmanCommandsLoggingViewSet(mixins.ListModelMixin,
                                     mixins.RetrieveModelMixin,
                                     viewsets.GenericViewSet):
+
+    serializer_class = PortmanLogSerializer
     permission_classes = (IsAuthenticated,)
     queryset = PortmanLog.objects.all()
     pagination_class = LargeResultsSetPagination
