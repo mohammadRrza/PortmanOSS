@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="437de1db-a289-4740-9eba-f07f364479be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/get_traffic.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_core2/vendors/zyxel_commands/get_traffic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/portman_web/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/portman_web/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,29 +56,7 @@
       <recent name="$PROJECT_DIR$/portman_core2/radio_vendors/wireless_commands" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test (1)">
-    <configuration name="bulk_commands" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PortmanV3" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bulk_commands" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bulk_commands/bulk_commands.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.test (2)">
     <configuration name="collects_NGN" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PortmanV3" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -113,6 +93,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test (2)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PortmanV3" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/portman_web" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/portman_web/test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -167,11 +169,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test (2)" />
         <item itemvalue="Python.test (1)" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.test25" />
         <item itemvalue="Python.collects_NGN" />
-        <item itemvalue="Python.bulk_commands" />
       </list>
     </recent_temporary>
   </component>
@@ -216,7 +218,7 @@
       <workItem from="1655633333644" duration="27749000" />
       <workItem from="1655816913081" duration="205000" />
       <workItem from="1655817138143" duration="26550000" />
-      <workItem from="1656159165837" duration="7081000" />
+      <workItem from="1656159165837" duration="9904000" />
     </task>
     <servers />
   </component>
@@ -262,5 +264,6 @@
     <SUITE FILE_PATH="coverage/portmanv3$tst.coverage" NAME="tst Coverage Results" MODIFIED="1638610172277" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bulk_commands/Commands" />
     <SUITE FILE_PATH="coverage/portmanv3$exam.coverage" NAME="exam Coverage Results" MODIFIED="1639999644949" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bulk_commands/Commands" />
     <SUITE FILE_PATH="coverage/portmanv3$collects_NGN.coverage" NAME="collects_NGN Coverage Results" MODIFIED="1649680638507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bulk_commands/Commands" />
+    <SUITE FILE_PATH="coverage/portmanv3$test__2_.coverage" NAME="test (2) Coverage Results" MODIFIED="1656751192538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/portman_web" />
   </component>
 </project>

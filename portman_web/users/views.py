@@ -210,7 +210,8 @@ class UserViewSet(viewsets.ModelViewSet):
                 token = jwt_encode_handler(payload)
                 return Response({'result': user, 'token': token}, status=status.HTTP_200_OK)
             elif 'not belongs' in user['message']:
-                return Response({'result': 'you are not belongs to any LDAP group!'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'result': 'you are not belongs to any LDAP group!'},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             else:
                 return Response({'result': 'Failed to authenticate'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -735,7 +736,7 @@ def set_permission_by_permission_profile_id(profiles_id, commands):
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         return str(ex)
 
-        
+
 class DeleteBulkPermissionForUserApiView(views.APIView):
     def get_permissions(self):
         return permissions.IsAuthenticated(),
@@ -871,3 +872,17 @@ def set_dslam_permission_for_user(username):
         exc_type, exc_obj, exc_tb = sys.exc_info()
         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
         return str(ex)
+
+
+class PortmanCommandsLoggingViewSet(mixins.ListModelMixin,
+                                    mixins.RetrieveModelMixin,
+                                    viewsets.GenericViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = PortmanLog.objects.all()
+
+    def get_queryset(self):
+        queryset = self.queryset
+        username = self.request.query_params.get('username', None)
+        if username:
+            queryset = PortmanLog.objects.filter(username=username)
+        return queryset
