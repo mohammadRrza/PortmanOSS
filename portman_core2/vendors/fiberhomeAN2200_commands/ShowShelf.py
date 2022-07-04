@@ -57,16 +57,19 @@ class ShowShelf(BaseCommand):
             time.sleep(0.5)
             err1 = tn.read_very_eager()
             if "incorrect" in str(err1):
+                tn.close()
                 return dict(result="Access name is wrong!", status=500)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
             time.sleep(0.5)
             err2 = tn.read_very_eager()
             if "Invalid User Name" in str(err2):
+                tn.close()
                 return dict(result="User Name is wrong.", status=500)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
             time.sleep(0.5)
             err3 = tn.read_very_eager()
             if "Invalid Password" in str(err3):
+                tn.close()
                 return dict(result="Password is wrong.", status=500)
             print('password sent ...')
             tn.write("sc\r\n".encode('utf-8'))

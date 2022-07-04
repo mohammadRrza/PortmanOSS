@@ -79,10 +79,13 @@ class ClosePort(BaseCommand):
             time.sleep(0.5)
             err4 = tn.read_very_eager()
             if "not config" in str(err4):
+                tn.close()
                 return dict(result=f"Card number '{self.port_conditions['slot_number']}' is not configured.", status=500)
             if "not exist" in str(err4):
+                tn.close()
                 return dict(result=f"Card number '{self.port_conditions['slot_number']}' not exist or is not available.", status=500)
             if "The card ID" in str(err4):
+                tn.close()
                 return dict(result=f"Card number '{self.port_conditions['slot_number']}' is out of range. Please insert a number between 1-8 or 11-18", status=500)
             tn.write("{0} \r\n".format(self.port_conditions['port_number']).encode('utf-8'))
             time.sleep(0.5)
@@ -91,10 +94,13 @@ class ClosePort(BaseCommand):
             time.sleep(0.5)
             res = tn.read_very_eager()
             if "timeout!!" in str(res):
+                tn.close()
                 return dict(result="Timeout! Please try again.", status=500)
             if "The port is" in str(res):
+                tn.close()
                 return dict(result=f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32", status=500)
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+                tn.close()
                 return dict(result=res.decode('utf-8'), status=200)
             result = str(res).split("\\n\\r")
             result = [val for val in result if 'The port' in val or "OK" in val]
