@@ -73,7 +73,7 @@ class Version(BaseCommand):
                 return dict(result="Password is wrong.", status=500)
             print('password sent ...')
             tn.write("version\r\n".encode('utf-8'))
-            time.sleep(0.5)
+            time.sleep(1)
             res = tn.read_very_eager()
             tn.write(b"exit\r\n")
             tn.close()
