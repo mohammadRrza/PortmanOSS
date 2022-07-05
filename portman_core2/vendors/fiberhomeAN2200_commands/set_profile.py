@@ -96,11 +96,11 @@ class SetProfile(BaseCommand):
                 return dict(result="Timeout! Please try again.", status=500)
             if "The port is" in str(res):
                 return dict(result=f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32", status=500)
-            result = [val for val in str(res).split("\\n\\r") if re.search(r'\W\s', val)]
+            result = [val for val in str(res).split("\\n\\r") if re.search(r'\(\s*\d+\)', val)]
             d = {}
             for b in result:
                 i = b.split(')')
-                d[i[0].replace('( ', '')] = i[1]
+                d[i[0].replace('(', '').strip()] = i[1]
             result = d
             time.sleep(0.5)
             tn.write("{0}\r\n".format(self.get_dict_key(result, self.new_lineprofile)).encode('utf-8'))
