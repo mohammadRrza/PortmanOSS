@@ -73,7 +73,7 @@ class ShowProfileByPort(BaseCommand):
             tn.write(b"line\r\n")
             tn.write(b"sc \r\n")
             tn.read_until(b'(xx-xx):', 2)
-            tn.write(b'not config')
+            tn.write("0-{0} \r\n".format(self.port_conditions['slot_number']).encode('utf-8'))
             time.sleep(0.5)
             tn.write(b"end\r\n")
             res = tn.read_until(b'end', 2)
