@@ -56,40 +56,48 @@ class ShowProfiles(BaseCommand):
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
             tn.write('{0}\r\n'.format(self.__access_name).encode("utf-8"))
-            err1 = tn.read_until(b"correct")
+            err1 = tn.read_until(b"correct", 2)
             if "incorrect" in str(err1):
+                tn.close()
                 return dict(result="Access name is wrong!", status=500)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            err2 = tn.read_until(b"Password:", 1)
+            err2 = tn.read_until(b"Password:", 2)
             if "Invalid User Name" in str(err2):
+                tn.close()
                 return dict(result="User Name is wrong.", status=500)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            err3 = tn.read_until(b"OK!", 1)
+            err3 = tn.read_until(b"OK!", 2)
             if "Invalid Password" in str(err3):
+                tn.close()
                 return dict(result="Password is wrong.", status=500)
             print('password sent ...')
             tn.write(b"line\r\n")
             tn.write(b"cfgport\r\n")
-            tn.read_until(b'(xx-xx)')
+            tn.read_until(b'(xx-xx)', 2)
 
             # here we set default card and port because with different parameter, result is the same
             tn.write(b"0-1\r\n")
             time.sleep(0.5)
-            err4 = tn.read_until(b'(default is 1~32)', 1)
+            err4 = tn.read_until(b'(default is 1~32)', 2)
             if "not config" in str(err4):
+                tn.close()
                 return dict(result=f"Card number '{self.port_conditions['slot_number']}' is not configured.", status=500)
             if "not exist" in str(err4):
+                tn.close()
                 return dict(result=f"Card number '{self.port_conditions['slot_number']}' not exist or is not available.", status=500)
             if "The card ID" in str(err4):
+                tn.close()
                 return dict(result=f"Card number '{self.port_conditions['slot_number']}' is out of range. Please insert a number between 1-8 or 11-18", status=500)
             tn.write(b"1\r\n")
             time.sleep(0.5)
             tn.write(b"\r\n")
             tn.write(b"end\r\n")
-            res = tn.read_until(b'end')
+            res = tn.read_until(b'end', 3)
             if "timeout!!" in str(res):
+                tn.close()
                 return dict(result="Timeout! Please try again.", status=500)
             if "The port is" in str(res):
+                tn.close()
                 return dict(result=f"Port number '{self.port_conditions['port_number']}' is out of range. Please insert a number between 1-32", status=500)
             tn.write(b"exit\r\n")
             tn.close()

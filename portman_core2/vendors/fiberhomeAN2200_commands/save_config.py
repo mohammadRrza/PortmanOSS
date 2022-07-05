@@ -57,20 +57,24 @@ class SaveConfig(BaseCommand):
             tn.set_option_negotiation_callback(self.process_telnet_option)
             print('send login ...')
             tn.write('{0}\r\n'.format(self.__access_name).encode('utf-8'))
-            err1 = tn.read_until(b"correct")
+            err1 = tn.read_until(b"correct", 2)
             if "incorrect" in str(err1):
+                tn.close()
                 return dict(result="Access name is wrong!", status=500)
             tn.write((self.__telnet_username + "\r\n").encode('utf-8'))
-            err2 = tn.read_until(b"Password:", 1)
+            err2 = tn.read_until(b"Password:", 2)
             if "Invalid User Name" in str(err2):
+                tn.close()
                 return dict(result="User Name is wrong.", status=500)
             tn.write((self.__telnet_password + "\r\n").encode('utf-8'))
-            err3 = tn.read_until(b"OK!", 1)
+            err3 = tn.read_until(b"OK!", 2)
             if "Invalid Password" in str(err3):
+                tn.close()
                 return dict(result="Password is wrong.", status=500)
             print('password sent ...')
             tn.write(b"wf\r\n")
-            tn.read_until(b'Verifying Flash SST...')
+            tn.read_until(b'Verifying Flash SST...', 2)
+            tn.close()
             return dict(result="Save config successfully completed.", status=200)
             # result = str(res).split("\\n\\r")
             # result = [val for val in result if 'ok!' in val]
