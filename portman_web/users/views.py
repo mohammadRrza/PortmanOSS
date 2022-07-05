@@ -887,5 +887,5 @@ class PortmanCommandsLoggingViewSet(mixins.ListModelMixin,
         queryset = self.queryset
         username = self.request.query_params.get('username', None)
         if username:
-            queryset = PortmanLog.objects.filter(username=username)
+            queryset = PortmanLog.objects.filter(username=username).order_by('-log_date')
         return queryset
