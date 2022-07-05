@@ -6088,11 +6088,12 @@ class FiberHomeCommandAPIView(views.APIView):
         log_port_data = f"{fqdn}/{params['port_conditions']['slot_number']}/{params['port_conditions']['port_number']}"
         log_username = params.get('username')
         log_date = datetime.now()
+        operator = params.get('operator')
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
             log_status = True if isinstance(result, dict) else False
             log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, result, log_date,
-                                                          device_ip, 'Run Command', log_status, '', '')
+                                                          device_ip, 'Run Command', log_status, operator, '')
             PortmanLogging(result, log_params)
             # if dslam_type == 1:  ################################### zyxel ###################################
             #     return JsonResponse({'Result': dslam_type})
@@ -6184,7 +6185,7 @@ class FiberHomeCommandAPIView(views.APIView):
             exc_type, exc_obj, exc_tb = sys.exc_info()
             log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, '', log_date,
                                                           device_ip, 'Run Command', False,
-                                                          str(ex) + '/' + str(exc_tb.tb_lineno), '')
+                                                          operator, str(ex) + '/' + str(exc_tb.tb_lineno))
             PortmanLogging('', log_params)
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
@@ -7974,8 +7975,17 @@ class DslamCommandsV2APIView(views.APIView):  # 111111111111
         params = data.get('params', None)
         params['device_ip'] = device_ip
         dslam_type = dslamObj.dslam_type_id
+        fqdn = dslamObj.fqdn
+        log_port_data = f"{fqdn}/{params['port_conditions']['slot_number']}/{params['port_conditions']['port_number']}"
+        log_username = params.get('username')
+        log_date = datetime.now()
+        operator = params.get('operator')
         try:
             result = utility.dslam_port_run_command(dslamObj.pk, command, params)
+            log_status = True if isinstance(result, dict) else False
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, result, log_date,
+                                                          device_ip, 'Run Command', log_status, operator, '')
+            PortmanLogging(result, log_params)
             # if dslam_type == 1:  ################################### zyxel ###################################
             #     return JsonResponse({'Result': dslam_type})
             if dslam_type == 1:  ################################### zyxel ###################################
@@ -8031,6 +8041,10 @@ class DslamCommandsV2APIView(views.APIView):  # 111111111111
                     {'response': result, 'current_user_profile': current_user_profile, 'DslamType': 'zyxel1248'})
         except Exception as ex:
             exc_type, exc_obj, exc_tb = sys.exc_info()
+            log_params = PortmanLogging.prepare_variables(self, log_port_data, log_username, command, '', log_date,
+                                                          device_ip, 'Run Command', False,
+                                                          operator, str(ex) + '/' + str(exc_tb.tb_lineno))
+            PortmanLogging('', log_params)
             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
             return JsonResponse({'result': 'Error is {0}'.format(ex), 'Line': str(exc_tb.tb_lineno)})
 
