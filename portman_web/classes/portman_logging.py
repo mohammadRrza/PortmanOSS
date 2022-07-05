@@ -15,10 +15,10 @@ class PortmanLogging:
 
     def prepare_variables(self, log_port_data, log_username, log_command, result,
                           log_date, log_ip, log_method_name, log_status,
-                          log_exception_result, log_reseller_name):
+                          log_reseller_name, log_exception_result):
         return dict(request=log_port_data, username=log_username, command=log_command, response=result,
                     log_date=log_date, source_ip=log_ip, method_name=log_method_name, status=log_status,
-                    exception_result=log_exception_result, reseller_name=log_reseller_name)
+                    reseller_name=log_reseller_name, exception_result=log_exception_result)
 
     def save_to_db(self):
         try:
