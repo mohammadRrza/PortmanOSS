@@ -14,7 +14,7 @@ class ShowLineRate(BaseCommand):
         self.__telnet_username = None
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
-        self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -74,9 +74,9 @@ class ShowLineRate(BaseCommand):
             tn.write(b'y\r\n')
             tn.close()
             print('******************device_ip*************************')
-            print(self.device_ip)
+            print(self.request_from_ui)
             print('*******************device_ip************************')
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.246.130':
+            if self.request_from_ui:
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             res = {'dslamName/cammandName': "",
