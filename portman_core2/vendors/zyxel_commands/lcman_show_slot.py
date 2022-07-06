@@ -11,6 +11,7 @@ class LcmanShowSlot(BaseCommand):
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -66,7 +67,7 @@ class LcmanShowSlot(BaseCommand):
             tn.close()
             start_point = result.find(b'slot')
             end_point = result.rfind(b'\r\n\r\n')
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 return dict(result=result.decode('utf-8'), status=200)
             result = result[start_point:end_point]
 

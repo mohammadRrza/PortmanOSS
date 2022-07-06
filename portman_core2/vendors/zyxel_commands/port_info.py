@@ -13,6 +13,7 @@ class PortInfo(BaseCommand):
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -75,7 +76,7 @@ class PortInfo(BaseCommand):
             print('******************************************')
             print(("port info {0}".format(self.port_conditions)))
             print('******************************************')
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 str_join = "\r\n"
                 str_join = str_join.join(result)
                 return dict(result=str_join, status=200)

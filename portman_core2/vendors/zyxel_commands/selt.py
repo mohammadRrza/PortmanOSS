@@ -14,6 +14,7 @@ class Selt(BaseCommand):
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -77,7 +78,7 @@ class Selt(BaseCommand):
             if "example:" in str(err2):
                 result = str(err2).split("\\r\\n")
                 result = [val for val in result if re.search(r'example|between', val)]
-                return dit(result=result, status=500)
+                return dict(result=result, status=500)
             if "inactive" in str(err2):
                 result = str(err2).split("\\r\\n")
                 result = [val for val in result if re.search(r'inactive', val)]
@@ -96,7 +97,7 @@ class Selt(BaseCommand):
                 tn.write((str(prompt)+str(c_n)+"\r\n").encode('utf-8'))
                 output = tn.read_until((str(prompt)+str(c_n)).encode('utf-8'))
             # output = output.replace(self.__clear_port_name(output),'')
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 return dict(result=output.decode('utf-8'), status=200)
             result = str(output).split("\\r\\n")
             result = [val for val in result if re.search(r'kFt', val)]
