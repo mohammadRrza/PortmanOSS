@@ -73,9 +73,9 @@ class ShowLineRate(BaseCommand):
             tn.write(b'exit\r\n')
             tn.write(b'y\r\n')
             tn.close()
-            # print('*******************************************')
-            # print(('show linerate {0}'.format(str(result))))
-            # print('*******************************************')
+            print('******************device_ip*************************')
+            print(self.device_ip)
+            print('*******************device_ip************************')
             if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.246.130':
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
