@@ -15,6 +15,8 @@ class AddToVlan(BaseCommand):
         self.port_conditions = params.get('port_indexes')
         self.reseller = params.get('vlan_name')
         self.device_ip = params.get('device_ip')
+        self.__vpi = params.get('vpi')
+        self.__vci = params.get('vci')
 
     @property
     def HOST(self):
@@ -68,8 +70,8 @@ class AddToVlan(BaseCommand):
             if "Invalid Password" in str(err3):
                 return dict(result="Password is wrong.", status=500)
             tn.write(b"sc\r\n")
-            tn.write(b"end\r\n")
-            WANE2W_obj = tn.read_until(b'end')
+            time.sleep(1)
+            WANE2W_obj = tn.read_very_eager()
             for item in str(WANE2W_obj).split('\\n\\r'):
                 if 'WANE2W' in item:
                     WANE2W_par = item.split()[1]
@@ -102,13 +104,58 @@ class AddToVlan(BaseCommand):
             print(result)
             print('===================================')
             tn.write(b"exit\r\n\r\n")
-            tn.close()
             if 'Continue to add port' in str(result):
-                result = 'port {0}-{1} added to vlan {2}'.format(self.port_conditions[0]['slot_number'],
+                tn.write(b'core\r\n')
+                tn.write(b'svc\r\n')
+                tn.write(b'1\r\n')
+                tn.write('0-{0}-{1}\r\n'.format(self.port_conditions[0]['slot_number'],
+                                                self.port_conditions[0]['port_number']).encode('utf8'))
+                time.sleep(0.5)
+                output = tn.read_very_eager()
+                output = str(output).split('\\n\\r')
+                output = [item for item in output if re.search(r"\d+\s*/\s*\d+", item)]
+                pvc = output[0].split()[0]
+                wan_vpi_vci = output[0].split('/')
+                wan_vpi = wan_vpi_vci[1].split()[-1]
+                wan_vci = wan_vpi_vci[2].split()[0]
+                tn.write(b'dvc\r\n')
+                time.sleep(0.5)
+                tn.write('{0}\r\n'.format(pvc).encode('utf-8'))
+                time.sleep(0.5)
+                tn.write(b'looptowanvc\r\n')
+                tn.write('0-{0}-{1}\r\n'.format(self.port_conditions[0]['slot_number'],
+                                                self.port_conditions[0]['port_number']).encode('utf8'))
+                time.sleep(0.5)
+                tn.write('{0}/{1}\r\n'.format(self.__vpi, self.__vci).encode('utf-8'))
+                time.sleep(0.5)
+                tn.write("0-{0}-1\r\n".format(WANE2W_par).encode('utf-8'))
+                time.sleep(0.5)
+                tn.write('{0}/{1}\r\n'.format(wan_vpi, wan_vci).encode('utf-8'))
+                time.sleep(0.5)
+                tn.write('{0}\r\n'.format(pvc).encode('utf-8'))
+                time.sleep(0.5)
+                tn.write(b"0\r\n")
+                time.sleep(0.5)
+                result = tn.read_very_eager()
+                print('******************************')
+                print(str(result))
+                print('******************************')
+                tn.close()
+                if 'field!' not in str(result):
+                    result = 'port {0}-{1} added to vlan {2}'.format(self.port_conditions[0]['slot_number'],
+                                                                     self.port_conditions[0]['port_number'],
+                                                                     self.__vlan_name)
+                    return dict(result=result, status=200)
+                else:
+                    result = "port {0}-{1} couldn't add to vlan {2}".format(self.port_conditions[0]['slot_number'],
+                                                                            self.port_conditions[0]['port_number'],
+                                                                            self.__vlan_name)
+                    return dict(result=result, status=500)
+            else:
+                result = "port {0}-{1} couldn't add to vlan {2}".format(self.port_conditions[0]['slot_number'],
                                                                  self.port_conditions[0]['port_number'],
                                                                  self.__vlan_name)
-                return dict(result=result, status=200)
-
+                return dict(result=result, status=500)
         except Exception as ex:
              exc_type, exc_obj, exc_tb = sys.exc_info()
              fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
