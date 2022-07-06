@@ -14,6 +14,7 @@ class ShowFastProfiles(BaseCommand):
         self.__telnet_password = None
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -66,7 +67,7 @@ class ShowFastProfiles(BaseCommand):
 
             result = [item.split()[2] for item in result if
                       re.search("\s\d+\d+\s", item)]
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 str_join = "\r\n"
                 str_join = str_join.join(result)
                 return dict(result=str_join, status=200)

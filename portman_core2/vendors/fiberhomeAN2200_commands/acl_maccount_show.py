@@ -16,6 +16,7 @@ class ACLMaccountShow(BaseCommand):
         self.__port_indexes = params.get('port_indexes')
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -90,7 +91,7 @@ class ACLMaccountShow(BaseCommand):
                 return dict(result=str_res, status=500)
             if "No Up port!" in str(res):
                 return dict(result="No Up port!", status=500)
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 return dict(result=res.decode('utf-8'), status=200)
             result = str(res).split("\\n\\r")
             # result = [val for val in result if re.search(r'\s{3,}|--{4,}', val)]

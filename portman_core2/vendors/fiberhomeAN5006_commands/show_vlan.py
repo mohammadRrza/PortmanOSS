@@ -14,6 +14,7 @@ class ShowVLAN(BaseCommand):
         self.port_conditions = params.get('port_conditions')
         self.__vlan_name = params.get('vlan_name')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -62,7 +63,7 @@ class ShowVLAN(BaseCommand):
                 return dict(result="Card number or Port number is out of range.", status=500)
             print("OK")
             tn.close()
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 return dict(result=str(result), status=200)
             result = str(result).split("\\r\\n")
             result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;'-]+J", "", val) for val in result if

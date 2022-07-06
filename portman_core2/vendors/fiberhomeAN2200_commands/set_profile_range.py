@@ -16,6 +16,7 @@ class SetProfileRange(BaseCommand):
         self.port_conditions = params.get('port_conditions')
         self.new_lineprofile = params.get('new_lineprofile')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -99,7 +100,7 @@ class SetProfileRange(BaseCommand):
             tn.write(b"\r\n")
             tn.write(b"end")
             res = tn.read_until(b'end', 3)
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 tn.close()
                 return res.decode('utf-8')
             if "The port ID is 1~32" in str(res):

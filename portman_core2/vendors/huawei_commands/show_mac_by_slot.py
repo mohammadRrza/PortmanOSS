@@ -14,6 +14,7 @@ class ShowMacBySlot(BaseCommand):
         self.__telnet_password = None
         self.__port_indexes = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -84,7 +85,7 @@ class ShowMacBySlot(BaseCommand):
             print('***********************')
             result = str(result).split("\r\n")
             result = [val for val in result if re.search(r'-{4,}|\s{4,}|:', val)]
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 str_join = "\r\n"
                 str_join = str_join.join(result)
                 return dict(result=str_join.decode('utf-8'), status=200)

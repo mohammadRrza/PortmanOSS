@@ -16,6 +16,7 @@ class IPShow(BaseCommand):
         self.__port_indexes = params.get('port_indexes')
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -79,7 +80,7 @@ class IPShow(BaseCommand):
             tn.write(b"end\r\n")
             res = tn.read_until(b'end', 3)
             tn.close()
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
 
                 return dict(result=res.decode('utf-8'), status=200)
             result = [val for val in str(res).split("\\n\\r") if re.search(r'\s+:\s', val)]

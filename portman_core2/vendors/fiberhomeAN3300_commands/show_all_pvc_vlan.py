@@ -15,6 +15,7 @@ class ShowAllVLANs(BaseCommand):
         self.__access_name = params.get('access_name', 'an3300')
         self.port_conditions = params.get('port_conditions')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -82,7 +83,7 @@ class ShowAllVLANs(BaseCommand):
             result = str(res).split("\\r\\n")
             result = [re.sub(r"\s+--P[a-zA-Z +\\1-9[;-]+('b')[a-zA-Z +\\1-9[;-]+H", '', val) for val in result if
                       re.search(r'\s{4,}[-\d\w]|-{5,}', val)]
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 str_join = "\r\n"
                 str_join = str_join.join(result)
                 return dict(result=str_join, status=200)

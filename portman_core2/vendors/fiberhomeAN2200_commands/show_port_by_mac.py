@@ -14,6 +14,7 @@ class ShowSlotPortByMac(BaseCommand):
         self.port_conditions = params.get('port_conditions')
         self.__mac = params.get('mac')
         self.device_ip = params.get('device_ip')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -74,7 +75,7 @@ class ShowSlotPortByMac(BaseCommand):
             tn.write(b"end\r\n")
             res = tn.read_until(b'end', 2)
             tn.close()
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 return dict(result=res.decode('utf-8'), status=200)
             if "incorrect port!" in str(res):
                 str_res = ["There is one of the following problems:", "This card is not configured",
