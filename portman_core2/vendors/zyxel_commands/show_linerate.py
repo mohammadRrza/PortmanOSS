@@ -76,7 +76,7 @@ class ShowLineRate(BaseCommand):
             # print('*******************************************')
             # print(('show linerate {0}'.format(str(result))))
             # print('*******************************************')
-            if self.device_ip == '127.0.0.1' or self.device_ip == '185.126.18.160':
+            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.246.130':
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split("\\r\\n")
             res = {'dslamName/cammandName': "",
