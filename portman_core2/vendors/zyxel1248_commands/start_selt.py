@@ -14,6 +14,7 @@ class StartSelt(BaseCommand):
         self.__telnet_password = None
         self.device_ip = params.get('device_ip')
         self.port_conditions = params.get('port_conditions')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -71,7 +72,7 @@ class StartSelt(BaseCommand):
             tn.close()
             if "error:" in str(result):
                 return dict(result="Port number is out of range.", status=500)
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 return dict(result=result.decode('utf-8'), status=200)
             return dict(result="Selt started.", status=200)
 

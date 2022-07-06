@@ -15,6 +15,7 @@ class ShowLineRate(BaseCommand):
         self.__telnet_password = None
         self.device_ip = params.get('device_ip')
         self.port_conditions = params.get('port_conditions')
+        self.request_from_ui = params.get('request_from_ui')
 
     @property
     def HOST(self):
@@ -75,7 +76,7 @@ class ShowLineRate(BaseCommand):
                 return dict(result=f"Port number '{self.port_conditions['port_number']}' is out of range.", status=500)
             if "link is down" in str(result):
                 return dict(result="This link is down.")
-            if self.device_ip == '127.0.0.1' or self.device_ip == '172.28.238.114':
+            if self.request_from_ui:
                 return dict(result=result.decode('utf-8'), status=200)
             result = str(result).split('\\r\\n')
             res = {'dslamName/cammandName': "",
